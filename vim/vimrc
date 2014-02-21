@@ -43,8 +43,14 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " Enable airline fonts
 let g:airline_powerline_fonts = 1
+let g:Powerline_symbols = 'fancy'
 
 " Set color scheme
 set background=dark
 colorscheme wombat256mod
+
+" Move backup/swp files to .vimbackups
+silent execute '!mkdir ~/.vimbackups'
+set backupdir=~/.vimbackups//
+set directory=~/.vimbackups//
 
