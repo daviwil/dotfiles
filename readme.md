@@ -12,5 +12,6 @@ Run setup.sh to set up appropriate symbolic links.
     * Add git command mappings
       * git config --global user.email "email@address.com"
       * git config --global user.name "My Name"
+      * git config --global core.editor "vim"
     * Set up powerline fonts for different platforms
     * Auto-install oh-my-zsh

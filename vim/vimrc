@@ -54,3 +54,9 @@ silent execute '!mkdir ~/.vimbackups'
 set backupdir=~/.vimbackups//
 set directory=~/.vimbackups//
 
+" Git (fugitive) shortcuts
+nmap <leader>gd :Gdiff<cr>
+nmap <leader>gc :Gcommit<cr>
+nmap <leader>gs :Gstatus<cr>
+nmap <leader>ga :Gwrite<cr>
+

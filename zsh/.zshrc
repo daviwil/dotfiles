@@ -1,13 +1,28 @@
+# Include antigen plugin manager and reference some packages
+source ~/.dotfiles/zsh/antigen/antigen.zsh
+antigen bundles <<BUNDLES
+    git    
+    gitignore
+    tmux
+    vagrant
+    docker
+    taskwarrior
+    brew
+    osx 
+    redis-cli
+    rsync
+    mosh
+    zsh-users/zsh-syntax-highlighting
+    sharat87/zsh-vim-mode
+BUNDLES
+antigen use oh-my-zsh
+antigen theme agnoster
+antigen apply
+
 # Set up the prompt
 autoload -U promptinit
 promptinit
 setopt PROMPT_SUBST     # Enable prompt text substitution
-prompt fade blue
-
-# Custom prompt tests
-#PS1="%K{blue}%n@%m%k: %~/ > "
-#PS2="> "
-#RPS1="%F{red}%(?..(%?%))%f %~"
 
 # Set up command history
 HISTFILE=~/.zsh_history
@@ -20,7 +35,8 @@ setopt HIST_REDUCE_BLANKS       # Remove extra whitespace from history entries
 
 # Path aliases
 alias ls="ls --color=auto"
-alias lal="ls -alF"
+alias ll="ls -alGFh"
+alias llg="lal | grep"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
@@ -28,7 +44,7 @@ alias mkdir="mkdir -pv"
 
 # Dotfile aliases
 alias relshrc="source ~/.dotfiles/zsh/.zshrc"
-alias edshrc="vim ~/.dotfiles/zsh/.zshrc"
+alias edshrc="vim ~/.dotfiles/zsh/.zshrc && relshrc"
 alias dotzsh="cd ~/.dotfiles/zsh/"
 alias dotvim="cd ~/.dotfiles/vim/"
 alias dotfiles="cd ~/.dotfiles"
@@ -44,19 +60,4 @@ hash -d codeproj=$HOME/Projects/Code
 
 # Insert a newline after each command
 precmd() { print "" }
-
-# Include antigen plugin manager and reference some packages
-source ~/.dotfiles/zsh/antigen/antigen.zsh
-antigen bundles <<BUNDLES
-    git    
-    tmux
-    zsh-users/zsh-syntax-highlighting
-    sharat87/zsh-vim-mode
-BUNDLES
-#antigen bundle tmux
-#antigen bundle zsh-users/zsh-syntax-highlighting
-#antigen bundle sharat87/zsh-vim-mode
-antigen use oh-my-zsh
-antigen theme agnoster
-antigen apply
 
