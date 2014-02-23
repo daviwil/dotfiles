@@ -36,7 +36,7 @@ setopt HIST_REDUCE_BLANKS       # Remove extra whitespace from history entries
 # Path aliases
 alias ls="ls --color=auto"
 alias ll="ls -alGFh"
-alias llg="lal | grep"
+alias llg="ll | grep"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
