@@ -8,9 +8,12 @@ let mapleader = ","
 syntax on
 filetype plugin indent on
 
+" Enable search highlighting
+set hlsearch
+
 " Default tab settings
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 set expandtab
 
 " Enable 256 color mode
