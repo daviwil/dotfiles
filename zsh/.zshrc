@@ -34,7 +34,8 @@ setopt SHARE_HISTORY            # Share history between any running zsh instance
 setopt HIST_REDUCE_BLANKS       # Remove extra whitespace from history entries
 
 # Path aliases
-alias ls="ls --color=auto"
+# TODO: Fix for Mac!
+#alias ls="ls --color=auto"
 alias ll="ls -alGFh"
 alias llg="ll | grep"
 alias ..="cd .."
