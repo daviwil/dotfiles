@@ -3,29 +3,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- 
- ; Things that are definitely needed
- ;'(frame-brackground-mode (quote dark))
- ;'(indent-tabs-mode nil)
+ '(erc-modules (quote (autojoin button completion fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands notify notifications readonly ring stamp track)))
 
- ;'(main-line-color1 "#191919")
- ;'(main-line-color2 "#111111")
- ;'(main-line-separator-style (quote chamfer))
- 
- ;'(org-agenda-files (quote ("~/Dropbox/Tasks.org")))
- ;'(org-hide-leading-stars t)
- ;'(org-modules (quote (org-bbdb org-bibtex org-crypt org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m org-checklist org-git-link org-wl)))
- 
- ;'(powerline-color1 "#191919")
- ;'(powerline-color2 "#111111")
- 
- ;'(tab-stop-list (quote (4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 66 72 76 80 84 88 92 96 100 104 106 112 120)))
- ;'(tab-width 4)
-
- ;; '(vc-annotate-background monokai-bg)
- ;; '(vc-annotate-color-map (quote ((20 . monokai-fg-1) (40 . monokai-bg+2) (60 . monokai-red) (80 . monokai-red+1) (100 . monokai-orange) (120 . monokai-orange+1) (140 . monokai-green) (160 . monokai-green+1) (180 . monokai-yellow) (200 . monokai-yellow+1) (220 . monokai-blue) (240 . monokai-blue+1) (260 . monokai-purple) (280 . monokai-purple+1) (300 . monokai-cyan) (320 . monokai-cyan+1) (340 . monokai-magenta) (360 . monokai-magenta+1))))
- ;; '(vc-annotate-very-old-color monokai-magenta))
-)
+ ;; TODO: Move this to org init block
+ '(org-agenda-files (quote ("~/Notes/Projects.org" "~/Notes/Reference/Emacs/OrgMode.org"))))
 
 ;; Configure UI options
 (scroll-bar-mode -1)       ; Disable visible scrollbar
@@ -35,7 +16,7 @@
 
 ;; Set the font face
 ;(set-face-attribute 'default nil :font "Menlo" :height 150)
-(set-face-attribute 'default nil :font "Ubuntu Mono" :height 180)
+(set-face-attribute 'default nil :font "Ubuntu Mono" :height 130)
 
 ;; Configure line numbering
 (global-linum-mode)
@@ -84,6 +65,14 @@
 ;(require 'base16-tomorrow)
 
 (use-package twilight-anti-bright-theme :ensure t)
+
+(use-package org
+  :ensure t
+  :config
+  (progn
+    ;; Set the capture inbox location
+    (setq org-default-notes-file 
+	  (concat org-directory "~/Notes/Inbox.org"))))
 
 (use-package smartparens
   :ensure t
@@ -152,7 +141,7 @@
     (setq cider-prompt-save-file-on-load nil)                 ; Don't prompt to save file on load into REPL
     (setq nrepl-hide-special-buffers t)                       ; Hide special cider buffers
     (setq cider-auto-select-error-buffer nil)                 ; Don't automatically select error buffer when shown
-    (setq cider-lein-command "/usr/local/bin/lein")           ; Configure the path to lein
+    (setq cider-lein-command "/usr/bin/lein")           ; Configure the path to lein
 ))
 
 (use-package magit
@@ -177,6 +166,22 @@
     (set-face-background 'git-gutter:modified "yellow")
     (set-face-background 'git-gutter:added "green")
     (set-face-background 'git-gutter:deleted "red")))
+
+(use-package markdown-mode
+  :ensure t)
+
+(use-package web-mode
+  :ensure t
+  :config
+  (progn
+    (add-to-list 
+       'auto-mode-alist 
+       '("\\.html?\\'" . web-mode))))
+
+;; Use 'M-x httpd-start' to start the web server
+;; Use 'M-x impatient-mode' to start live reload for the current buffer
+(use-package impatient-mode
+  :ensure t)
 
 ;; Install ergoemacs mode and set desired config
 ;; (unless (package-installed-p 'ergoemacs-mode)
