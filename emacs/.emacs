@@ -4,19 +4,31 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(erc-modules (quote (autojoin button completion fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands notify notifications readonly ring stamp track)))
-
- ;; TODO: Move this to org init block
- '(org-agenda-files (quote ("~/Notes/Projects.org" "~/Notes/Reference/Emacs/OrgMode.org"))))
+ '(org-agenda-files (quote ("~/Notes/Habits.org" "~/Notes/Personal.org" "~/Notes/Work.org" "~/Notes/Projects.org" "~/Notes/Reference/Emacs/OrgMode.org"))))
 
 ;; Configure UI options
-(scroll-bar-mode -1)       ; Disable visible scrollbar
-(tool-bar-mode -1)         ; Disable the toolbar
+(scroll-bar-mode -1)        ; Disable visible scrollbar
+(tool-bar-mode -1)          ; Disable the toolbar
 (set-fringe-mode '(1 . 0))  ; Disable right-side fringe
 (setq use-dialog-box nil)   ; Disable dialog boxes since they weren't working in Mac OSX
 
-;; Set the font face
+;; Set the font face based on platform
 ;(set-face-attribute 'default nil :font "Menlo" :height 150)
-(set-face-attribute 'default nil :font "Ubuntu Mono" :height 130)
+(cond
+ ((string-equal system-type "windows-nt") ; Microsoft Windows
+  (progn
+    (message "Microsoft Windows")
+    (set-face-attribute 'default nil :font "Consolas" :height 130)))
+
+ ((string-equal system-type "darwin")   ; Mac OS X
+  (progn
+    (message "Mac OS X")
+    (set-face-attribute 'default nil :font "Ubuntu Mono" :height 180)))
+
+ ((string-equal system-type "gnu/linux") ; linux
+  (progn
+    (set-face-attribute 'default nil :font "Ubuntu Mono" :height 130))))
+
 
 ;; Configure line numbering
 (global-linum-mode)
@@ -56,26 +68,29 @@
 ;; Add load paths
 (add-to-list 'load-path "~/.emacs.d/scripts/")
 
-;; Load color theme
+;; Themes - http://emacsthemes.caisah.info/
+;(use-package twilight-anti-bright-theme :ensure t)            ; Best so far
+(use-package badger-theme :ensure t)                           ; Cool, but not my favorite
+;(use-package dakrone-theme :ensure t)
+;(load-theme 'tango-dark)                                      ; A little too mild
 ;; (use-package color-theme-sanityinc-tomorrow
 ;;   :ensure t
 ;;   :config
 ;;   (progn 
 ;;     (color-theme-sanityinc-tomorrow-eighties)))
 
-;(require 'twilight-anti-bright-theme)
-;(require 'sanityinc-tomorrow-eighties)
-;(require 'base16-tomorrow)
-
-(use-package twilight-anti-bright-theme :ensure t)
-
 (use-package org
   :ensure t
   :config
   (progn
-    ;; Set the capture inbox location
-    (setq org-default-notes-file 
-	  (concat org-directory "~/Notes/Inbox.org"))))
+    (setq org-directory "~/Notes")
+    (setq org-default-notes-file (concat org-directory "/Inbox.org"))
+    (setq org-log-into-drawer t)
+    (setq org-todo-keywords
+	  '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANC(c@)")))
+    (setq org-modules 
+	  '(org-bbdb org-crypt org-gnus org-habit org-bookmark org-drill org-eshell org-eval org-expiry org-learn org-notmuch org-man org-toc org-velocity org-docview org-info org-jsinfo org-irc org-mhe org-vm org-w3m org-wl))
+))
 
 ;; Check out the intro for more info: http://tuhdo.github.io/helm-intro.html
 (use-package helm
@@ -83,8 +98,29 @@
   :config
   (progn
     (require 'helm-config)
+    (setq helm-buffers-fuzzy-matching t)
     (helm-mode 1)
-    (global-set-key (kbd "C-c h") 'helm-command-prefix)))
+
+    (global-set-key (kbd "C-c h") 'helm-command-prefix)
+    (global-set-key (kbd "M-x") 'helm-M-x)
+    (global-set-key (kbd "C-x b") 'helm-mini)
+    (global-set-key (kbd "C-x C-f") 'helm-find-files)))
+
+(use-package helm-company
+  :ensure t
+  :config
+  (progn
+    (define-key company-mode-map (kbd "C-:") 'helm-company)
+    (define-key company-active-map (kbd "C-:") 'helm-company)))
+
+(use-package helm-package
+  :ensure t
+  :config
+  (progn
+    (global-set-key (kbd "C-c C-p") 'helm-package)))
+
+(use-package helm-themes
+  :ensure t)
 
 (use-package smartparens
   :ensure t
@@ -115,16 +151,17 @@
     (evilnc-default-hotkeys)
     (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines)))
 
-(use-package flx-ido
-  :ensure t
-  :config
-  (progn
-    (ido-mode 1)
-    (ido-everywhere 1)
-    (flx-ido-mode 1)
-    ;; disable ido faces to see flx highlights.
-    (setq ido-enable-flex-matching t)
-    (setq ido-use-faces nil)))
+;; TODO: Re-instate this ever?
+;; (use-package flx-ido
+;;   :ensure t
+;;   :config
+;;   (progn
+;;     (ido-mode 1)
+;;     (ido-everywhere 1)
+;;     (flx-ido-mode 1)
+;;     ;; disable ido faces to see flx highlights.
+;;     (setq ido-enable-flex-matching t)
+;;     (setq ido-use-faces nil)))
 
 (use-package company
   :ensure t
@@ -251,6 +288,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
       (setq deactivate-mark  t)
     (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
     (abort-recursive-edit)))
+
 (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
