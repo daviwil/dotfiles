@@ -36,6 +36,9 @@
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 (setq scroll-step 1) ;; keyboard scroll one line at a time
 
+;; TODO: remove this soon!
+(setq package-check-signature nil)
+
 ;; Initialize MELPA
 (require 'package)
 (add-to-list
@@ -74,6 +77,15 @@
     (setq org-default-notes-file 
 	  (concat org-directory "~/Notes/Inbox.org"))))
 
+;; Check out the intro for more info: http://tuhdo.github.io/helm-intro.html
+(use-package helm
+  :ensure t
+  :config
+  (progn
+    (require 'helm-config)
+    (helm-mode 1)
+    (global-set-key (kbd "C-c h") 'helm-command-prefix)))
+
 (use-package smartparens
   :ensure t
   :config
@@ -85,7 +97,9 @@
   :ensure t
   :config
   (progn
-    (global-rainbow-delimiters-mode)))
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+    ;(global-rainbow-delimiters-mode)
+    ))
 
 (use-package evil 
   :ensure t
@@ -182,6 +196,22 @@
 ;; Use 'M-x impatient-mode' to start live reload for the current buffer
 (use-package impatient-mode
   :ensure t)
+
+(use-package csharp-mode
+  :ensure t)
+
+(use-package omnisharp
+  :ensure t)
+
+(use-package yasnippet
+  :ensure t)
+
+(use-package twittering-mode
+  :ensure t
+  :config
+  (progn
+    (setq twittering-icon-mode t)
+    (twittering-enable-unread-status-notifier)))
 
 ;; Install ergoemacs mode and set desired config
 ;; (unless (package-installed-p 'ergoemacs-mode)
