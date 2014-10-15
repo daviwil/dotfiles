@@ -3,8 +3,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(erc-modules (quote (autojoin button completion fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands notify notifications readonly ring stamp track)))
- '(org-agenda-files (quote ("~/Notes/Habits.org" "~/Notes/Personal.org" "~/Notes/Work.org" "~/Notes/Projects.org" "~/Notes/Reference/Emacs/OrgMode.org"))))
+ '(erc-modules
+   (quote
+    (autojoin button completion fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands notify notifications readonly ring stamp track)))
+ '(org-agenda-files
+   (quote
+    ("~/Notes/Inbox.org" "~/Notes/Habits.org" "~/Notes/Personal.org" "~/Notes/Work.org" "~/Notes/Projects.org" "~/Notes/Reference/Emacs/OrgMode.org"))))
 
 ;; Configure UI options
 (scroll-bar-mode -1)        ; Disable visible scrollbar
@@ -13,26 +17,19 @@
 (setq use-dialog-box nil)   ; Disable dialog boxes since they weren't working in Mac OSX
 
 ;; Set the font face based on platform
-;(set-face-attribute 'default nil :font "Menlo" :height 150)
 (cond
- ((string-equal system-type "windows-nt") ; Microsoft Windows
-  (progn
-    (message "Microsoft Windows")
-    (set-face-attribute 'default nil :font "Consolas" :height 130)))
+ ((string-equal system-type "cygwin") ; Cygwin on Microsoft Windows
+    (set-face-attribute 'default nil :font "Consolas" :height 120))
 
  ((string-equal system-type "darwin")   ; Mac OS X
-  (progn
-    (message "Mac OS X")
-    (set-face-attribute 'default nil :font "Ubuntu Mono" :height 180)))
+    ;(set-face-attribute 'default nil :font "Menlo" :height 150)
+    (set-face-attribute 'default nil :font "Ubuntu Mono" :height 180))
 
  ((string-equal system-type "gnu/linux") ; linux
-  (progn
-    (set-face-attribute 'default nil :font "Ubuntu Mono" :height 130))))
-
+    (set-face-attribute 'default nil :font "Ubuntu Mono" :height 130)))
 
 ;; Configure line numbering
 (global-linum-mode)
-;(setq line-number-mode nil)
 (setq linum-format " %3d ")
 
 ;; Save the current session upon exiting
@@ -85,6 +82,10 @@
   (progn
     (setq org-directory "~/Notes")
     (setq org-default-notes-file (concat org-directory "/Inbox.org"))
+    (setq org-refile-targets 
+	  (quote ((nil :maxlevel . 9)
+		  (org-agenda-files :maxlevel . 9))))
+    (setq org-refile-use-outline-path 'file)
     (setq org-log-into-drawer t)
     (setq org-todo-keywords
 	  '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANC(c@)")))
@@ -310,3 +311,9 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 ;; ;; Quick key for switching buffer
 ;; (global-set-key "\M-b" 'switch-to-buffer)
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:foreground "#F6F3E8" :background "#171717")))))
