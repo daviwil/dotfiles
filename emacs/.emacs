@@ -1,15 +1,3 @@
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(erc-modules
-   (quote
-    (autojoin button completion fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands notify notifications readonly ring stamp track)))
- '(org-agenda-files
-   (quote
-    ("~/Notes/Inbox.org" "~/Notes/Habits.org" "~/Notes/Personal.org" "~/Notes/Work.org" "~/Notes/Projects.org" "~/Notes/Reference/Emacs/OrgMode.org"))))
-
 ;; Configure UI options
 (scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
@@ -44,6 +32,10 @@
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 (setq scroll-step 1) ;; keyboard scroll one line at a time
+
+;; Show the date and time in the status bar
+(setq display-time-day-and-date t)
+(display-time)
 
 ;; TODO: remove this soon!
 (setq package-check-signature nil)
@@ -80,19 +72,47 @@
   :ensure t
   :config
   (progn
+    ;; Configure paths
     (setq org-directory "~/Notes")
     (setq org-default-notes-file (concat org-directory "/Inbox.org"))
+
+    ;; Configure agenda files
+     (setq org-agenda-files
+     	   '("~/Notes/Inbox.org" 
+     	     "~/Notes/Habits.org" 
+    	     "~/Notes/Personal.org" 
+    	     "~/Notes/Work.org" 
+    	     "~/Notes/Projects.org" 
+    	     "~/Notes/Reference/Emacs/OrgMode.org"))
+    
+    ;; Configure refile
     (setq org-refile-targets 
 	  (quote ((nil :maxlevel . 9)
 		  (org-agenda-files :maxlevel . 9))))
     (setq org-refile-use-outline-path 'file)
+    
+    ;; Configure TODO settings
     (setq org-log-into-drawer t)
     (setq org-todo-keywords
 	  '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANC(c@)")))
+    
+    ;; Configure modules
     (setq org-modules 
 	  '(org-bbdb org-crypt org-gnus org-habit org-bookmark org-drill org-eshell org-eval org-expiry org-learn org-notmuch org-man org-toc org-velocity org-docview org-info org-jsinfo org-irc org-mhe org-vm org-w3m org-wl))
+
+    ;; Configure key bindings
+    (global-set-key "\C-cl" 'org-store-link)
+    (global-set-key "\C-cc" 'org-capture)
+    (global-set-key "\C-ca" 'org-agenda)
+    (global-set-key "\C-cb" 'org-iswitchb)
 ))
 
+(use-package org-journal
+  :ensure t
+  :config
+  (progn
+    (setq org-journal-dir "~/Notes/Journal/")))
+    
 ;; Check out the intro for more info: http://tuhdo.github.io/helm-intro.html
 (use-package helm
   :ensure t
@@ -259,12 +279,6 @@
 ;; (setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
 ;; (ergoemacs-mode 1)
 
-;; org mode key bindings
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-
 (defun next-user-buffer ()
   "Switch to the next user buffer.
 User buffers are those whose name does not start with *."
@@ -310,6 +324,20 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
 ;; ;; Quick key for switching buffer
 ;; (global-set-key "\M-b" 'switch-to-buffer)
+
+;; ---- Auto-generated variables ----
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(erc-modules
+   (quote
+    (autojoin button completion fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands notify notifications readonly ring stamp track)))
+ ;; '(org-agenda-files
+ ;;   (quote
+ ;;    ("~/Notes/Inbox.org" "~/Notes/Habits.org" "~/Notes/Personal.org" "~/Notes/Work.org" "~/Notes/Projects.org" "~/Notes/Reference/Emacs/OrgMode.org")))
+)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
