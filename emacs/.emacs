@@ -68,6 +68,20 @@
 ;;   (progn 
 ;;     (color-theme-sanityinc-tomorrow-eighties)))
 
+(use-package evil 
+  :ensure t
+  :config
+  (progn 
+    (evil-mode 1)))
+
+(use-package evil-nerd-commenter
+  :ensure t
+  :config
+  (progn
+    ;; Use default hotkeys, but also add CMD-/
+    (evilnc-default-hotkeys)
+    (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines)))
+
 (use-package org
   :ensure t
   :config
@@ -75,24 +89,31 @@
     ;; Configure paths
     (setq org-directory "~/Notes")
     (setq org-default-notes-file (concat org-directory "/Inbox.org"))
+    (setq org-blank-before-new-entry
+	  '((heading . t)
+	    (plain-list-item . auto)))
 
-    ;; Configure agenda files
-     (setq org-agenda-files
-     	   '("~/Notes/Inbox.org" 
-     	     "~/Notes/Habits.org" 
-    	     "~/Notes/Personal.org" 
-    	     "~/Notes/Work.org" 
-    	     "~/Notes/Projects.org" 
-    	     "~/Notes/Reference/Emacs/OrgMode.org"))
+    ;; Configure the agenda
+    (setq org-agenda-window-setup 'other-window)
+    (setq org-agenda-files
+	  '("~/Notes/Inbox.org" 
+	    "~/Notes/Habits.org" 
+	    "~/Notes/Personal.org" 
+	    "~/Notes/Work.org" 
+	    "~/Notes/Projects.org" 
+	    "~/Notes/Reference/Emacs/OrgMode.org"))
     
     ;; Configure refile
     (setq org-refile-targets 
 	  (quote ((nil :maxlevel . 9)
 		  (org-agenda-files :maxlevel . 9))))
     (setq org-refile-use-outline-path 'file)
+    (setq org-outline-path-complete-in-steps nil)
     
     ;; Configure TODO settings
     (setq org-log-into-drawer t)
+    (setq org-log-reschedule 'time)
+    (setq org-log-refile 'time)
     (setq org-todo-keywords
 	  '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANC(c@)")))
     
@@ -157,20 +178,6 @@
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
     ;(global-rainbow-delimiters-mode)
     ))
-
-(use-package evil 
-  :ensure t
-  :config
-  (progn 
-    (evil-mode 1)))
-
-(use-package evil-nerd-commenter
-  :ensure t
-  :config
-  (progn
-    ;; Use default hotkeys, but also add CMD-/
-    (evilnc-default-hotkeys)
-    (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines)))
 
 ;; TODO: Re-instate this ever?
 ;; (use-package flx-ido
