@@ -1,6 +1,8 @@
 ;; Configure UI options
 (scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
+(tooltip-mode -1)           ; Disable tooltips
+(menu-bar-mode -1)          ; Disable the menu bar
 (set-fringe-mode '(1 . 0))  ; Disable right-side fringe
 (setq use-dialog-box nil)   ; Disable dialog boxes since they weren't working in Mac OSX
 
@@ -57,11 +59,19 @@
 ;; Add load paths
 (add-to-list 'load-path "~/.emacs.d/scripts/")
 
+;; Configure duplicate buffer name uniqueness
+;; Names will look like "foo:a" and "foo:b"
+;; TODO: This doesn't seem to be working correctly yet...
+(require 'uniquify)
+(setq 
+  uniquify-buffer-name-style 'post-forward
+  uniquify-separator ":")
+
 ;; Themes - http://emacsthemes.caisah.info/
-;(use-package twilight-anti-bright-theme :ensure t)            ; Best so far
-(use-package badger-theme :ensure t)                           ; Cool, but not my favorite
+;(use-package twilight-anti-bright-theme :ensure t)
+(use-package badger-theme :ensure t)
 ;(use-package dakrone-theme :ensure t)
-;(load-theme 'tango-dark)                                      ; A little too mild
+;(load-theme 'tango-dark)
 ;; (use-package color-theme-sanityinc-tomorrow
 ;;   :ensure t
 ;;   :config
@@ -82,6 +92,9 @@
     (evilnc-default-hotkeys)
     (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines)))
 
+;; Add org-mode git repository to the load path
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/org-mode/lisp"))
+
 (use-package org
   :ensure t
   :config
@@ -89,12 +102,13 @@
     ;; Configure paths
     (setq org-directory "~/Notes")
     (setq org-default-notes-file (concat org-directory "/Inbox.org"))
-    (setq org-blank-before-new-entry
-	  '((heading . t)
-	    (plain-list-item . auto)))
+    ;; (setq org-blank-before-new-entry
+    ;; 	  '((heading . t)
+    ;; 	    (plain-list-item . auto)))
 
     ;; Configure the agenda
     (setq org-agenda-window-setup 'other-window)
+    (setq org-agenda-span 'day)
     (setq org-agenda-files
 	  '("~/Notes/Inbox.org" 
 	    "~/Notes/Habits.org" 
@@ -103,7 +117,9 @@
 	    "~/Notes/Projects.org" 
 	    "~/Notes/Reference/Emacs/OrgMode.org"))
     
-    ;; Configure refile
+    ;; Configure archive and refile
+    (setq org-archive-location "~/Notes/Journal.org::datetree/* Completed Tasks")
+    ;(setq org-archive-location "~/Notes/Journal.org::datetree/* %<%l:%M %p> - Completed Tasks")
     (setq org-refile-targets 
 	  (quote ((nil :maxlevel . 9)
 		  (org-agenda-files :maxlevel . 9))))
@@ -111,15 +127,71 @@
     (setq org-outline-path-complete-in-steps nil)
     
     ;; Configure TODO settings
+    (setq org-log-done 'time)
     (setq org-log-into-drawer t)
     (setq org-log-reschedule 'time)
     (setq org-log-refile 'time)
+    (setq org-datetree-add-timestamp 'inactive)
+    (setq org-habit-graph-column 60)
     (setq org-todo-keywords
-	  '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANC(c@)")))
+	  '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+	    (sequence "WAIT(w@/!)" "HOLD(h)" "|" "CANC(c@)")))
+
+    ;; Configure capture templates
+    (setq org-capture-templates
+	  '(("t" "Task" entry (file+headline "~/Notes/Inbox.org" "Tasks")
+             "* TODO %?\n  %i\n  %a" :empty-lines 1)
+	    ("j" "Journal" entry (file+datetree "~/Notes/Journal.org")
+             "* %<%l:%M %p> %?\n " :empty-lines 1)
+	    ("w" "Weight" table-line (file+headline "~/Notes/Metrics.org" "Weight")
+	     "| %U | %^{Weight} | %^{Notes} |" :kill-buffer)
+	    ("p" "Blood Pressure" table-line (file+headline "~/Notes/Metrics.org" "Blood Pressure")
+	     "| %U | %^{Systolic} | %^{Diastolic} | %^{Notes}" :kill-buffer)
+	    ))
+
+    ;; Configure custom agenda views
+    (setq org-agenda-custom-commands
+	  '(("n" todo "NEXT"
+	     ((org-agenda-overriding-header "Next Actions")))
+	    ("d" "Dashboard" 
+	     ((agenda "")
+	      (todo "NEXT"
+		    ((org-agenda-overriding-header "Next Actions")))
+	      (todo "TODO"
+		    ((org-agenda-overriding-header "Inbox")
+		     (org-agenda-files '("~/Notes/Inbox.org"))
+		     (org-agenda-text-search-extra-files nil)))))
+	    ))
+
+    ;; Configure common tags
+    (setq org-tag-alist (quote ((:startgroup)
+				("@errand" . ?e)
+				("@work" . ?w)
+				("@home" . ?H)
+				(:endgroup)
+				("waiting" . ?w)
+				("onhold" . ?h)
+				("projects" ?p)
+				("personal" . ?P)
+				("note" . ?n)
+				("idea" . ?i)
+				("journal" . ?j)
+				("publish" . ?b)
+				("cancelled" . ?c))))
+
+    ;; Configure task state change tag triggers
+    (setq org-todo-state-tags-triggers
+      (quote (("CANC" ("cancelled" . t))
+              ("WAIT" ("waiting" . t))
+              ("HOLD" ("waiting") ("onhold" . t))
+              (done ("waiting") ("onhold"))
+              ("TODO" ("waiting") ("cancelled") ("onhold"))
+              ("NEXT" ("waiting") ("cancelled") ("onhold"))
+              ("DONE" ("waiting") ("cancelled") ("onhold")))))
     
     ;; Configure modules
     (setq org-modules 
-	  '(org-bbdb org-crypt org-gnus org-habit org-bookmark org-drill org-eshell org-eval org-expiry org-learn org-notmuch org-man org-toc org-velocity org-docview org-info org-jsinfo org-irc org-mhe org-vm org-w3m org-wl))
+	  '(org-bbdb org-crypt org-gnus org-habit org-bookmark org-drill org-eshell org-eval org-expiry org-learn org-notmuch org-man org-toc org-irc org-mhe org-vm org-w3m org-wl))
 
     ;; Configure key bindings
     (global-set-key "\C-cl" 'org-store-link)
@@ -133,7 +205,18 @@
   :config
   (progn
     (setq org-journal-dir "~/Notes/Journal/")))
-    
+ 
+(use-package deft
+  :ensure t
+  :config
+  (progn
+    ;; Helpful page: http://www.jontourage.com/2013/08/15/setting-up-deft-mode-in-emacs-with-org-mode/
+    (setq deft-extension "org")
+    (setq deft-text-mode 'org-mode)
+    (setq deft-directory "~/Notes")
+    (setq deft-use-filename-as-title t)
+    (global-set-key (kbd "C-c <C-return>") 'deft)))
+   
 ;; Check out the intro for more info: http://tuhdo.github.io/helm-intro.html
 (use-package helm
   :ensure t
@@ -277,6 +360,15 @@
   (progn
     (setq twittering-icon-mode t)
     (twittering-enable-unread-status-notifier)))
+
+(use-package emms
+  :ensure t
+  :config
+  (progn
+    (require 'emms-setup)
+    (emms-all)
+    (emms-default-players)
+    (setq emms-source-file-default-directory "~/Music/")))
 
 ;; Install ergoemacs mode and set desired config
 ;; (unless (package-installed-p 'ergoemacs-mode)
