@@ -119,7 +119,6 @@
     
     ;; Configure archive and refile
     (setq org-archive-location "~/Notes/Journal.org::datetree/* Completed Tasks")
-    ;(setq org-archive-location "~/Notes/Journal.org::datetree/* %<%l:%M %p> - Completed Tasks")
     (setq org-refile-targets 
 	  (quote ((nil :maxlevel . 9)
 		  (org-agenda-files :maxlevel . 9))))
@@ -134,7 +133,8 @@
     (setq org-datetree-add-timestamp 'inactive)
     (setq org-habit-graph-column 60)
     (setq org-todo-keywords
-	  '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+	  ;'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+	  '((sequence "TODO(t)" "|" "DONE(d!)")
 	    (sequence "WAIT(w@/!)" "HOLD(h)" "|" "CANC(c@)")))
 
     ;; Configure capture templates
@@ -151,16 +151,15 @@
 
     ;; Configure custom agenda views
     (setq org-agenda-custom-commands
-	  '(("n" todo "NEXT"
-	     ((org-agenda-overriding-header "Next Actions")))
+	  '(
 	    ("d" "Dashboard" 
 	     ((agenda "")
-	      (todo "NEXT"
-		    ((org-agenda-overriding-header "Next Actions")))
 	      (todo "TODO"
-		    ((org-agenda-overriding-header "Inbox")
+		    ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
 		     (org-agenda-files '("~/Notes/Inbox.org"))
 		     (org-agenda-text-search-extra-files nil)))))
+	    ("w" todo "WAIT"
+	     ((org-agenda-overriding-header "Waiting Tasks")))
 	    ))
 
     ;; Configure common tags
@@ -186,7 +185,6 @@
               ("HOLD" ("waiting") ("onhold" . t))
               (done ("waiting") ("onhold"))
               ("TODO" ("waiting") ("cancelled") ("onhold"))
-              ("NEXT" ("waiting") ("cancelled") ("onhold"))
               ("DONE" ("waiting") ("cancelled") ("onhold")))))
     
     ;; Configure modules
@@ -307,7 +305,11 @@
 ))
 
 (use-package magit
-  :ensure t)
+  :ensure t
+  :config
+  (progn
+    (global-set-key "\C-cgs" 'magit-status)
+    (global-set-key "\C-cgd" 'magit-diff-unstaged)))
 
 (use-package fsharp-mode 
   :ensure t
@@ -409,21 +411,6 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
-;; Bind compile command to CMD-Return (ErgoEmacs changes Meta to Cmd)
-;; TODO: Use recompile command if build command already set
-;; See this page for ideas: http://www.emacswiki.org/emacs/CompileCommand
-;; (defun run-game ()
-;;   "Run RealTimeWebGame"
-;;   (interactive)
-;;   (shell-command "mono ~/Projects/Code/RealTimeWebGame/RealTimeWebGame/bin/Debug/RealTimeWebGame.exe /local"))
-
-;; (global-set-key "\M-\r" 'compile)
-;; ;(global-set-key (kbd "M-S-RET") 'run-game)
-;; (global-set-key (kbd "M-m") 'run-game)
-
-;; ;; Quick key for switching buffer
-;; (global-set-key "\M-b" 'switch-to-buffer)
-
 ;; ---- Auto-generated variables ----
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -433,9 +420,6 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
  '(erc-modules
    (quote
     (autojoin button completion fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands notify notifications readonly ring stamp track)))
- ;; '(org-agenda-files
- ;;   (quote
- ;;    ("~/Notes/Inbox.org" "~/Notes/Habits.org" "~/Notes/Personal.org" "~/Notes/Work.org" "~/Notes/Projects.org" "~/Notes/Reference/Emacs/OrgMode.org")))
 )
 
 (custom-set-faces
