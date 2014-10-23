@@ -363,6 +363,14 @@
     (setq twittering-icon-mode t)
     (twittering-enable-unread-status-notifier)))
 
+(use-package jabber
+  :ensure t
+  :config
+  (progn
+    (require 'jabber-autoloads)
+    (setq jabber-account-list '(("david@daviwil.com/Emacs")))
+    (setq jabber-invalid-certificate-servers '("daviwil.com"))))
+
 (use-package emms
   :ensure t
   :config
