@@ -15,7 +15,7 @@
     ;(set-face-attribute 'default nil :font "Menlo" :height 150)
     (set-face-attribute 'default nil :font "Ubuntu Mono" :height 180))
 
- ((string-equal system-type "gnu/linux") ; linux
+ ((string-equal system-type "gnu/linux") ; Linux
     (set-face-attribute 'default nil :font "Ubuntu Mono" :height 130)))
 
 ;; Configure line numbering
@@ -140,7 +140,7 @@
     ;; Configure capture templates
     (setq org-capture-templates
 	  '(("t" "Task" entry (file+headline "~/Notes/Inbox.org" "Tasks")
-             "* TODO %?\n  %i\n  %a" :empty-lines 1)
+             "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
 	    ("j" "Journal" entry (file+datetree "~/Notes/Journal.org")
              "* %<%l:%M %p> %?\n " :empty-lines 1)
 	    ("w" "Weight" table-line (file+headline "~/Notes/Metrics.org" "Weight")
@@ -368,8 +368,14 @@
   :config
   (progn
     (require 'emms-setup)
+    (require 'emms-player-mpd)
     (emms-all)
     (emms-default-players)
+    (add-to-list 'emms-info-functions 'emms-info-mpd)
+    (add-to-list 'emms-player-list 'emms-player-mpd)
+    (add-to-list 'emms-player-list 'emms-player-mplayer)
+    (setq emms-player-mpd-music-directory "~/Music")
+    (emms-cache-set-from-mpd-all)
     (setq emms-source-file-default-directory "~/Music/")))
 
 ;; Install ergoemacs mode and set desired config
@@ -410,6 +416,11 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
+;; Set up SLIME for StumpWM
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "sbcl")
+
 
 ;; ---- Auto-generated variables ----
 (custom-set-variables
