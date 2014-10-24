@@ -55,8 +55,7 @@
 (display-time)
 
 ;; Show battery details in the status bar
-(display-battery-mode)
-(setq battery-mode-line-format " %b%p (%t)")
+(display-battery-mode 1)
 (setq battery-update-interval 5)
 
 ;; TODO: remove this soon!
@@ -100,9 +99,6 @@
   :ensure t
   :config
   (winner-mode 1))
-
-;; Load org-mode settings
-(load "org-mode.el")
 
 ;; Load packages and their settings
 (load "misc-packages.el")

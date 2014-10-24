@@ -12,6 +12,9 @@
     (evilnc-default-hotkeys)
     (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines)))
 
+;; Load org-mode and its settings
+(load "org-mode.el")
+
 ;; Check out the intro for more info: http://tuhdo.github.io/helm-intro.html
 (use-package helm
   :ensure t
