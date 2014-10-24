@@ -1,0 +1,11 @@
+# -*- mode: gitignore; -*-
+
+auto-save-list/
+bookmarks
+elpa/
+emms/
+eshell/
+jabber-avatar-cache/
+jabber-history/
+thumbs/
+tramp
