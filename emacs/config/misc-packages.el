@@ -172,6 +172,23 @@
     (setq jabber-invalid-certificate-servers '("daviwil.com"))
     (setq jabber-auto-reconnect t)))
 
+(use-package smart-mode-line
+  :ensure t
+  :config 
+  (progn
+    (sml/setup)
+    (setq rm-excluded-modes
+	  ; These names must start with a space!
+	  '(" GitGutter" " MRev" " company" " Helm" " Undo-Tree"))))
+
+;; Install ergoemacs mode and set desired config
+;; (unless (package-installed-p 'ergoemacs-mode)
+;;   (package-install 'ergoemacs-mode))
+;; (require 'ergoemacs-mode)
+;; (setq ergoemacs-theme "hardcore") ;; Uses Hardcore Ergoemacs keyboard theme
+;; (setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
+;; (ergoemacs-mode 1)
+
 (use-package emms
   :ensure t
   :config
@@ -189,19 +206,3 @@
     (emms-cache-set-from-mpd-all)
     (setq emms-source-file-default-directory "~/Music/")))
 
-;; Install ergoemacs mode and set desired config
-;; (unless (package-installed-p 'ergoemacs-mode)
-;;   (package-install 'ergoemacs-mode))
-;; (require 'ergoemacs-mode)
-;; (setq ergoemacs-theme "hardcore") ;; Uses Hardcore Ergoemacs keyboard theme
-;; (setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
-;; (ergoemacs-mode 1)
-
-(use-package smart-mode-line
-  :ensure t
-  :config 
-  (progn
-    (sml/setup)
-    (setq rm-excluded-modes
-	  ; These names must start with a space!
-	  '(" GitGutter" " MRev" " company" " Helm" " Undo-Tree"))))
