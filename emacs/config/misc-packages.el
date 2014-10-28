@@ -179,11 +179,36 @@
   :config 
   (progn
     (sml/setup)
+    (sml/apply-theme 'dark)
+    (setq sml/mode-width 'full)
+    (setq sml/name-width 40)
+
+    (setq-default mode-line-format
+      '("%e" 
+	mode-line-front-space 
+	mode-line-mule-info 
+	mode-line-client 
+	mode-line-modified 
+	mode-line-remote 
+	mode-line-frame-identification 
+	mode-line-buffer-identification 
+	sml/pos-id-separator 
+	(vc-mode vc-mode)
+	" "
+	;mode-line-position 
+	;evil-mode-line-tag
+	sml/pre-modes-separator 
+	mode-line-modes 
+	mode-line-misc-info 
+	mode-line-end-spaces))
+
     (setq rm-excluded-modes
 	  (mapconcat
 	   'identity
 	   ; These names must start with a space!
-	   '(" GitGutter" " MRev" " company" " Helm" " Undo-Tree" " Projectile.*" " Org-Agenda.*")
+	   '(" GitGutter" " MRev" " company" 
+	     " Helm" " Undo-Tree" " Projectile.*" 
+	     " Org-Agenda.*" " ElDoc" " SP/s" " cider.*")
 	   "\\|"))))
 
 (use-package projectile

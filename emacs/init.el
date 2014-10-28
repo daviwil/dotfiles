@@ -53,7 +53,8 @@
 (setq scroll-step 1) ;; keyboard scroll one line at a time
 
 ;; Show the date and time in the status bar
-(setq display-time-day-and-date t)
+;(setq display-time-day-and-date nil)
+
 (display-time)
 
 ;; Show battery details in the status bar
