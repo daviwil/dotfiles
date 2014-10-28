@@ -19,7 +19,7 @@
 ;; Set contrib package path and load some modules
 (set-contrib-dir "~/Repositories/stumpwm-contrib")
 (load-module "battery-portable")
-(load-module "wifi")
+;;(load-module "wifi")
 ;;(load-module "net") ; Throws errors, but maybe because I ran after "wifi"
 (load-module "mpd")
 
@@ -105,8 +105,8 @@
      ;;"%w | "
      "^>" ;; Right-align rest of line
      "%m | "
-     "%B | "
-     "%I | "
+     ;;"%B | "
+     ;;"%I | "
      "^B^7*" '(:eval (run-shell-command "date +\"%A %b %e, %I:%M %P\"" t)) 
      ;; cpu | mem | battery
      ;;" | %D | %c %C (%f) %t | %M | %B"
@@ -130,12 +130,12 @@
 
 ;; Configure main group
 ;; TODO: Run default apps?
-(hsplit "3/4")
-;(emacs)
-(fnext)
-(vsplit "1/4")
-(fnext)
-(vsplit "1/3")
+;(hsplit "3/4")
+;;(emacs)
+;(fnext)
+;(vsplit "1/4")
+;(fnext)
+;(vsplit "1/3")
 
 ;; Set modeline options
 (setf *mode-line-timeout* 1) ;; in seconds
@@ -156,8 +156,8 @@
 ;; Run tray applications
 ;;(run-shell-command "/usr/bin/trayer --SetDockType false --transparent true --expand false --align right &")
 (run-shell-command "xfce4-power-manager")
-(run-shell-command "volumeicon")
-(run-shell-command "nm-applet --sm-disable")
+;(run-shell-command "volumeicon")
+;(run-shell-command "nm-applet --sm-disable")
 ;(run-shell-command "stalonetray --window-layer top --window-strut top --window-type normal")
 
 ;; Set the background (this requires the xloadimage package)
