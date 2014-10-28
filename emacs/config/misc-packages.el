@@ -183,7 +183,7 @@
 	  (mapconcat
 	   'identity
 	   ; These names must start with a space!
-	   '(" GitGutter" " MRev" " company" " Helm" " Undo-Tree" " Projectile.*")
+	   '(" GitGutter" " MRev" " company" " Helm" " Undo-Tree" " Projectile.*" " Org-Agenda.*")
 	   "\\|"))))
 
 (use-package projectile

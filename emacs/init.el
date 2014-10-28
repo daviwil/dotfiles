@@ -3,7 +3,7 @@
 (add-to-list 'load-path "~/.emacs.d/scripts/")
 
 ;; Load customization settings from another file
-(setq custom-file "customize.el")
+(setq custom-file "~/.emacs.d/config/customize.el")
 (load custom-file)
 
 ;; Thanks, but no thanks
@@ -19,13 +19,15 @@
 
 ;; Set the font face based on platform
 (cond
- ((string-equal system-type "cygwin") ; Cygwin on Microsoft Windows
-    (set-face-attribute 'default nil :font "Consolas:antialias=natural" :height 120))
+ ((or
+   (string-equal system-type "windows-nt")
+   (string-equal system-type "cygwin")) ; Cygwin on Microsoft Windows
+    (set-face-attribute 'default nil :font "Consolas:antialias=subpixel" :height 120))
 
  ((string-equal system-type "darwin")   ; Mac OS X
     ;(set-face-attribute 'default nil :font "Menlo" :height 150)
     (set-face-attribute 'default nil :font "Ubuntu Mono" :height 180))
-
+ 
  ((string-equal system-type "gnu/linux") ; Linux
     (set-face-attribute 'default nil :font "Ubuntu Mono" :height 130)))
 
