@@ -157,6 +157,9 @@
 (use-package yasnippet
   :ensure t)
 
+(use-package nix-mode
+  :ensure t)
+
 (use-package twittering-mode
   :ensure t
   :config

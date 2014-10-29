@@ -54,12 +54,14 @@
 
 ;; Show the date and time in the status bar
 ;(setq display-time-day-and-date nil)
-
 (display-time)
 
 ;; Show battery details in the status bar
 (display-battery-mode 1)
 (setq battery-update-interval 5)
+
+;; Enable TRAMP
+(require 'tramp)
 
 ;; TODO: remove this soon!
 (setq package-check-signature nil)
