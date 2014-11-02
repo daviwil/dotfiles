@@ -157,20 +157,26 @@
 (use-package yasnippet
   :ensure t)
 
+(use-package nix-mode
+  :ensure t)
+
 (use-package twittering-mode
   :ensure t
   :config
   (progn
-    (setq twittering-icon-mode t)
+    (twittering-icon-mode 1)
     (twittering-enable-unread-status-notifier)))
 
 (use-package jabber
   :ensure t
   :config
   (progn
-    ;(require 'jabber-autoloads)
     (setq jabber-account-list '(("david@daviwil.com/Emacs")))
+    (setq jabber-connection-ssl-program "gnutls")
     (setq jabber-invalid-certificate-servers '("daviwil.com"))
+    (setq jabber-alert-message-wave "~/.emacs.d/sounds/jabber_message.wav")
+    (setq jabber-alert-message-hooks
+	  '(jabber-message-wave jabber-message-echo jabber-message-scroll))
     ;(setq jabber-auto-reconnect t)
 ))
 

@@ -95,7 +95,7 @@
     
     ;; Configure modules
     (setq org-modules 
-	  '(org-bbdb org-crypt org-gnus org-habit org-bookmark org-drill org-eshell org-eval org-expiry org-learn org-notmuch org-man org-toc org-irc org-mhe org-vm org-w3m org-wl))
+	  '(org-bbdb org-crypt org-gnus org-habit org-bookmark org-eshell org-eval org-notmuch org-man org-toc org-irc))
 
     ;; Configure key bindings
     (global-set-key "\C-cl" 'org-store-link)
@@ -103,6 +103,18 @@
     (global-set-key "\C-ca" 'org-agenda)
     (global-set-key "\C-cb" 'org-iswitchb)
 ))
+
+(use-package org-pomodoro
+  :ensure t
+  :config
+  (progn
+    ; Re-bind org-clock-in/out keys to org-pomodoro
+    (global-unset-key (kbd "C-c C-x C-i"))
+    (global-unset-key (kbd "C-c C-x C-o"))
+    (define-key org-mode-map (kbd "C-c C-x C-i") 'org-pomodoro)
+    (define-key org-mode-map (kbd "C-c C-x C-o") 'org-pomodoro)
+    (global-set-key (kbd "C-c C-x C-i") 'org-pomodoro)
+    (global-set-key (kbd "C-c C-x C-o") 'org-pomodoro)))
 
 (use-package org-journal
   :ensure t
