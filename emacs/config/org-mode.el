@@ -97,6 +97,13 @@
     (setq org-modules 
 	  '(org-bbdb org-crypt org-gnus org-habit org-bookmark org-eshell org-eval org-notmuch org-man org-toc org-irc))
 
+
+    ;; Configure org-crypt
+    (require 'org-crypt)
+    (org-crypt-use-before-save-magic)
+    (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+    (setq org-crypt-key nil) ; No key, just use a passphrase
+
     ;; Configure key bindings
     (global-set-key "\C-cl" 'org-store-link)
     (global-set-key "\C-cc" 'org-capture)

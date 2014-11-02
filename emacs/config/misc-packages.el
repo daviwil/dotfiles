@@ -177,6 +177,7 @@
     (setq jabber-alert-message-wave "~/.emacs.d/sounds/jabber_message.wav")
     (setq jabber-alert-message-hooks
 	  '(jabber-message-wave jabber-message-echo jabber-message-scroll))
+    (setq jabber-chat-buffer-format "IM: %n")
     ;(setq jabber-auto-reconnect t)
 ))
 
