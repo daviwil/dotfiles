@@ -63,6 +63,9 @@
 ;; Enable TRAMP
 (require 'tramp)
 
+;; Enable whole-file encryption
+(require 'epa-file)
+
 ;; TODO: remove this soon!
 (setq package-check-signature nil)
 
