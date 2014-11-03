@@ -55,17 +55,37 @@
 	     "| %U | %^{Systolic} | %^{Diastolic} | %^{Notes}" :kill-buffer)
 	    ))
 
+    ;; This variable is my own, not part of org-mode.  It is
+    ;; used in the custom agenda commands block below.
+    (setq org-project-files 
+	  '("~/Notes/Personal.org"
+	    "~/Notes/Projects.org"
+	    "~/Notes/Work.org"))
+
     ;; Configure custom agenda views
     (setq org-agenda-custom-commands
 	  '(
 	    ("d" "Dashboard" 
 	     ((agenda "")
+	      ;; (tags-todo "+PRIORITY=\"A\""
+	      ;; 	    ((org-agenda-overriding-header "High Priority Tasks")
+	      ;;        (org-agenda-files org-project-files)))
+	      (tags-todo "+LEVEL=2/-DONE-HOLD-WAIT"
+	      	    ((org-agenda-overriding-header "Active Projects")
+	             (org-agenda-files org-project-files)))
 	      (todo "TODO"
 		    ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
 		     (org-agenda-files '("~/Notes/Inbox.org"))
 		     (org-agenda-text-search-extra-files nil)))))
-	    ("w" todo "WAIT"
-	     ((org-agenda-overriding-header "Waiting Tasks")))
+	    ("p" todo "TODO"
+	     ((org-agenda-overriding-header "Active Projects")
+	      (org-agenda-files org-project-files)))
+	    ("h" tags-todo "+LEVEL=2/+HOLD"
+	     ((org-agenda-overriding-header "On-hold Projects")
+	      (org-agenda-files org-project-files)))
+	    ("w" tags-todo "+LEVEL=2/-DONE-HOLD-WAIT"
+	     ((org-agenda-overriding-header "Work Projects")
+	      (org-agenda-files '("~/Notes/Work.org"))))
 	    ))
 
     ;; Configure common tags
@@ -96,6 +116,13 @@
     ;; Configure modules
     (setq org-modules 
 	  '(org-bbdb org-crypt org-gnus org-habit org-bookmark org-eshell org-eval org-notmuch org-man org-toc org-irc))
+
+
+    ;; Configure org-crypt
+    (require 'org-crypt)
+    (org-crypt-use-before-save-magic)
+    (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+    (setq org-crypt-key nil) ; No key, just use a passphrase
 
     ;; Configure key bindings
     (global-set-key "\C-cl" 'org-store-link)
