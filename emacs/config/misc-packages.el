@@ -178,6 +178,7 @@
     (setq jabber-alert-message-hooks
 	  '(jabber-message-wave jabber-message-echo jabber-message-scroll))
     (setq jabber-chat-buffer-format "IM: %n")
+    (jabber-mode-line-mode)
     ;(setq jabber-auto-reconnect t)
 ))
 
@@ -229,6 +230,9 @@
 ;; (setq ergoemacs-theme "hardcore") ;; Uses Hardcore Ergoemacs keyboard theme
 ;; (setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
 ;; (ergoemacs-mode 1)
+
+(use-package powershell
+  :ensure t)
 
 (use-package emms
   :ensure t

@@ -15,6 +15,7 @@
     ;; Configure the agenda
     (setq org-agenda-window-setup 'other-window)
     (setq org-agenda-span 'day)
+    (setq org-agenda-start-with-log-mode t)
     (setq org-agenda-files
 	  '("~/Notes/Inbox.org" 
 	    "~/Notes/Habits.org" 
@@ -39,8 +40,7 @@
     (setq org-datetree-add-timestamp 'inactive)
     (setq org-habit-graph-column 60)
     (setq org-todo-keywords
-	  ;'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-	  '((sequence "TODO(t)" "|" "DONE(d!)")
+	  '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
 	    (sequence "WAIT(w@/!)" "HOLD(h)" "|" "CANC(c@)")))
 
     ;; Configure capture templates
@@ -70,7 +70,10 @@
 	      ;; (tags-todo "+PRIORITY=\"A\""
 	      ;; 	    ((org-agenda-overriding-header "High Priority Tasks")
 	      ;;        (org-agenda-files org-project-files)))
-	      (tags-todo "+LEVEL=2/-DONE-HOLD-WAIT"
+	      (todo "NEXT"
+                    ((org-agenda-overriding-header "Next Actions")
+	             (org-agenda-files org-project-files)))
+	      (tags-todo "+LEVEL=2/+TODO"
 	      	    ((org-agenda-overriding-header "Active Projects")
 	             (org-agenda-files org-project-files)))
 	      (todo "TODO"
