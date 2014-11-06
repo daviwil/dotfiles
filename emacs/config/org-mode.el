@@ -22,7 +22,7 @@
 	    "~/Notes/Personal.org" 
 	    "~/Notes/Work.org" 
 	    "~/Notes/Projects.org" 
-	    "~/Notes/Reference/Emacs/OrgMode.org"))
+	    "~/Notes/Workflow.org"))
     
     ;; Configure archive and refile
     (setq org-archive-location "~/Notes/Journal.org::datetree/* Completed Tasks")
@@ -70,10 +70,13 @@
 	      ;; (tags-todo "+PRIORITY=\"A\""
 	      ;; 	    ((org-agenda-overriding-header "High Priority Tasks")
 	      ;;        (org-agenda-files org-project-files)))
+	      (todo "TODO"
+	      	    ((org-agenda-overriding-header "Workflow")
+	             (org-agenda-files '("~/Notes/Workflow.org"))))
 	      (todo "NEXT"
-                    ((org-agenda-overriding-header "Next Actions")
+	      	    ((org-agenda-overriding-header "Next Actions")
 	             (org-agenda-files org-project-files)))
-	      (tags-todo "+LEVEL=2/+TODO"
+	      (tags-todo "-recurring+LEVEL=2/TODO"
 	      	    ((org-agenda-overriding-header "Active Projects")
 	             (org-agenda-files org-project-files)))
 	      (todo "TODO"
@@ -105,6 +108,7 @@
 				("idea" . ?i)
 				("journal" . ?j)
 				("publish" . ?b)
+				("recurring" . ?r)
 				("cancelled" . ?c))))
 
     ;; Configure task state change tag triggers
@@ -115,10 +119,23 @@
               (done ("waiting") ("onhold"))
               ("TODO" ("waiting") ("cancelled") ("onhold"))
               ("DONE" ("waiting") ("cancelled") ("onhold")))))
+
+    ;; Configure publishing projects
+    (require 'ox-publish)
+    (setq org-publish-project-alist
+	  '(("daviwil.com"
+	     :base-directory "~/Writing/daviwil-com/org-files"
+	     :base-extension "org"
+	     :publishing-directory "~/Writing/daviwil-com/_posts"
+	     :recursive t
+	     :publishing-function org-html-publish-to-html
+	     :headline-levels 4 
+	     :html-extension "html"
+	     :body-only t)))
     
     ;; Configure modules
     (setq org-modules 
-	  '(org-bbdb org-crypt org-gnus org-habit org-bookmark org-eshell org-eval org-notmuch org-man org-toc org-irc))
+	  '(org-bbdb org-crypt org-gnus org-habit org-bookmark org-eshell org-eval org-notmuch org-man org-irc))
 
 
     ;; Configure org-crypt
