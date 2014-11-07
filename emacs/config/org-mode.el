@@ -89,6 +89,10 @@
 	    ("h" tags-todo "+LEVEL=2/+HOLD"
 	     ((org-agenda-overriding-header "On-hold Projects")
 	      (org-agenda-files org-project-files)))
+	    ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+	     ((org-agenda-overriding-header "Low Effort Next Actions")
+	      (org-agenda-max-todos 20)
+	      (org-agenda-files org-project-files)))
 	    ("w" tags-todo "+LEVEL=2/-DONE-HOLD-WAIT"
 	     ((org-agenda-overriding-header "Work Projects")
 	      (org-agenda-files '("~/Notes/Work.org"))))
