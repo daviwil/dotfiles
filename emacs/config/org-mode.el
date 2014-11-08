@@ -15,6 +15,7 @@
     ;; Configure the agenda
     (setq org-agenda-window-setup 'other-window)
     (setq org-agenda-span 'day)
+    (setq org-stuck-projects '("+LEVEL=2/TODO" ("NEXT") nil ""))
     (setq org-agenda-start-with-log-mode t)
     (setq org-agenda-files
 	  '("~/Notes/Inbox.org" 
@@ -93,17 +94,15 @@
 	     ((org-agenda-overriding-header "Low Effort Next Actions")
 	      (org-agenda-max-todos 20)
 	      (org-agenda-files org-project-files)))
-	    ("w" tags-todo "+LEVEL=2/-DONE-HOLD-WAIT"
-	     ((org-agenda-overriding-header "Work Projects")
-	      (org-agenda-files '("~/Notes/Work.org"))))
 	    ))
 
     ;; Configure common tags
     (setq org-tag-alist (quote ((:startgroup)
-				("@errand" . ?e)
-				("@work" . ?w)
-				("@home" . ?H)
+				; Put mutually exclusive tags here
 				(:endgroup)
+				("@errand" . ?e)
+				("@home" . ?H)
+				("@work" . ?w)
 				("waiting" . ?w)
 				("onhold" . ?h)
 				("projects" ?p)
@@ -135,6 +134,9 @@
 	     :publishing-function org-html-publish-to-html
 	     :headline-levels 4 
 	     :html-extension "html"
+	     :with-toc nil
+	     :section-numbers nil
+	     :html-preamble nil
 	     :body-only t)))
     
     ;; Configure modules
@@ -171,7 +173,8 @@
   :ensure t
   :config
   (progn
-    (setq org-journal-dir "~/Notes/Journal/")))
+    (setq org-journal-dir "~/Notes/Journal/")
+    (setq org-journal-file-format "%Y-%m-%d.org")))
  
 (use-package deft
   :ensure t
