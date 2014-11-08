@@ -165,6 +165,8 @@
   :config
   (progn
     (twittering-icon-mode 1)
+    ;; TODO: This will need to be set per platform
+    (setq twittering-cert-file "/etc/ssl/certs/ca-certificates.crt")
     (twittering-enable-unread-status-notifier)))
 
 (use-package jabber
@@ -231,8 +233,9 @@
 ;; (setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
 ;; (ergoemacs-mode 1)
 
-(use-package powershell
-  :ensure t)
+;; TODO: Re-enable this only for Windows
+;; (use-package powershell
+;;   :ensure t)
 
 (use-package emms
   :ensure t
