@@ -99,7 +99,7 @@
     (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)     ; Use eldoc when cider is connected
     (add-hook 'cider-repl-mode-hook 'smartparens-strict-mode) ; Use smartparens in the REPL
     (setq cider-prompt-save-file-on-load nil)                 ; Don't prompt to save file on load into REPL
-    (setq nrepl-hide-special-buffers t)                       ; Hide special cider buffers
+    ;(setq nrepl-hide-special-buffers t)                       ; Hide special cider buffers
     (setq cider-show-error-buffer nil)                        ; Don't show the error buffer immediately
     (setq cider-auto-select-error-buffer nil)                 ; Don't automatically select error buffer when shown
     (setq cider-lein-command "/usr/bin/lein")           ; Configure the path to lein
