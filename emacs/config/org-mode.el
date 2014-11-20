@@ -42,7 +42,7 @@
     (setq org-habit-graph-column 60)
     (setq org-todo-keywords
 	  '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-	    (sequence "WAIT(w@/!)" "HOLD(h)" "|" "CANC(c@)")))
+	    (sequence "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
     ;; Configure capture templates
     (setq org-capture-templates
@@ -66,6 +66,7 @@
     ;; Configure custom agenda views
     (setq org-agenda-custom-commands
 	  '(
+	    ;; Daily dashboard
 	    ("d" "Dashboard" 
 	     ((agenda "")
 	      ;; (tags-todo "+PRIORITY=\"A\""
@@ -84,12 +85,47 @@
 		    ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
 		     (org-agenda-files '("~/Notes/Inbox.org"))
 		     (org-agenda-text-search-extra-files nil)))))
-	    ("p" todo "TODO"
-	     ((org-agenda-overriding-header "Active Projects")
-	      (org-agenda-files org-project-files)))
+
+	    ;; Active projects
+	    ("p" "Active Projects"
+	     ((agenda "")
+	      (todo "ACTIVE"
+		    ((org-agenda-overriding-header "Active Projects")
+		     (org-agenda-max-todos 5)
+		     (org-agenda-files org-project-files)))))
+
+	    ;; Workflow status dashboard
+	    ("w" "Workflow Status"
+	     ((todo "ACTIVE"
+	      	    ((org-agenda-overriding-header "Active Projects")
+	             (org-agenda-files org-project-files)))
+	      (todo "READY"
+	      	    ((org-agenda-overriding-header "Projects Ready for Work")
+	             (org-agenda-files org-project-files)))
+	      (todo "PLAN"
+	      	    ((org-agenda-overriding-header "Projects in Planning")
+		     (org-agenda-todo-list-sublevels nil)
+	             (org-agenda-files org-project-files)))
+	      (todo "REVIEW"
+	      	    ((org-agenda-overriding-header "Projects in Review")
+	             (org-agenda-files org-project-files)))
+	      (tags-todo "+LEVEL<3/TODO"
+	      	    ((org-agenda-overriding-header "Projects Needing Conversion")
+		     (org-agenda-todo-list-sublevels nil)
+	             (org-agenda-files org-project-files)))
+	      (todo "COMPLETED"
+	      	    ((org-agenda-overriding-header "Completed Projects")
+	             (org-agenda-files org-project-files)))
+	      (todo "CANC"
+	      	    ((org-agenda-overriding-header "Cancelled Projects")
+	             (org-agenda-files org-project-files)))))
+	      
+	    ;; Projects on hold
 	    ("h" tags-todo "+LEVEL=2/+HOLD"
 	     ((org-agenda-overriding-header "On-hold Projects")
 	      (org-agenda-files org-project-files)))
+	    
+	    ;; Low-effort next actions
 	    ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
 	     ((org-agenda-overriding-header "Low Effort Next Actions")
 	      (org-agenda-max-todos 20)
