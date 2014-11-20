@@ -40,6 +40,7 @@
     (setq org-log-refile 'time)
     (setq org-datetree-add-timestamp 'inactive)
     (setq org-habit-graph-column 60)
+    (setq org-fontify-whole-heading-line t)
     (setq org-todo-keywords
 	  '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
 	    (sequence "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))

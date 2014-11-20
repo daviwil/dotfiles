@@ -20,4 +20,5 @@
  '(jabber-activity-personal-face ((t (:foreground "orange red" :weight bold))))
  '(jabber-chat-prompt-foreign ((t (:foreground "medium slate blue" :weight bold))))
  '(jabber-chat-prompt-local ((t (:foreground "green yellow" :weight bold))))
- '(jabber-roster-user-online ((t (:foreground "yellow green" :slant normal :weight bold)))))
+ '(jabber-roster-user-online ((t (:foreground "yellow green" :slant normal :weight bold))))
+ '(org-level-1 ((t (:background "gray13" :foreground "#8AC6F2" :height 1.2)))))
