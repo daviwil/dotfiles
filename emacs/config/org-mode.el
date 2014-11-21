@@ -43,7 +43,7 @@
     (setq org-fontify-whole-heading-line t)
     (setq org-todo-keywords
 	  '((sequence "TODO(t)" "NEXT(n)" "FLOW" "HABIT" "|" "DONE(d!)")
-	    (sequence "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+	    (sequence "BACKLOG(b) PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
     ;; Configure capture templates
     (setq org-capture-templates
@@ -76,12 +76,15 @@
 	      (todo "TODO"
 	      	    ((org-agenda-overriding-header "Workflow")
 	             (org-agenda-files '("~/Notes/Workflow.org"))))
-	      (todo "NEXT"
-	      	    ((org-agenda-overriding-header "Next Actions")
-	             (org-agenda-files org-project-files)))
-	      (tags-todo "-recurring+LEVEL=2/TODO"
-	      	    ((org-agenda-overriding-header "Active Projects")
-	             (org-agenda-files org-project-files)))
+	      ;; (todo "NEXT"
+	      ;; 	    ((org-agenda-overriding-header "Next Actions")
+	      ;;        (org-agenda-files org-project-files)))
+	      ;; (tags-todo "-recurring+LEVEL=2/TODO"
+	      ;; 	    ((org-agenda-overriding-header "Active Projects")
+	      ;;        (org-agenda-files org-project-files)))
+	      (todo "ACTIVE"
+		    ((org-agenda-overriding-header "Active Projects")
+		     (org-agenda-files org-project-files)))
 	      (todo "TODO"
 		    ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
 		     (org-agenda-files '("~/Notes/Inbox.org"))
@@ -130,8 +133,7 @@
 	    ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
 	     ((org-agenda-overriding-header "Low Effort Next Actions")
 	      (org-agenda-max-todos 20)
-	      (org-agenda-files org-project-files)))
-	    ))
+	      (org-agenda-files org-project-files)))))
 
     ;; Configure common tags
     (setq org-tag-alist (quote ((:startgroup)
