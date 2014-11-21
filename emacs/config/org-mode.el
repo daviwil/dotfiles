@@ -42,7 +42,7 @@
     (setq org-habit-graph-column 60)
     (setq org-fontify-whole-heading-line t)
     (setq org-todo-keywords
-	  '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+	  '((sequence "TODO(t)" "NEXT(n)" "FLOW" "HABIT" "|" "DONE(d!)")
 	    (sequence "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
     ;; Configure capture templates
