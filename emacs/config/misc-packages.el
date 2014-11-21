@@ -102,8 +102,9 @@
     ;(setq nrepl-hide-special-buffers t)                       ; Hide special cider buffers
     (setq cider-show-error-buffer nil)                        ; Don't show the error buffer immediately
     (setq cider-auto-select-error-buffer nil)                 ; Don't automatically select error buffer when shown
-    (setq cider-lein-command "/usr/bin/lein")           ; Configure the path to lein
-))
+    (on-platform-do                                           ; Configure the path to lein
+     (osx   (setq cider-lein-command "/usr/local/bin/lein"))
+     (linux (setq cider-lein-command "/usr/bin/lein")))))
 
 (use-package magit
   :ensure t
@@ -233,25 +234,27 @@
 ;; (setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
 ;; (ergoemacs-mode 1)
 
-;; TODO: Re-enable this only for Windows
-;; (use-package powershell
-;;   :ensure t)
+(on-platform-do
+ (windows
+  (use-package powershell
+    :ensure t)))
 
-;; TODO: Re-enable this only for Linux
-;; (use-package emms
-;;   :ensure t
-;;   :config
-;;   (progn
-;;     (require 'emms-setup)
-;;     (require 'emms-player-mpd)
-;;     (emms-all)
-;;     (emms-default-players)
-;;     (add-to-list 'emms-info-functions 'emms-info-mpd)
-;;     (add-to-list 'emms-player-list 'emms-player-mpd)
-;;     (add-to-list 'emms-player-list 'emms-player-mplayer)
-;;     (setq emms-player-mpd-music-directory "~/Music")
-;;     (setq emms-mode-line-icon-color "white")
-;;     (emms-mode-line-toggle)
-;;     (emms-cache-set-from-mpd-all)
-;;     (setq emms-source-file-default-directory "~/Music/")))
+(on-platform-do
+ (linux
+  (use-package emms
+    :ensure t
+    :config
+    (progn
+      (require 'emms-setup)
+      (require 'emms-player-mpd)
+      (emms-all)
+      (emms-default-players)
+      (add-to-list 'emms-info-functions 'emms-info-mpd)
+      (add-to-list 'emms-player-list 'emms-player-mpd)
+      (add-to-list 'emms-player-list 'emms-player-mplayer)
+      (setq emms-player-mpd-music-directory "~/Music")
+      (setq emms-mode-line-icon-color "white")
+      (emms-mode-line-toggle)
+      (emms-cache-set-from-mpd-all)
+      (setq emms-source-file-default-directory "~/Music/")))))
 

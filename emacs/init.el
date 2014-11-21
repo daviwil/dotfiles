@@ -17,19 +17,35 @@
 (set-fringe-mode '(1 . 0))  ; Disable right-side fringe
 (setq use-dialog-box nil)   ; Disable dialog boxes since they weren't working in Mac OSX
 
-;; Set the font face based on platform
-(cond
- ((or
-   (string-equal system-type "windows-nt")
-   (string-equal system-type "cygwin")) ; Cygwin on Microsoft Windows
-    (set-face-attribute 'default nil :font "Consolas:antialias=subpixel" :height 120))
+;; Helper function for changing OS platform keywords to system-type strings
+(defun platform-keyword-to-string (platform-keyword)
+  (cond
+   ((eq platform-keyword 'windows) "windows-nt")
+   ((eq platform-keyword 'cygwin) "cygwin")
+   ((eq platform-keyword 'osx) "darwin")
+   ((eq platform-keyword 'linux) "gnu/linux")))
 
- ((string-equal system-type "darwin")   ; Mac OS X
-    ;(set-face-attribute 'default nil :font "Menlo" :height 150)
-    (set-face-attribute 'default nil :font "Ubuntu Mono" :height 180))
- 
- ((string-equal system-type "gnu/linux") ; Linux
-    (set-face-attribute 'default nil :font "Ubuntu Mono" :height 130)))
+;; Define a macro that runs an elisp expression only on a particular platform
+(defmacro on-platform-do (&rest platform-expressions)
+  `(cond
+    ,@(mapcar
+       (lambda (platform-expr)
+	 (let ((keyword (nth 0 platform-expr))
+	       (expr (nth 1 platform-expr)))
+	   `(,(if (listp keyword)
+		 `(or
+		   ,@(mapcar
+		      (lambda (kw) `(string-equal system-type ,(platform-keyword-to-string kw)))
+		      keyword))
+		  `(string-equal system-type ,(platform-keyword-to-string keyword)))
+	      ,expr)))
+       platform-expressions)))
+
+;; Set the font face based on platform
+(on-platform-do
+ ((windows cygwin) (set-face-attribute 'default nil :font "Consolas:antialias=subpixel" :height 120))
+ (osx (set-face-attribute 'default nil :font "Ubuntu Mono" :height 180)) ;:height 150
+ (linux (set-face-attribute 'default nil :font "Ubuntu Mono" :height 130)))
 
 ;; Set up the visible bell
 (setq visible-bell t)
@@ -38,9 +54,6 @@
 (global-linum-mode)
 (column-number-mode)
 (setq linum-format " %3d")
-
-;; Save the current session upon exiting
-;(desktop-save-mode t)
 
 ;; Turn off backup files
 (setq make-backup-files nil)
@@ -126,6 +139,6 @@ User buffers are those whose name does not start with *."
 (global-set-key "\M-]" 'next-user-buffer)
 
 ;; Set up SLIME for StumpWM
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
+;(load (expand-file-name "~/quicklisp/slime-helper.el"))
+;(setq inferior-lisp-program "sbcl")
 

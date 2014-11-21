@@ -198,13 +198,10 @@
   :ensure t
   :config
   (progn
-    ; Re-bind org-clock-in/out keys to org-pomodoro
-    (global-unset-key (kbd "C-c C-x C-i"))
-    (global-unset-key (kbd "C-c C-x C-o"))
-    (define-key org-mode-map (kbd "C-c C-x C-i") 'org-pomodoro)
-    (define-key org-mode-map (kbd "C-c C-x C-o") 'org-pomodoro)
-    (global-set-key (kbd "C-c C-x C-i") 'org-pomodoro)
-    (global-set-key (kbd "C-c C-x C-o") 'org-pomodoro)))
+    ; Bind special hotkey for  org-pomodoro
+    (global-unset-key (kbd "C-c C-x C-p"))
+    (define-key org-mode-map (kbd "C-c C-x C-p") 'org-pomodoro)
+    (global-set-key (kbd "C-c C-x C-p") 'org-pomodoro)))
 
 (use-package org-journal
   :ensure t
