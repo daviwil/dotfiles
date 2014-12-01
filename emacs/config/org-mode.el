@@ -1,6 +1,20 @@
 ;; Add org-mode git repository to the load path
 (add-to-list 'load-path (expand-file-name "~/Repositories/org-mode/lisp"))
 
+;; Journal helper methods
+
+(defun get-todays-journal-file-name ()
+  "Gets the journal file name for today's date"
+  (expand-file-name
+   (concat
+    org-journal-dir 
+    (format-time-string "/%Y/%Y-%2m-%B.org"))))
+
+(defun load-todays-journal-file ()
+  "Create an load a journal entry based on today's date"
+  (interactive)
+  (find-file (get-todays-journal-file-name)))
+
 (use-package org
   :ensure t
   :config
@@ -18,13 +32,15 @@
     (setq org-stuck-projects '("+LEVEL=2/TODO" ("NEXT") nil ""))
     (setq org-agenda-start-with-log-mode t)
     (setq org-agenda-files
-	  '("~/Notes/Inbox.org" 
+	  `("~/Notes/Inbox.org" 
 	    "~/Notes/Habits.org" 
 	    "~/Notes/Personal.org" 
 	    "~/Notes/Work.org" 
 	    "~/Notes/Projects.org" 
-	    "~/Notes/Workflow.org"))
-    
+	    "~/Notes/Workflow.org"
+	    ;; TODO: Select 3 months worth of journal files including next month
+	    ,(get-todays-journal-file-name)))
+
     ;; Configure archive and refile
     (setq org-archive-location "~/Notes/Journal.org::datetree/* Completed Tasks")
     (setq org-refile-targets 
@@ -42,18 +58,43 @@
     (setq org-habit-graph-column 60)
     (setq org-fontify-whole-heading-line t)
     (setq org-todo-keywords
-	  '((sequence "TODO(t)" "NEXT(n)" "FLOW" "HABIT" "|" "DONE(d!)")
+	  '((sequence "TODO(t)" "NEXT(n)" "FLOW" "HABIT" "RECUR" "|" "DONE(d!)")
 	    (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
     ;; Configure capture templates
     (setq org-capture-templates
 	  '(("t" "Task" entry (file+headline "~/Notes/Inbox.org" "Tasks")
              "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
-	    ("j" "Journal" entry (file+datetree "~/Notes/Journal.org")
-             "* %<%l:%M %p> %?\n " :empty-lines 1)
-	    ("w" "Weight" table-line (file+headline "~/Notes/Metrics.org" "Weight")
+	    ("s" "Clocked Entry Subtask" entry (clock)
+             "* TODO %?\n  %U\n  ]%i" :empty-lines 1)
+	    ("p" "New Project" entry (file+headline "~/Notes/Inbox.org" "Tasks")
+             "* PLAN %?\n  %U\n  %a\n  %i" :empty-lines 1)
+
+	    ;; Journal capture
+	    ("j" "Journal" entry (file+datetree (get-todays-journal-file-name))
+             "*** %<%l:%M %p> %? :journal:" :empty-lines 1)
+	    ("n" "Note" entry (file+datetree (get-todays-journal-file-name))
+             "*** %<%l:%M %p> %K :note:\n\n    %?" :empty-lines 1)
+	    
+	    ;; Workflows
+	    ("w" "Workflows")
+	    ("we" "Checking Email" entry (file+datetree (get-todays-journal-file-name)) 
+             "*** Checking Email :email:\n\n    %?" :clock-in :clock-resume :empty-lines 1)
+	    
+	    ;; Interruptions
+	    ("i" "Interrupts")
+	    ("ii" "IM" entry (file+datetree (get-todays-journal-file-name))
+             "*** IM: %^{Sender name} :interrupt:instantmessage:\n\n    %?" :clock-in :clock-resume :empty-lines 1)
+	    ("iv" "Visitor" entry (file+datetree (get-todays-journal-file-name))
+             "*** Visit from %^{Visitor name} :interrupt:visitor:\n\n    %?" :clock-in :clock-resume :empty-lines 1)
+	    ("im" "Meeting" entry (file+datetree (get-todays-journal-file-name))
+             "*** Meeting: %^{Meeting description} :interrupt:meeting:\n\n    %?" :clock-in :clock-resume :empty-lines 1)
+
+	    ;; Metrics capture
+	    ("m" "Metrics Capture")
+	    ("mw" "Weight" table-line (file+headline "~/Notes/Metrics.org" "Weight")
 	     "| %U | %^{Weight} | %^{Notes} |" :kill-buffer)
-	    ("p" "Blood Pressure" table-line (file+headline "~/Notes/Metrics.org" "Blood Pressure")
+	    ("mp" "Blood Pressure" table-line (file+headline "~/Notes/Metrics.org" "Blood Pressure")
 	     "| %U | %^{Systolic} | %^{Diastolic} | %^{Notes}" :kill-buffer)
 	    ))
 

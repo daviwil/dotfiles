@@ -8,7 +8,11 @@
     ("3a727bdc09a7a141e58925258b6e873c65ccf393b2240c51553098ca93957723" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" default)))
  '(erc-modules
    (quote
-    (autojoin button completion fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands notify notifications readonly ring stamp track))))
+    (autojoin button completion fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands notify notifications readonly ring stamp track)))
+ '(org-cycle-separator-lines 1)
+ '(org-ellipsis " ->")
+ '(org-hide-block-startup t)
+ '(org-highlight-sparse-tree-matches nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
