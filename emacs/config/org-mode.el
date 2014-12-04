@@ -58,7 +58,7 @@
     (setq org-habit-graph-column 60)
     (setq org-fontify-whole-heading-line t)
     (setq org-todo-keywords
-	  '((sequence "TODO(t)" "NEXT(n)" "FLOW" "HABIT" "RECUR" "|" "DONE(d!)")
+	  '((sequence "TODO(t)" "NEXT(n)" "FLOW" "|" "DONE(d!)")
 	    (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
     ;; Configure capture templates
@@ -74,9 +74,10 @@
 	    ("j" "Journal" entry (file+datetree (get-todays-journal-file-name))
              "*** %<%l:%M %p> %? :journal:" :empty-lines 1)
 	    ("n" "Note" entry (file+datetree (get-todays-journal-file-name))
-             "*** %<%l:%M %p> %K :note:\n\n    %?" :empty-lines 1)
+             "*** %<%l:%M %p> - %K :note:\n\n    %?" :empty-lines 1)
 	    
 	    ;; Workflows
+	    ;; TODO: Is there a way to make this clock a Checklist task but have a datetree note?
 	    ("w" "Workflows")
 	    ("we" "Checking Email" entry (file+datetree (get-todays-journal-file-name)) 
              "*** Checking Email :email:\n\n    %?" :clock-in :clock-resume :empty-lines 1)
@@ -180,9 +181,9 @@
     (setq org-tag-alist (quote ((:startgroup)
 				; Put mutually exclusive tags here
 				(:endgroup)
-				("@errand" . ?e)
+				("@errand" . ?E)
 				("@home" . ?H)
-				("@work" . ?w)
+				("@work" . ?W)
 				("waiting" . ?w)
 				("onhold" . ?h)
 				("projects" ?p)
