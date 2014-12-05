@@ -142,18 +142,22 @@
 
 	    ;; Workflow status dashboard
 	    ("w" "Workflow Status"
-	     ((todo "ACTIVE"
-	      	    ((org-agenda-overriding-header "Active Projects")
-	             (org-agenda-files org-project-files)))
-	      (todo "READY"
-	      	    ((org-agenda-overriding-header "Projects Ready for Work")
-	             (org-agenda-files org-project-files)))
-	      (todo "PLAN"
-	      	    ((org-agenda-overriding-header "Projects in Planning")
-		     (org-agenda-todo-list-sublevels nil)
+	     (
+	      (todo "WAIT"
+	      	    ((org-agenda-overriding-header "Waiting on External")
 	             (org-agenda-files org-project-files)))
 	      (todo "REVIEW"
-	      	    ((org-agenda-overriding-header "Projects in Review")
+	      	    ((org-agenda-overriding-header "In Review")
+	             (org-agenda-files org-project-files)))
+	      (todo "PLAN"
+	      	    ((org-agenda-overriding-header "In Planning")
+		     (org-agenda-todo-list-sublevels nil)
+	             (org-agenda-files org-project-files)))
+	      (todo "READY"
+	      	    ((org-agenda-overriding-header "Ready for Work")
+	             (org-agenda-files org-project-files)))
+	      (todo "ACTIVE"
+	      	    ((org-agenda-overriding-header "Active Projects")
 	             (org-agenda-files org-project-files)))
 	      (tags-todo "+LEVEL<3/TODO"
 	      	    ((org-agenda-overriding-header "Projects Needing Conversion")
