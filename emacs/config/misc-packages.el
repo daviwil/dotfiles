@@ -234,6 +234,10 @@
 ;; (setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
 ;; (ergoemacs-mode 1)
 
+;; TODO: Why does this fail with emacs compile errors?
+;;(use-package restclient
+;;  :ensure t)
+
 (on-platform-do
  (windows
   (use-package powershell
