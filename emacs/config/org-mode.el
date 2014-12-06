@@ -115,7 +115,7 @@
 	      ;; (tags-todo "+PRIORITY=\"A\""
 	      ;; 	    ((org-agenda-overriding-header "High Priority Tasks")
 	      ;;        (org-agenda-files org-project-files)))
-	      (todo "TODO"
+	      (todo "FLOW"
 	      	    ((org-agenda-overriding-header "Workflow")
 	             (org-agenda-files '("~/Notes/Workflow.org"))))
 	      ;; (todo "NEXT"
@@ -151,7 +151,11 @@
 	             (org-agenda-files org-project-files)))
 	      (todo "PLAN"
 	      	    ((org-agenda-overriding-header "In Planning")
-		     (org-agenda-todo-list-sublevels nil)
+				 (org-agenda-todo-list-sublevels nil)
+	             (org-agenda-files org-project-files)))
+	      (todo "BACKLOG"
+	      	    ((org-agenda-overriding-header "Project Backlog")
+				 (org-agenda-todo-list-sublevels nil)
 	             (org-agenda-files org-project-files)))
 	      (todo "READY"
 	      	    ((org-agenda-overriding-header "Ready for Work")
@@ -161,7 +165,7 @@
 	             (org-agenda-files org-project-files)))
 	      (tags-todo "+LEVEL<3/TODO"
 	      	    ((org-agenda-overriding-header "Projects Needing Conversion")
-		     (org-agenda-todo-list-sublevels nil)
+				 (org-agenda-todo-list-sublevels nil)
 	             (org-agenda-files org-project-files)))
 	      (todo "COMPLETED"
 	      	    ((org-agenda-overriding-header "Completed Projects")
