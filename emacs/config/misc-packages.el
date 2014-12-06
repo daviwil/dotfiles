@@ -4,8 +4,6 @@
   (progn 
     (evil-mode 1)))
 
-(setq debug-on-error t)
-
 (use-package evil-nerd-commenter
   :ensure t
   :config
@@ -29,6 +27,7 @@
     (global-set-key (kbd "C-c h") 'helm-command-prefix)
     (global-set-key (kbd "M-x") 'helm-M-x)
     (global-set-key (kbd "C-x b") 'helm-mini)
+    (global-set-key (kbd "C-x C-b") 'helm-mini)
     (global-set-key (kbd "C-x C-f") 'helm-find-files)))
 
 (use-package helm-company
@@ -58,9 +57,7 @@
   :ensure t
   :config
   (progn
-    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-    ;(global-rainbow-delimiters-mode)
-    ))
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
 
 (use-package flx-ido
    :ensure t
@@ -69,12 +66,15 @@
      (ido-mode 1)
      (ido-everywhere 1)
      (flx-ido-mode 1)
-     ;; disable ido faces to see flx highlights.
      (setq ido-enable-flex-matching t)
      (setq ido-use-faces nil)))
 
 (use-package ido-vertical-mode
-  :ensure t)
+  :ensure t
+  :config
+  (progn
+	;; Mode doesn't get invoked automatically for this package...
+	(ido-vertical-mode)))
 
 (use-package company
   :ensure t
@@ -93,7 +93,7 @@
 	(eldoc-mode t)
 	(smartparens-strict-mode)
 	;(setq font-lock-verbose nil)
-	;(global-set-key (kbd "C-c t") 'clojure-jump-between-tests-and-code)
+	(global-set-key (kbd "C-c t") 'clojure-jump-between-tests-and-code)
 	;(paredit-mode 1)
 ))))
 
@@ -104,7 +104,6 @@
     (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)     ; Use eldoc when cider is connected
     (add-hook 'cider-repl-mode-hook 'smartparens-strict-mode) ; Use smartparens in the REPL
     (setq cider-prompt-save-file-on-load nil)                 ; Don't prompt to save file on load into REPL
-    ;(setq nrepl-hide-special-buffers t)                       ; Hide special cider buffers
     (setq cider-show-error-buffer nil)                        ; Don't show the error buffer immediately
     (setq cider-auto-select-error-buffer nil)                 ; Don't automatically select error buffer when shown
     (on-platform-do                                           ; Configure the path to lein
@@ -193,9 +192,7 @@
     (setq jabber-alert-message-hooks
 	  '(jabber-message-wave jabber-message-echo jabber-message-scroll))
     (setq jabber-chat-buffer-format "IM: %n")
-    (jabber-mode-line-mode)
-    ;(setq jabber-auto-reconnect t)
-))
+    (jabber-mode-line-mode)))
 
 (use-package smart-mode-line
   :ensure t
