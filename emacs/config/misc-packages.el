@@ -4,6 +4,8 @@
   (progn 
     (evil-mode 1)))
 
+(setq debug-on-error t)
+
 (use-package evil-nerd-commenter
   :ensure t
   :config
@@ -60,22 +62,25 @@
     ;(global-rainbow-delimiters-mode)
     ))
 
-;; TODO: Re-instate this ever?
-;; (use-package flx-ido
-;;   :ensure t
-;;   :config
-;;   (progn
-;;     (ido-mode 1)
-;;     (ido-everywhere 1)
-;;     (flx-ido-mode 1)
-;;     ;; disable ido faces to see flx highlights.
-;;     (setq ido-enable-flex-matching t)
-;;     (setq ido-use-faces nil)))
+(use-package flx-ido
+   :ensure t
+   :config
+   (progn
+     (ido-mode 1)
+     (ido-everywhere 1)
+     (flx-ido-mode 1)
+     ;; disable ido faces to see flx highlights.
+     (setq ido-enable-flex-matching t)
+     (setq ido-use-faces nil)))
+
+(use-package ido-vertical-mode
+  :ensure t)
 
 (use-package company
   :ensure t
   :config
   (progn 
+	(add-to-list 'company-backends 'company-omnisharp)
     (add-hook 'after-init-hook 'global-company-mode)))
 
 (use-package clojure-mode 
@@ -149,14 +154,21 @@
 (use-package impatient-mode
   :ensure t)
 
-(use-package csharp-mode
-  :ensure t)
-
-(use-package omnisharp
-  :ensure t)
-
 (use-package yasnippet
   :ensure t)
+
+(use-package csharp-mode
+  :ensure t
+  :config
+  (progn
+	(add-hook 'csharp-mode-hook (lambda () (c-set-style "c#")))))
+
+(use-package omnisharp
+  :ensure t
+  :config
+  (progn
+    (add-hook 'csharp-mode-hook 'eldoc-mode)
+    (add-hook 'csharp-mode-hook 'omnisharp-mode)))
 
 (use-package nix-mode
   :ensure t)
@@ -234,9 +246,8 @@
 ;; (setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
 ;; (ergoemacs-mode 1)
 
-;; TODO: Why does this fail with emacs compile errors?
-;;(use-package restclient
-;;  :ensure t)
+(use-package restclient
+  :ensure t)
 
 (on-platform-do
  (windows

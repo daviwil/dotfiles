@@ -6,6 +6,9 @@
 (setq custom-file "~/.emacs.d/config/customize.el")
 (load custom-file)
 
+;; Turn on the elisp debugger
+(setq debug-on-error t)
+
 ;; Thanks, but no thanks
 (setq inhibit-startup-message t)
 
