@@ -79,9 +79,9 @@
 (use-package company
   :ensure t
   :config
-  (progn 
-	(add-to-list 'company-backends 'company-omnisharp)
-    (add-hook 'after-init-hook 'global-company-mode)))
+  (progn
+	;(add-hook 'after-init-hook 'global-company-mode))
+	))
 
 (use-package clojure-mode 
   :ensure t
@@ -162,18 +162,22 @@
   (progn
 	(add-hook 'csharp-mode-hook (lambda () (c-set-style "c#")))))
 
-(use-package omnisharp
-  :ensure t
-  :config
-  (progn
-    (add-hook 'csharp-mode-hook 'eldoc-mode)
-    (add-hook 'csharp-mode-hook 'omnisharp-mode)))
+(on-platform-do
+ (windows
+  (use-package omnisharp
+	:ensure t
+	:config
+	(progn
+	  (add-to-list 'company-backends 'company-omnisharp)
+	  (add-hook 'csharp-mode-hook 'eldoc-mode)
+	  (add-hook 'csharp-mode-hook 'omnisharp-mode)))))
 
 (use-package nix-mode
   :ensure t)
 
 (use-package twittering-mode
   :ensure t
+  :defer t
   :config
   (progn
     (twittering-icon-mode 1)
