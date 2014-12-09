@@ -44,16 +44,14 @@
     ;; Configure archive and refile
     (setq org-archive-location "~/Notes/Journal.org::datetree/* Completed Tasks")
     (setq org-refile-targets 
-	  (quote ((nil :maxlevel . 9)
-		  (org-agenda-files :maxlevel . 9))))
+	  (quote ((nil :maxlevel . 1)
+			  (org-agenda-files :maxlevel . 1))))
     (setq org-refile-use-outline-path 'file)
     (setq org-outline-path-complete-in-steps nil)
     
     ;; Configure TODO settings
     (setq org-log-done 'time)
     (setq org-log-into-drawer t)
-    (setq org-log-reschedule 'time)
-    (setq org-log-refile 'time)
     (setq org-datetree-add-timestamp 'inactive)
     (setq org-habit-graph-column 60)
     (setq org-fontify-whole-heading-line t)
@@ -112,18 +110,9 @@
 	    ;; Daily dashboard
 	    ("d" "Dashboard" 
 	     ((agenda "")
-	      ;; (tags-todo "+PRIORITY=\"A\""
-	      ;; 	    ((org-agenda-overriding-header "High Priority Tasks")
-	      ;;        (org-agenda-files org-project-files)))
 	      (todo "FLOW"
 	      	    ((org-agenda-overriding-header "Workflow")
 	             (org-agenda-files '("~/Notes/Workflow.org"))))
-	      ;; (todo "NEXT"
-	      ;; 	    ((org-agenda-overriding-header "Next Actions")
-	      ;;        (org-agenda-files org-project-files)))
-	      ;; (tags-todo "-recurring+LEVEL=2/TODO"
-	      ;; 	    ((org-agenda-overriding-header "Active Projects")
-	      ;;        (org-agenda-files org-project-files)))
 	      (todo "ACTIVE"
 		    ((org-agenda-overriding-header "Active Projects")
 		     (org-agenda-files org-project-files)))
@@ -204,13 +193,13 @@
 				("cancelled" . ?c))))
 
     ;; Configure task state change tag triggers
-    (setq org-todo-state-tags-triggers
-      (quote (("CANC" ("cancelled" . t))
-              ("WAIT" ("waiting" . t))
-              ("HOLD" ("waiting") ("onhold" . t))
-              (done ("waiting") ("onhold"))
-              ("TODO" ("waiting") ("cancelled") ("onhold"))
-              ("DONE" ("waiting") ("cancelled") ("onhold")))))
+    ;; (setq org-todo-state-tags-triggers
+    ;;   (quote (("CANC" ("cancelled" . t))
+    ;;           ("WAIT" ("waiting" . t))
+    ;;           ("HOLD" ("waiting") ("onhold" . t))
+    ;;           (done ("waiting") ("onhold"))
+    ;;           ("TODO" ("waiting") ("cancelled") ("onhold"))
+    ;;           ("DONE" ("waiting") ("cancelled") ("onhold")))))
 
     ;; Configure publishing projects
     (require 'ox-publish)

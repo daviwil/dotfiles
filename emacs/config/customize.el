@@ -22,6 +22,7 @@
  '(org-ellipsis " ->")
  '(org-hide-block-startup t)
  '(org-highlight-sparse-tree-matches nil)
+ '(org-pomodoro-long-break-frequency 10)
  '(tab-width 4))
 
 (custom-set-faces
