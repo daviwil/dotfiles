@@ -38,6 +38,7 @@
 	    "~/Notes/Work.org" 
 	    "~/Notes/Projects.org" 
 	    "~/Notes/Workflow.org"
+	    "~/Notes/Emacs.org"
 	    ;; TODO: Select 3 months worth of journal files including next month
 	    ,(get-todays-journal-file-name)))
 
@@ -102,7 +103,8 @@
     (setq org-project-files 
 	  '("~/Notes/Personal.org"
 	    "~/Notes/Projects.org"
-	    "~/Notes/Work.org"))
+	    "~/Notes/Work.org"
+	    "~/Notes/Emacs.org"))
 
     ;; Configure custom agenda views
     (setq org-agenda-custom-commands
