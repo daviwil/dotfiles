@@ -117,14 +117,6 @@
     (global-set-key "\C-cgs" 'magit-status)
     (global-set-key "\C-cgd" 'magit-diff-unstaged)))
 
-(use-package fsharp-mode 
-  :ensure t
-  :mode "\\.fs\\'"
-  :interpreter "fsharp"
-  :config
-  (progn 
-    (setq fsharp-ac-use-popup t)))
-
 (use-package git-gutter
   :ensure t
   :config
@@ -136,6 +128,20 @@
     (set-face-background 'git-gutter:modified "yellow")
     (set-face-background 'git-gutter:added "green")
     (set-face-background 'git-gutter:deleted "red")))
+
+(use-package magit-annex
+  :ensure t)
+
+(use-package git-annex
+  :ensure t)
+
+(use-package fsharp-mode 
+  :ensure t
+  :mode "\\.fs\\'"
+  :interpreter "fsharp"
+  :config
+  (progn 
+    (setq fsharp-ac-use-popup t)))
 
 (use-package markdown-mode
   :ensure t)
