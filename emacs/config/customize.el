@@ -15,9 +15,7 @@
  '(omnisharp-auto-complete-want-importable-types t)
  '(omnisharp-server-executable-path
    (quote D:/dev/Tools/OmniSharp/OmniSharp/bin/Release/OmniSharp\.exe))
- '(org-agenda-files
-   (quote
-	("~/Notes/Inbox.org" "~/Notes/Habits.org" "~/Notes/Personal.org" "~/Notes/Work.org" "~/Notes/Projects.org" "~/Notes/Workflow.org")))
+ '(org-agenda-tags-column -120)
  '(org-cycle-separator-lines 1)
  '(org-ellipsis " ->")
  '(org-hide-block-startup t)
