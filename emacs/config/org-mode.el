@@ -15,6 +15,21 @@
   (interactive)
   (find-file (get-todays-journal-file-name)))
 
+;; This function is only needed because I can't figure
+;; out the right regex syntax to exclude unsaved file
+;; filenames (those starting with .#).  Will remove this
+;; once I figure that out.
+(defun get-agenda-files (directory)
+  (mapcar
+   (lambda (filename)
+	 (cond
+	  ((not (string-prefix-p ".#" filename))
+	   (expand-file-name filename directory))
+	  (t "")))
+   (directory-files directory nil ".org\\'")))
+
+;; Simple alternative: (file-expand-wildcards "~/Notes/*.org")
+
 (use-package org
   :ensure t
   :config
@@ -32,15 +47,16 @@
     (setq org-stuck-projects '("+LEVEL=2/TODO" ("NEXT") nil ""))
     (setq org-agenda-start-with-log-mode t)
     (setq org-agenda-files
-	  `("~/Notes/Inbox.org" 
-	    "~/Notes/Habits.org" 
-	    "~/Notes/Personal.org" 
-	    "~/Notes/Work.org" 
-	    "~/Notes/Projects.org" 
-	    "~/Notes/Workflow.org"
-	    "~/Notes/Emacs.org"
-	    ;; TODO: Select 3 months worth of journal files including next month
-	    ,(get-todays-journal-file-name)))
+		  `(,@(get-agenda-files "~/Notes")
+			;; "~/Notes/Inbox.org" 
+			;; "~/Notes/Habits.org" 
+			;; "~/Notes/Personal.org" 
+			;; "~/Notes/Work.org" 
+			;; "~/Notes/Projects.org" 
+			;; "~/Notes/Workflow.org"
+			;; "~/Notes/Emacs.org"
+			;; TODO: Select 3 months worth of journal files including next month
+			,(get-todays-journal-file-name)))
 
     ;; Configure archive and refile
     (setq org-archive-location "~/Notes/Journal.org::datetree/* Completed Tasks")
@@ -117,7 +133,7 @@
 	             (org-agenda-files '("~/Notes/Workflow.org"))))
 	      (todo "ACTIVE"
 		    ((org-agenda-overriding-header "Active Projects")
-		     (org-agenda-files org-project-files)))
+		     (org-agenda-files org-agenda-files)))
 	      (todo "TODO"
 		    ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
 		     (org-agenda-files '("~/Notes/Inbox.org"))
@@ -129,52 +145,52 @@
 	      (todo "ACTIVE"
 		    ((org-agenda-overriding-header "Active Projects")
 		     (org-agenda-max-todos 5)
-		     (org-agenda-files org-project-files)))))
+		     (org-agenda-files org-agenda-files)))))
 
 	    ;; Workflow status dashboard
 	    ("w" "Workflow Status"
 	     (
 	      (todo "WAIT"
 	      	    ((org-agenda-overriding-header "Waiting on External")
-	             (org-agenda-files org-project-files)))
+	             (org-agenda-files org-agenda-files)))
 	      (todo "REVIEW"
 	      	    ((org-agenda-overriding-header "In Review")
-	             (org-agenda-files org-project-files)))
+	             (org-agenda-files org-agenda-files)))
 	      (todo "PLAN"
 	      	    ((org-agenda-overriding-header "In Planning")
 				 (org-agenda-todo-list-sublevels nil)
-	             (org-agenda-files org-project-files)))
+	             (org-agenda-files org-agenda-files)))
 	      (todo "BACKLOG"
 	      	    ((org-agenda-overriding-header "Project Backlog")
 				 (org-agenda-todo-list-sublevels nil)
-	             (org-agenda-files org-project-files)))
+	             (org-agenda-files org-agenda-files)))
 	      (todo "READY"
 	      	    ((org-agenda-overriding-header "Ready for Work")
-	             (org-agenda-files org-project-files)))
+	             (org-agenda-files org-agenda-files)))
 	      (todo "ACTIVE"
 	      	    ((org-agenda-overriding-header "Active Projects")
-	             (org-agenda-files org-project-files)))
+	             (org-agenda-files org-agenda-files)))
 	      (tags-todo "+LEVEL<3/TODO"
 	      	    ((org-agenda-overriding-header "Projects Needing Conversion")
 				 (org-agenda-todo-list-sublevels nil)
-	             (org-agenda-files org-project-files)))
+	             (org-agenda-files org-agenda-files)))
 	      (todo "COMPLETED"
 	      	    ((org-agenda-overriding-header "Completed Projects")
-	             (org-agenda-files org-project-files)))
+	             (org-agenda-files org-agenda-files)))
 	      (todo "CANC"
 	      	    ((org-agenda-overriding-header "Cancelled Projects")
-	             (org-agenda-files org-project-files)))))
+	             (org-agenda-files org-agenda-files)))))
 	      
 	    ;; Projects on hold
 	    ("h" tags-todo "+LEVEL=2/+HOLD"
 	     ((org-agenda-overriding-header "On-hold Projects")
-	      (org-agenda-files org-project-files)))
+	      (org-agenda-files org-agenda-files)))
 	    
 	    ;; Low-effort next actions
 	    ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
 	     ((org-agenda-overriding-header "Low Effort Next Actions")
 	      (org-agenda-max-todos 20)
-	      (org-agenda-files org-project-files)))))
+	      (org-agenda-files org-agenda-files)))))
 
     ;; Configure common tags
     (setq org-tag-alist (quote ((:startgroup)
