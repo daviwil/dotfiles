@@ -51,7 +51,7 @@
 			;; "~/Notes/Inbox.org" 
 			;; "~/Notes/Habits.org" 
 			;; "~/Notes/Personal.org" 
-			;; "~/Notes/Work.org" 
+			;; "~/Notes/Work.org"
 			;; "~/Notes/Projects.org" 
 			;; "~/Notes/Workflow.org"
 			;; "~/Notes/Emacs.org"
@@ -108,9 +108,9 @@
 
 	    ;; Metrics capture
 	    ("m" "Metrics Capture")
-	    ("mw" "Weight" table-line (file+headline "~/Notes/Metrics.org" "Weight")
+	    ("mw" "Weight" table-line (file+headline "~/Notes/Fitness.org" "Weight")
 	     "| %U | %^{Weight} | %^{Notes} |" :kill-buffer)
-	    ("mp" "Blood Pressure" table-line (file+headline "~/Notes/Metrics.org" "Blood Pressure")
+	    ("mp" "Blood Pressure" table-line (file+headline "~/Notes/Fitness.org" "Blood Pressure")
 	     "| %U | %^{Systolic} | %^{Diastolic} | %^{Notes}" :kill-buffer)
 	    ))
 
@@ -166,10 +166,6 @@
 	      (todo "ACTIVE"
 	      	    ((org-agenda-overriding-header "Active Projects")
 	             (org-agenda-files org-agenda-files)))
-	      (tags-todo "+LEVEL<3/TODO"
-	      	    ((org-agenda-overriding-header "Projects Needing Conversion")
-				 (org-agenda-todo-list-sublevels nil)
-	             (org-agenda-files org-agenda-files)))
 	      (todo "COMPLETED"
 	      	    ((org-agenda-overriding-header "Completed Projects")
 	             (org-agenda-files org-agenda-files)))
@@ -184,7 +180,7 @@
 	    
 	    ;; Low-effort next actions
 	    ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-	     ((org-agenda-overriding-header "Low Effort Next Actions")
+	     ((org-agenda-overriding-header "Low Effort Tasks")
 	      (org-agenda-max-todos 20)
 	      (org-agenda-files org-agenda-files)))))
 
@@ -196,14 +192,11 @@
 				("@home" . ?H)
 				("@work" . ?W)
 				("agenda" . ?a)
-				("projects" ?p)
-				("personal" . ?P)
+				("practice" ?p)
+				("publish" . ?P)
 				("note" . ?n)
 				("idea" . ?i)
-				("journal" . ?j)
-				("publish" . ?b)
-				("recurring" . ?r)
-				)))
+				("recurring" . ?r))))
 
     ;; Configure task state change tag triggers
     ;; (setq org-todo-state-tags-triggers
