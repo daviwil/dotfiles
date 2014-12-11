@@ -15,6 +15,7 @@
  '(omnisharp-auto-complete-want-importable-types t)
  '(omnisharp-server-executable-path
    (quote D:/dev/Tools/OmniSharp/OmniSharp/bin/Release/OmniSharp\.exe))
+ '(org-agenda-hide-tags-regexp "agenda\\|process")
  '(org-agenda-tags-column -120)
  '(org-cycle-separator-lines 1)
  '(org-ellipsis " ->")

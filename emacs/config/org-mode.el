@@ -73,7 +73,7 @@
     (setq org-habit-graph-column 60)
     (setq org-fontify-whole-heading-line t)
     (setq org-todo-keywords
-	  '((sequence "TODO(t)" "NEXT(n)" "FLOW" "|" "DONE(d!)")
+	  '((sequence "TODO(t)" "NEXT(n)" "PROC" "|" "DONE(d!)")
 	    (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
     ;; Configure capture templates
@@ -128,12 +128,8 @@
 	    ;; Daily dashboard
 	    ("d" "Dashboard" 
 	     ((agenda "")
-	      (todo "FLOW"
-	      	    ((org-agenda-overriding-header "Workflow")
-	             (org-agenda-files '("~/Notes/Workflow.org"))))
-	      (todo "ACTIVE"
-		    ((org-agenda-overriding-header "Active Projects")
-		     (org-agenda-files org-agenda-files)))
+	      (todo "PROC" ((org-agenda-overriding-header "Process Tasks")))
+	      (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))
 	      (todo "TODO"
 		    ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
 		     (org-agenda-files '("~/Notes/Inbox.org"))
@@ -199,8 +195,7 @@
 				("@errand" . ?E)
 				("@home" . ?H)
 				("@work" . ?W)
-				("waiting" . ?w)
-				("onhold" . ?h)
+				("agenda" . ?a)
 				("projects" ?p)
 				("personal" . ?P)
 				("note" . ?n)
@@ -208,7 +203,7 @@
 				("journal" . ?j)
 				("publish" . ?b)
 				("recurring" . ?r)
-				("cancelled" . ?c))))
+				)))
 
     ;; Configure task state change tag triggers
     ;; (setq org-todo-state-tags-triggers
