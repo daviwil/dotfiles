@@ -74,7 +74,8 @@
     (setq org-fontify-whole-heading-line t)
     (setq org-todo-keywords
 	  '((sequence "TODO(t)" "NEXT(n)" "PROC" "|" "DONE(d!)")
-	    (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+	    (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")
+		(sequence "GOAL(g)" "|" "ACHIEVED(v)" "MAINTAIN(m)")))
 
     ;; Configure capture templates
     (setq org-capture-templates
