@@ -27,6 +27,7 @@
     (global-set-key (kbd "C-c h") 'helm-command-prefix)
     (global-set-key (kbd "M-x") 'helm-M-x)
     (global-set-key (kbd "C-x b") 'helm-mini)
+    (global-set-key (kbd "C-x C-b") 'helm-mini)
     (global-set-key (kbd "C-x C-f") 'helm-find-files)))
 
 (use-package helm-company
@@ -56,27 +57,31 @@
   :ensure t
   :config
   (progn
-    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-    ;(global-rainbow-delimiters-mode)
-    ))
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
 
-;; TODO: Re-instate this ever?
-;; (use-package flx-ido
-;;   :ensure t
-;;   :config
-;;   (progn
-;;     (ido-mode 1)
-;;     (ido-everywhere 1)
-;;     (flx-ido-mode 1)
-;;     ;; disable ido faces to see flx highlights.
-;;     (setq ido-enable-flex-matching t)
-;;     (setq ido-use-faces nil)))
+(use-package flx-ido
+   :ensure t
+   :config
+   (progn
+     (ido-mode 1)
+     (ido-everywhere 1)
+     (flx-ido-mode 1)
+     (setq ido-enable-flex-matching t)
+     (setq ido-use-faces nil)))
+
+(use-package ido-vertical-mode
+  :ensure t
+  :config
+  (progn
+	;; Mode doesn't get invoked automatically for this package...
+	(ido-vertical-mode)))
 
 (use-package company
   :ensure t
   :config
-  (progn 
-    (add-hook 'after-init-hook 'global-company-mode)))
+  (progn
+	;(add-hook 'after-init-hook 'global-company-mode))
+	))
 
 (use-package clojure-mode 
   :ensure t
@@ -88,7 +93,7 @@
 	(eldoc-mode t)
 	(smartparens-strict-mode)
 	;(setq font-lock-verbose nil)
-	;(global-set-key (kbd "C-c t") 'clojure-jump-between-tests-and-code)
+	(global-set-key (kbd "C-c t") 'clojure-jump-between-tests-and-code)
 	;(paredit-mode 1)
 ))))
 
@@ -99,11 +104,11 @@
     (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)     ; Use eldoc when cider is connected
     (add-hook 'cider-repl-mode-hook 'smartparens-strict-mode) ; Use smartparens in the REPL
     (setq cider-prompt-save-file-on-load nil)                 ; Don't prompt to save file on load into REPL
-    ;(setq nrepl-hide-special-buffers t)                       ; Hide special cider buffers
     (setq cider-show-error-buffer nil)                        ; Don't show the error buffer immediately
     (setq cider-auto-select-error-buffer nil)                 ; Don't automatically select error buffer when shown
-    (setq cider-lein-command "/usr/bin/lein")           ; Configure the path to lein
-))
+    (on-platform-do                                           ; Configure the path to lein
+     (osx   (setq cider-lein-command "/usr/local/bin/lein"))
+     (linux (setq cider-lein-command "/usr/bin/lein")))))
 
 (use-package magit
   :ensure t
@@ -111,14 +116,6 @@
   (progn
     (global-set-key "\C-cgs" 'magit-status)
     (global-set-key "\C-cgd" 'magit-diff-unstaged)))
-
-(use-package fsharp-mode 
-  :ensure t
-  :mode "\\.fs\\'"
-  :interpreter "fsharp"
-  :config
-  (progn 
-    (setq fsharp-ac-use-popup t)))
 
 (use-package git-gutter
   :ensure t
@@ -131,6 +128,20 @@
     (set-face-background 'git-gutter:modified "yellow")
     (set-face-background 'git-gutter:added "green")
     (set-face-background 'git-gutter:deleted "red")))
+
+(use-package magit-annex
+  :ensure t)
+
+(use-package git-annex
+  :ensure t)
+
+(use-package fsharp-mode 
+  :ensure t
+  :mode "\\.fs\\'"
+  :interpreter "fsharp"
+  :config
+  (progn 
+    (setq fsharp-ac-use-popup t)))
 
 (use-package markdown-mode
   :ensure t)
@@ -148,20 +159,31 @@
 (use-package impatient-mode
   :ensure t)
 
-(use-package csharp-mode
-  :ensure t)
-
-(use-package omnisharp
-  :ensure t)
-
 (use-package yasnippet
   :ensure t)
+
+(use-package csharp-mode
+  :ensure t
+  :config
+  (progn
+	(add-hook 'csharp-mode-hook (lambda () (c-set-style "c#")))))
+
+(on-platform-do
+ (windows
+  (use-package omnisharp
+	:ensure t
+	:config
+	(progn
+	  (add-to-list 'company-backends 'company-omnisharp)
+	  (add-hook 'csharp-mode-hook 'eldoc-mode)
+	  (add-hook 'csharp-mode-hook 'omnisharp-mode)))))
 
 (use-package nix-mode
   :ensure t)
 
 (use-package twittering-mode
   :ensure t
+  :defer t
   :config
   (progn
     (twittering-icon-mode 1)
@@ -180,9 +202,7 @@
     (setq jabber-alert-message-hooks
 	  '(jabber-message-wave jabber-message-echo jabber-message-scroll))
     (setq jabber-chat-buffer-format "IM: %n")
-    (jabber-mode-line-mode)
-    ;(setq jabber-auto-reconnect t)
-))
+    (jabber-mode-line-mode)))
 
 (use-package smart-mode-line
   :ensure t
@@ -233,24 +253,30 @@
 ;; (setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
 ;; (ergoemacs-mode 1)
 
-;; TODO: Re-enable this only for Windows
-;; (use-package powershell
-;;   :ensure t)
+(use-package restclient
+  :ensure t)
 
-(use-package emms
-  :ensure t
-  :config
-  (progn
-    (require 'emms-setup)
-    (require 'emms-player-mpd)
-    (emms-all)
-    (emms-default-players)
-    (add-to-list 'emms-info-functions 'emms-info-mpd)
-    (add-to-list 'emms-player-list 'emms-player-mpd)
-    (add-to-list 'emms-player-list 'emms-player-mplayer)
-    (setq emms-player-mpd-music-directory "~/Music")
-    (setq emms-mode-line-icon-color "white")
-    (emms-mode-line-toggle)
-    (emms-cache-set-from-mpd-all)
-    (setq emms-source-file-default-directory "~/Music/")))
+(on-platform-do
+ (windows
+  (use-package powershell
+    :ensure t)))
+
+(on-platform-do
+ (linux
+  (use-package emms
+    :ensure t
+    :config
+    (progn
+      (require 'emms-setup)
+      (require 'emms-player-mpd)
+      (emms-all)
+      (emms-default-players)
+      (add-to-list 'emms-info-functions 'emms-info-mpd)
+      (add-to-list 'emms-player-list 'emms-player-mpd)
+      (add-to-list 'emms-player-list 'emms-player-mplayer)
+      (setq emms-player-mpd-music-directory "~/Music")
+      (setq emms-mode-line-icon-color "white")
+      (emms-mode-line-toggle)
+      (emms-cache-set-from-mpd-all)
+      (setq emms-source-file-default-directory "~/Music/")))))
 
