@@ -23,7 +23,7 @@ set $mod Mod4
 # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:Ubuntu Mono 24
+font pango:Ubuntu Mono 8
 
 # Set the color scheme
 client.focused          #4c7899 #285577 #ffffff #2e9ef4
@@ -143,8 +143,9 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "exec cinnamon-session-quit --logout"
+#bindsym $mod+Shift+e exec "exec cinnamon-session-quit --logout"
 #bindsym $mod+Shift+e exit
+bindsym $mod+Shift+e exec xfce4-session-logout -l
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -174,11 +175,11 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        status_command i3status
-	position top
-	strip_workspace_numbers no
-}
+#bar {
+#        status_command i3status
+#	position top
+#	strip_workspace_numbers no
+#}
 
 # Use XFCE panel
 #exec --no-startup-id xfce4-panel --disable-wm-check
@@ -187,8 +188,8 @@ bar {
 exec --no-startup-id compton --config ~/.compton
 
 # Useful system tray icons
-exec --no-startup-id xfce4-power-manager
-exec --no-startup-id volumeicon
+#exec --no-startup-id xfce4-power-manager
+#exec --no-startup-id volumeicon
 #exec --no-startup-id nm-applet
 
 # Set the background
