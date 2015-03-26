@@ -6,8 +6,8 @@
 (setq custom-file "~/.emacs.d/config/customize.el")
 (load custom-file)
 
-;; Turn on the elisp debugger
-(setq debug-on-error t)
+;; Turn on the elisp debugger (if needed)
+;;(setq debug-on-error t)
 
 ;; Thanks, but no thanks
 (setq inhibit-startup-message t)
@@ -46,7 +46,7 @@
 
 ;; Set the font face based on platform
 (on-platform-do
- ((windows cygwin) (set-face-attribute 'default nil :font "Consolas:antialias=subpixel" :height 120))
+ ((windows cygwin) (set-face-attribute 'default nil :font "Ubuntu Mono:antialias=subpixel" :height 130))
  (osx (set-face-attribute 'default nil :font "Ubuntu Mono" :height 180)) ;:height 150
  (linux (set-face-attribute 'default nil :font "Ubuntu Mono" :height 130)))
 

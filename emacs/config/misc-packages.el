@@ -30,13 +30,6 @@
     (global-set-key (kbd "C-x C-b") 'helm-mini)
     (global-set-key (kbd "C-x C-f") 'helm-find-files)))
 
-(use-package helm-company
-  :ensure t
-  :config
-  (progn
-    (define-key company-mode-map (kbd "C-:") 'helm-company)
-    (define-key company-active-map (kbd "C-:") 'helm-company)))
-
 (use-package helm-package
   :ensure t
   :config
@@ -82,6 +75,13 @@
   (progn
 	;(add-hook 'after-init-hook 'global-company-mode))
 	))
+
+(use-package helm-company
+  :ensure t
+  :config
+  (progn
+    (define-key company-mode-map (kbd "C-:") 'helm-company)
+    (define-key company-active-map (kbd "C-:") 'helm-company)))
 
 (use-package clojure-mode 
   :ensure t
@@ -176,7 +176,12 @@
 	(progn
 	  (add-to-list 'company-backends 'company-omnisharp)
 	  (add-hook 'csharp-mode-hook 'eldoc-mode)
-	  (add-hook 'csharp-mode-hook 'omnisharp-mode)))))
+	  (add-hook 'csharp-mode-hook 'omnisharp-mode)
+
+	  (setq omnisharp--curl-executable-path "c:\\Program Files\\cURL\\bin\\curl.exe")
+	  (setq omnisharp--windows-curl-tmp-file-path "c:/Users/daviwil/omnisharp-tmp-file.cs")
+	  (setq omnisharp-auto-complete-want-importable-types t)
+	  (setq omnisharp-server-executable-path "D:/dev/Tools/OmniSharp/OmniSharp/bin/Release/OmniSharp.exe")))))
 
 (use-package nix-mode
   :ensure t)

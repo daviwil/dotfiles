@@ -10,11 +10,9 @@
  '(erc-modules
    (quote
 	(autojoin button completion fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands notify notifications readonly ring stamp track)))
- '(omnisharp--curl-executable-path "c:\\Program Files\\cURL\\bin\\curl.exe")
- '(omnisharp--windows-curl-tmp-file-path "c:/Users/daviwil/omnisharp-tmp-file.cs")
- '(omnisharp-auto-complete-want-importable-types t)
- '(omnisharp-server-executable-path
-   (quote D:/dev/Tools/OmniSharp/OmniSharp/bin/Release/OmniSharp\.exe))
+ '(org-agenda-files
+   (quote
+	("c:/cygwin64/home/daviwil/Notes/Career.org" "c:/cygwin64/home/daviwil/Notes/Checklists.org" "c:/cygwin64/home/daviwil/Notes/Fitness.org" "c:/cygwin64/home/daviwil/Notes/Greek.org" "c:/cygwin64/home/daviwil/Notes/Guitar.org" "c:/cygwin64/home/daviwil/Notes/Habits.org" "c:/cygwin64/home/daviwil/Notes/Inbox.org" "c:/cygwin64/home/daviwil/Notes/Keyboard.org" "c:/cygwin64/home/daviwil/Notes/Metrics.org" "c:/cygwin64/home/daviwil/Notes/Mission.org" "c:/cygwin64/home/daviwil/Notes/MusicComposition.org" "c:/cygwin64/home/daviwil/Notes/MusicProduction.org" "c:/cygwin64/home/daviwil/Notes/Nutrition.org" "c:/cygwin64/home/daviwil/Notes/Personal.org" "c:/cygwin64/home/daviwil/Notes/Singing.org" "c:/cygwin64/home/daviwil/Notes/SoftwareDev.org" "c:/cygwin64/home/daviwil/Notes/Tools.org" "c:/cygwin64/home/daviwil/Notes/WindSynth.org" "c:/cygwin64/home/daviwil/Notes/Wisdom.org" "c:/cygwin64/home/daviwil/Notes/Work.org" "c:/cygwin64/home/daviwil/Notes/Workflow.org" "c:/cygwin64/home/daviwil/Notes/Writing.org")))
  '(org-agenda-hide-tags-regexp "agenda\\|process")
  '(org-agenda-prefix-format
    (quote
@@ -29,6 +27,7 @@
  '(org-hide-block-startup t)
  '(org-highlight-sparse-tree-matches nil)
  '(org-pomodoro-long-break-frequency 10)
+ '(org-startup-folded (quote content))
  '(tab-width 4))
 
 (custom-set-faces
