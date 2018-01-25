@@ -40,9 +40,6 @@
 [submodule "vim/bundle/base16-vim"]
 	path = vim/bundle/base16-vim
 	url = git://github.com/chriskempson/base16-vim.git
-[submodule "zsh/antigen"]
-	path = zsh/antigen
-	url = https://github.com/zsh-users/antigen.git
 [submodule "vim/bundle/vim-coffee-script"]
 	path = vim/bundle/vim-coffee-script
 	url = https://github.com/kchmck/vim-coffee-script.git

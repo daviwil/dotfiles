@@ -1,0 +1,28 @@
+source ~/.dotfiles/zsh/antigen.zsh
+
+# Keep Ctrl+S from hosing the shell (would need Ctrl+Q to fix)
+stty -ixon
+
+# Make sure directory colors are inherited from the theme
+eval "$(dircolors -b)"
+
+antigen use oh-my-zsh
+
+antigen bundle git
+antigen bundle npm
+antigen bundle heroku
+antigen bundle pip
+antigen bundle lein
+antigen bundle command-not-found
+
+antigen bundle zsh-users/zsh-syntax-highlighting
+
+antigen theme dogenpunk
+
+# Other themes:
+# bureau
+# dogenpunk ॐ 
+# steeef
+# tjkirch - good base
+
+antigen apply
