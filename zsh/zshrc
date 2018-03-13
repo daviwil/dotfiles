@@ -2,6 +2,8 @@ source ~/.dotfiles/zsh/antigen.zsh
 
 export PATH="$PATH:/usr/share/dotnet"
 export EDITOR="vim"
+export ATOM_DEV_RESOURCE_PATH="/home/daviwil/Projects/Code/atom-beta"
+
 # Keep Ctrl+S from hosing the shell (would need Ctrl+Q to fix)
 stty -ixon
 
