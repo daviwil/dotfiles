@@ -33,3 +33,7 @@ antigen theme dogenpunk
 # tjkirch - good base
 
 antigen apply
+
+# If not running interactively, do not do anything
+[[ $- != *i* ]] && return
+[[ -z "$TMUX" ]] && exec tmux
