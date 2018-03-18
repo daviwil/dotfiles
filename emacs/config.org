@@ -1,0 +1,1791 @@
+* daviwil's Emacs Configuration
+
+This is an ongoing evolution of my original Emacs configuration files, inspired
+by a bunch of resources I've found online.  Ultimately I'd like to write about
+how I use Emacs once this configuration (and my workflow) stabilizes!
+
+** Helper Functions
+
+*** Platform Helpers
+
+Here are a couple helpful functions for doing things based on what platform
+Emacs is running on.  I wrote =on-platform-do= as a way to learn Emacs macros, but
+there's probably a more appropriate way to do this built in to Emacs.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Helper function for changing OS platform keywords to system-type strings
+  (defun platform-keyword-to-string (platform-keyword)
+    (cond
+     ((eq platform-keyword 'windows) "windows-nt")
+     ((eq platform-keyword 'cygwin) "cygwin")
+     ((eq platform-keyword 'osx) "darwin")
+     ((eq platform-keyword 'linux) "gnu/linux")))
+
+  ;; Define a macro that runs an elisp expression only on a particular platform
+  (defmacro on-platform-do (&rest platform-expressions)
+    `(cond
+      ,@(mapcar
+         (lambda (platform-expr)
+       (let ((keyword (nth 0 platform-expr))
+             (expr (nth 1 platform-expr)))
+         `(,(if (listp keyword)
+           `(or
+             ,@(mapcar
+                (lambda (kw) `(string-equal system-type ,(platform-keyword-to-string kw)))
+                keyword))
+            `(string-equal system-type ,(platform-keyword-to-string keyword)))
+            ,expr)))
+         platform-expressions)))
+
+#+END_SRC
+
+** Keyboard Bindings
+
+The Spacemacs-like configuration here was inspired by [[https://sam217pa.github.io/2016/08/30/how-to-make-your-own-spacemacs/][this post]].  I'm having a
+hard time getting a totally smooth Evil/Emacs hybrid keybinding setup going so
+it may turn out that I eschew Evil for everything but programming modes...
+
+*** ESC Cancels All
+
+#+BEGIN_SRC emacs-lisp
+
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+#+END_SRC
+
+*** Let's Be Evil
+
+Some tips can be found here:
+
+- https://nathantypanski.com/blog/2014-08-03-a-vim-like-emacs-config.html
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun dw/evil-hook ()
+    (dolist (mode '(custom-mode
+                    dired-mode
+                    eshell-mode
+                    git-rebase-mode
+                    erc-mode
+                    circe-server-mode
+                    circe-chat-mode
+                    circe-query-mode
+                    sunshine-mode
+                    term-mode))
+    (add-to-list 'evil-emacs-state-modes mode)))
+
+  (use-package evil
+    :ensure t
+    :init (setq evil-want-integration nil)  ; Needed for evil-collection?
+    :config
+    (add-hook 'evil-mode-hook 'dw/evil-hook)
+    (evil-mode 1)
+    (evil-set-initial-state 'messages-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal))
+
+  (use-package evil-collection
+    :ensure t
+    :after evil
+    :custom
+    (evil-collection-outline-bind-tab-p nil)
+    :config
+    (evil-collection-init))
+
+#+END_SRC
+
+*** Quick Normal Mode with `fd`
+
+This is a nice little trick I learned from [[https://github.com/syl20bnr/evil-escape#customization][Spacemacs]] but I currently don't use
+it a whole lot.  Might remove it in the future.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package evil-escape
+    :ensure t
+    :diminish evil-escape-mode
+    :config
+    (evil-escape-mode)
+    (setq-default evil-escape-delay 0.1))
+
+#+END_SRC
+
+*** Keybinding Panel (which-key)
+
+[[https://github.com/justbur/emacs-which-key][which-key]] is great for getting an overview of what keybindings are available
+based on the prefix keys you entered.  Learned about this one from Spacemacs.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package which-key
+    :ensure t
+    :init (which-key-mode)
+    :diminish which-key-mode
+    :config
+    (setq which-key-idle-delay 0.1))
+
+#+END_SRC
+
+*** Simplify Leader Bindings (general.el)
+
+[[https://github.com/noctuid/general.el][general.el]] is a fantastic library for defining prefixed keybindings, especially
+in conjunction with Evil modes.
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq c-spc-leader "C-SPC")
+  (setq spc-leader "C-SPC")
+
+  (use-package general :ensure t
+    :config
+    (general-evil-setup t)
+    (general-create-definer dw/leader-key-def
+      :states '(normal insert emacs)
+      :prefix "SPC"
+      :global-prefix "C-SPC"))
+
+#+END_SRC
+
+*** Help Commands
+
+Define some bindings for help commands which are handy for general emacs use.
+
+**** Describe
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "h"   '(:ignore t :which-key "help")
+    "hb"  '(counsel-descbinds :which-key "key bindings")
+    "hd"  '(:ignore t :which-key "describe")
+    "hda" '(counsel-describe-face :which-key "describe face")
+    "hdf" '(counsel-describe-function :which-key "describe function")
+    "hdv" '(counsel-describe-variable :which-key "describe variable"))
+
+#+END_SRC
+
+** General Configuration
+
+*** User Interface
+
+Clean up Emacs' user interface, make it more minimal.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Thanks, but no thanks
+  (setq inhibit-startup-message t)
+
+  (scroll-bar-mode -1)        ; Disable visible scrollbar
+  (tool-bar-mode -1)          ; Disable the toolbar
+  (tooltip-mode -1)           ; Disable tooltips
+  (menu-bar-mode -1)          ; Disable the menu bar
+  (set-fringe-mode '(1 . 0))  ; Disable right-side fringe
+
+  ;; Set up the visible bell
+  (setq visible-bell t)
+
+#+END_SRC
+
+Improve scrolling.
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+  (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+  (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+  (setq scroll-step 1) ;; keyboard scroll one line at a timesetq use-dialog-box nil) ; Disable dialog boxes since they weren't working in Mac OSX
+
+#+END_SRC
+
+Set frame transparency and maximize windows by default.
+
+#+BEGIN_SRC emacs-lisp
+
+  (set-frame-parameter (selected-frame) 'alpha '(95 . 95))
+  (add-to-list 'default-frame-alist '(alpha . (95 . 95)))
+  (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+#+END_SRC
+
+Enable line numbers and customize their format.
+
+#+BEGIN_SRC emacs-lisp
+
+  (column-number-mode)
+  (add-hook 'prog-mode-hook 'linum-mode)
+  (setq linum-format " %3d ")
+  (defun linum-on ()
+    (unless
+      (or (minibufferp)
+          (member major-mode linum-disabled-modes-list))
+        (linum-mode 1)))
+
+#+END_SRC
+
+*** Theme
+
+**** Theme Config
+
+A nice gallery of Emacs themes can be found at https://emacsthemes.com/.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package twilight-anti-bright-theme :ensure t :defer t)
+  (use-package badger-theme :ensure t :defer t)
+  (use-package spacegray-theme :ensure t :defer t)
+  (use-package dakrone-theme :ensure t :defer t)
+  (use-package nord-theme :ensure t :defer t)
+  (use-package noctilux-theme :ensure t :defer t)
+  (use-package color-theme-sanityinc-tomorrow :ensure t :defer t)
+
+  (load-theme 'twilight-anti-bright)
+
+  ;(load-theme 'tango-dark)
+  ;; (use-package color-theme-sanityinc-tomorrow
+  ;;   :ensure t
+  ;;   :config
+  ;;   (progn
+  ;;     (color-theme-sanityinc-tomorrow-eighties)))
+
+#+END_SRC
+
+Themes to try:
+
+- https://emacsthemes.com/themes/arjen-grey-theme.html
+- https://emacsthemes.com/themes/noctilux-theme.html
+- https://emacsthemes.com/themes/seti-theme.html
+- https://emacsthemes.com/themes/sanityinc-tomorrow-themes.html
+- https://emacsthemes.com/themes/soft-charcoal-theme.html
+- https://emacsthemes.com/themes/spacegray-theme.html
+- https://github.com/hlissner/emacs-doom-themes/tree/screenshots
+- http://color.smyck.org/
+
+**** Bindings
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "tt" '(counsel-load-theme :which-key "choose theme"))
+
+#+END_SRC
+
+*** Font
+
+**** Set the font
+
+Different platforms need different default font sizes, and
+[[https://mozilla.github.io/Fira/][Fira Mono]] is currently my favorite face.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Set the font face based on platform
+  (on-platform-do
+   ((windows cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
+   (osx (set-face-attribute 'default nil :font "Fira Mono" :height 180))
+   (linux (set-face-attribute 'default nil :font "Fira Mono" :height 140)))
+
+#+END_SRC
+
+*** Mode Line
+
+**** Enable Mode Diminishing
+
+The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky minor modes from the modelines.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package diminish :ensure t)
+
+#+END_SRC
+
+**** Smart Mode Line
+
+Prettify the modeline with [[https://github.com/Malabarba/smart-mode-line/][smart-mode-line]].  Really need to re-evaluate the
+ordering of =mode-line-format=.  Also not sure if =rm-excluded-modes= is needed
+anymore if I set up =diminish= correctly.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package smart-mode-line
+    :ensure t
+    :config
+    (progn
+      (sml/setup)
+      (sml/apply-theme 'respectful)  ; Respect the theme colors
+      (setq sml/mode-width 'full)
+      (setq sml/name-width 40)
+
+      (setq-default mode-line-format
+        '("%e"
+          mode-line-front-space
+          mode-line-mule-info
+          mode-line-client
+          mode-line-modified
+          mode-line-remote
+          mode-line-frame-identification
+          mode-line-buffer-identification
+          sml/pos-id-separator
+          (vc-mode vc-mode)
+          " "
+          ;mode-line-position
+          evil-mode-line-tag
+          sml/pre-modes-separator
+          mode-line-modes
+          mode-line-misc-info
+          mode-line-end-spaces))
+
+      (setq rm-excluded-modes
+        (mapconcat
+         'identity
+         ; These names must start with a space!
+         '(" GitGutter" " MRev" " company"
+           " Helm" " Undo-Tree" " Projectile.*"
+           " Org-Agenda.*" " ElDoc" " SP/s" " cider.*")
+         "\\|"))))
+
+#+END_SRC
+
+*** File Backups
+
+Useful information can be found on the [[https://www.emacswiki.org/emacs/AutoSave][EmacsWiki]].  I generally don't like these
+files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Turn off backup files
+  ;(setq make-backup-files nil)
+  ;(setq auto-save-default nil)
+
+  ;; Store file backups in a central location
+  (setq backup-directory-alist
+        `(("." . ,(concat user-emacs-directory "backups"))))
+
+#+END_SRC
+
+** Configuration File
+
+*** Helpers
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun reload-configuration ()
+    (interactive)
+    (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+
+  (defun edit-configuration ()
+    (interactive)
+    (find-file (expand-file-name "~/.emacs.d/config.org")))
+
+#+END_SRC
+
+*** Bindings
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "fe"  '(:ignore :which-key "config file")
+    "fed" '(edit-configuration :which-key "edit config")
+    "feR" '(reload-configuration :which-key "reload config"))
+
+#+END_SRC
+
+** Better Completions with Ivy
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package smex :ensure t)
+  (use-package flx :ensure t)
+  (use-package counsel :ensure t)
+
+  (use-package ivy
+    :ensure t
+    :diminish ivy-mode
+    :config
+    (ivy-mode 1)
+    (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+    (setq ivy-use-virtual-buffers nil)
+    (setq enable-recursive-minibuffers t)
+    (global-set-key "\C-s" 'swiper)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume)
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
+
+    ;; Vim keybindings for Ivy
+    ;(require 'evil-collection-ivy)
+    ;(evil-collection-calendar-setup))
+
+  (dw/leader-key-def
+    "f"   '(:ignore t :which-key "files")
+    "ff"  '(counsel-find-file :which-key "open file")
+    "fr"  '(counsel-recentf :which-key "recent files"))
+
+#+END_SRC
+
+** Jumping with Avy
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package avy :ensure t)
+
+  (dw/leader-key-def
+    "j"   '(:ignore t :which-key "jump")
+    "jj"  '(avy-goto-char :which-key "jump to char")
+    "jw"  '(avy-goto-word-0 :which-key "jump to word")
+    "jl"  '(avy-goto-line :which-key "jump to line"))
+
+#+END_SRC
+
+** Buffer Management
+
+*** Perspectives
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package persp-mode
+  :ensure t
+  :init
+  (add-hook 'after-init-hook #'(lambda () (persp-mode 1)))
+  :config
+  (setq persp-autokill-buffer-on-remove 'kill-weak))
+
+#+END_SRC
+
+*** Helpers
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun switch-to-previous-buffer ()
+    (interactive)
+    (switch-to-buffer (other-buffer)))
+
+#+END_SRC
+
+*** Bindings
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "TAB" '(switch-to-previous-buffer :which-key "swap")
+    "b"   '(:ignore t :which-key "buffers")
+    "bb"  '(ivy-switch-buffer :which-key "switch")
+    "bd"  '(evil-delete-buffer :which-key "delete buffer"))
+
+#+END_SRC
+
+** Window Management
+
+*** Frame Scaling / Zooming
+
+The keybindings for this are =C+M+-= and =C+M+==.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package default-text-scale
+    :ensure t
+    :init (default-text-scale-mode))
+
+#+END_SRC
+
+*** Bindings
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "w"   '(:ignore t :which-key "windows")
+    "wc"  '(evil-window-delete :which-key "close")
+    "wC"  '(delete-other-windows :which-key "close others")
+    "ws"  '(evil-window-split  :which-key "split horiz")
+    "wv"  '(evil-window-vsplit :which-key "split vert")
+
+    "wh"  '(evil-window-left  :which-key "window left")
+    "wl"  '(evil-window-right :which-key "window right")
+    "wk"  '(evil-window-up    :which-key "window up")
+    "wj"  '(evil-window-down  :which-key "window down"))
+
+#+END_SRC
+
+*** Workspaces
+
+I really need a better way to manage windows in Emacs.  Holding off on Eyebrowse
+for now, need to investigate the =perspective= varieties.
+
+#+BEGIN_SRC emacs-lisp
+
+;(use-package eyebrowse
+;  :ensure t
+;  :config
+;  (eyebrowse-mode t)
+;  (general-define-key
+;    :states '(normal)
+;    :prefix spc-leader
+;    "1"  '(eyebrowse-switch-to-window-config-1 :which-key "workspace 1")
+;    "2"  '(eyebrowse-switch-to-window-config-2 :which-key "workspace 2")
+;    "3"  '(eyebrowse-switch-to-window-config-3 :which-key "workspace 3")
+;    "4"  '(eyebrowse-switch-to-window-config-4 :which-key "workspace 4")))
+
+#+END_SRC
+
+** Credential Management 
+
+I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords locally.  [[https://github.com/ecraven/ivy-pass/][ivy-pass]] automatically pulls
+in [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store.el]] package which makes managing passwords much easier in
+Emacs.
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package ivy-pass :ensure t)
+
+#+END_SRC
+
+** Org Mode
+
+[[http://orgmode.org/][Org Mode]] is the best life management system I've ever encountered.  Most of my
+configuration sculpting effort will be poured into making Org Mode handle
+everything in my life.
+
+*** Org Configuration
+
+#+BEGIN_SRC emacs-lisp
+
+    (setq org-ellipsis " »")
+    (setq org-hide-emphasis-markers t)
+    (setq org-src-fontify-natively t)
+    (setq org-src-tab-acts-natively t)
+
+    (setq-default fill-column 80)
+
+    ;; Turn on indentation and auto-fill mode for Org files
+    (defun dw/do-org-hooks ()
+      (org-indent-mode)
+      (turn-on-auto-fill)
+      (diminish org-indent-mode))
+
+    (add-hook 'org-mode-hook 'dw/do-org-hooks)
+
+    (setq org-modules 
+      '(org-crypt
+        org-habit
+        org-bookmark
+        org-eshell
+        org-notmuch
+        org-irc))
+
+  (setq org-refile-targets '((nil :maxlevel . 3)
+                             (org-agenda-files :maxlevel . 3)))
+  (setq org-outline-path-complete-in-steps nil)
+  (setq org-refile-use-outline-path t)
+
+#+END_SRC
+
+*** Header Styling
+
+Use bullet characters instead of asterisks, plus set the header font sizes to something more palatable.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package org-bullets
+    :ensure t
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●"))
+    :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+
+  (defun dw/set-org-header-font-sizes ()
+    (dolist (face '((org-level-1 . 1.2)
+                    (org-level-2 . 1.1)
+                    (org-level-3 . 1.0)
+                    (org-level-4 . 1.0)
+                    (org-level-5 . 1.0)))
+      (set-face-attribute (car face) nil :weight 'normal :height (cdr face))))
+
+  (add-hook 'org-mode-hook 'dw/set-org-header-font-sizes)
+
+#+END_SRC
+
+*** Org File Paths
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq org-directory "~/Notes")
+
+  (defun dw/org-path (path)
+    (expand-file-name path org-directory))
+
+  (setq dw/org-inbox-path (dw/org-path "Inbox.org"))
+
+  (setq org-default-notes-file dw/org-inbox-path)
+
+  (setq org-agenda-files
+        `(,dw/org-inbox-path
+          ,(dw/org-path "Habits.org")
+          ,(dw/org-path "Calendar.org")
+          ,(dw/org-path "Projects.org")))
+
+  (setq dw/org-project-files 
+    '((dw/org-path "Personal.org")
+      (dw/org-path "Projects.org")
+      (dw/org-path "Work.org")
+      (dw/org-path "Emacs.org")))
+
+#+END_SRC
+
+*** Agenda
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq org-agenda-window-setup 'other-window)
+  (setq org-agenda-span 'day)
+  (setq org-stuck-projects '("+LEVEL=2/TODO" ("NEXT") nil ""))
+  (setq org-agenda-start-with-log-mode t)
+
+  ;; Configure custom agenda views
+  (setq org-agenda-custom-commands
+    '(
+      ;; Daily dashboard
+      ("d" "Dashboard" 
+       ((agenda "")
+        (todo "PROC" ((org-agenda-overriding-header "Process Tasks")))
+        (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))
+        (todo "TODO"
+          ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
+           (org-agenda-files `(,dw/org-inbox-path))
+           (org-agenda-text-search-extra-files nil)))))
+
+      ;; Active projects
+      ("p" "Active Projects"
+       ((agenda "")
+        (todo "ACTIVE"
+          ((org-agenda-overriding-header "Active Projects")
+           (org-agenda-max-todos 5)
+           (org-agenda-files org-agenda-files)))))
+
+      ;; Workflow status dashboard
+      ("w" "Workflow Status"
+       (
+        (todo "WAIT"
+              ((org-agenda-overriding-header "Waiting on External")
+               (org-agenda-files org-agenda-files)))
+        (todo "REVIEW"
+              ((org-agenda-overriding-header "In Review")
+               (org-agenda-files org-agenda-files)))
+        (todo "PLAN"
+              ((org-agenda-overriding-header "In Planning")
+               (org-agenda-todo-list-sublevels nil)
+               (org-agenda-files org-agenda-files)))
+        (todo "BACKLOG"
+              ((org-agenda-overriding-header "Project Backlog")
+               (org-agenda-todo-list-sublevels nil)
+               (org-agenda-files org-agenda-files)))
+        (todo "READY"
+              ((org-agenda-overriding-header "Ready for Work")
+               (org-agenda-files org-agenda-files)))
+        (todo "ACTIVE"
+              ((org-agenda-overriding-header "Active Projects")
+               (org-agenda-files org-agenda-files)))
+        (todo "COMPLETED"
+              ((org-agenda-overriding-header "Completed Projects")
+               (org-agenda-files org-agenda-files)))
+        (todo "CANC"
+              ((org-agenda-overriding-header "Cancelled Projects")
+               (org-agenda-files org-agenda-files)))))
+        
+      ;; Projects on hold
+      ("h" tags-todo "+LEVEL=2/+HOLD"
+       ((org-agenda-overriding-header "On-hold Projects")
+        (org-agenda-files org-agenda-files)))
+      
+      ;; Low-effort next actions
+      ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+       ((org-agenda-overriding-header "Low Effort Tasks")
+        (org-agenda-max-todos 20)
+        (org-agenda-files org-agenda-files)))))
+
+#+END_SRC
+
+*** Tags
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Configure common tags
+  (setq org-tag-alist (quote ((:startgroup)
+              ; Put mutually exclusive tags here
+              (:endgroup)
+              ("@errand" . ?E)
+              ("@home" . ?H)
+              ("@work" . ?W)
+              ("agenda" . ?a)
+              ("practice" ?p)
+              ("publish" . ?P)
+              ("note" . ?n)
+              ("idea" . ?i)
+              ("recurring" . ?r))))
+
+  ;; Configure task state change tag triggers
+  ;; (setq org-todo-state-tags-triggers
+  ;;   (quote (("CANC" ("cancelled" . t))
+  ;;           ("WAIT" ("waiting" . t))
+  ;;           ("HOLD" ("waiting") ("onhold" . t))
+  ;;           (done ("waiting") ("onhold"))
+  ;;           ("TODO" ("waiting") ("cancelled") ("onhold"))
+  ;;           ("DONE" ("waiting") ("cancelled") ("onhold")))))
+
+#+END_SRC
+
+*** Tasks
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Configure TODO settings
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+  (setq org-datetree-add-timestamp 'inactive)
+  (setq org-habit-graph-column 60)
+  (setq org-fontify-whole-heading-line t)
+  (setq org-todo-keywords
+    '((sequence "TODO(t)" "NEXT(n)" "PROC" "|" "DONE(d!)")
+      (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")
+      (sequence "GOAL(g)" "|" "ACHIEVED(v)" "MAINTAIN(m)")))
+
+#+END_SRC
+
+*** Journal
+
+I use my own custom journal file format:
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq org-journal-dir (dw/org-path "Journal/"))
+
+  (defun get-todays-journal-file-name ()
+    "Gets the journal file name for today's date"
+    (interactive)
+    (let* ((journal-file-name
+             (expand-file-name
+               (format-time-string "%Y/%Y-%2m-%B.org")
+               org-journal-dir))
+           (journal-year-dir (file-name-directory journal-file-name)))
+      (if (not (file-directory-p journal-year-dir))
+        (make-directory journal-year-dir))
+      journal-file-name))
+
+#+END_SRC
+
+In the future I might go back to [[https://github.com/bastibe/org-journal/][org-journal]], keeping that configuration around.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;(use-package org-journal
+  ;  :ensure t
+  ;  :config
+  ;  (setq org-journal-dir "~/Notes/Journal/")
+  ;  (setq org-journal-file-format "%Y-%m-%d.org"))
+
+#+END_SRC
+
+
+*** Capture Templates
+
+Information on template expansion can be found in the [[https://orgmode.org/manual/Template-expansion.html#Template-expansion][Org manual]].
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq org-capture-templates
+    `(("t" "Task" entry (file+headline ,dw/org-inbox-path "Tasks")
+           "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+      ("s" "Clocked Entry Subtask" entry (clock)
+           "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+      ("p" "New Project" entry (file+headline ,dw/org-inbox-path "Tasks")
+           "* PLAN %?\n  %U\n  %a\n  %i" :empty-lines 1)
+
+      ;; Journal capture
+      ("j" "Journal" entry (file+datetree ,(get-todays-journal-file-name))
+           "* %<%I:%M %p> - %? :journal:\n\n" :empty-lines 1)
+      ("w" "Workflows")
+      ("n" "Note" entry (file+olp+datetree ,(get-todays-journal-file-name))
+           "* %<%I:%M %p> - %K / %a :note:\n\n%?" :empty-lines 1)
+      
+      ;; Workflows
+      ;; TODO: Is there a way to make this clock a Checklist task but have a datetree note?
+      ("w" "Workflows")
+      ("we" "Checking Email" entry (file+olp+datetree ,(get-todays-journal-file-name)) 
+           "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+      
+      ;; Interruptions
+      ("i" "Interrupts")
+      ("ii" "IM" entry (file+olp+datetree ,(get-todays-journal-file-name))
+           "* IM: %^{Sender name} :interrupt:instantmessage:\n\n    %?" :clock-in :clock-resume :empty-lines 1)
+      ("im" "Meeting" entry (file+olp+datetree ,(get-todays-journal-file-name))
+           "* Meeting: %^{Meeting description} :interrupt:meeting:\n\n    %?" :clock-in :clock-resume :empty-lines 1)
+      ("iv" "Visitor" entry (file+olp+datetree ,(get-todays-journal-file-name))
+           "* Visit from %^{Visitor name} :interrupt:visitor:\n\n    %?" :clock-in :clock-resume :empty-lines 1)
+
+      ;; Metrics capture
+      ("m" "Metrics Capture")
+      ("mw" "Weight" table-line (file+headline "~/Notes/Fitness.org" "Weight")
+       "| %U | %^{Weight} | %^{Notes} |" :kill-buffer)
+      ("mp" "Blood Pressure" table-line (file+headline "~/Notes/Fitness.org" "Blood Pressure")
+       "| %U | %^{Systolic} | %^{Diastolic} | %^{Notes}" :kill-buffer)
+      ))
+
+#+END_SRC
+
+*** Block Templates
+
+#+BEGIN_SRC emacs-lisp
+
+  (add-to-list 'org-structure-template-alist
+               '("el" "#+BEGIN_SRC emacs-lisp\n\n?\n\n#+END_SRC"))
+
+#+END_SRC
+
+*** Pomodoro
+
+*** Protocol
+
+#+BEGIN_SRC emacs-lisp
+
+(server-start)
+(require 'org-protocol)
+
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package org-pomodoro
+    :ensure t
+    :config
+    (setq org-pomodoro-start-sound "~/.emacs.d/sounds/focus_bell.wav")
+    (setq org-pomodoro-short-break-sound "~/.emacs.d/sounds/three_beeps.wav")
+    (setq org-pomodoro-long-break-sound "~/.emacs.d/sounds/three_beeps.wav")
+    (setq org-pomodoro-finished-sound "~/.emacs.d/sounds/meditation_bell.wav")
+    (dw/leader-key-def
+      "op"  '(org-pomodoro :which-key "pomodoro")))
+
+#+END_SRC
+
+*** Bindings
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "o"   '(:ignore t :which-key "org mode")
+
+    "oi"  '(:ignore t :which-key "insert")
+    "oil" '(org-insert-link :which-key "insert link")
+
+    "oa"  '(org-agenda :which-key "status")
+    "oc"  '(org-capture t :which-key "capture")
+    "ox"  '(org-export-dispatch t :which-key "export"))
+
+#+END_SRC
+
+*** Calendar Sync
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package org-gcal
+    :ensure t
+    :config
+
+    (setq org-gcal-client-id (password-store-get "API/Google/daviwil-emacs-id")
+          org-gcal-client-secret (password-store-get "API/Google/daviwil-emacs-secret")
+          org-gcal-file-alist `(("daviwil@github.com" . ,(dw/org-path "Calendar.org"))
+                                (,(password-store-get "Misc/Calendars/GitHub/AtomTeam") . ,(dw/org-path "Calendar.org"))
+                               )))
+
+  (dw/leader-key-def
+    "c"  '(:ignore t :which-key "calendar")
+    "cs" '(org-gcal-fetch :which-key "sync"))
+
+#+END_SRC
+
+*** Reminders
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package org-wild-notifier
+    :ensure t
+    :config
+    ; Make sure we receive notifications for non-TODO events
+    ; like those synced from Google Calendar
+    (setq org-wild-notifier-keyword-whitelist nil)
+    (setq org-wild-notifier-notification-title "Agenda Reminder")
+    (setq org-wild-notifier-alert-time 15)
+    (org-wild-notifier-mode))
+
+#+END_SRC
+
+*** Addons to Try
+
+- The excellent [[https://github.com/fniessen/org-html-themes][ReadTheOrg]] HTML export theme, great for [[http://ivanmalison.github.io/dotfiles/][Emacs configs]].
+- [[https://melpa.org/#/ox-reveal][Export to Reveal.js]] 
+- [[https://melpa.org/#/ox-gfm][Export to GitHub Flavored Markdown]]
+- [[https://melpa.org/#/ox-twbs][Export to Twitter Bootstrap]]
+- [[https://melpa.org/#/org-sync][Org Sync for external issue trackers]]
+- [[https://github.com/magit/orgit][Org link to Magit buffers]]
+- [[https://melpa.org/#/ob-typescript][TypeScript source blocks]]
+- [[https://melpa.org/#/ob-rust][Rust source blocks]]
+- [[https://melpa.org/#/org-board][Archive/bookmark sites with Org]]
+- [[https://melpa.org/#/org-alert][org-alert]]
+- [[https://github.com/bard/org-dashboard][org-dashboard]]
+  - [[http://thehelpfulhacker.net/2014/07/19/a-dashboard-for-your-life-a-minimal-goal-tracker-using-org-mode-go-and-git/][Inspiration for this]]
+- [[https://github.com/myuhe/org-gcal.el/][org-gcal]]
+- [[https://github.com/org-mime/org-mime][org-mime]]
+
+** Development
+
+Configuration for various programming languages and dev tools that I use.
+ 
+*** Git
+
+**** Magit
+
+https://magit.vc/manual/magit/
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package magit
+    :ensure t
+    :custom (global-magit-file-mode t))
+
+  ;(use-package magit-gh-pulls
+  ;  :ensure t
+  ;  :init (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls))
+
+  (dw/leader-key-def
+    "g"   '(:ignore t :which-key "git")
+    "gs"  '(magit-status :which-key "status")
+    "gd"  '(magit-diff-unstaged :which-key "diff unstaged"))
+
+#+END_SRC
+
+**** Git Gutter
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package git-gutter
+    :ensure t
+    :config
+      (global-git-gutter-mode +1)
+      (setq git-gutter:modified-sign " ")
+      (setq git-gutter:added-sign " ")
+      (setq git-gutter:deleted-sign " ")
+      (set-face-background 'git-gutter:modified "yellow")
+      (set-face-background 'git-gutter:added "green")
+      (set-face-background 'git-gutter:deleted "red"))
+
+
+#+END_SRC
+
+*** Projectile
+
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :diminish projectile-mode
+    :config (projectile-global-mode))
+
+  (use-package counsel-projectile :ensure t)
+
+  (dw/leader-key-def
+    "p"   '(:ignore t :which-key "project")
+    "pf"  '(counsel-projectile-find-file :which-key "project file")
+    "pp"  '(counsel-projectile-switch-project :which-key "project list"))
+
+#+END_SRC
+
+*** Completions
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package company
+    :ensure t
+    :config
+    (add-hook 'after-init-hook 'global-company-mode))
+
+#+END_SRC
+
+*** Languages
+
+**** Language Server Support
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package lsp-mode
+    :init
+    (add-hook 'prog-mode-hook 'lsp-mode))
+
+  (use-package lsp-ui
+    :ensure t
+    :init (add-hook 'lsp-mode-hook #'lsp-ui-mode))
+
+#+END_SRC
+
+**** TypeScript and JavaScript
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    ;(flycheck-mode +1)
+    ;(setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1)
+    (company-mode +1))
+
+  ;; aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t)
+
+  (use-package tide
+    :ensure t
+    :config
+
+    ;; formats the buffer before saving
+    ;(add-hook 'before-save-hook 'tide-format-before-save)
+
+    (add-hook 'typescript-mode-hook #'setup-tide-mode)
+    (add-hook 'javascript-mode-hook #'setup-tide-mode))
+
+  (use-package js2-mode
+    :ensure t)
+
+  (setq js-indent-level 2)
+
+  ;(use-package lsp-javascript-typescript
+  ;  :ensure t
+  ;  :after lsp-mode
+  ;  :config
+  ;  (with-eval-after-load 'lsp-mode
+  ;    (require 'lsp-typescript)
+  ;    (add-hook 'js-mode-hook #'lsp-typescript-enable)
+  ;    (add-hook 'js2-mode-hook #'lsp-typescript-enable)))
+
+  (use-package nvm
+    :ensure t)
+
+#+END_SRC
+
+**** Rust
+
+https://github.com/emacs-lsp/lsp-rust
+https://github.com/rust-lang/rust-mode
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package rust-mode
+    :ensure t
+    :mode "\\.rs\\'"
+    :init (setq rust-format-on-save t))
+
+  (use-package cargo :ensure t)
+
+  (use-package lsp-rust
+    :ensure t
+    :after lsp-mode
+    :config
+    (with-eval-after-load 'lsp-mode
+      (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls"))
+      (require 'lsp-rust)))
+
+    ;(add-hook 'rust-mode-hook #'lsp-rust-enable)
+    ;(add-hook 'rust-mode-hook #'flycheck-mode))
+
+#+END_SRC
+
+***** TODO Set up rustfmt
+***** TODO Fix lsp-rust!
+
+**** Emacs Lisp
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "e"   '(:ignore t :which-key "eval")
+    "eb"  '(eval-buffer :which-key "eval buffer"))
+
+  (dw/leader-key-def
+    :states '(visual)
+    "er" '(eval-region :which-key "eval region"))
+
+#+END_SRC
+
+**** Markdown
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package markdown-mode
+    :ensure t
+    :config
+    (defun dw/set-markdown-header-font-sizes ()
+
+      (dolist (face '((markdown-header-face-1 . 1.2)
+                      (markdown-header-face-2 . 1.1)
+                      (markdown-header-face-3 . 1.0)
+                      (markdown-header-face-4 . 1.0)
+                      (markdown-header-face-5 . 1.0)))
+        (set-face-attribute (car face) nil :weight 'normal :height (cdr face))))
+
+    (defun dw/markdown-mode-hook ()
+      (turn-on-auto-fill)
+      (dw/set-markdown-header-font-sizes))
+
+    (add-hook 'markdown-mode-hook 'dw/markdown-mode-hook))
+
+#+END_SRC
+
+**** HTML
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package web-mode
+    :ensure t
+    :config
+    (progn
+      (add-to-list
+         'auto-mode-alist
+         '("\\.html?\\'" . web-mode))))
+#+END_SRC
+
+*** Productivity
+
+**** Commenting
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package evil-nerd-commenter
+    :ensure t
+    :config
+    (progn
+      ;; Use default hotkeys, but also add CMD-/
+      (evilnc-default-hotkeys)
+      (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines)))
+
+  (dw/leader-key-def
+    :states '(normal insert emacs visual)
+    :prefix spc-leader
+    "/"  '(evilnc-comment-or-uncomment-lines :which-key "comment"))
+
+#+END_SRC
+
+**** Snippets
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package yasnippet
+  :ensure t)
+
+#+END_SRC
+
+**** Smart Parens
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package smartparens
+  :ensure t
+  :config
+  (progn
+    (require 'smartparens-config)
+    (show-paren-mode 1)))
+
+#+END_SRC
+
+**** Rainbow Delimiters
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (progn
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
+
+#+END_SRC
+
+
+** Applications
+
+*** Binding Prefix
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "a"  '(:ignore t :which-key "apps")
+    "SPC" '(eyebrowse-switch-to-window-config-0 :which-key "shell"))
+
+#+END_SRC
+
+*** File Management
+
+**** Dired
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package dired-rainbow :ensure t)
+
+  (dw/leader-key-def
+    "ad"  '(dired :which-key "dired"))
+
+#+END_SRC
+
+**** Ranger
+
+Not really using this one yet, trying to get comfortable with =dired= first before
+I try something else.  I really do like [[http://ranger.github.io/][Ranger]] on the command line, though.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package ranger :ensure t)
+
+  (dw/leader-key-def
+    "ar"  '(ranger :which-key "ranger"))
+
+#+END_SRC
+
+*** Mail
+
+**** mu4e
+
+[[http://www.djcbsoftware.nl/code/mu/mu4e.html][mu4e]] is seriously the best mail interface I've ever used because it's fast and
+makes it really easy to power through a huge e-mail backlog.  Love the ability
+to capture links to emails with org-mode too.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; After building/installing mu4e the .el files are here:
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+
+  (require 'mu4e)
+  (require 'org-mu4e)
+  (setq mail-user-agent 'mu4e-user-agent)
+
+  ;; Refresh mail using offlineimap every 10 minutes
+  (setq mu4e-update-interval (* 10 60))
+  (setq mu4e-get-mail-command "offlineimap")
+  (setq mu4e-maildir "~/Mail")
+
+  ;; Set up contexts for email accounts
+  (setq mu4e-contexts
+   `( ,(make-mu4e-context
+       :name "GitHub"
+       :match-func (lambda (msg) (when msg
+         (string-prefix-p "/GitHub" (mu4e-message-field msg :maildir))))
+       :vars '(
+         (mu4e-sent-folder . "/GitHub/Sent Mail")
+         (mu4e-trash-folder . "/GitHub/Trash")
+         ;(mu4e-refile-folder . "/GitHub/[Gmail].Archive")
+         ))
+     ,(make-mu4e-context
+       :name "Personal"
+       :match-func (lambda (msg) (when msg
+         (string-prefix-p "/Personal" (mu4e-message-field msg :maildir))))
+       :vars '(
+         (mu4e-sent-folder . "/Personal/Sent")
+         (mu4e-trash-folder . "/Personal/Deleted")
+         (mu4e-refile-folder . "/Personal/Archive")
+         ))
+     ))
+  (setq mu4e-context-policy 'pick-first)
+
+  (setq mu4e-drafts-folder "/Drafts")
+
+  ;; Don't save message to Sent Messages, Gmail/IMAP takes care of this
+  (setq mu4e-sent-messages-behavior 'delete)
+
+  ;; Display options
+  (setq mu4e-view-show-images t)
+  (setq mu4e-view-show-addresses 't)
+
+  ;; (See the documentation for `mu4e-sent-messages-behavior' if you have
+  ;; additional non-Gmail addresses and want assign them different
+  ;; behavior.)
+
+  ;; setup some handy shortcuts
+  ;; you can quickly switch to your Inbox -- press ``ji''
+  ;; then, when you want archive some messages, move them to
+  ;; the 'All Mail' folder by pressing ``ma''.
+  (setq mu4e-maildir-shortcuts
+      '( ("/INBOX"       . ?i)
+         ("/Sent Mail"   . ?s)
+         ("/Trash"       . ?t)
+         ("/All Mail"    . ?a)))
+
+  (add-to-list 'mu4e-bookmarks
+         (make-mu4e-bookmark
+          :name "All Inboxes"
+          :query "maildir:/GitHub/INBOX OR maildir:/Personal/Inbox"
+          :key ?i))
+
+  ;; don't keep message buffers around
+  (setq message-kill-buffer-on-exit t)
+
+  (setq dw/mu4e-inbox-query
+      "(maildir:/Personal/Inbox OR maildir:/GitHub/INBOX) AND flag:unread")
+
+  (defun dw/go-to-inbox ()
+    (interactive)
+    (mu4e-headers-search dw/mu4e-inbox-query))
+
+  (dw/leader-key-def
+    "m"  '(:ignore t :which-key "mail")
+    "mm" '(mu4e :which-key "mu4e main")
+    "mi" '(dw/go-to-inbox :which-key "inbox")
+    "ms" '(mu4e-update-mail-and-index :which-key "sync"))
+
+  ;; Start mu4e in the background so that it syncs mail periodically
+  (let ((current-prefix-arg '(4))) (call-interactively 'mu4e))
+
+#+END_SRC
+
+Use [[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] to show notifications when e-mail comes in:
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package mu4e-alert
+    :ensure t
+    :config
+    ;; Use Emacs' built-in notifier
+    (mu4e-alert-set-default-style 'notifications)
+
+    ;; Show unread emails from all inboxes
+    (setq mu4e-alert-interesting-mail-query dw/mu4e-inbox-query)
+
+    (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+    (add-hook 'after-init-hook #'mu4e-alert-enable-notifications))
+
+#+END_SRC
+
+Useful mu4e manual pages:
+
+- [[https://www.djcbsoftware.nl/code/mu/mu4e/MSGV-Keybindings.html#MSGV-Keybindings][Key bindings]]
+- [[https://www.djcbsoftware.nl/code/mu/mu4e/Org_002dmode-links.html#Org_002dmode-links][org-mode integration]]
+  
+Here's some info on using [[https://hobo.house/2017/07/17/using-offlineimap-with-the-gmail-imap-api/][offlineimap with Gmail]].
+
+*** Calendar
+
+[[https://github.com/kiwanami/emacs-calfw][calfw]] is a gorgeous calendar UI that is able to show all of my scheduled Org
+Agenda items.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package calfw
+    :ensure t
+    :config
+    (setq cfw:fchar-junction ?╋
+          cfw:fchar-vertical-line ?┃
+          cfw:fchar-horizontal-line ?━
+          cfw:fchar-left-junction ?┣
+          cfw:fchar-right-junction ?┫
+          cfw:fchar-top-junction ?┯
+          cfw:fchar-top-left-corner ?┏
+          cfw:fchar-top-right-corner ?┓)
+
+    (use-package calfw-org
+      :ensure t
+      :config
+      (setq cfw:org-agenda-schedule-args '(:timestamp))))
+
+  (dw/leader-key-def
+    "cc"  '(cfw:open-org-calendar :which-key "calendar"))
+
+#+END_SRC
+
+*** Shells
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "as"  '(:ignore t :which-key "shells"))
+
+#+END_SRC
+
+**** Eshell
+
+***** Configuration
+
+#+BEGIN_SRC emacs-lisp
+
+  (with-eval-after-load
+    'eshell
+    (require 'evil-collection-eshell)
+    (evil-collection-eshell-setup)
+
+  (add-to-list 'eshell-visual-commands "htop")
+
+  (dw/leader-key-def
+    "ase"  '(eshell :which-key "Eshell")
+    "C-SPC" '(eshell :which-key "Eshell"))
+
+#+END_SRC
+
+***** Shell Commands
+
+Custom eshell commands will go here.
+
+***** Aliases
+
+#+BEGIN_SRC emacs-lisp
+
+;(eshell/alias "edit" "find-file $1")
+;(eshell/alias "vim" "find-file $1")
+;(eshell/alias "dnu" "sudo dnf update --refresh")
+
+;(setq eshell-aliases-file "~/.emacs.d/eshell-aliases")
+
+#+END_SRC
+
+***** Extras
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package eshell-prompt-extras
+    :ensure t
+    :config
+    (with-eval-after-load "esh-opt"
+      (autoload 'epe-theme-lambda "eshell-prompt-extras")
+      (setq eshell-highlight-prompt nil
+            eshell-prompt-function 'epe-theme-lambda)))
+
+#+END_SRC
+
+***** TODO References
+
+
+**** Ansi Term
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "ast"  '(ansi-term :which-key "ansi-term"))
+
+#+END_SRC
+
+**** Multi-Term
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package multi-term :ensure t)
+
+  (dw/leader-key-def
+    "asm"  '(ansi-term :which-key "multi-term"))
+
+
+#+END_SRC
+
+*** Chat
+
+**** ERC
+
+[[https://www.gnu.org/software/emacs/manual/html_node/erc/Modules.html][ERC]] is the big kahuna of Emacs IRC clients.  At first I thought it was too
+bulky, but after using =circe= and =rcirc= I started to appreciate some of the
+features it provides.  The "static center" fill mode is really awesome.
+
+***** Configuration
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package erc-hl-nicks :ensure t)
+  (use-package erc-image :ensure t)
+
+  (setq erc-modules
+    '(autoaway autojoin button completion fill irccontrols keep-place
+      list match menu move-to-prompt netsplit networks noncommands notify
+      notifications readonly ring smiley stamp track image hl-nicks))
+
+  (setq
+    erc-nick "daviwil"
+    erc-prompt-for-nickserv-password nil
+    erc-auto-query 'bury
+    erc-join-buffer 'bury
+    erc-interpret-mirc-color t
+    erc-rename-buffers t
+    erc-lurker-hide-list '("JOIN" "PART" "QUIT")
+    erc-track-exclude-types '("JOIN" "NICK" "QUIT" "MODE")
+    erc-fill-column 105
+    erc-fill-function 'erc-fill-static
+    erc-fill-static-center 20
+    erc-track-exclude '("#twitter_daviwil")
+    erc-autojoin-channels-alist '(("freenode.net" "#emacs"))
+    erc-quit-reason (lambda (s) (or s "Fading out..."))
+    erc-modules
+      '(autoaway autojoin button completion fill irccontrols keep-place
+        list match menu move-to-prompt netsplit networks noncommands notify
+        notifications readonly ring smiley stamp track image hl-nicks))
+
+  (add-hook 'erc-join-hook 'bitlbee-identify)
+  (defun bitlbee-identify ()
+   "If we're on the bitlbee server, send the identify command to the &bitlbee channel."
+   (when (and (string= "127.0.0.1" erc-session-server)
+              (string= "&bitlbee" (buffer-name)))
+     (erc-message "PRIVMSG" (format "%s identify %s" 
+                                    (erc-default-target) 
+                                    (password-store-get "IRC/Bitlbee")))))
+
+  (defun dw/connect-irc ()
+    (interactive)
+    (erc
+       :server "127.0.0.1" :port 6667
+       :nick "daviwil" :password (password-store-get "IRC/Bitlbee"))
+    (erc
+       :server "irc.freenode.net" :port 6667
+       :nick "daviwil" :password (password-store-get "IRC/Freenode")))
+
+#+END_SRC
+
+***** Bindings
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "ac"  '(:ignore t :which-key "chat")
+    "acb" '(erc-switch-to-buffer :which-key "chat buffers")
+    "acc" '(dw/connect-irc :which-key "connect")
+    "aca" '(erc-track-switch-buffer :which-key "active buffer"))
+
+#+END_SRC
+
+***** Reference
+
+- https://www.gnu.org/software/emacs/manual/html_mono/erc.html
+- https://www.emacswiki.org/emacs/ErcChannelTracking
+- [[https://www.emacswiki.org/emacs/ErcFilling][Automatic window-width filling]]
+- John Wiegley's ERC config:
+  - https://github.com/jwiegley/dot-emacs/blob/master/lisp/erc-alert.el
+  - Settings: https://github.com/jwiegley/dot-emacs/blob/0f7d2c04ac38857d8e0fb036faedbf84193c8bd4/settings.el#L445
+  - Commands: https://github.com/jwiegley/dot-emacs/blob/f23993cfcb9ca90c289b4214b9bafbf46883bdb4/lisp/erc-macros.el
+
+**** circe
+
+=circe= was the first IRC client I got working well enough to use for Bitlbee,
+though I never found a good UI configuration.  Didn't like the position of the
+modeline indicators (though there's probably a way to fix that).
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun circe-bitlbee ()
+    (interactive)
+    (circe "Bitlbee" :host "127.0.0.1"))
+
+  (use-package circe
+    :ensure t
+    :config
+    (setq tracking-postition 'end)
+    (enable-circe-color-nicks)
+    (enable-circe-display-images)
+    (enable-lui-track-bar)
+    (enable-lui-irc-colors))
+
+  (use-package circe-notifications
+    :ensure t
+    :disabled t
+    :after circe
+    :config
+    (add-hook 'circe-server-connected-hook 'enable-circe-notifications))
+
+#+END_SRC
+
+**** rcirc
+
+Trying [[https://www.gnu.org/software/emacs/manual/html_mono/rcirc.html][rcirc]] as well, lighter than ERC and seemingly cleaner than circe.  So far
+I like the position of the mode line tracking better than circe.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Enable mode line tracking
+  (add-hook 'rcirc-mode-hook
+    (lambda ()
+      (rcirc-track-minor-mode 1)))
+
+#+END_SRC
+
+***** Refernece / Things to try
+
+- https://www.emacswiki.org/emacs/rcirc
+- https://github.com/aaron-em/rcirc-styles.el
+- https://github.com/sinasamavati/rcirc-emote
+- https://www.emacswiki.org/emacs/rcircColoredNicks
+- https://www.emacswiki.org/emacs/rcircAutoAway
+- https://www.emacswiki.org/emacs/rcircAutoFillColumn
+- https://www.emacswiki.org/emacs/rcircAutoAuthentication
+- https://www.emacswiki.org/emacs/rcircSmiley
+
+**** TODO Try weechat
+
+https://github.com/the-kenny/weechat.el
+
+
+*** Twitter
+
+Tried using =twittering-mode= and it managed to delete entire buffers of text for
+other files.  Right now I'm happier using Bitlbee's Twitter integration so I'm
+not using this mode at all.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package twittering-mode
+    :ensure t
+    :defer t
+    :config
+    (twittering-icon-mode 1)
+    (twittering-enable-unread-status-notifier)
+    (setq twittering-username "daviwil")
+    (setq twittering-use-master-password t)
+    (setq twittering-convert-fix-size 96)
+    (setq twittering-connection-type-order ;; curl throws errors, deprioritize it...
+      '(wget curl urllib-http native urllib-https))
+
+    (dw/leader-key-def
+      "at"  '(:ignore t :which-key "twitter")
+      "att" '(twit :which-key "home feed")
+      "atd" '(twittering-direct-messages-timeline :which-key "direct messages")
+      "ats" '(twittering-direct-message :which-key "send message")))
+
+#+END_SRC
+
+*** RSS
+
+**** Elfeed
+
+[[https://github.com/skeeto/elfeed][Elfeed]] looks like a great RSS feed reader.  Not using it much yet, but
+definitely looking forward to using it to keep track of a few different blogs I
+follow using Twitter.  Also seems to be great for following subreddits like
+/r/Emacs.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package elfeed
+    :ensure t
+    :config
+    (setq elfeed-feeds
+      '("http://nullprogram.com/feed/"
+        "https://www.reddit.com/r/emacs/.rss"
+        "https://atom.io/packages.atom")))
+
+#+END_SRC
+
+*** Media
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package emms
+    :ensure t
+    :config
+    (require 'emms-setup)
+    (emms-standard)
+    (emms-default-players)
+    (emms-mode-line-disable)
+    (setq emms-source-file-default-directory "~/Music/")
+    (dw/leader-key-def
+      "am"  '(:ignore t :which-key "media")
+      "amp" '(emms-pause :which-key "play / pause")
+      "amf" '(emms-play-file :which-key "play file")))
+
+  (use-package emms-player-mpv
+    :ensure t
+    :config
+    (require 'emms-player-mpv)
+    (add-to-list 'emms-player-list 'emms-player-mpv))
+
+#+END_SRC
+
+*** Weather
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package wttrin
+    :ensure t
+    :config
+    (setq wttrin-default-cities '("Kirkland, WA"))
+    (setq wttrin-default-accept-language '("Accept-Language" . "eh-US"))
+
+    (dw/leader-key-def
+      "aw"  '(wttrin :which-key "weather")))
+
+#+END_SRC
+ 
+** Notifications
+
+*** Alert
+
+[[https://github.com/jwiegley/alert][alert]] is a great library for showing notifications from other packages in a
+variety of ways.  I'd like to go deep in customization at some point soon, but
+for now I just use the normal notification bubbles.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package alert
+    :commands (alert)
+    :config
+    (setq alert-default-style 'notifications))
+
+#+END_SRC
+
+*** Sauron
+
+Sauron provides a nice interactive event log that shows you notifications you
+might have missed in the past.  I'd like to have a way to be more aware of any
+notifications I haven't seen yet, like a modeline indicator.  Probably some way
+to set that up.
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package sauron
+  :ensure t
+  :custom
+  (sauron-modules
+    '(sauron-erc sauron-org sauron-notifications))
+      ;sauron-mu4e sauron-elfeed)) ; Temporarily remove sauron-twittering
+  :config
+  (sauron-start-hidden)
+  (dw/leader-key-def
+    "an"  '(sauron-pop-to-buffer :which-key "notifications")))
+
+#+END_SRC
+
+** Miscellaneous
+
+*** Emojification
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package emojify
+    :ensure t
+    :init (global-emojify-mode))
+
+#+END_SRC
+
+*** Dashboard
+
+Displays a nice list of recent files and projects on startup.
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package dashboard
+  :ensure t
+  :config
+    (dashboard-setup-startup-hook)
+    ;(setq dashboard-startup-banner "~/.emacs.d/img/dashLogo.png")
+    (setq dashboard-items '((recents  . 5)
+                            (projects . 5)))
+    (setq dashboard-banner-logo-title ""))
+
+#+END_SRC
+
+** Inspiration
+
+[[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] has a good list of packages and themes to check out.
+
+Other dotfiles repos and blog posts for inspiration:
+
+- [[https://github.com/howardabrams/dot-files][Howard Abrams' dotfiles]]
+- [[https://github.com/daedreth/UncleDavesEmacs/blob/master/config.org][UncleDave's Emacs config]]
+- [[https://github.com/dakrone/dakrone-dotfiles][dakrone's dotfiles]]
+- [[https://github.com/jinnovation/dotemacs][jinnovation dotemacs]]
+- [[https://writequit.org/org/][writequit's config]]
+
+** Packages to Try
+
+- https://github.com/takaxp/org-tree-slide

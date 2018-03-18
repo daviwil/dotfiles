@@ -8,8 +8,15 @@ eshell/
 jabber-avatar-cache/
 jabber-history/
 thumbs/
+emojis/
+org-gcal/
+request/
+var/
+backups/
 tramp
 projectile*
 recentf
 url/cookies
 ido.last
+config.el
+smex-items

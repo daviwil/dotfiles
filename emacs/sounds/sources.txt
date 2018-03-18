@@ -1,3 +1,4 @@
 meditation_bell.wav - http://www.freesound.org/people/ryancacophony/sounds/202017/
 focus_bell.wav - http://www.freesound.org/people/JetRye/sounds/140128/
 jabber_message.wav - http://www.freesound.org/people/GameAudio/sounds/220175/
+three_beeps.wav - https://freesound.org/people/acclivity/sounds/25881/
