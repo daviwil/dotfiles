@@ -139,10 +139,14 @@ in conjunction with Evil modes.
   (use-package general :ensure t
     :config
     (general-evil-setup t)
+
     (general-create-definer dw/leader-key-def
       :states '(normal insert emacs)
       :prefix "SPC"
-      :global-prefix "C-SPC"))
+      :global-prefix "C-SPC")
+
+    (general-create-definer dw/ctrl-c-keys
+      :prefix "C-c"))
 
 #+END_SRC
 
@@ -1397,9 +1401,12 @@ Agenda items.
     (require 'evil-collection-eshell)
     (evil-collection-eshell-setup))
 
+  (dw/ctrl-c-keys
+    "e" '(eshell :which-key "eshell"))
+
   (dw/leader-key-def
-    "ase"  '(eshell :which-key "Eshell")
-    "C-SPC" '(eshell :which-key "Eshell"))
+    "ase"  '(eshell :which-key "eshell")
+    "C-SPC" '(eshell :which-key "eshell"))
 
 #+END_SRC
 
