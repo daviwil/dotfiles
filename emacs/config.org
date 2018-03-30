@@ -1153,25 +1153,6 @@ https://github.com/rust-lang/rust-mode
 
 *** Productivity
 
-**** Commenting
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package evil-nerd-commenter
-    :ensure t
-    :config
-    (progn
-      ;; Use default hotkeys, but also add CMD-/
-      (evilnc-default-hotkeys)
-      (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines)))
-
-  (dw/leader-key-def
-    :states '(normal insert emacs visual)
-    :prefix spc-leader
-    "/"  '(evilnc-comment-or-uncomment-lines :which-key "comment"))
-
-#+END_SRC
-
 **** Snippets
 
 #+BEGIN_SRC emacs-lisp
