@@ -1679,6 +1679,8 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
 *** Media
 
+**** EMMS
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package emms
@@ -1699,6 +1701,18 @@ follow using Twitter.  Also seems to be great for following subreddits like
     :config
     (require 'emms-player-mpv)
     (add-to-list 'emms-player-list 'emms-player-mpv))
+
+#+END_SRC
+
+**** Spotify
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package counsel-spotify
+  :ensure t
+  :init
+  (setq counsel-spotify-client-id "9b50922412914b6cba8aa0c9d83b46f4")
+  (setq counsel-spotify-client-secret (password-store-get "API/Spotify/daviwil-emacs-secret")))
 
 #+END_SRC
 
