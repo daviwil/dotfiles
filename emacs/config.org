@@ -1413,7 +1413,6 @@ Agenda items.
   (with-eval-after-load
     'eshell
     (setq eshell-scroll-to-bottom-on-input t)
-    (dw/set-eshell-aliases)
     (require 'evil-collection-eshell)
     (evil-collection-eshell-setup))
 
@@ -1434,17 +1433,6 @@ Custom eshell commands will go here.
   (with-eval-after-load 'esh-opt
     (setq eshell-destroy-buffer-when-process-dies t)
     (setq eshell-visual-commands '("htop" "zsh" "vim")))
-
-#+END_SRC
-
-***** Aliases
-
-#+BEGIN_SRC emacs-lisp
-
-  (defun dw/set-eshell-aliases ()
-    (eshell/alias "edit" "find-file $1")
-    (eshell/alias "vim" "find-file $1")
-    (eshell/alias "dnu" "sudo dnf update --refresh"))
 
 #+END_SRC
 

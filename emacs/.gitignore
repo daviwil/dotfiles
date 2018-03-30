@@ -4,7 +4,8 @@ auto-save-list/
 bookmarks
 elpa/
 emms/
-eshell/
+eshell/*
+!eshell/alias
 jabber-avatar-cache/
 jabber-history/
 thumbs/

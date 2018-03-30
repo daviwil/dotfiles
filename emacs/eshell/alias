@@ -1,0 +1,3 @@
+alias dnu sudo dnf update --refresh
+alias vim find-file $1
+alias edit find-file $1
