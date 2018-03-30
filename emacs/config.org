@@ -1510,7 +1510,7 @@ features it provides.  The "static center" fill mode is really awesome.
     erc-fill-function 'erc-fill-static
     erc-fill-static-center 20
     erc-track-exclude '("#twitter_daviwil")
-    erc-autojoin-channels-alist '(("freenode.net" "#emacs"))
+    erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#guile"))
     erc-quit-reason (lambda (s) (or s "Fading out..."))
     erc-modules
       '(autoaway autojoin button completion fill irccontrols keep-place
