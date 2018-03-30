@@ -647,6 +647,8 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
       ("d" "Dashboard" 
        ((agenda "")
         (todo "PROC" ((org-agenda-overriding-header "Process Tasks")))
+        (todo "NEXT"
+          ((org-agenda-overriding-header "Next Actions")))
         (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))
         (todo "TODO"
           ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
