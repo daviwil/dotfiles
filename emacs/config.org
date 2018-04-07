@@ -404,36 +404,32 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
 #+END_SRC
 
-** Better Completions with Ivy
+** Better Completions with Helm
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package smex :ensure t)
-  (use-package flx :ensure t)
-  (use-package counsel :ensure t)
+    (use-package helm
+      :ensure t
+      :config
+      (require 'helm-config)
 
-  (use-package ivy
-    :ensure t
-    :diminish ivy-mode
-    :config
-    (ivy-mode 1)
-    (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
-    (setq ivy-use-virtual-buffers nil)
-    (setq enable-recursive-minibuffers t)
-    (global-set-key "\C-s" 'swiper)
-    (global-set-key (kbd "C-c C-r") 'ivy-resume)
-    (global-set-key (kbd "M-x") 'counsel-M-x)
-    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-    (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
+      (global-set-key (kbd "M-x") 'helm-M-x)
+      (global-set-key (kbd "C-x b") 'helm-mini)
+      (global-set-key (kbd "C-x C-f") 'helm-find-files)
+      (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) 
+      (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
 
-    ;; Vim keybindings for Ivy
-    ;(require 'evil-collection-ivy)
-    ;(evil-collection-calendar-setup))
+      (setq helm-autoresize-max-height  40
+            helm-buffers-fuzzy-matching t
+            helm-recentf-fuzzy-match    t)
 
-  (dw/leader-key-def
-    "f"   '(:ignore t :which-key "files")
-    "ff"  '(counsel-find-file :which-key "open file")
-    "fr"  '(counsel-recentf :which-key "recent files"))
+      (helm-autoresize-mode 1)
+      (helm-mode 1))
+
+    (dw/leader-key-def
+      "f"   '(:ignore t :which-key "files")
+      "ff"  '(helm-find-files :which-key "open file")
+      "fr"  '(helm-recentf :which-key "recent files"))
 
 #+END_SRC
 
@@ -516,7 +512,7 @@ keeping it around for now.
   (dw/leader-key-def
     "TAB" 'buffer-flip
     "b"   '(:ignore t :which-key "buffers")
-    "bb"  '(ivy-switch-buffer :which-key "switch")
+    "bb"  '(helm-mini :which-key "switch buffer")
     "bd"  '(evil-delete-buffer :which-key "delete buffer"))
 
 #+END_SRC
@@ -576,15 +572,17 @@ for now, need to investigate the =perspective= varieties.
 
 ** Credential Management 
 
-I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords locally.  [[https://github.com/ecraven/ivy-pass/][ivy-pass]] automatically pulls
+I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords locally.  [[https://github.com/jabranham/helm-pass][helm-pass]] automatically pulls
 in [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store.el]] package which makes managing passwords much easier in
 Emacs.
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package ivy-pass :ensure t)
+(use-package helm-pass :ensure t)
 
 #+END_SRC
+
+*** TODO Set up keybindings
 
 ** Org Mode
 
