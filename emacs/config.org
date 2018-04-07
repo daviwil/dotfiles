@@ -1773,6 +1773,15 @@ follow using Twitter.  Also seems to be great for following subreddits like
       "aw"  '(wttrin :which-key "weather")))
 
 #+END_SRC
+
+*** System Package Management
+
+#+BEGIN_SRC emacs-lisp
+
+    (use-package system-packages
+      :ensure t)
+
+#+END_SRC
  
 ** Notifications
 
