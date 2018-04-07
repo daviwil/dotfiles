@@ -150,6 +150,16 @@ in conjunction with Evil modes.
 
 #+END_SRC
 
+*** Enable keychord bind with use-package
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package use-package-chords
+    :ensure t
+    :config (key-chord-mode 1))
+
+#+END_SRC
+
 *** Help Commands
 
 Define some bindings for help commands which are handy for general emacs use.
@@ -456,7 +466,40 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
 #+END_SRC
 
+*** Buffer Flipping
+
+Need to find a cleaner way to specify the bindings for =buffer-flip-map=, not
+thrilled with using =define-key= for this (even though it's the standard way in
+Emacs).  Couldn't easily figure out a way to do it with =general.el=.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package buffer-flip
+    :ensure t
+    :chords (([?S ?T] . 'buffer-flip))
+    ;:chords (([? ?\t] . 'buffer-flip))
+    :config
+    (setq buffer-flip-map
+          (let ((map (make-sparse-keymap)))
+            (define-key map (kbd "<tab>")   'buffer-flip-forward)
+            (define-key map (kbd "<backtab>") 'buffer-flip-backward)
+            (define-key map (kbd "C-g")     'buffer-flip-abort)
+            map)))
+
+    ;(key-chord-define-global [?S ?T] 'buffer-flip)
+
+    ;; This isn't working...
+    ;:bind  (:map buffer-flip-map
+    ;             ([?\t] .   buffer-flip-forward) 
+    ;             ([S-?\t] . buffer-flip-backward) 
+    ;             ("C-g" .     buffer-flip-abort)))
+
+#+END_SRC
+
 *** Helpers
+
+This may not be needed for much longer now that I'm using =buffer-flip= but
+keeping it around for now.
 
 #+BEGIN_SRC emacs-lisp
 
@@ -471,7 +514,7 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 #+BEGIN_SRC emacs-lisp
 
   (dw/leader-key-def
-    "TAB" '(switch-to-previous-buffer :which-key "swap")
+    "TAB" 'buffer-flip
     "b"   '(:ignore t :which-key "buffers")
     "bb"  '(ivy-switch-buffer :which-key "switch")
     "bd"  '(evil-delete-buffer :which-key "delete buffer"))
