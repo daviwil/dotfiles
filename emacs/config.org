@@ -160,24 +160,6 @@ in conjunction with Evil modes.
 
 #+END_SRC
 
-*** Help Commands
-
-Define some bindings for help commands which are handy for general emacs use.
-
-**** Describe
-
-#+BEGIN_SRC emacs-lisp
-
-  (dw/leader-key-def
-    "h"   '(:ignore t :which-key "help")
-    "hb"  '(counsel-descbinds :which-key "key bindings")
-    "hd"  '(:ignore t :which-key "describe")
-    "hda" '(counsel-describe-face :which-key "describe face")
-    "hdf" '(counsel-describe-function :which-key "describe function")
-    "hdv" '(counsel-describe-variable :which-key "describe variable"))
-
-#+END_SRC
-
 ** General Configuration
 
 *** User Interface
