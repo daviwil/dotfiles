@@ -142,7 +142,7 @@ in conjunction with Evil modes.
 
     (general-create-definer dw/leader-key-def
       :states '(normal insert emacs)
-      :prefix "SPC"
+      :prefix "C-SPC"
       :global-prefix "C-SPC")
 
     (general-create-definer dw/ctrl-c-keys
