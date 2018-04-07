@@ -453,12 +453,12 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package persp-mode
-  :ensure t
-  :init
-  (add-hook 'after-init-hook #'(lambda () (persp-mode 1)))
-  :config
-  (setq persp-autokill-buffer-on-remove 'kill-weak))
+;(use-package persp-mode
+;  :ensure t
+;  :init
+;  (add-hook 'after-init-hook #'(lambda () (persp-mode 1)))
+;  :config
+;  (setq persp-autokill-buffer-on-remove 'kill-weak))
 
 #+END_SRC
 
