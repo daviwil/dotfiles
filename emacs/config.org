@@ -1699,6 +1699,17 @@ not using this mode at all.
 
 #+END_SRC
 
+*** Mastodon
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package mastodon
+    :ensure t
+    :config
+    (setq mastodon-instance-url "https://mastodon.social"))
+
+#+END_SRC
+
 *** RSS
 
 **** Elfeed
