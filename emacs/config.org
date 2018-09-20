@@ -494,8 +494,8 @@ keeping it around for now.
   (dw/leader-key-def
     "TAB" 'buffer-flip
     "b"   '(:ignore t :which-key "buffers")
-    "bb"  '(helm-mini :which-key "switch buffer")
-    "bd"  '(evil-delete-buffer :which-key "delete buffer"))
+    "bb"  'helm-mini
+    "bd"  'evil-delete-buffer)
 
 #+END_SRC
 
@@ -552,7 +552,22 @@ for now, need to investigate the =perspective= varieties.
 
 #+END_SRC
 
-** Credential Management 
+** Expand Region
+
+This module is absolutely necessary for working inside of Emacs Lisp files,
+especially when trying to some parent of an expression (like a =setq=).  Makes
+tweaking Org agenda views much less annoying.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package expand-region
+    :ensure t
+    :bind (("C-;" . 'er/expand-region)
+           ("C-(" . 'er/mark-outside-pairs)))
+
+#+END_SRC
+
+** Credential Management
 
 I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords locally.  [[https://github.com/jabranham/helm-pass][helm-pass]] automatically pulls
 in [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store.el]] package which makes managing passwords much easier in
@@ -560,11 +575,15 @@ Emacs.
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package helm-pass :ensure t)
+  (use-package helm-pass :ensure t)
+
+  (dw/leader-key-def
+    "ap" '(:ignore t :which-key "pass")
+    "app" 'helm-pass
+    "api" 'password-store-insert
+    "apg" 'password-store-generate)
 
 #+END_SRC
-
-*** TODO Set up keybindings
 
 ** Org Mode
 
@@ -640,6 +659,20 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
   (defun dw/org-path (path)
     (expand-file-name path org-directory))
 
+  (setq org-journal-dir (dw/org-path "Journal/"))
+
+  (defun dw/get-todays-journal-file-name ()
+    "Gets the journal file name for today's date"
+    (interactive)
+    (let* ((journal-file-name
+             (expand-file-name
+               (format-time-string "%Y/%Y-%2m-%B.org")
+               org-journal-dir))
+           (journal-year-dir (file-name-directory journal-file-name)))
+      (if (not (file-directory-p journal-year-dir))
+        (make-directory journal-year-dir))
+      journal-file-name))
+
   (setq dw/org-inbox-path (dw/org-path "Inbox.org"))
 
   (setq org-default-notes-file dw/org-inbox-path)
@@ -648,7 +681,8 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
         `(,dw/org-inbox-path
           ,(dw/org-path "Habits.org")
           ,(dw/org-path "Calendar.org")
-          ,(dw/org-path "Projects.org")))
+          ,(dw/org-path "Projects.org")
+          ,(dw/get-todays-journal-file-name)))
 
   (setq dw/org-project-files 
     '((dw/org-path "Personal.org")
@@ -669,20 +703,21 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
   ;; Configure custom agenda views
   (setq org-agenda-custom-commands
-    '(
-      ;; Daily dashboard
-      ("d" "Dashboard" 
-       ((agenda "")
+    '(("d" "Dashboard" 
+       ((agenda "" ((org-deadline-warning-days 7)))
         (todo "PROC" ((org-agenda-overriding-header "Process Tasks")))
         (todo "NEXT"
-          ((org-agenda-overriding-header "Next Actions")))
+          ((org-agenda-overriding-header "Next Tasks")))
         (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))
         (todo "TODO"
           ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
            (org-agenda-files `(,dw/org-inbox-path))
            (org-agenda-text-search-extra-files nil)))))
 
-      ;; Active projects
+      ("n" "Next Tasks" 
+       ((todo "NEXT"
+          ((org-agenda-overriding-header "Next Tasks")))))
+
       ("p" "Active Projects"
        ((agenda "")
         (todo "ACTIVE"
@@ -690,10 +725,8 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
            (org-agenda-max-todos 5)
            (org-agenda-files org-agenda-files)))))
 
-      ;; Workflow status dashboard
       ("w" "Workflow Status"
-       (
-        (todo "WAIT"
+       ((todo "WAIT"
               ((org-agenda-overriding-header "Waiting on External")
                (org-agenda-files org-agenda-files)))
         (todo "REVIEW"
@@ -719,12 +752,12 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
         (todo "CANC"
               ((org-agenda-overriding-header "Cancelled Projects")
                (org-agenda-files org-agenda-files)))))
-        
+
       ;; Projects on hold
       ("h" tags-todo "+LEVEL=2/+HOLD"
        ((org-agenda-overriding-header "On-hold Projects")
         (org-agenda-files org-agenda-files)))
-      
+
       ;; Low-effort next actions
       ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
        ((org-agenda-overriding-header "Low Effort Tasks")
@@ -738,18 +771,21 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 #+BEGIN_SRC emacs-lisp
 
   ;; Configure common tags
-  (setq org-tag-alist (quote ((:startgroup)
-              ; Put mutually exclusive tags here
-              (:endgroup)
-              ("@errand" . ?E)
-              ("@home" . ?H)
-              ("@work" . ?W)
-              ("agenda" . ?a)
-              ("practice" ?p)
-              ("publish" . ?P)
-              ("note" . ?n)
-              ("idea" . ?i)
-              ("recurring" . ?r))))
+  (setq org-tag-alist
+    '((:startgroup)
+       ; Put mutually exclusive tags here
+       (:endgroup)
+       ("@errand" . ?E)
+       ("@home" . ?H)
+       ("@work" . ?W)
+       ("agenda" . ?a)
+       ("planning" . ?p)
+       ("publish" . ?P)
+       ("batch" . ?b)
+       ("note" . ?n)
+       ("idea" . ?i)
+       ("thinking" . ?t)
+       ("recurring" . ?r)))
 
   ;; Configure task state change tag triggers
   ;; (setq org-todo-state-tags-triggers
@@ -781,27 +817,8 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 *** Journal
 
-I use my own custom journal file format:
-
-#+BEGIN_SRC emacs-lisp
-
-  (setq org-journal-dir (dw/org-path "Journal/"))
-
-  (defun get-todays-journal-file-name ()
-    "Gets the journal file name for today's date"
-    (interactive)
-    (let* ((journal-file-name
-             (expand-file-name
-               (format-time-string "%Y/%Y-%2m-%B.org")
-               org-journal-dir))
-           (journal-year-dir (file-name-directory journal-file-name)))
-      (if (not (file-directory-p journal-year-dir))
-        (make-directory journal-year-dir))
-      journal-file-name))
-
-#+END_SRC
-
-In the future I might go back to [[https://github.com/bastibe/org-journal/][org-journal]], keeping that configuration around.
+I use my own custom journal file format based on Org datetrees.  In the future I
+might go back to [[https://github.com/bastibe/org-journal/][org-journal]], keeping that configuration around.
 
 #+BEGIN_SRC emacs-lisp
 
@@ -813,7 +830,6 @@ In the future I might go back to [[https://github.com/bastibe/org-journal/][org-
 
 #+END_SRC
 
-
 *** Capture Templates
 
 Information on template expansion can be found in the [[https://orgmode.org/manual/Template-expansion.html#Template-expansion][Org manual]].
@@ -821,42 +837,54 @@ Information on template expansion can be found in the [[https://orgmode.org/manu
 #+BEGIN_SRC emacs-lisp
 
   (setq org-capture-templates
-    `(("t" "Task" entry (file+headline ,dw/org-inbox-path "Tasks")
+    `(("t" "Tasks / Projects")
+      ("tt" "Task" entry (file+headline ,dw/org-inbox-path "Tasks")
            "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
-      ("s" "Clocked Entry Subtask" entry (clock)
+      ("ts" "Clocked Entry Subtask" entry (clock)
            "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
-      ("p" "New Project" entry (file+headline ,dw/org-inbox-path "Tasks")
+      ("tp" "New Project" entry (file+headline ,dw/org-inbox-path "Tasks")
            "* PLAN %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
-      ;; Journal capture
-      ("j" "Journal" entry (file+datetree ,(get-todays-journal-file-name))
-           "* %<%I:%M %p> - %? :journal:\n\n" :empty-lines 1)
-      ("w" "Workflows")
-      ("n" "Note" entry (file+olp+datetree ,(get-todays-journal-file-name))
-           "* %<%I:%M %p> - %K / %a :note:\n\n%?" :empty-lines 1)
-      
-      ;; Workflows
-      ;; TODO: Is there a way to make this clock a Checklist task but have a datetree note?
-      ("w" "Workflows")
-      ("we" "Checking Email" entry (file+olp+datetree ,(get-todays-journal-file-name)) 
-           "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
-      
-      ;; Interruptions
-      ("i" "Interrupts")
-      ("ii" "IM" entry (file+olp+datetree ,(get-todays-journal-file-name))
-           "* IM: %^{Sender name} :interrupt:instantmessage:\n\n    %?" :clock-in :clock-resume :empty-lines 1)
-      ("im" "Meeting" entry (file+olp+datetree ,(get-todays-journal-file-name))
-           "* Meeting: %^{Meeting description} :interrupt:meeting:\n\n    %?" :clock-in :clock-resume :empty-lines 1)
-      ("iv" "Visitor" entry (file+olp+datetree ,(get-todays-journal-file-name))
-           "* Visit from %^{Visitor name} :interrupt:visitor:\n\n    %?" :clock-in :clock-resume :empty-lines 1)
+      ("j" "Journal Entries")
+      ("jj" "Journal" entry
+           (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+           :clock-in :clock-resume
+           :empty-lines 1)
+      ("jk" "Morning Checklist" entry
+           (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           "* %<%I:%M %p> - Morning Checklist :process:\n\n- [] Fill this in! %?\n\n"
+           :clock-in :clock-resume
+           :empty-lines 1)
+      ("jm" "Meeting" entry
+           (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+           :clock-in :clock-resume
+           :empty-lines 1)
+      ("jt" "Thinking" entry
+           (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           "\n* %<%I:%M %p> - %^{Topic} :thoughts:\n\n%?\n\n"
+           :clock-in :clock-resume
+           :empty-lines 1)
+      ("jc" "Clocked Entry Notes" entry
+           (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           "* %<%I:%M %p> - %K :notes:\n\n%?"
+           :empty-lines 1)
+      ("jg" "Clocked General Task" entry
+           (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           "* %<%I:%M %p> - %^{Task description} %^g\n\n%?"
+           :clock-in :clock-resume
+           :empty-lines 1)
 
-      ;; Metrics capture
+      ("w" "Workflows")
+      ("we" "Checking Email" entry (file+olp+datetree ,(dw/get-todays-journal-file-name)) 
+           "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+
       ("m" "Metrics Capture")
       ("mw" "Weight" table-line (file+headline "~/Notes/Fitness.org" "Weight")
        "| %U | %^{Weight} | %^{Notes} |" :kill-buffer)
       ("mp" "Blood Pressure" table-line (file+headline "~/Notes/Fitness.org" "Blood Pressure")
-       "| %U | %^{Systolic} | %^{Diastolic} | %^{Notes}" :kill-buffer)
-      ))
+       "| %U | %^{Systolic} | %^{Diastolic} | %^{Notes}" :kill-buffer)))
 
 #+END_SRC
 
@@ -985,8 +1013,8 @@ https://magit.vc/manual/magit/
 
   (dw/leader-key-def
     "g"   '(:ignore t :which-key "git")
-    "gs"  '(magit-status :which-key "status")
-    "gd"  '(magit-diff-unstaged :which-key "diff unstaged"))
+    "gs"  'magit-status
+    "gd"  'magit-diff-unstaged)
 
 #+END_SRC
 
@@ -1016,12 +1044,11 @@ https://magit.vc/manual/magit/
     :diminish projectile-mode
     :config (projectile-global-mode))
 
-  (use-package counsel-projectile :ensure t)
+  (use-package helm-projectile :ensure t)
 
   (dw/leader-key-def
-    "p"   '(:ignore t :which-key "project")
-    "pf"  '(counsel-projectile-find-file :which-key "project file")
-    "pp"  '(counsel-projectile-switch-project :which-key "project list"))
+    "fp"  'helm-projectile-find-file
+    "bp"  'helm-projectile)
 
 #+END_SRC
 
@@ -1222,8 +1249,7 @@ https://github.com/rust-lang/rust-mode
 #+BEGIN_SRC emacs-lisp
 
   (dw/leader-key-def
-    "a"  '(:ignore t :which-key "apps")
-    "SPC" '(eyebrowse-switch-to-window-config-0 :which-key "shell"))
+    "a"  '(:ignore t :which-key "apps"))
 
 #+END_SRC
 
@@ -1340,9 +1366,9 @@ to capture links to emails with org-mode too.
 
   (dw/leader-key-def
     "m"  '(:ignore t :which-key "mail")
-    "mm" '(mu4e :which-key "mu4e main")
-    "mi" '(dw/go-to-inbox :which-key "inbox")
-    "ms" '(mu4e-update-mail-and-index :which-key "sync"))
+    "mm" 'mu4e
+    "mi" 'dw/go-to-inbox
+    "ms" 'mu4e-update-mail-and-index)
 
   ;; Start mu4e in the background so that it syncs mail periodically
   (let ((current-prefix-arg '(4))) (call-interactively 'mu4e))
@@ -1403,18 +1429,9 @@ Agenda items.
 
 #+END_SRC
 
-*** Shells
+*** eshell
 
-#+BEGIN_SRC emacs-lisp
-
-  (dw/leader-key-def
-    "as"  '(:ignore t :which-key "shells"))
-
-#+END_SRC
-
-**** Eshell
-
-***** Configuration
+**** Configuration
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1424,20 +1441,16 @@ Agenda items.
     (require 'evil-collection-eshell)
     (evil-collection-eshell-setup))
 
-  (dw/ctrl-c-keys
-    "e" '(eshell :which-key "eshell"))
-
   (dw/leader-key-def
-    "ase"  '(eshell :which-key "eshell")
-    "C-SPC" '(eshell :which-key "eshell"))
+    "SPC" 'eshell)
 
 #+END_SRC
 
-***** Shell Commands
+**** Shell Commands
 
 Custom eshell commands will go here.
 
-***** Visual Commands
+**** Visual Commands
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1447,7 +1460,7 @@ Custom eshell commands will go here.
 
 #+END_SRC
 
-***** Extras
+**** Extras
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1458,30 +1471,6 @@ Custom eshell commands will go here.
       (autoload 'epe-theme-lambda "eshell-prompt-extras")
       (setq eshell-highlight-prompt t
             eshell-prompt-function 'epe-theme-lambda)))
-
-#+END_SRC
-
-***** TODO References
-
-
-**** Ansi Term
-
-#+BEGIN_SRC emacs-lisp
-
-  (dw/leader-key-def
-    "ast"  '(ansi-term :which-key "ansi-term"))
-
-#+END_SRC
-
-**** Multi-Term
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package multi-term :ensure t)
-
-  (dw/leader-key-def
-    "asm"  '(ansi-term :which-key "multi-term"))
-
 
 #+END_SRC
 
@@ -1538,10 +1527,10 @@ features it provides.  The "static center" fill mode is really awesome.
     (interactive)
     (erc
        :server "127.0.0.1" :port 6667
-       :nick "daviwil" :password (password-store-get "IRC/Bitlbee"))
-    (erc
-       :server "irc.freenode.net" :port 6667
-       :nick "daviwil" :password (password-store-get "IRC/Freenode")))
+       :nick "daviwil" :password (password-store-get "IRC/Bitlbee")))
+  ;  (erc
+  ;     :server "irc.freenode.net" :port 6667
+  ;     :nick "daviwil" :password (password-store-get "IRC/Freenode")))
 
 #+END_SRC
 
@@ -1549,11 +1538,11 @@ features it provides.  The "static center" fill mode is really awesome.
 
 #+BEGIN_SRC emacs-lisp
 
-  (dw/leader-key-def
-    "ac"  '(:ignore t :which-key "chat")
-    "acb" '(erc-switch-to-buffer :which-key "chat buffers")
-    "acc" '(dw/connect-irc :which-key "connect")
-    "aca" '(erc-track-switch-buffer :which-key "active buffer"))
+  (dw/ctrl-c-keys
+    "c"  '(:ignore t :which-key "chat")
+    "cb" 'erc-switch-to-buffer
+    "cc" 'dw/connect-irc
+    "ca" 'erc-track-switch-buffer)
 
 #+END_SRC
 
