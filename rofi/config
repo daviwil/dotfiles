@@ -1,0 +1,4 @@
+rofi.combi-modi:    window,drun
+rofi.theme:         Arc-Dark
+rofi.font:          Fira Code 22
+rofi.modi:          combi
