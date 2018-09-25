@@ -16,10 +16,10 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+q kill
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+#bindsym $mod+j focus left
+#bindsym $mod+k focus down
+#bindsym $mod+l focus up
+#bindsym $mod+semicolon focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -32,6 +32,10 @@ bindsym $mod+Shift+j move left
 bindsym $mod+Shift+k move down
 bindsym $mod+Shift+l move up
 bindsym $mod+Shift+semicolon move right
+
+# move workspace
+bindsym $mod+Mod1+Left move workspace to output left
+bindsym $mod+Mod1+Right move workspace to output right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -144,17 +148,96 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# Window rules
+for_window [class="mpv$"] floating enable, sticky enable, resize set 600 px 338 px, move absolute position 1900px 1000px
+for_window [class="Pamac-manager"] floating enable border pixel 2, resize set 1700 px 1000 px, move position center
+for_window [class="Dynalist"] floating enable, resize set 1800 px 1200 px, move position center, move scratchpad, scratchpad show
+for_window [class="Atom"] border pixel 0, mark dev
+for_window [class="zoom"] floating enable
+for_window [class="Pidgin" window_role="conversation"] floating enable, resize set 1000 px 700 px, move absolute position 1500 px 700 px, move scratchpad, scratchpad show
+for_window [class="Pidgin" window_role="buddy_list"] floating enable, resize set 500 px 800 px, move absolute position 2000 px 100 px
+
 # Run the compositor and set the background
 exec --no-startup-id compton
 exec --no-startup-id nitrogen --restore
 
 # Launchers
-bindsym $mod+d exec rofi -show drun -modi drun
-bindsym $mod+space exec rofi -show combi
+bindsym $mod+d exec rofi -show drun -modi drun#run -sidebar-mode
+bindsym $mod+space exec rofi -show combi -modi combi#run -combi-modi window#drun -sidebar-mode
 bindsym $mod+Shift+space exec xfce4-popup-whiskermenu
+
+# Media control (volume is handled by XFCE)
+bindsym $mod+p exec playerctl play-pause
+bindsym $mod+bracketleft exec playerctl previous
+bindsym $mod+bracketright exec playerctl next
+
+# Jump to apps
+bindsym $mod+Control+s [class="Slack"] focus
+bindsym $mod+Control+p [class="Spotify"] focus
+bindsym $mod+Control+m [class="Geary"] focus
+bindsym $mod+Control+d [con_mark="dev"] focus
+
+# Marks
+bindsym $mod+Control+Shift+d mark dev
+
+# Scratchpad
+bindsym $mod+Shift+p move scratchpad
+bindsym $mod+Control+n [class="Dynalist"] scratchpad show
+bindsym $mod+Control+i [class="Pidgin" window_role="conversation"] scratchpad show 
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 #bar {
 #        status_command i3status
 #}
+rofi -show drun -modi drun#run -sidebar-mode
+
+# tango-jungle theme taken from here: https://github.com/okraits/j4-make-config/blob/master/themes/tango-jungle
+
+# $i3-status
+color_bad = "#A40000"
+color_degraded = "#8F5902"
+color_good = "#4E9A06"
+
+# $i3-theme-window
+# tango dark
+set $darkblue 		#204A87
+set $darkbrown		#8F5902
+set $darkgreen 		#4E9A06
+set $darkmagenta 	#5C3566
+set $darkred 		#A40000
+set $darkyellow 	#C4A000
+set $darkorange		#CE5C00
+
+# tango light
+set $lightblue 		#729FCF
+set $lightbrown		#E9B96E
+set $lightgreen 	#8AE234
+set $lightmagenta 	#AD7FA8
+set $lightred 		#EF2929
+set $lightyellow 	#FCE94F
+set $lightorange	#FCAF3E
+
+# tango normal
+set $blue 		#3465A4
+set $brown		#C17D11
+set $green 		#73D216
+set $magenta 		#75507B
+set $red 		#CC0000
+set $yellow 		#EDD400
+set $orange		#F57900
+
+# tango mono
+set $black 		#555753
+set $grey		#BABDB6
+set $white 		#EEEEEC
+set $darkblack 		#2E3436
+set $darkgrey 		#888A85
+set $darkwhite 		#D3D7CF
+
+# tango jungle <clientclass> <border> <backg> <text> <indicator>
+client.focused          $green $darkgreen $white $lightgreen
+client.focused_inactive $darkgrey $black $grey $darkgrey
+client.unfocused        $black $darkblack $grey $darkgrey
+client.urgent 		$yellow $darkyellow $white $lightyellow
+
