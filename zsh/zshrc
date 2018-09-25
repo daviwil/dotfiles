@@ -20,8 +20,6 @@ antigen bundle lein
 antigen bundle command-not-found
 
 antigen bundle zsh-users/zsh-syntax-highlighting
-
-export NVM_LAZY_LOAD=true
 antigen bundle lukechilds/zsh-nvm
 
 antigen theme dogenpunk
