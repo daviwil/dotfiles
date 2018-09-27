@@ -1,12 +1,35 @@
-" Import Pathogen
-execute pathogen#infect()
+" Specify a directory for plugins
+call plug#begin('~/.vim/plug')
 
-" Set the leader char to comma
-let mapleader = ","
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-sensible'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'itchyny/lightline.vim'
+Plug 'liuchengxu/vim-which-key'
+Plug 'liuchengxu/vim-better-default'
+
+" Themes
+Plug 'haishanh/night-owl.vim'
+Plug 'tyrannicaltoucan/vim-quantum'
+
+" Initialize plugin system
+call plug#end()
+
+" Set the leader char to space 
+let mapleader = " "
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 
 " Enable syntax highlighting
 syntax on
 filetype plugin indent on
+
+" Set theme
+set background=dark
+set termguicolors
+let g:quantum_black=1
+colorscheme quantum
+let g:lightline = { 'colorscheme': 'quantum' }
 
 " Enable search highlighting
 set hlsearch
@@ -15,42 +38,6 @@ set hlsearch
 set shiftwidth=2
 set tabstop=2
 set expandtab
-
-" Enable 256 color mode
-set t_Co=256
-
-" Make sure numbering works right with numbers plugin
-set number
-
-" Set up omnicompletion
-let g:acp_enableAtStartup = 0
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_min_syntax_length = 3
-let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-let g:neocomplcache_enable_auto_select = 1
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Neocomplcache key bindings
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-	"return neocomplcache#smart_close_popup() . "\<CR>"
-	" For no inserting <CR> key.
-	return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
-endfunction
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-" Enable airline fonts
-let g:airline_powerline_fonts = 1
-let g:Powerline_symbols = 'fancy'
-
-" Set color scheme
-set background=dark
-colorscheme wombat256mod
 
 " Move backup/swp files to .vimbackups
 silent execute '!mkdir ~/.vimbackups'
@@ -63,3 +50,5 @@ nmap <leader>gc :Gcommit<cr>
 nmap <leader>gs :Gstatus<cr>
 nmap <leader>ga :Gwrite<cr>
 
+" Enable mouse clicks to move cursor
+:set mouse=a
