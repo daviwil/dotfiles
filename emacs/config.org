@@ -913,15 +913,6 @@ documentation page.
 
 *** Pomodoro
 
-*** Protocol
-
-#+BEGIN_SRC emacs-lisp
-
-(server-start)
-(require 'org-protocol)
-
-#+END_SRC
-
 #+BEGIN_SRC emacs-lisp
 
   (use-package org-pomodoro
@@ -933,6 +924,15 @@ documentation page.
     (setq org-pomodoro-finished-sound "~/.emacs.d/sounds/meditation_bell.wav")
     (dw/leader-key-def
       "op"  '(org-pomodoro :which-key "pomodoro")))
+
+#+END_SRC
+
+*** Protocol
+
+#+BEGIN_SRC emacs-lisp
+
+(server-start)
+(require 'org-protocol)
 
 #+END_SRC
 
