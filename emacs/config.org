@@ -1305,7 +1305,8 @@ to capture links to emails with org-mode too.
 #+BEGIN_SRC emacs-lisp
 
   ;; After building/installing mu4e the .el files are here:
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+  ;;(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") ;; On Fedora
+  (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e") ;; On Manjaro / Arch
 
   (require 'mu4e)
   (require 'org-mu4e)
