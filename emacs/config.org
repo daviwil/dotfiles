@@ -900,6 +900,10 @@ Information on template expansion can be found in the [[https://orgmode.org/manu
 
 *** Block Templates
 
+These templates enable you to type things like =<el= and then hit =Tab= to expand
+the template.  More documentation can be found at the Org Mode [[https://orgmode.org/manual/Easy-templates.html][Easy Templates]]
+documentation page.
+
 #+BEGIN_SRC emacs-lisp
 
   (add-to-list 'org-structure-template-alist
