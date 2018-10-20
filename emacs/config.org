@@ -359,6 +359,24 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
 #+END_SRC
 
+*** Editing Configuration
+
+Turn on =electric-pair-mode= for quote, paren, and bracket completion.
+
+#+BEGIN_SRC emacs-lisp
+
+  (electric-pair-mode 1)
+
+#+END_SRC
+
+Use spaces instead of tabs for indentation.
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq-default indent-tabs-mode nil)
+
+#+END_SRC
+
 ** Configuration File
 
 *** Helpers
