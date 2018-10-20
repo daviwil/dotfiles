@@ -552,6 +552,16 @@ for now, need to investigate the =perspective= varieties.
 
 #+END_SRC
 
+*** Auto-sizing Windows with Zoom
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package zoom
+    :ensure t
+    :init (zoom-mode t))
+
+#+END_SRC
+
 ** Expand Region
 
 This module is absolutely necessary for working inside of Emacs Lisp files,
