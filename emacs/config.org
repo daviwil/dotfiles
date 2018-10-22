@@ -541,6 +541,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
     "wC"  '(delete-other-windows :which-key "close others")
     "ws"  '(evil-window-split  :which-key "split horiz")
     "wv"  '(evil-window-vsplit :which-key "split vert")
+    "wo"  '(other-window :which-key "other window")
 
     "wh"  '(evil-window-left  :which-key "window left")
     "wl"  '(evil-window-right :which-key "window right")
