@@ -173,13 +173,6 @@ bindsym $mod+Shift+p move scratchpad
 bindsym $mod+Control+n [class="Dynalist"] scratchpad show
 bindsym $mod+Control+i [class="Pidgin" window_role="conversation"] scratchpad show 
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-#bar {
-#        status_command i3status
-#}
-rofi -show drun -modi drun#run -sidebar-mode
-
 # tango-jungle theme taken from here: https://github.com/okraits/j4-make-config/blob/master/themes/tango-jungle
 
 # $i3-status
