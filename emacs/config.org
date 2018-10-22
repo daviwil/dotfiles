@@ -1047,7 +1047,14 @@ https://magit.vc/manual/magit/
   (dw/leader-key-def
     "g"   '(:ignore t :which-key "git")
     "gs"  'magit-status
-    "gd"  'magit-diff-unstaged)
+    "gd"  'magit-diff-unstaged
+    "gc"  'magit-checkout
+    "gb"  'magit-branch
+    "gP"  'magit-push-current
+    "gp"  'magit-pull-branch
+    "gf"  'magit-fetch
+    "gF"  'magit-fetch-all
+    "gr"  'magit-rebase)
 
 #+END_SRC
 
