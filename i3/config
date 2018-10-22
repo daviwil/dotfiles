@@ -160,6 +160,7 @@ bindsym $mod+bracketleft exec playerctl previous
 bindsym $mod+bracketright exec playerctl next
 
 # Jump to apps
+bindsym $mod+Control+e [class="Emacs"] focus
 bindsym $mod+Control+s [class="Slack"] focus
 bindsym $mod+Control+p [class="Spotify"] focus
 bindsym $mod+Control+m [class="Geary"] focus
