@@ -1040,10 +1040,6 @@ https://magit.vc/manual/magit/
     :ensure t
     :custom (global-magit-file-mode t))
 
-  ;(use-package magit-gh-pulls
-  ;  :ensure t
-  ;  :init (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls))
-
   (dw/leader-key-def
     "g"   '(:ignore t :which-key "git")
     "gs"  'magit-status
@@ -1055,6 +1051,21 @@ https://magit.vc/manual/magit/
     "gf"  'magit-fetch
     "gF"  'magit-fetch-all
     "gr"  'magit-rebase)
+
+#+END_SRC
+
+**** Magithub
+
+https://github.com/vermiculus/magithub/blob/master/magithub.org
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package magithub
+    :ensure t
+    :after magit
+    :config
+    (magithub-feature-autoinject t)
+    (setq magithub-clone-default-directory "~/Projects/Code"))
 
 #+END_SRC
 
