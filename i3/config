@@ -150,8 +150,8 @@ exec --no-startup-id compton
 exec --no-startup-id nitrogen --restore
 
 # Launchers
-bindsym $mod+d exec rofi -show drun -modi drun#run -sidebar-mode
-bindsym $mod+space exec rofi -show combi -modi combi#run -combi-modi window#drun -sidebar-mode
+bindsym $mod+d exec "rofi -show drun -modi drun,run -sidebar-mode"
+bindsym $mod+space exec "rofi -show combi -modi combi,run -combi-modi window,drun -sidebar-mode"
 bindsym $mod+Shift+space exec xfce4-popup-whiskermenu
 
 # Media control (volume is handled by XFCE)
