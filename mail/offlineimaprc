@@ -23,7 +23,8 @@ oauth2_client_secret_eval = get_pass("API/Google/daviwil-emacs-secret")
 oauth2_refresh_token_eval = get_pass("API/Google/daviwil-emacs-refresh")
 ssl = yes
 starttls = no
-sslcacertfile = /etc/ssl/certs/ca-bundle.crt
+# sslcacertfile = /etc/ssl/certs/ca-bundle.crt  # On Fedora
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 realdelete = no
 nametrans = lambda f: f.replace('[Gmail]/', '') if f.startswith('[Gmail]/') else f
 
@@ -46,7 +47,8 @@ remotepasseval = get_pass("Mail/Outlook/david-at-daviwil")
 remoteport = 993
 auth_mechanisms = GSSAPI, CRAM-MD5, PLAIN, LOGIN
 ssl = yes
-sslcacertfile = /etc/ssl/certs/ca-bundle.crt
+# sslcacertfile = /etc/ssl/certs/ca-bundle.crt  # On Fedora
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 realdelete = no
 folderfilter = lambda folder: folder not in [
 	'Deleted Items',
