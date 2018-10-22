@@ -16,6 +16,9 @@ Plug 'tyrannicaltoucan/vim-quantum'
 " Initialize plugin system
 call plug#end()
 
+" Prevent vim-better-default from wrecking basic keybindings like 'Y'
+let g:vim_better_default_basic_key_mapping = 0
+
 " Set the leader char to space 
 let mapleader = " "
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
