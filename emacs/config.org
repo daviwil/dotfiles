@@ -1075,13 +1075,15 @@ https://magit.vc/manual/magit/
   (use-package projectile
     :ensure t
     :diminish projectile-mode
-    :config (projectile-global-mode))
+    :config (projectile-global-mode)
+    :init (setq projectile-project-search-path '("~/Projects/Code"))
 
   (use-package helm-projectile :ensure t)
 
   (dw/leader-key-def
-    "fp"  'helm-projectile-find-file
-    "bp"  'helm-projectile)
+    "pf"  'helm-projectile-find-file
+    "ps"  'helm-projectile-switch-project
+    "pp"  'helm-projectile)
 
 #+END_SRC
 
