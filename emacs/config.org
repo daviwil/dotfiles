@@ -1077,12 +1077,12 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
     :ensure t
     :config
       (global-git-gutter-mode +1)
-      (setq git-gutter:modified-sign " ")
-      (setq git-gutter:added-sign " ")
-      (setq git-gutter:deleted-sign " ")
-      (set-face-background 'git-gutter:modified "yellow")
-      (set-face-background 'git-gutter:added "green")
-      (set-face-background 'git-gutter:deleted "red"))
+      (setq git-gutter:modified-sign "≡")
+      (setq git-gutter:added-sign "≡")
+      (setq git-gutter:deleted-sign "≡")
+      (set-face-foreground 'git-gutter:modified "yellow")
+      (set-face-foreground 'git-gutter:added "green")
+      (set-face-foreground 'git-gutter:deleted "red"))
 
 
 #+END_SRC
