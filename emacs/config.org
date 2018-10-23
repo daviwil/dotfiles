@@ -237,7 +237,6 @@ A nice gallery of Emacs themes can be found at https://emacsthemes.com/.
 
   (load-theme 'twilight-anti-bright)
 
-  ;(load-theme 'tango-dark)
   ;; (use-package color-theme-sanityinc-tomorrow
   ;;   :ensure t
   ;;   :config
@@ -1099,7 +1098,7 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
     :ensure t
     :diminish projectile-mode
     :config (projectile-global-mode)
-    :init (setq projectile-project-search-path '("~/Projects/Code"))
+    :init (setq projectile-project-search-path '("~/Projects/Code")))
 
   (use-package helm-projectile :ensure t)
 
@@ -1234,7 +1233,6 @@ https://github.com/rust-lang/rust-mode
     :ensure t
     :config
     (defun dw/set-markdown-header-font-sizes ()
-
       (dolist (face '((markdown-header-face-1 . 1.2)
                       (markdown-header-face-2 . 1.1)
                       (markdown-header-face-3 . 1.0)
@@ -1659,7 +1657,7 @@ I like the position of the mode line tracking better than circe.
 
 #+END_SRC
 
-***** Refernece / Things to try
+***** Reference / Things to try
 
 - https://www.emacswiki.org/emacs/rcirc
 - https://github.com/aaron-em/rcirc-styles.el
