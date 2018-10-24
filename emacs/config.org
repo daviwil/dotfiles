@@ -1093,6 +1093,8 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
 
 *** Projectile
 
+**** Initial Setup
+
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
@@ -1106,6 +1108,23 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
     "pf"  'helm-projectile-find-file
     "ps"  'helm-projectile-switch-project
     "pp"  'helm-projectile)
+
+#+END_SRC
+
+**** Project Configurations
+
+This section contains project configurations for specific projects that I can't
+drop a =.dir-locals.el= file into.  Documentation on this approach can be found in
+the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-Variables.html][Emacs manual]].
+
+#+BEGIN_SRC emacs-lisp
+
+  (dir-locals-set-class-variables 'Atom
+    `((nil . ((projectile-project-name . "Atom")
+              (projectile-project-compilation-dir . nil)
+              (projectile-project-compilation-cmd . "script/build")))))
+
+  (dir-locals-set-directory-class (expand-file-name "~/Projects/Code/atom") 'Atom)
 
 #+END_SRC
 
