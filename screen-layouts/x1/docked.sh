@@ -5,3 +5,5 @@ i3-msg -q "workspace --no-auto-back-and-forth number 1; move workspace to output
 i3-msg -q "workspace --no-auto-back-and-forth number 2; move workspace to output primary; workspace back_and_forth"
 i3-msg -q "workspace --no-auto-back-and-forth number 3; move workspace to output primary; workspace back_and_forth"
 i3-msg -q "workspace --no-auto-back-and-forth number 5; move workspace to output primary; workspace back_and_forth"
+
+nitrogen --restore
