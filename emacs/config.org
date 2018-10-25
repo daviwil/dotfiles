@@ -1101,18 +1101,22 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
 **** Initial Setup
 
 #+BEGIN_SRC emacs-lisp
+
   (use-package projectile
     :ensure t
     :diminish projectile-mode
     :config (projectile-global-mode)
-    :init (setq projectile-project-search-path '("~/Projects/Code")))
+    :init
+    (setq projectile-project-search-path '("~/Projects/Code"))
+    (setq projectile-switch-project-action #'projectile-dired))
 
   (use-package helm-projectile :ensure t)
 
   (dw/leader-key-def
     "pf"  'helm-projectile-find-file
     "ps"  'helm-projectile-switch-project
-    "pp"  'helm-projectile)
+    "pp"  'helm-projectile
+    "pd"  'projectile-dired)
 
 #+END_SRC
 
