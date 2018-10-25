@@ -1085,6 +1085,7 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
     :ensure t
     :config
       (global-git-gutter-mode +1)
+      (setq git-gutter:update-interval 2)
       (setq git-gutter:modified-sign "≡")
       (setq git-gutter:added-sign "≡")
       (setq git-gutter:deleted-sign "≡")
