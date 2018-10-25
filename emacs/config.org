@@ -1520,11 +1520,20 @@ Agenda items.
 
 #+BEGIN_SRC emacs-lisp
 
-  (with-eval-after-load
-    'eshell
+  (use-package exec-path-from-shell
+    :ensure t
+    :init
+    (setq exec-path-from-shell-check-startup-files nil)
+    :config
+    (when (memq window-system '(mac ns x))
+      (exec-path-from-shell-initialize)))
+
+  (defun dw/eshell-mode-config-hook ()
     (setq eshell-scroll-to-bottom-on-input t)
     (require 'evil-collection-eshell)
     (evil-collection-eshell-setup))
+
+  (add-hook 'eshell-mode-hook 'dw/eshell-mode-config-hook)
 
   (dw/leader-key-def
     "SPC" 'eshell)
