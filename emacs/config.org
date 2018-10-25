@@ -581,7 +581,11 @@ for now, need to investigate the =perspective= varieties.
 
   (use-package zoom
     :ensure t
-    :init (zoom-mode t))
+    :init (zoom-mode t)
+    :config
+    ;; Use the golden ratio for sizing
+    (custom-set-variables
+      '(zoom-size '(0.618 . 0.618))))
 
 #+END_SRC
 
