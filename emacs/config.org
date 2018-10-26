@@ -1285,6 +1285,7 @@ https://github.com/rust-lang/rust-mode
   (use-package markdown-mode
     :ensure t
     :config
+    (setq markdown-command "marked")
     (defun dw/set-markdown-header-font-sizes ()
       (dolist (face '((markdown-header-face-1 . 1.2)
                       (markdown-header-face-2 . 1.1)
