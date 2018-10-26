@@ -58,6 +58,7 @@ it may turn out that I eschew Evil for everything but programming modes...
 
 Some tips can be found here:
 
+- https://github.com/noctuid/evil-guide
 - https://nathantypanski.com/blog/2014-08-03-a-vim-like-emacs-config.html
 
 #+BEGIN_SRC emacs-lisp
@@ -77,10 +78,14 @@ Some tips can be found here:
 
   (use-package evil
     :ensure t
-    :init (setq evil-want-integration nil)  ; Needed for evil-collection?
+    :init
+    (setq evil-want-integration nil)
+    (setq evil-want-keybinding t)
     :config
     (add-hook 'evil-mode-hook 'dw/evil-hook)
     (evil-mode 1)
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
     (evil-set-initial-state 'messages-buffer-mode 'normal)
     (evil-set-initial-state 'dashboard-mode 'normal))
 
@@ -91,6 +96,10 @@ Some tips can be found here:
     (evil-collection-outline-bind-tab-p nil)
     :config
     (evil-collection-init))
+
+  (use-package org-evil
+    :ensure t
+    :after evil)
 
 #+END_SRC
 
