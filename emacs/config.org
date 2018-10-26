@@ -1062,6 +1062,9 @@ https://magit.vc/manual/magit/
     "gs"  'magit-status
     "gd"  'magit-diff-unstaged
     "gc"  'magit-checkout
+    "gl"   '(:ignore t :which-key "log")
+    "glc" 'magit-log-current
+    "glf" 'magit-log-buffer-file
     "gb"  'magit-branch
     "gP"  'magit-push-current
     "gp"  'magit-pull-branch
