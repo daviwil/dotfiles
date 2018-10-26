@@ -1127,8 +1127,21 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
   (dw/leader-key-def
     "pf"  'helm-projectile-find-file
     "ps"  'helm-projectile-switch-project
+    "pF"  'helm-projectile-ag
     "pp"  'helm-projectile
     "pd"  'projectile-dired)
+
+#+END_SRC
+
+**** Searching with =ag=
+
+This package needs The Silver Searcher to be installed on the local machine.  On
+Manjaro/Arch this is the =the_silver_searcher= package.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package helm-ag
+    :ensure t)
 
 #+END_SRC
 
