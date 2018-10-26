@@ -1191,6 +1191,17 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
 **** TypeScript and JavaScript
 
+Set up nvm so that we can manage Node versions
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package nvm
+    :ensure t)
+
+#+END_SRC
+
+Configure TypeScript and JavaScript language modes
+
 #+BEGIN_SRC emacs-lisp
 
   (defun setup-tide-mode ()
