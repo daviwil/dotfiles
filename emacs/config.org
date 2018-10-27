@@ -397,6 +397,17 @@ Use spaces instead of tabs for indentation.
 
 #+END_SRC
 
+*** Commenting Lines
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package evil-nerd-commenter
+    :ensure t
+    :config
+    (global-set-key (kbd "M-/") 'evilnc-comment-or-uncomment-lines))
+
+#+END_SRC
+
 ** Configuration File
 
 *** Helpers
