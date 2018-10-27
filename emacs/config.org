@@ -1602,6 +1602,17 @@ Custom eshell commands will go here.
 
 #+END_SRC
 
+**** Better Colors
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package eterm-256color
+    :ensure t
+    :config
+    (add-hook 'term-mode-hook #'eterm-256color-mode))
+
+#+END_SRC
+
 **** Extras
 
 #+BEGIN_SRC emacs-lisp
