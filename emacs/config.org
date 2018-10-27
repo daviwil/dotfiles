@@ -80,7 +80,7 @@ Some tips can be found here:
     :ensure t
     :init
     (setq evil-want-integration nil)
-    (setq evil-want-keybinding t)
+    (setq evil-want-keybinding nil)
     :config
     (add-hook 'evil-mode-hook 'dw/evil-hook)
     (evil-mode 1)
