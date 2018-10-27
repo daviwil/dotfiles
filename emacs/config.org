@@ -436,6 +436,7 @@ Use spaces instead of tabs for indentation.
     "fd"  '(:ignore :which-key "dotfiles")
     "fdi" '((lambda () (interactive) (find-file "~/.dotfiles/i3/config")) :which-key "i3")
     "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/vim/vimrc")) :which-key "vimrc")
+    "fdq" '((lambda () (interactive) (find-file "~/.dotfiles/qutebrowser/config.py")) :which-key "vimrc")
     "fdz" '((lambda () (interactive) (find-file "~/.dotfiles/zsh/zshrc")) :which-key "zsh"))
 
 #+END_SRC
