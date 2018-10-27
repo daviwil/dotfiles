@@ -234,33 +234,45 @@ Enable line numbers and customize their format.
 
 A nice gallery of Emacs themes can be found at https://emacsthemes.com/.
 
+So far my favorite theme is =twilight-anti-bright= but I also like the following:
+
+- =spacegray=: Perhaps my second favorite for now, trying it out for a bit to see
+  if it's "the one."
+- =[[https://github.com/cpaulik/emacs-material-theme/][material]]=: Good colors, especially for org-mode headers and the modeline.  Wish
+  it was more bluish, though.
+- =nord=: Beautiful bluish/greenish theme.  Not the perfect amount of contrast,
+  but still really nice.
+- =color-theme-sanityinc-tomorrow=: Nice calm themes with good colors.  I like
+  =dark= and =eighties.=  Syntax hightlight leaves a little to be desired, though.
+- =badger=: Nice colors for a darker theme, but perhaps too dark?
+- =[[https://emacsthemes.com/themes/noctilux-theme.html][noctilux]]=: Nice colors but the use of red in some places is jarring.
+
+Close, but no cigar:
+
+- =arjen-grey-theme=: Looks really nice, but not enough contrast or saturation for
+  my taste.
+- =dakrone=: Decent dark theme, but not crazy about the colors.
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package twilight-anti-bright-theme :ensure t :defer t)
+  (use-package material-theme :ensure t :defer t)
   (use-package badger-theme :ensure t :defer t)
   (use-package spacegray-theme :ensure t :defer t)
-  (use-package dakrone-theme :ensure t :defer t)
   (use-package nord-theme :ensure t :defer t)
   (use-package noctilux-theme :ensure t :defer t)
+  (use-package zerodark-theme :ensure t :defer t) ; Also: (zerodark-setup-modeline-format)
   (use-package color-theme-sanityinc-tomorrow :ensure t :defer t)
 
-  (load-theme 'twilight-anti-bright)
-
-  ;; (use-package color-theme-sanityinc-tomorrow
-  ;;   :ensure t
-  ;;   :config
-  ;;   (progn
-  ;;     (color-theme-sanityinc-tomorrow-eighties)))
+  ;(load-theme 'twilight-anti-bright)
+  ;(load-theme 'nord t)
+  ;(color-theme-sanityinc-tomorrow-night)
+  (load-theme 'spacegray t)
 
 #+END_SRC
 
 Themes to try:
 
-- https://emacsthemes.com/themes/arjen-grey-theme.html
-- https://emacsthemes.com/themes/noctilux-theme.html
-- https://emacsthemes.com/themes/seti-theme.html
-- https://emacsthemes.com/themes/sanityinc-tomorrow-themes.html
-- https://emacsthemes.com/themes/soft-charcoal-theme.html
 - https://emacsthemes.com/themes/spacegray-theme.html
 - https://github.com/hlissner/emacs-doom-themes/tree/screenshots
 - http://color.smyck.org/
