@@ -1121,7 +1121,7 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
     :diminish projectile-mode
     :config (projectile-global-mode)
     :init
-    (setq projectile-project-search-path '("~/Projects/Code"))
+    (setq projectile-project-search-path '("~/Projects/Code" "~/Projects/Work"))
     (setq projectile-switch-project-action #'projectile-dired))
 
   (use-package helm-projectile :ensure t)
