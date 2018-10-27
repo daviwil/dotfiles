@@ -286,7 +286,7 @@ Different platforms need different default font sizes, and
   ;; Set the font face based on platform
   (on-platform-do
    ((windows cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
-    (osx (set-face-attribute 'default nil :font "Fira Mono" :height 180))
+    (osx (set-face-attribute 'default nil :font "Fira Mono" :height 170))
     (linux (set-face-attribute 'default nil :font "Fira Mono" :height 130)))
 
 #+END_SRC
