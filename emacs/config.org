@@ -236,14 +236,14 @@ A nice gallery of Emacs themes can be found at https://emacsthemes.com/.
 
 So far my favorite theme is =twilight-anti-bright= but I also like the following:
 
-- =spacegray=: Perhaps my second favorite for now, trying it out for a bit to see
+- =[[https://emacsthemes.com/themes/spacegray-theme.html][spacegray]]=: Perhaps my second favorite for now, trying it out for a bit to see
   if it's "the one."
 - =[[https://github.com/cpaulik/emacs-material-theme/][material]]=: Good colors, especially for org-mode headers and the modeline.  Wish
   it was more bluish, though.
 - =nord=: Beautiful bluish/greenish theme.  Not the perfect amount of contrast,
   but still really nice.
 - =color-theme-sanityinc-tomorrow=: Nice calm themes with good colors.  I like
-  =dark= and =eighties.=  Syntax hightlight leaves a little to be desired, though.
+  =dark= and =eighties=. Syntax hightlight leaves a little to be desired, though.
 - =badger=: Nice colors for a darker theme, but perhaps too dark?
 - =[[https://emacsthemes.com/themes/noctilux-theme.html][noctilux]]=: Nice colors but the use of red in some places is jarring.
 
@@ -273,18 +273,9 @@ Close, but no cigar:
 
 Themes to try:
 
-- https://emacsthemes.com/themes/spacegray-theme.html
+- https://github.com/jordonbiondo/ample-theme
+- https://github.com/gchp/flatland-emacs
 - https://github.com/hlissner/emacs-doom-themes/tree/screenshots
-- http://color.smyck.org/
-
-**** Bindings
-
-#+BEGIN_SRC emacs-lisp
-
-  (dw/leader-key-def
-    "tt" '(counsel-load-theme :which-key "choose theme"))
-
-#+END_SRC
 
 *** Font
 
@@ -379,7 +370,43 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
 #+END_SRC
 
-*** Editing Configuration
+*** Auto-saving
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package super-save
+    :ensure t
+    :diminish super-save-mode
+    :config
+    (super-save-mode +1)
+    (setq super-save-auto-save-when-idle t))
+
+#+END_SRC
+
+*** Focusing Sections
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package focus
+    :ensure t)
+
+#+END_SRC
+
+*** UI Toggles
+
+#+BEGIN_SRC emacs-lisp
+
+  (dw/leader-key-def
+    "t"  '(:ignore :which-key "toggles")
+    "tw" 'whitespace-mode
+    "tf" 'focus-mode
+    "tt" '(counsel-load-theme :which-key "choose theme"))
+
+#+END_SRC
+
+** Editing Configuration
+
+*** Bracket and quote pair completion
 
 Turn on =electric-pair-mode= for quote, paren, and bracket completion.
 
@@ -405,6 +432,42 @@ Use spaces instead of tabs for indentation.
     :ensure t
     :config
     (global-set-key (kbd "M-/") 'evilnc-comment-or-uncomment-lines))
+
+#+END_SRC
+
+*** Automatically clean whitespace
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; This configuration seems to work but might need tweaking
+  (setq whitespace-action '(auto-cleanup))
+  (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))
+  (global-whitespace-mode)
+
+#+END_SRC
+
+*** Use Parinfer for Lispy languages
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package parinfer
+    :ensure t
+    :init
+    (progn
+      (setq parinfer-extensions
+            '(defaults       ; should be included.
+              pretty-parens  ; different paren styles for different modes.
+              evil           ; If you use Evil.
+              smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+              smart-yank))   ; Yank behavior depend on mode.
+      (add-hook 'clojure-mode-hook #'parinfer-mode)
+      (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
+      (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+      (add-hook 'scheme-mode-hook #'parinfer-mode)
+      (add-hook 'lisp-mode-hook #'parinfer-mode))
+
+    (dw/leader-key-def
+      "tp" 'parinfer-toggle-mode))
 
 #+END_SRC
 
@@ -453,7 +516,7 @@ Use spaces instead of tabs for indentation.
       (global-set-key (kbd "M-x") 'helm-M-x)
       (global-set-key (kbd "C-x b") 'helm-mini)
       (global-set-key (kbd "C-x C-f") 'helm-find-files)
-      (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) 
+      (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
       (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
 
       (setq helm-autoresize-max-height  40
@@ -509,7 +572,7 @@ Emacs).  Couldn't easily figure out a way to do it with =general.el=.
 
   (use-package buffer-flip
     :ensure t
-    :chords (([?S ?T] . 'buffer-flip))
+    ;:chords (([?S ?T] . 'buffer-flip))
     ;:chords (([? ?\t] . 'buffer-flip))
     :config
     (setq buffer-flip-map
@@ -523,13 +586,21 @@ Emacs).  Couldn't easily figure out a way to do it with =general.el=.
 
     ;; This isn't working...
     ;:bind  (:map buffer-flip-map
-    ;             ([?\t] .   buffer-flip-forward) 
-    ;             ([S-?\t] . buffer-flip-backward) 
+    ;             ([?\t] .   buffer-flip-forward)
+    ;             ([S-?\t] . buffer-flip-backward)
     ;             ("C-g" .     buffer-flip-abort)))
 
 #+END_SRC
 
 *** Helpers
+
+Simplify new buffer creation:
+
+#+BEGIN_SRC emacs-lisp
+
+
+
+#+END_SRC
 
 This may not be needed for much longer now that I'm using =buffer-flip= but
 keeping it around for now.
@@ -692,7 +763,7 @@ everything in my life.
 
     (add-hook 'org-mode-hook 'dw/do-org-hooks)
 
-    (setq org-modules 
+    (setq org-modules
       '(org-crypt
         org-habit
         org-bookmark
@@ -766,7 +837,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
           ,(dw/org-path "Projects.org")
           ,(dw/get-todays-journal-file-name)))
 
-  (setq dw/org-project-files 
+  (setq dw/org-project-files
     '((dw/org-path "Personal.org")
       (dw/org-path "Projects.org")
       (dw/org-path "Work.org")
@@ -785,7 +856,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
   ;; Configure custom agenda views
   (setq org-agenda-custom-commands
-    '(("d" "Dashboard" 
+    '(("d" "Dashboard"
        ((agenda "" ((org-deadline-warning-days 7)))
         (todo "PROC" ((org-agenda-overriding-header "Process Tasks")))
         (todo "NEXT"
@@ -796,7 +867,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
            (org-agenda-files `(,dw/org-inbox-path))
            (org-agenda-text-search-extra-files nil)))))
 
-      ("n" "Next Tasks" 
+      ("n" "Next Tasks"
        ((todo "NEXT"
           ((org-agenda-overriding-header "Next Tasks")))))
 
@@ -959,7 +1030,7 @@ Information on template expansion can be found in the [[https://orgmode.org/manu
            :empty-lines 1)
 
       ("w" "Workflows")
-      ("we" "Checking Email" entry (file+olp+datetree ,(dw/get-todays-journal-file-name)) 
+      ("we" "Checking Email" entry (file+olp+datetree ,(dw/get-todays-journal-file-name))
            "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
 
       ("m" "Metrics Capture")
@@ -1039,8 +1110,8 @@ documentation page.
                                )))
 
   (dw/leader-key-def
-    "c"  '(:ignore t :which-key "calendar")
-    "cs" '(org-gcal-fetch :which-key "sync"))
+    "ac"  '(:ignore t :which-key "calendar")
+    "acs" '(org-gcal-fetch :which-key "sync"))
 
 #+END_SRC
 
@@ -1063,7 +1134,7 @@ documentation page.
 *** Addons to Try
 
 - The excellent [[https://github.com/fniessen/org-html-themes][ReadTheOrg]] HTML export theme, great for [[http://ivanmalison.github.io/dotfiles/][Emacs configs]].
-- [[https://melpa.org/#/ox-reveal][Export to Reveal.js]] 
+- [[https://melpa.org/#/ox-reveal][Export to Reveal.js]]
 - [[https://melpa.org/#/ox-gfm][Export to GitHub Flavored Markdown]]
 - [[https://melpa.org/#/ox-twbs][Export to Twitter Bootstrap]]
 - [[https://melpa.org/#/org-sync][Org Sync for external issue trackers]]
@@ -1080,7 +1151,7 @@ documentation page.
 ** Development
 
 Configuration for various programming languages and dev tools that I use.
- 
+
 *** Git
 
 **** Magit
@@ -1139,6 +1210,8 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
       (setq git-gutter:modified-sign "≡")
       (setq git-gutter:added-sign "≡")
       (setq git-gutter:deleted-sign "≡")
+      (setq git-gutter:separator-sign " ")
+      (setq git-gutter:visual-line t)
       (set-face-foreground 'git-gutter:modified "yellow")
       (set-face-foreground 'git-gutter:added "green")
       (set-face-foreground 'git-gutter:deleted "red"))
@@ -1227,6 +1300,26 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
 #+END_SRC
 
+**** Clojure
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package cider
+    :ensure t
+    :config
+    (evil-collection-cider-setup))
+
+  (use-package helm-cider
+    :ensure t
+    :config
+    (helm-cider-mode 1))
+
+  (dw/leader-key-def
+    "l"  '(:ignore t :which-key "languages")
+    "lc" '(:ignore t :which-key "clojure"))
+
+#+END_SRC
+
 **** TypeScript and JavaScript
 
 Set up nvm so that we can manage Node versions
@@ -1265,9 +1358,25 @@ Configure TypeScript and JavaScript language modes
     (add-hook 'javascript-mode-hook #'setup-tide-mode))
 
   (use-package js2-mode
-    :ensure t)
+    :ensure t
+    :config
+    ;; Use js2-mode for JavaScript files
+    (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+    (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
 
-  (setq js-indent-level 2)
+    ;; Don't use built-in syntax checking
+    (setq js2-mode-show-strict-warnings nil)
+
+    ;; Set up proper indentation in JavaScript files
+    (add-hook 'js2-mode-hook
+      (setq js-indent-level 2)
+      (setq evil-shift-width js-indent-level)
+      (setq tab-width 2)))
+
+  (use-package indium
+    :ensure t
+    :config
+    (add-hook 'js-mode-hook #'indium-interaction-mode))
 
   ;(use-package lsp-javascript-typescript
   ;  :ensure t
@@ -1278,7 +1387,15 @@ Configure TypeScript and JavaScript language modes
   ;    (add-hook 'js-mode-hook #'lsp-typescript-enable)
   ;    (add-hook 'js2-mode-hook #'lsp-typescript-enable)))
 
-  (use-package nvm
+#+END_SRC
+
+**** CoffeeScript
+
+Because there's still a little bit in the Atom codebase.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package coffee-mode
     :ensure t)
 
 #+END_SRC
@@ -1568,7 +1685,7 @@ Useful mu4e manual pages:
 
 - [[https://www.djcbsoftware.nl/code/mu/mu4e/MSGV-Keybindings.html#MSGV-Keybindings][Key bindings]]
 - [[https://www.djcbsoftware.nl/code/mu/mu4e/Org_002dmode-links.html#Org_002dmode-links][org-mode integration]]
-  
+
 Here's some info on using [[https://hobo.house/2017/07/17/using-offlineimap-with-the-gmail-imap-api/][offlineimap with Gmail]].
 
 *** Calendar
@@ -1667,6 +1784,8 @@ Custom eshell commands will go here.
 
 *** multi-term
 
+Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/][here]].
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package multi-term
@@ -1680,7 +1799,8 @@ Custom eshell commands will go here.
           (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next)))))
 
   (dw/leader-key-def
-    "at" 'multi-term)
+    "at"    'multi-term
+    "C-SPC" 'multi-term-next)
 
 #+END_SRC
 
@@ -1729,8 +1849,8 @@ features it provides.  The "static center" fill mode is really awesome.
    "If we're on the bitlbee server, send the identify command to the &bitlbee channel."
    (when (and (string= "127.0.0.1" erc-session-server)
               (string= "&bitlbee" (buffer-name)))
-     (erc-message "PRIVMSG" (format "%s identify %s" 
-                                    (erc-default-target) 
+     (erc-message "PRIVMSG" (format "%s identify %s"
+                                    (erc-default-target)
                                     (password-store-get "IRC/Bitlbee")))))
 
   (defun dw/connect-irc ()
@@ -1820,7 +1940,7 @@ I like the position of the mode line tracking better than circe.
 - https://www.emacswiki.org/emacs/rcircAutoFillColumn
 - https://www.emacswiki.org/emacs/rcircAutoAuthentication
 - https://www.emacswiki.org/emacs/rcircSmiley
-  
+
 **** Slack
 
 I'd love to use this package but it's pretty flaky.  Too bad Slack shut down
@@ -1974,7 +2094,7 @@ follow using Twitter.  Also seems to be great for following subreddits like
       :ensure t)
 
 #+END_SRC
- 
+
 ** Notifications
 
 *** Alert
