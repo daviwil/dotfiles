@@ -1097,7 +1097,7 @@ https://magit.vc/manual/magit/
     "g"   '(:ignore t :which-key "git")
     "gs"  'magit-status
     "gd"  'magit-diff-unstaged
-    "gc"  'magit-checkout
+    "gc"  'magit-branch-or-checkout
     "gl"   '(:ignore t :which-key "log")
     "glc" 'magit-log-current
     "glf" 'magit-log-buffer-file
