@@ -17,6 +17,9 @@ stty -ixon
 # Make sure directory colors are inherited from the theme
 eval "$(dircolors -b)"
 
+# Edit files in Emacs
+edit () { emacsclient -n $* }
+
 antigen use oh-my-zsh
 
 antigen bundle git
@@ -29,10 +32,12 @@ antigen bundle command-not-found
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle lukechilds/zsh-nvm
 
+# Config options: https://github.com/denysdovhan/spaceship-prompt/blob/master/docs/Options.md
 export SPACESHIP_TIME_SHOW="true"
 export SPACESHIP_TIME_COLOR="060"
 export SPACESHIP_TIME_12HR="true"
 export SPACESHIP_TIME_PREFIX="• "
+export SPACESHIP_EXEC_TIME_PREFIX="• took "
 export SPACESHIP_PROMPT_DEFAULT_PREFIX="• "
 export SPACESHIP_GIT_PREFIX="• "
 export SPACESHIP_PACKAGE_SYMBOL=""
@@ -42,6 +47,7 @@ export SPACESHIP_HOST_SHOW="always"
 export SPACESHIP_DIR_PREFIX=" "
 export SPACESHIP_HOST_PREFIX=""
 export SPACESHIP_HOST_SUFFIX=" ॐ"
+export SPACESHIP_RUBY_SYMBOL=""
 export SPACESHIP_CHAR_SYMBOL="λ "
 export SPACESHIP_PROMPT_ORDER=(
   user          # Username section
@@ -82,3 +88,6 @@ antigen apply
 # If not running interactively, do not do anything
 #[[ $- != *i* ]] && return
 #[[ -z "$TMUX" ]] && exec tmux
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
