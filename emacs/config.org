@@ -1665,6 +1665,25 @@ Custom eshell commands will go here.
 
 #+END_SRC
 
+*** multi-term
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package multi-term
+    :ensure t
+    :config
+    (setq multi-term-program "/bin/zsh")
+    (setq term-buffer-maximum-size 10000)
+    (add-hook 'term-mode-hook
+        (lambda ()
+          (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
+          (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next)))))
+
+  (dw/leader-key-def
+    "at" 'multi-term)
+
+#+END_SRC
+
 *** Chat
 
 **** ERC
