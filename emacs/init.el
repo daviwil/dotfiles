@@ -1,11 +1,12 @@
 ;; Initialize package sources
 (require 'package)
 
-(setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-                         ("org" . "http://orgmode.org/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")))
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")))
 
-(unless package-archive-contents 
+(unless package-archive-contents
   (package-refresh-contents))
 (package-initialize)
 
@@ -24,4 +25,3 @@
 ;; Load real configuration from config.org
 (when (file-readable-p "~/.emacs.d/config.org")
   (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
-
