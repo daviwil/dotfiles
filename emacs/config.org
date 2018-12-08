@@ -738,6 +738,16 @@ Emacs.
 
 #+END_SRC
 
+Also, use a custom =auth-source= path so that it's easier to store encrypted
+credentials for mail, etc.
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq auth-sources
+    '((:source "~/.dotfiles/emacs/secrets/.authinfo.gpg")))
+
+#+END_SRC
+
 ** Org Mode
 
 [[http://orgmode.org/][Org Mode]] is the best life management system I've ever encountered.  Most of my
@@ -1596,9 +1606,25 @@ to capture links to emails with org-mode too.
          :match-func (lambda (msg) (when msg
            (string-prefix-p "/GitHub" (mu4e-message-field msg :maildir))))
          :vars '(
+           (user-full-name . "David Wilson")
+           (user-email-address . "daviwil@github.com")
            (mu4e-sent-folder . "/GitHub/Sent Mail")
            (mu4e-trash-folder . "/GitHub/Trash")
+           (mu4e-sent-messages-behavior . delete)
            ;(mu4e-refile-folder . "/GitHub/[Gmail].Archive")
+           ))
+       ,(make-mu4e-context
+         :name "Fastmail"
+         :match-func (lambda (msg) (when msg
+           (string-prefix-p "/Fastmail" (mu4e-message-field msg :maildir))))
+         :vars '(
+           (user-full-name . "David Wilson")
+           (user-email-address . "david@daviwil.com")
+           (mu4e-sent-folder . "/Fastmail/Sent Items")
+           (mu4e-trash-folder . "/Fastmail/Trash")
+           (mu4e-drafts-folder . "/Fastmail/Drafts")
+           (mu4e-refile-folder . "/Fastmail/Archive")
+           (mu4e-sent-messages-behavior . sent)
            ))
        ,(make-mu4e-context
          :name "Personal"
@@ -1612,14 +1638,15 @@ to capture links to emails with org-mode too.
        ))
     (setq mu4e-context-policy 'pick-first)
 
-    (setq mu4e-drafts-folder "/Drafts")
-
-    ;; Don't save message to Sent Messages, Gmail/IMAP takes care of this
-    (setq mu4e-sent-messages-behavior 'delete)
-
     ;; Display options
     (setq mu4e-view-show-images t)
     (setq mu4e-view-show-addresses 't)
+
+    ;; Sending mail
+    (setq message-send-mail-function 'smtpmail-send-it
+          smtpmail-smtp-server "smtp.fastmail.com"
+          smtpmail-smtp-service 465
+          smtpmail-stream-type  'ssl)
 
     ;; (See the documentation for `mu4e-sent-messages-behavior' if you have
     ;; additional non-Gmail addresses and want assign them different
@@ -1638,14 +1665,14 @@ to capture links to emails with org-mode too.
     (add-to-list 'mu4e-bookmarks
            (make-mu4e-bookmark
             :name "All Inboxes"
-            :query "maildir:/GitHub/INBOX OR maildir:/Personal/Inbox"
+            :query "maildir:/GitHub/INBOX OR maildir:/Fastmail/INBOX OR maildir:/Personal/Inbox"
             :key ?i))
 
     ;; don't keep message buffers around
     (setq message-kill-buffer-on-exit t)
 
     (setq dw/mu4e-inbox-query
-        "(maildir:/Personal/Inbox OR maildir:/GitHub/INBOX) AND flag:unread")
+        "(maildir:/Personal/Inbox OR maildir:/Fastmail/INBOX OR maildir:/GitHub/INBOX) AND flag:unread")
 
     (defun dw/go-to-inbox ()
       (interactive)

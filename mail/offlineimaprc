@@ -1,5 +1,5 @@
 [general]
-accounts = GitHub, Outlook
+accounts = GitHub, Fastmail
 pythonfile = ~/.dotfiles/mail/get_pass.py
 
 [Account GitHub]
@@ -32,7 +32,7 @@ nametrans = lambda f: f.replace('[Gmail]/', '') if f.startswith('[Gmail]/') else
 #folderfilter = lambda f: f not in [ '[Gmail]/All Mail', '[Gmail]/Sent Mail' ]
 
 [Account Outlook]
-localrepository = OutlookLocal 
+localrepository = OutlookLocal
 remoterepository = OutlookRemote
 
 [Repository OutlookLocal]
@@ -51,11 +51,39 @@ ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 realdelete = no
 folderfilter = lambda folder: folder not in [
-	'Deleted Items',
-	'Drafts',
-	'Journal',
-	'Junk Email',
-	'Junk',
-	'Scheduled'
-	'Notes',
-	'Outbox']
+    'Deleted Items',
+    'Drafts',
+    'Journal',
+    'Junk Email',
+    'Junk',
+    'Scheduled'
+    'Notes',
+    'Outbox']
+
+[Account Fastmail]
+localrepository = FastmailLocal
+remoterepository = FastmailRemote
+
+[Repository FastmailLocal]
+type = Maildir
+localfolders = ~/Mail/Fastmail
+
+[Repository FastmailRemote]
+type = IMAP
+remotehost = imap.fastmail.com
+remoteuser = daviwil@fastmail.fm
+remotepasseval = get_pass("Mail/Fastmail/daviwil")
+remoteport = 993
+auth_mechanisms = GSSAPI, CRAM-MD5, PLAIN, LOGIN
+ssl = yes
+# sslcacertfile = /etc/ssl/certs/ca-bundle.crt  # On Fedora
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+realdelete = no
+folderfilter = lambda folder: folder not in [
+    'Deleted Items',
+    'Deleted Messages',
+    'Sent Messages',
+    'INBOX/Sent Items',
+    'Junk E-mail',
+    'Junk',
+    'Notes']
