@@ -76,9 +76,9 @@ remotepasseval = get_pass("Mail/Fastmail/daviwil")
 remoteport = 993
 auth_mechanisms = GSSAPI, CRAM-MD5, PLAIN, LOGIN
 ssl = yes
+expunge = no
 # sslcacertfile = /etc/ssl/certs/ca-bundle.crt  # On Fedora
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-realdelete = no
 folderfilter = lambda folder: folder not in [
     'Deleted Items',
     'Deleted Messages',
