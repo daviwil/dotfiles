@@ -69,9 +69,9 @@ hide_edge_borders both
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1: term"
 set $ws2 "2: www"
-set $ws3 "3: dev"
+set $ws3 "3: comm"
 set $ws4 "4: media"
-set $ws5 "5: comm"
+set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
@@ -135,9 +135,10 @@ for_window [class="mpv$"] floating enable, sticky enable, resize set 600 px 338 
 for_window [class="Pamac-manager"] floating enable border pixel 2, resize set 1700 px 1000 px, move position center
 for_window [class="Dynalist"] floating enable, resize set 1800 px 1200 px, move position center, move scratchpad, scratchpad show
 for_window [class="Atom"] border pixel 0, mark dev
-for_window [class="zoom"] floating enable, sticky enable
-for_window [class="Slack"] move container to workspace $ws5
-for_window [class="Geary"] move container to workspace $ws5
+for_window [title="^Zoom Meeting ID"] floating enable, sticky enable
+for_window [title="^Zoom -"] floating enable, sticky enable
+for_window [class="Slack"] move container to workspace $ws3
+for_window [class="Geary"] move container to workspace $ws3
 for_window [class="Spotify"] move container to workspace $ws4
 for_window [class="Pidgin" window_role="conversation"] floating enable, resize set 1000 px 700 px, move absolute position 1500 px 700 px, move scratchpad, scratchpad show
 for_window [class="Pidgin" window_role="buddy_list"] floating enable, resize set 500 px 800 px, move absolute position 2000 px 100 px
@@ -153,6 +154,9 @@ exec --no-startup-id nitrogen --restore
 bindsym $mod+d exec "rofi -show drun -modi drun,run -sidebar-mode"
 bindsym $mod+space exec "rofi -show combi -modi combi,run -combi-modi window,drun -sidebar-mode"
 bindsym $mod+Shift+space exec xfce4-popup-whiskermenu
+
+# Screen Layouts
+bindsym $mod+F1 exec "~/.dotfiles/screen-layouts/x1/docked.sh"
 
 # Media control (volume is handled by XFCE)
 bindsym $mod+p exec playerctl play-pause
@@ -172,7 +176,7 @@ bindsym $mod+Control+Shift+d mark dev
 # Scratchpad
 bindsym $mod+Shift+p move scratchpad
 bindsym $mod+Control+n [class="Dynalist"] scratchpad show
-bindsym $mod+Control+i [class="Pidgin" window_role="conversation"] scratchpad show 
+bindsym $mod+Control+i [class="Pidgin" window_role="conversation"] scratchpad show
 
 # tango-jungle theme taken from here: https://github.com/okraits/j4-make-config/blob/master/themes/tango-jungle
 
@@ -183,43 +187,42 @@ color_good = "#4E9A06"
 
 # $i3-theme-window
 # tango dark
-set $darkblue 		#204A87
-set $darkbrown		#8F5902
-set $darkgreen 		#4E9A06
-set $darkmagenta 	#5C3566
-set $darkred 		#A40000
-set $darkyellow 	#C4A000
-set $darkorange		#CE5C00
+set $darkblue       "#204A87"
+set $darkbrown		"#8F5902"
+set $darkgreen      "#4E9A06"
+set $darkmagenta    "#5C3566"
+set $darkred        "#A40000"
+set $darkyellow     "#C4A000"
+set $darkorange		"#CE5C00"
 
 # tango light
-set $lightblue 		#729FCF
-set $lightbrown		#E9B96E
-set $lightgreen 	#8AE234
-set $lightmagenta 	#AD7FA8
-set $lightred 		#EF2929
-set $lightyellow 	#FCE94F
-set $lightorange	#FCAF3E
+set $lightblue      "#729FCF"
+set $lightbrown		"#E9B96E"
+set $lightgreen     "#8AE234"
+set $lightmagenta   "#AD7FA8"
+set $lightred       "#EF2929"
+set $lightyellow    "#FCE94F"
+set $lightorange	"#FCAF3E"
 
 # tango normal
-set $blue 		#3465A4
-set $brown		#C17D11
-set $green 		#73D216
-set $magenta 		#75507B
-set $red 		#CC0000
-set $yellow 		#EDD400
-set $orange		#F57900
+set $blue       "#3465A4"
+set $brown		"#C17D11"
+set $green      "#73D216"
+set $magenta    "#75507B"
+set $red        "#CC0000"
+set $yellow     "#EDD400"
+set $orange		"#F57900"
 
 # tango mono
-set $black 		#555753
-set $grey		#BABDB6
-set $white 		#EEEEEC
-set $darkblack 		#2E3436
-set $darkgrey 		#888A85
-set $darkwhite 		#D3D7CF
+set $black      "#555753"
+set $grey		"#BABDB6"
+set $white      "#EEEEEC"
+set $darkblack  "#2E3436"
+set $darkgrey   "#888A85"
+set $darkwhite  "#D3D7CF"
 
 # tango jungle <clientclass> <border> <backg> <text> <indicator>
 client.focused          $green $darkgreen $white $lightgreen
 client.focused_inactive $darkgrey $black $grey $darkgrey
 client.unfocused        $black $darkblack $grey $darkgrey
-client.urgent 		$yellow $darkyellow $white $lightyellow
-
+client.urgent       $yellow $darkyellow $white $lightyellow
