@@ -180,11 +180,6 @@ bindsym $mod+Control+i [class="Pidgin" window_role="conversation"] scratchpad sh
 
 # tango-jungle theme taken from here: https://github.com/okraits/j4-make-config/blob/master/themes/tango-jungle
 
-# $i3-status
-color_bad = "#A40000"
-color_degraded = "#8F5902"
-color_good = "#4E9A06"
-
 # $i3-theme-window
 # tango dark
 set $darkblue       "#204A87"
