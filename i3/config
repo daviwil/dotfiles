@@ -146,6 +146,9 @@ for_window [class="Pidgin" window_role="buddy_list"] floating enable, resize set
 # Focus windows when they request it (a link gets opened in Firefox)
 focus_on_window_activation focus
 
+# Run GNOME's keyring daemon
+#exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
+
 # Run the compositor and set the background
 exec --no-startup-id compton
 exec --no-startup-id nitrogen --restore
