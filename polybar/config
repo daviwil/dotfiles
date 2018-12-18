@@ -1,21 +1,3 @@
-;==========================================================
-;
-;
-;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
-;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
-;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
-;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
-;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
-;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
-;
-;
-;   To learn more about how to configure Polybar
-;   go to https://github.com/jaagr/polybar
-;
-;   The README contains alot of information
-;
-;==========================================================
-
 [colors]
 ;background = ${xrdb:color0:#222}
 background = #222
@@ -27,13 +9,13 @@ primary = #ffb52a
 secondary = #e60053
 alert = #bd2c40
 
-[bar/example]
+[bar/i3panel]
 ;monitor = ${env:MONITOR:HDMI-1}
 width = 100%
-height = 27
-;offset-x = 1%
-;offset-y = 1%
-radius = 2.0
+height = 35
+;offset-x = 10
+offset-y = 5
+;radius = 2.0
 fixed-center = false
 
 background = ${colors.background}
@@ -42,20 +24,23 @@ foreground = ${colors.foreground}
 line-size = 2
 line-color = #f00
 
-border-size = 4
+border-size = 0
 border-color = #00000000
 
+padding-top = 5
 padding-left = 0
 padding-right = 2
 
 module-margin-left = 1
 module-margin-right = 2
 
-font-0 = fixed:pixelsize=16;1
-font-1 = unifont:fontformat=truetype:size=16:antialias=false;0
-font-2 = siji:pixelsize=16;1
+;font-0 = fixed:pixelsize=16;1
+;font-1 = unifont:fontformat=truetype:size=16:antialias=false;0
+font-0 = "Fira Mono:size=18;1"
+font-1 = "Fira Mono:size=18;1"
+font-2 = "Fira Mono:size=18;1"
 
-modules-left = bspwm i3
+modules-left = i3
 ;modules-center = mpd
 modules-right = filesystem xbacklight alsa pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
 
@@ -65,7 +50,7 @@ tray-padding = 2
 ;tray-background = #0063ff
 
 ;wm-restack = bspwm
-;wm-restack = i3
+wm-restack = i3
 
 ;override-redirect = true
 

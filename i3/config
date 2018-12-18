@@ -150,6 +150,9 @@ focus_on_window_activation focus
 exec --no-startup-id compton
 exec --no-startup-id nitrogen --restore
 
+# Start Polybar
+#exec_always --no-startup-id $HOME/.dotfiles/polybar/launch.sh
+
 # Launchers
 bindsym $mod+d exec "rofi -show drun -modi drun,run -sidebar-mode"
 bindsym $mod+space exec "rofi -show combi -modi combi,run -combi-modi window,drun -sidebar-mode"
