@@ -1951,10 +1951,46 @@ I like the position of the mode line tracking better than circe.
 
 #+BEGIN_SRC emacs-lisp
 
-  ;; Enable mode line tracking
-  (add-hook 'rcirc-mode-hook
-    (lambda ()
-      (rcirc-track-minor-mode 1)))
+  (use-package rcirc
+    :defer t
+    :init
+    (setq rcirc-server-alist
+      '(("localhost")))
+    (setq rcirc-authinfo
+      `(("localhost" bitlbee "daviwil" ,(password-store-get "IRC/Bitlbee"))))
+    (defun-rcirc-command reconnect (arg)
+      "Reconnect the server process."
+      (interactive "i")
+      (if (buffer-live-p rcirc-server-buffer)
+        (with-current-buffer rcirc-server-buffer
+            (let ((reconnect-buffer (current-buffer))
+                  (server (or rcirc-server rcirc-default-server))
+                  (port (if (boundp 'rcirc-port) rcirc-port rcirc-default-port))
+                  (nick (or rcirc-nick rcirc-default-nick))
+                  channels)
+            (dolist (buf (buffer-list))
+                (with-current-buffer buf
+                  (when (equal reconnect-buffer rcirc-server-buffer)
+                      (remove-hook 'change-major-mode-hook
+                                   'rcirc-change-major-mode-hook)
+                      (let ((server-plist (cdr (assoc-string server rcirc-server-alist))))
+                        (when server-plist
+                            (setq channels (plist-get server-plist :channels))))
+                      )))
+            (if process (delete-process process))
+            (rcirc-connect server port nick
+                            nil
+                            nil
+        channels)))))
+
+    :config
+    (set (make-local-variable 'scroll-conservatively) 8192)
+    (setq rcirc-prompt "» "
+          rcirc-time-format "%m/%d %H:%M "
+          rcirc-fill-column 100
+          rcirc-fill-flag t
+          rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
+          rcirc-track-minor-mode 1))
 
 #+END_SRC
 
