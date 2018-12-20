@@ -1493,6 +1493,15 @@ https://github.com/rust-lang/rust-mode
 
 *** Productivity
 
+**** Syntax checking with Flycheck
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package flycheck
+    :ensure t)
+
+#+END_SRC
+
 **** Snippets
 
 #+BEGIN_SRC emacs-lisp
