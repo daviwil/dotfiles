@@ -218,13 +218,7 @@ Enable line numbers and customize their format.
 #+BEGIN_SRC emacs-lisp
 
   (column-number-mode)
-  (add-hook 'prog-mode-hook 'linum-mode)
-  (setq linum-format " %3d ")
-  (defun linum-on ()
-    (unless
-      (or (minibufferp)
-          (member major-mode linum-disabled-modes-list))
-        (linum-mode 1)))
+  (global-display-line-numbers-mode t)
 
 #+END_SRC
 
@@ -1215,17 +1209,14 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
   (use-package git-gutter
     :ensure t
     :config
-      (global-git-gutter-mode +1)
-      (setq git-gutter:update-interval 2)
-      (setq git-gutter:modified-sign "≡")
-      (setq git-gutter:added-sign "≡")
-      (setq git-gutter:deleted-sign "≡")
-      (setq git-gutter:separator-sign " ")
-      (setq git-gutter:visual-line t)
-      (set-face-foreground 'git-gutter:modified "yellow")
-      (set-face-foreground 'git-gutter:added "green")
-      (set-face-foreground 'git-gutter:deleted "red"))
-
+    (global-git-gutter-mode +1)
+    (setq git-gutter:update-interval 2)
+    (setq git-gutter:modified-sign "≡")
+    (setq git-gutter:added-sign "≡")
+    (setq git-gutter:deleted-sign "≡")
+    (set-face-foreground 'git-gutter:modified "yellow")
+    (set-face-foreground 'git-gutter:added "green")
+    (set-face-foreground 'git-gutter:deleted "red"))
 
 #+END_SRC
 
