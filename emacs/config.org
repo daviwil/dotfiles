@@ -2212,6 +2212,21 @@ to set that up.
 
 #+END_SRC
 
+*** System Monitor
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package symon
+    :ensure t
+    :config
+    (setq symon-monitors '(symon-linux-cpu-monitor
+                           symon-linux-memory-monitor
+                           symon-linux-battery-monitor)))
+
+  ;; TODO: Add a toggle keybinding for this mode
+
+#+END_SRC
+
 ** Miscellaneous
 
 *** Emojification
