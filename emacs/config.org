@@ -65,13 +65,13 @@ Some tips can be found here:
 
   (defun dw/evil-hook ()
     (dolist (mode '(custom-mode
-                    dired-mode
                     eshell-mode
                     git-rebase-mode
                     erc-mode
                     circe-server-mode
                     circe-chat-mode
                     circe-query-mode
+                    sauron-mode
                     sunshine-mode
                     term-mode))
     (add-to-list 'evil-emacs-state-modes mode)))
