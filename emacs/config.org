@@ -373,6 +373,14 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
 #+END_SRC
 
+*** Auto-Reverting Changed Files
+
+#+BEGIN_SRC emacs-lisp
+
+  (global-auto-revert-mode 1)
+
+#+END_SRC
+
 *** Focusing Sections
 
 #+BEGIN_SRC emacs-lisp
