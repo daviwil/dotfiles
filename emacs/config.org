@@ -1189,6 +1189,15 @@ https://magit.vc/manual/magit/
 
 #+END_SRC
 
+**** Forge
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package forge
+    :ensure t)
+
+#+END_SRC
+
 **** Magithub
 
 https://github.com/vermiculus/magithub/blob/master/magithub.org
