@@ -18,6 +18,16 @@
 ;; Ensure latest Org with contrib is installed first
 (use-package org :ensure org-plus-contrib)
 
+;; Set up exwm early in the init process
+(use-package exwm
+  :ensure t
+  :init
+  (setq mouse-autoselect-window t
+        focus-follows-mouse t)
+  :config
+  (require 'exwm-config)
+  (exwm-config-default))
+
 ;; Load customization settings from another file
 (setq custom-file "~/.emacs.d/config/customize.el")
 (load custom-file)

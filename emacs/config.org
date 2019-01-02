@@ -286,6 +286,9 @@ Different platforms need different default font sizes, and
     (osx (set-face-attribute 'default nil :font "Fira Mono" :height 170))
     (linux (set-face-attribute 'default nil :font "Fira Mono" :height 130)))
 
+  ;; Set the mode line font and size
+  (set-face-attribute 'mode-line nil :font "Fira Mono" :height 120)
+
 #+END_SRC
 
 *** Mode Line
@@ -662,13 +665,13 @@ for now, need to investigate the =perspective= varieties.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package zoom
-    :ensure t
-    :init (zoom-mode t)
-    :config
-    ;; Use the golden ratio for sizing
-    (custom-set-variables
-      '(zoom-size '(0.618 . 0.618))))
+  ;; (use-package zoom
+  ;;   :ensure t
+  ;;   :init (zoom-mode t)
+  ;;   :config
+  ;;   ;; Use the golden ratio for sizing
+  ;;   (custom-set-variables
+  ;;     '(zoom-size '(0.618 . 0.618))))
 
 #+END_SRC
 
@@ -702,6 +705,130 @@ for now, need to investigate the =perspective= varieties.
 
 #+END_SRC
 
+*** exwm
+
+**** Helper Functions
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun exwm/run-in-background (command)
+     (start-process-shell-command command nil
+                                  command))
+
+  (defun exwm/bind-function (key invocation &rest bindings)
+    "Bind KEYs to FUNCTIONs globally"
+    (while key
+      (exwm-input-set-key (kbd key)
+                          `(lambda ()
+                             (interactive)
+                             ,invocation))
+      (setq key (pop bindings)
+            command
+            (pop bindings))))
+
+  (defun exwm/bind-command (key command &rest bindings)
+    "Bind KEYs to COMMANDs globally"
+    (while key
+      (exwm-input-set-key (kbd key)
+                          `(lambda ()
+                             (interactive)
+                             (exwm/run-in-background ,command)))
+      (setq key (pop bindings)
+            command
+            (pop bindings))))
+
+#+END_SRC
+
+**** Configuration
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package exwm
+    :config
+    (setq display-time-default-load-average nil)
+    (display-time-mode 1)
+
+    (setq exwm-workspace-show-all-buffers t)
+
+    ;; Hide the modeline on all floating windows
+    (add-hook 'exwm-floating-setup-hook
+              (lambda ()
+                (exwm-layout-hide-mode-line)))
+
+    (exwm-randr-enable)
+
+    (exwm-systemtray-enable)
+    (setq exwm-systemtray-height 40))
+
+  (use-package helm-exwm
+    :ensure t
+    :config
+    (setq helm-exwm-emacs-buffers-source (helm-exwm-build-emacs-buffers-source))
+    (setq helm-exwm-source (helm-exwm-build-source))
+    (setq helm-mini-default-sources `(helm-exwm-emacs-buffers-source
+                                      helm-exwm-source
+                                      helm-source-recentf)))
+
+#+END_SRC
+
+**** Keybindings
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Set Ctrl+Space as a global prefix key
+  (push ?\C-\  exwm-input-prefix-keys)
+
+  (exwm/bind-command
+   "<s-return>" "xfce4-terminal"
+   "<XF86MonBrightnessUp>"   "light -A 2"
+   "<XF86MonBrightnessDown>" "light -U 2"
+   "<XF86AudioLowerVolume>"  "amixer -D pulse -- sset Master unmute 3%-"
+   "<XF86AudioRaiseVolume>"  "amixer -D pulse -- sset Master unmute 3%+"
+   "<XF86AudioMute>"         "amixer -D pulse -- sset Master toggle"
+   "<XF86AudioMicMute>"      "amixer -D pulse -- sset Capture toggle")
+
+  ;; (use-package desktop-environment
+  ;;   :ensure t)
+
+  ;; Workspace switching
+  (setq exwm-input-global-keys
+        `(([?\s-r] . exwm-reset)
+          ([?\s-w] . exwm-workspace-switch)
+          ,@(mapcar (lambda (i)
+                      `(,(kbd (format "s-%d" i)) .
+                        (lambda ()
+                          (interactive)
+                          (exwm-workspace-switch-create ,i))))
+                    (number-sequence 0 9))))
+
+  (exwm-input-set-key (kbd "s-SPC") 'helm-run-external-command)
+  (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen)
+
+  (exwm-input-set-key (kbd "s-C-s") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Slack")))
+  (exwm-input-set-key (kbd "s-C-i") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Pidgin<2>")))
+
+#+END_SRC
+
+**** Background Apps
+
+#+BEGIN_SRC emacs-lisp
+
+  (unless (eq exwm--connection nil)
+    (add-hook 'exwm-init-hook
+      (lambda ()
+        (exwm/run-in-background "compton --config ~/.dotfiles/emacs/compton.conf")
+        (exwm/run-in-background "nitrogen --restore")
+        (exwm/run-in-background "xfsettingsd")
+        (exwm/run-in-background "xfce4-power-manager")
+        (exwm/run-in-background "pasystray"))))
+
+#+END_SRC
+
+**** Useful Links
+
+- https://github.com/ch11ng/exwm/wiki
+- https://www.reddit.com/r/emacs/comments/6huok9/exwm_configs/
+- https://ambrevar.xyz/de/index.html
 
 ** Expand Region
 
