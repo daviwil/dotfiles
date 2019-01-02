@@ -1,0 +1,9 @@
+# Put this in /usr/share/xsessions
+[Desktop Entry]
+Name=Emacs
+Comment=It's Emacs
+Exec=emacs
+TryExec=emacs
+Type=Application
+X-LightDM-DesktopName=Emacs
+DesktopNames=Emacs
