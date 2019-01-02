@@ -354,17 +354,13 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
 #+BEGIN_SRC emacs-lisp
 
-  ;; Turn off backup files
-  ;(setq make-backup-files nil)
-  ;(setq auto-save-default nil)
-
   ;; Store file backups in a central location
   (setq backup-directory-alist
         `(("." . ,(concat user-emacs-directory "backups"))))
 
 #+END_SRC
 
-*** Auto-saving
+*** Auto-Saving Changed Files
 
 #+BEGIN_SRC emacs-lisp
 
@@ -835,11 +831,11 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
   (setq org-default-notes-file dw/org-inbox-path)
 
   (setq org-agenda-files
-        `(,dw/org-inbox-path
-          ,(dw/org-path "Habits.org")
-          ,(dw/org-path "Calendar.org")
-          ,(dw/org-path "Projects.org")
-          ,(dw/get-todays-journal-file-name)))
+    `(,dw/org-inbox-path
+            ,(dw/org-path "Habits.org")
+            ,(dw/org-path "Calendar.org")
+            ,(dw/org-path "Projects.org")
+            ,(dw/get-todays-journal-file-name)))
 
   (setq dw/org-project-files
     '((dw/org-path "Personal.org")
