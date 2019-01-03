@@ -806,43 +806,45 @@ for now, need to investigate the =perspective= varieties.
 
 #+BEGIN_SRC emacs-lisp
 
-    ;; Set Ctrl+Space as a global prefix key
-    (push ?\C-\  exwm-input-prefix-keys)
+  ;; Set Ctrl+Space as a global prefix key
+  (push ?\C-\  exwm-input-prefix-keys)
 
-    ;; Ctrl+Q will enable the next key to be sent directly
-    (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
+  ;; Ctrl+Q will enable the next key to be sent directly
+  (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
 
-    (exwm/bind-command
-     "<s-return>" "xfce4-terminal"
-     "s-p" "playerctl play-pause"
-     "s-[" "playerctl previous"
-     "s-]" "playerctl next"
-     "<XF86MonBrightnessUp>"   "light -A 2"
-     "<XF86MonBrightnessDown>" "light -U 2"
-     "<XF86AudioLowerVolume>"  "amixer -D pulse -- sset Master unmute 3%-"
-     "<XF86AudioRaiseVolume>"  "amixer -D pulse -- sset Master unmute 3%+"
-     "<XF86AudioMute>"         "amixer -D pulse -- sset Master toggle"
-     "<XF86AudioMicMute>"      "amixer -D pulse -- sset Capture toggle")
+  (exwm/bind-command
+   "<s-return>" "xfce4-terminal"
+   "s-l" "slock"
+   "s-p" "playerctl play-pause"
+   "s-[" "playerctl previous"
+   "s-]" "playerctl next"
+   "<XF86MonBrightnessUp>"   "light -A 2"
+   "<XF86MonBrightnessDown>" "light -U 2"
+   "<XF86AudioLowerVolume>"  "amixer -D pulse -- sset Master unmute 3%-"
+   "<XF86AudioRaiseVolume>"  "amixer -D pulse -- sset Master unmute 3%+"
+   "<XF86AudioMute>"         "amixer -D pulse -- sset Master toggle"
+   "<XF86AudioMicMute>"      "amixer -D pulse -- sset Capture toggle")
 
-    ;; (use-package desktop-environment
-    ;;   :ensure t)
+  ;; (use-package desktop-environment
+  ;;   :ensure t)
 
-    ;; Workspace switching
-    (setq exwm-input-global-keys
-          `(([?\s-r] . exwm-reset)
-            ([?\s-w] . exwm-workspace-switch)
-            ,@(mapcar (lambda (i)
-                        `(,(kbd (format "s-%d" i)) .
-                          (lambda ()
-                            (interactive)
-                            (exwm-workspace-switch-create ,i))))
-                      (number-sequence 0 9))))
+  ;; Workspace switching
+  (setq exwm-input-global-keys
+        `(([?\s-r] . exwm-reset)
+          ([?\s-w] . exwm-workspace-switch)
+          ([?\s-`] . (lambda () (exwm-workspace-switch-create 0)))
+          ,@(mapcar (lambda (i)
+                      `(,(kbd (format "s-%d" i)) .
+                        (lambda ()
+                          (interactive)
+                          (exwm-workspace-switch-create ,i))))
+                    (number-sequence 0 9))))
 
-    (exwm-input-set-key (kbd "s-SPC") 'helm-run-external-command)
-    (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen)
+  (exwm-input-set-key (kbd "s-SPC") 'helm-run-external-command)
+  (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen)
 
-    (exwm-input-set-key (kbd "s-C-s") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Slack")))
-    (exwm-input-set-key (kbd "s-C-i") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Pidgin<2>")))
+  (exwm-input-set-key (kbd "s-C-s") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Slack")))
+  (exwm-input-set-key (kbd "s-C-i") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Pidgin<2>")))
 
 #+END_SRC
 
