@@ -1,6 +1,6 @@
 source ~/.dotfiles/zsh/antigen.zsh
 
-export PATH="$PATH:/usr/share/dotnet"
+export PATH="$PATH:/usr/share/dotnet:~/.dotfiles/bin"
 export EDITOR="vim"
 export ATOM_DEV_RESOURCE_PATH="/home/daviwil/Projects/Code/atom"
 

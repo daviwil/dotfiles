@@ -29,5 +29,7 @@ config.bind('<Ctrl-g>', 'leave-mode', mode='insert')
 config.bind('<Ctrl-g>', 'leave-mode', mode='command')
 config.bind('<Ctrl-g>', 'leave-mode', mode='prompt')
 config.bind('<Ctrl-g>', 'leave-mode', mode='hint')
+config.bind('v', 'spawn ~/.dotfiles/bin/umpv {url}')
+config.bind('V', 'hint links spawn ~/.dotfiles/bin/umpv {hint-url}')
 
 # More binding hints here: https://gitlab.com/Kaligule/qutebrowser-emacs-config/blob/master/config.py
