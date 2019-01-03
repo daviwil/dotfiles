@@ -14,6 +14,10 @@ org-gcal/
 request/
 var/
 backups/
+image-dired/
+magithub/
+network-security.data
+forge-database.sqlite
 tramp
 projectile*
 recentf
