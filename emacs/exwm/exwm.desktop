@@ -1,4 +1,4 @@
-# Put this in /usr/share/xsessions
+# ln -f ~/.dotfiles/emacs/exwm/exwm.desktop /usr/share/xsessions/exwm.desktop
 [Desktop Entry]
 Name=exwm
 Comment=Emacs Window Manager
