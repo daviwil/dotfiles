@@ -580,18 +580,13 @@ Emacs).  Couldn't easily figure out a way to do it with =general.el=.
     :ensure t
     ;:chords (([?S ?T] . 'buffer-flip))
     ;:chords (([? ?\t] . 'buffer-flip))
-    :bind  (("s-<tab>" . buffer-flip)
-            :map buffer-flip-map
-            ( "s-<tab>" .   buffer-flip-forward)
-            ( "s-S-<tab>" . buffer-flip-backward)
-            ( "s-ESC" .     buffer-flip-abort)))
-    ;; :config
-    ;; (setq buffer-flip-map
-    ;;       (let ((map (make-sparse-keymap)))
-    ;;         (define-key map (kbd "<tab>")   'buffer-flip-forward)
-    ;;         (define-key map (kbd "<backtab>") 'buffer-flip-backward)
-    ;;         (define-key map (kbd "C-g")     'buffer-flip-abort)
-    ;;         map)))
+    :config
+    (setq buffer-flip-map
+          (let ((map (make-sparse-keymap)))
+            (define-key map (kbd "<tab>")   'buffer-flip-forward)
+            (define-key map (kbd "<backtab>") 'buffer-flip-backward)
+            (define-key map (kbd "C-g")     'buffer-flip-abort)
+            map)))
 
     ;(key-chord-define-global [?S ?T] 'buffer-flip)
 
@@ -1408,6 +1403,7 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
     "ps"  'helm-projectile-switch-project
     "pF"  'helm-projectile-ag
     "pp"  'helm-projectile
+    "pc"  'projectile-compile-project
     "pd"  'projectile-dired)
 
 #+END_SRC
