@@ -580,13 +580,18 @@ Emacs).  Couldn't easily figure out a way to do it with =general.el=.
     :ensure t
     ;:chords (([?S ?T] . 'buffer-flip))
     ;:chords (([? ?\t] . 'buffer-flip))
-    :config
-    (setq buffer-flip-map
-          (let ((map (make-sparse-keymap)))
-            (define-key map (kbd "<tab>")   'buffer-flip-forward)
-            (define-key map (kbd "<backtab>") 'buffer-flip-backward)
-            (define-key map (kbd "C-g")     'buffer-flip-abort)
-            map)))
+    :bind  (("s-<tab>" . buffer-flip)
+            :map buffer-flip-map
+            ( "s-<tab>" .   buffer-flip-forward)
+            ( "s-S-<tab>" . buffer-flip-backward)
+            ( "s-ESC" .     buffer-flip-abort)))
+    ;; :config
+    ;; (setq buffer-flip-map
+    ;;       (let ((map (make-sparse-keymap)))
+    ;;         (define-key map (kbd "<tab>")   'buffer-flip-forward)
+    ;;         (define-key map (kbd "<backtab>") 'buffer-flip-backward)
+    ;;         (define-key map (kbd "C-g")     'buffer-flip-abort)
+    ;;         map)))
 
     ;(key-chord-define-global [?S ?T] 'buffer-flip)
 
@@ -758,10 +763,11 @@ for now, need to investigate the =perspective= varieties.
     ;; Hide the modeline on all floating windows
     (add-hook 'exwm-floating-setup-hook
               (lambda ()
-                (exwm-layout-hide-mode-line)))
+                (exwm-layout-hide-mode-line))))
 
-    (exwm-randr-enable)
-
+  (use-package exwm-systemtray
+    :after (exwm)
+    :config
     (exwm-systemtray-enable)
     (setq exwm-systemtray-height 40))
 
@@ -776,56 +782,72 @@ for now, need to investigate the =perspective= varieties.
 
 #+END_SRC
 
+**** Screen Layouts
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun exwm/launch-if-display-on (display-name script-path)
+    (let ((xrandr-output-regexp (format "%s connected " display-name)))
+      (with-temp-buffer
+        (call-process "xrandr" nil t nil)
+        (goto-char (point-min))
+        (when (re-search-forward xrandr-output-regexp nil 'noerror)
+          (call-process "sh" nil nil nil script-path)))))
+
+  (defun exwm/update-screen-layout ()
+    (pcase (system-name)
+      ("phantom" (exwm/launch-if-screen-on "VIRTUAL1" "~/.dotfiles/screen-layouts/x1e/docked.sh"))
+      ("zerocool" (exwm/launch-if-screen-on "DP1-1" "~/.dotfiles/screen-layouts/x1/docked.sh"))))
+
+  (use-package exwm-randr
+    :after (exwm)
+    :config
+    (exwm-randr-enable)
+    (setq exwm-randr-workspace-monitor-plist '(4 "eDP1")))
+
+#+END_SRC
+
 **** Keybindings
 
 #+BEGIN_SRC emacs-lisp
 
-  ;; Set Ctrl+Space as a global prefix key
-  (push ?\C-\  exwm-input-prefix-keys)
+    ;; Set Ctrl+Space as a global prefix key
+    (push ?\C-\  exwm-input-prefix-keys)
 
-  (exwm/bind-command
-   "<s-return>" "xfce4-terminal"
-   "<XF86MonBrightnessUp>"   "light -A 2"
-   "<XF86MonBrightnessDown>" "light -U 2"
-   "<XF86AudioLowerVolume>"  "amixer -D pulse -- sset Master unmute 3%-"
-   "<XF86AudioRaiseVolume>"  "amixer -D pulse -- sset Master unmute 3%+"
-   "<XF86AudioMute>"         "amixer -D pulse -- sset Master toggle"
-   "<XF86AudioMicMute>"      "amixer -D pulse -- sset Capture toggle")
+    ;; Ctrl+Q will enable the next key to be sent directly
+    (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
 
-  ;; (use-package desktop-environment
-  ;;   :ensure t)
+    (exwm/bind-command
+     "<s-return>" "xfce4-terminal"
+     "s-p" "playerctl play-pause"
+     "s-[" "playerctl previous"
+     "s-]" "playerctl next"
+     "<XF86MonBrightnessUp>"   "light -A 2"
+     "<XF86MonBrightnessDown>" "light -U 2"
+     "<XF86AudioLowerVolume>"  "amixer -D pulse -- sset Master unmute 3%-"
+     "<XF86AudioRaiseVolume>"  "amixer -D pulse -- sset Master unmute 3%+"
+     "<XF86AudioMute>"         "amixer -D pulse -- sset Master toggle"
+     "<XF86AudioMicMute>"      "amixer -D pulse -- sset Capture toggle")
 
-  ;; Workspace switching
-  (setq exwm-input-global-keys
-        `(([?\s-r] . exwm-reset)
-          ([?\s-w] . exwm-workspace-switch)
-          ,@(mapcar (lambda (i)
-                      `(,(kbd (format "s-%d" i)) .
-                        (lambda ()
-                          (interactive)
-                          (exwm-workspace-switch-create ,i))))
-                    (number-sequence 0 9))))
+    ;; (use-package desktop-environment
+    ;;   :ensure t)
 
-  (exwm-input-set-key (kbd "s-SPC") 'helm-run-external-command)
-  (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen)
+    ;; Workspace switching
+    (setq exwm-input-global-keys
+          `(([?\s-r] . exwm-reset)
+            ([?\s-w] . exwm-workspace-switch)
+            ,@(mapcar (lambda (i)
+                        `(,(kbd (format "s-%d" i)) .
+                          (lambda ()
+                            (interactive)
+                            (exwm-workspace-switch-create ,i))))
+                      (number-sequence 0 9))))
 
-  (exwm-input-set-key (kbd "s-C-s") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Slack")))
-  (exwm-input-set-key (kbd "s-C-i") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Pidgin<2>")))
+    (exwm-input-set-key (kbd "s-SPC") 'helm-run-external-command)
+    (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen)
 
-#+END_SRC
-
-**** Background Apps
-
-#+BEGIN_SRC emacs-lisp
-
-  (unless (eq exwm--connection nil)
-    (add-hook 'exwm-init-hook
-      (lambda ()
-        (exwm/run-in-background "compton --config ~/.dotfiles/emacs/compton.conf")
-        (exwm/run-in-background "nitrogen --restore")
-        (exwm/run-in-background "xfsettingsd")
-        (exwm/run-in-background "xfce4-power-manager")
-        (exwm/run-in-background "pasystray"))))
+    (exwm-input-set-key (kbd "s-C-s") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Slack")))
+    (exwm-input-set-key (kbd "s-C-i") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Pidgin<2>")))
 
 #+END_SRC
 
