@@ -1398,7 +1398,9 @@ https://github.com/vermiculus/magithub/blob/master/magithub.org
     :diminish projectile-mode
     :config (projectile-global-mode)
     :init
-    (setq projectile-project-search-path '("~/Projects/Code" "~/Projects/Work"))
+    (if (string= (window-system) "ns")
+      (setq projectile-project-search-path '("~/Projects/Code" "~/Projects/Work"))
+      (setq projectile-project-search-path '("~/Projects/Code")))
     (setq projectile-switch-project-action #'projectile-dired))
 
   (use-package helm-projectile :ensure t)
@@ -2129,6 +2131,14 @@ I like the position of the mode line tracking better than circe.
       '(("localhost")))
     (setq rcirc-authinfo
       `(("localhost" bitlbee "daviwil" ,(password-store-get "IRC/Bitlbee"))))
+    :config
+    (set (make-local-variable 'scroll-conservatively) 8192)
+    (setq rcirc-prompt "» "
+          rcirc-time-format "%m/%d %H:%M "
+          rcirc-fill-column 100
+          rcirc-fill-flag t
+          rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
+          rcirc-track-minor-mode 1)
     (defun-rcirc-command reconnect (arg)
       "Reconnect the server process."
       (interactive "i")
@@ -2152,16 +2162,7 @@ I like the position of the mode line tracking better than circe.
             (rcirc-connect server port nick
                             nil
                             nil
-        channels)))))
-
-    :config
-    (set (make-local-variable 'scroll-conservatively) 8192)
-    (setq rcirc-prompt "» "
-          rcirc-time-format "%m/%d %H:%M "
-          rcirc-fill-column 100
-          rcirc-fill-flag t
-          rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
-          rcirc-track-minor-mode 1))
+        channels))))))
 
 #+END_SRC
 
