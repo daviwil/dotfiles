@@ -1206,8 +1206,11 @@ documentation page.
 
 #+BEGIN_SRC emacs-lisp
 
+  ;; This is needed as of Org 9.2
+  (require 'org-tempo)
+
   (add-to-list 'org-structure-template-alist
-               '("el" "#+BEGIN_SRC emacs-lisp\n\n?\n\n#+END_SRC"))
+               '("el" . "src emacs-lisp"))
 
 #+END_SRC
 
