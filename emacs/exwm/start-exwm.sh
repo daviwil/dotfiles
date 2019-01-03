@@ -6,7 +6,7 @@ nitrogen --restore &
 xfsettingsd &
 xfce4-power-manager &
 pasystray &
-syncthing-gtk -m &
+syncthing-gtk --minimized &
 blueman-applet &
 pamac-tray &
 
