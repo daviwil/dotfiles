@@ -291,8 +291,8 @@ Different platforms need different default font sizes, and
     (osx (set-face-attribute 'default nil :font "Fira Mono" :height 170))
     (linux (set-face-attribute 'default nil :font "Fira Mono" :height 130)))
 
-  ;; Set the mode line font and size
-  (set-face-attribute 'mode-line nil :font "Fira Mono" :height 120)
+  ;; Set the mode line font to override whatever the theme sets
+  (set-face-attribute 'mode-line nil :font "Fira Mono")
 
 #+END_SRC
 
