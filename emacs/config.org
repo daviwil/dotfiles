@@ -222,7 +222,9 @@ Enable line numbers and customize their format.
 
   ;; Disable line numbers for some modes
   (dolist (mode '(term-mode-hook
-                  eshell-mode-hook))
+                  eshell-mode-hook
+                  neotree-mode-hook
+                  dashboard-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 #+END_SRC
@@ -409,6 +411,17 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
     "tt" '(counsel-load-theme :which-key "choose theme"))
 
 #+END_SRC
+
+*** File Tree
+
+#+begin_src emacs-lisp
+
+  (use-package neotree
+    :ensure t
+    :config
+    (setq neo-vc-integration '(face)))
+
+#+end_src
 
 ** Editing Configuration
 
