@@ -21,6 +21,7 @@
 ;; Set up exwm early in the init process
 (use-package exwm
   :ensure t
+  :if (eq window-system 'x)
   :init
   (setq mouse-autoselect-window t
         focus-follows-mouse t)
