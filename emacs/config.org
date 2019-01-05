@@ -1387,6 +1387,7 @@ files contained within the repo.  More information at the [[https://github.com/a
   (use-package magit-todos
     :ensure t
     :after magit
+    :config
     (magit-todos-mode 1))
 
 #+end_src
