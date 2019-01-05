@@ -772,7 +772,12 @@ for now, need to investigate the =perspective= varieties.
     ;; Hide the modeline on all floating windows
     (add-hook 'exwm-floating-setup-hook
               (lambda ()
-                (exwm-layout-hide-mode-line))))
+                (exwm-layout-hide-mode-line)))
+
+    ;; Make workspace 1 be the one where we land at startup
+    (add-hook 'exwm-init-hook
+              (lambda ()
+                (exwm-workspace-switch 1))))
 
   (use-package exwm-systemtray
     :after (exwm)
