@@ -2434,14 +2434,16 @@ Displays a nice list of recent files and projects on startup.
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package dashboard
-  :ensure t
-  :config
-    (dashboard-setup-startup-hook)
-    ;(setq dashboard-startup-banner "~/.emacs.d/img/dashLogo.png")
-    (setq dashboard-items '((recents  . 5)
-                            (projects . 5)))
-    (setq dashboard-banner-logo-title ""))
+  (use-package dashboard
+    :ensure t
+    :config
+      (dashboard-setup-startup-hook)
+      (setq dashboard-items '((agenda   . 5)
+                              (recents  . 5)
+                              (projects . 3)))
+      (setq dashboard-banner-logo-title ""
+            dashboard-startup-banner "~/.dotfiles/emacs/images/flux_banner.png"
+            dashboard-image-banner-max-height 500))
 
 #+END_SRC
 
