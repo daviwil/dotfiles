@@ -1361,6 +1361,14 @@ https://magit.vc/manual/magit/
 
 **** Forge
 
+From the author of Magit, this is a rich GitHub integration that uses a local
+cache of issue and PR info to save your git status buffer's load time.  Magithub
+is another option but it tries to fetch repo data each time you load the status
+buffer, a bad thing for very popular repos.
+
+Still haven't pulled this into my regular workflow yet, but I'm curious to see
+how useful it will be.
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package forge
@@ -1368,22 +1376,20 @@ https://magit.vc/manual/magit/
 
 #+END_SRC
 
-**** Magithub
+**** magit-todos
 
-https://github.com/vermiculus/magithub/blob/master/magithub.org
+This is an interesting extension to Magit that shows a TODOs section in your
+git status buffer containing all lines with TODO (or other similar words) in
+files contained within the repo.  More information at the [[https://github.com/alphapapa/magit-todos][GitHub repo]].
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
-  ;; NOTE: Disabled for now because it's slow on busy repos
+  (use-package magit-todos
+    :ensure t
+    :after magit
+    (magit-todos-mode 1))
 
-  ;(use-package magithub
-  ;  :ensure t
-  ;  :after magit
-  ;  :config
-  ;  (magithub-feature-autoinject t)
-  ;  (setq magithub-clone-default-directory "~/Projects/Code"))
-
-#+END_SRC
+#+end_src
 
 **** Git Gutter
 
