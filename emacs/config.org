@@ -1429,13 +1429,18 @@ files contained within the repo.  More information at the [[https://github.com/a
     :ensure t
     :diminish projectile-mode
     :config (projectile-global-mode)
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
     :init
     (if (string= (window-system) "ns")
       (setq projectile-project-search-path '("~/Projects/Code" "~/Projects/Work"))
       (setq projectile-project-search-path '("~/Projects/Code")))
     (setq projectile-switch-project-action #'projectile-dired))
 
-  (use-package helm-projectile :ensure t)
+  (use-package helm-projectile
+    :ensure t
+    :config
+    (helm-projectile-on))
 
   (dw/leader-key-def
     "pf"  'helm-projectile-find-file
