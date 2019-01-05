@@ -184,6 +184,20 @@ bindsym $mod+Shift+p move scratchpad
 bindsym $mod+Control+n [class="Dynalist"] scratchpad show
 bindsym $mod+Control+i [class="Pidgin" window_role="conversation"] scratchpad show
 
+# Status Bar
+# set $bar_bg "#000000CC"
+# bar {
+#     i3bar_command i3bar -t
+#     status_command i3blocks
+
+#     position top
+#     font pango:Fira Sans 9
+
+#     colors {
+#         background $bar_bg
+#     }
+# }
+
 # tango-jungle theme taken from here: https://github.com/okraits/j4-make-config/blob/master/themes/tango-jungle
 
 # $i3-theme-window
