@@ -24,6 +24,9 @@ c.fonts.web.family.serif = "Bitstream Vera Serif"
 c.fonts.web.family.sans_serif = "Bitstream Vera Sans"
 c.fonts.web.family.fixed = "Fira Mono"
 
+# Automatically turn on insert mode when a loaded page focuses a text field
+c.input.insert_mode.auto_load = True
+
 # Make Ctrl+g quit everything like in Emacs
 config.bind('<Ctrl-g>', 'leave-mode', mode='insert')
 config.bind('<Ctrl-g>', 'leave-mode', mode='command')
