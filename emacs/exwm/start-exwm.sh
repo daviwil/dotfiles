@@ -14,9 +14,10 @@ xfce4-power-manager &
 # Start up Syncthing for file synchronization
 syncthing-gtk --minimized &
 
-# Load system tray apps for sound and bluetooth devices
+# Load system tray apps for sound, bluetooth, and networking
 blueman-applet &
 pasystray &
+nm-applet &
 
 # Enable Manjaro update checks
 pamac-tray &
