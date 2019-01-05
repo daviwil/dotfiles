@@ -4,5 +4,3 @@
 
 killall offlineimap
 offlineimap -u quiet
-
-# TODO: Run tagger
