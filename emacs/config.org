@@ -1347,6 +1347,10 @@ https://magit.vc/manual/magit/
     :ensure t
     :custom (global-magit-file-mode t))
 
+  (use-package evil-magit
+    :ensure t
+    :after magit)
+
   (dw/leader-key-def
     "g"   '(:ignore t :which-key "git")
     "gs"  'magit-status
