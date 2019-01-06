@@ -2512,16 +2512,17 @@ to set that up.
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package sauron
-  :ensure t
-  :custom
-  (sauron-modules
-    '(sauron-erc sauron-org sauron-notifications))
-      ;sauron-mu4e sauron-elfeed)) ; Temporarily remove sauron-twittering
-  :config
-  (sauron-start-hidden)
-  (dw/leader-key-def
-    "an"  '(sauron-pop-to-buffer :which-key "notifications")))
+  (use-package sauron
+    :ensure t
+    :custom
+    (sauron-modules
+      '(sauron-erc sauron-org sauron-notifications
+        sauron-mu4e sauron-elfeed))
+    :config
+    (setq sauron-separate-frame nil)
+    (sauron-start-hidden)
+    (dw/leader-key-def
+      "an"  '(sauron-pop-to-buffer :which-key "notifications")))
 
 #+END_SRC
 
