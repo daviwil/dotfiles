@@ -294,11 +294,20 @@ Different platforms need different default font sizes, and
     (linux (set-face-attribute 'default nil :font "Fira Mono" :height 130)))
 
   ;; Set the mode line font to override whatever the theme sets
-  (set-face-attribute 'mode-line nil :font "Fira Mono")
+  (set-face-attribute 'mode-line nil :font "Fira Mono" :height 130)
 
 #+END_SRC
 
 *** Mode Line
+
+**** Basic Customization
+
+#+begin_src emacs-lisp
+
+  (setq display-time-format "%l:%M %p %b %y"
+        global-mode-string '("" (:eval mu4e-alert-mode-line) display-time-string))
+
+#+end_src
 
 **** Enable Mode Diminishing
 
@@ -324,11 +333,12 @@ anymore if I set up =diminish= correctly.
     (progn
       (sml/setup)
       (sml/apply-theme 'respectful)  ; Respect the theme colors
-      (setq sml/mode-width 'full)
-      (setq sml/name-width 40)
+      (setq sml/mode-width 'right
+            sml/name-width 60)
 
       (setq-default mode-line-format
         '("%e"
+          (:eval (format "[%d]" exwm-workspace-current-index))
           mode-line-front-space
           mode-line-mule-info
           mode-line-client
@@ -343,8 +353,8 @@ anymore if I set up =diminish= correctly.
           evil-mode-line-tag
           sml/pre-modes-separator
           mode-line-modes
-          mode-line-misc-info
-          mode-line-end-spaces))
+          " "
+          mode-line-misc-info))
 
       (setq rm-excluded-modes
         (mapconcat
@@ -356,6 +366,102 @@ anymore if I set up =diminish= correctly.
          "\\|"))))
 
 #+END_SRC
+
+**** spaceline
+
+#+begin_src emacs-lisp
+
+  (use-package spaceline
+    :ensure t
+    :disabled
+    :config
+    ;(spaceline-emacs-theme)
+    (spaceline-spacemacs-theme)
+    (setq powerline-default-separator 'bar)
+    (spaceline-compile
+      ; left side
+      '((exwm-workspace-number
+         :face highlight-face
+         :priority 100)
+        (evil-state
+         :face highlight-face
+         :priority 100)
+        (anzu :priority 95)
+        auto-compile
+        ((buffer-modified buffer-size buffer-id remote-host)
+          :priority 98)
+        (major-mode :priority 79)
+        (process :when active)
+        ((flycheck-error flycheck-warning flycheck-info)
+          :when active
+          :priority 89)
+        (minor-modes :when active
+                     :priority 9)
+        (mu4e-alert-segment :when active)
+        (erc-track :when active)
+        (version-control :when active
+                         :priority 78)
+        (org-pomodoro :when active)
+        (org-clock :when active))
+
+       ; right side
+       '(which-function
+         (purpose :priority 94)
+         (battery :when active)
+         (selection-info :priority 95)
+         input-method
+         ((buffer-encoding-abbrev
+           point-position
+           line-column)
+          :separator " | "
+          :priority 96)
+         (global :when active))))
+         ;(buffer-position :priority 99)
+         ;(hud :priority 99))))
+
+#+end_src
+
+**** telephone-line
+
+#+begin_src emacs-lisp
+
+  (use-package telephone-line
+    :ensure t
+    :disabled
+    :config
+    (setq telephone-line-evil-use-short-tag t
+          telephone-line-primary-left-separator telephone-line-flat
+          telephone-line-primary-right-separator telephone-line-flat
+          telephone-line-rhs
+            '((nil telephone-line-flycheck-segment telephone-line-misc-info-segment)
+              (accent telephone-line-major-mode-segment)
+              (evil telephone-line-airline-position-segment)))
+    (telephone-line-mode 1))
+
+#+end_src
+
+**** Doom Modeline
+
+#+begin_src emacs-lisp
+
+  ;; You must run (all-the-icons-install-fonts) one time after
+  ;; installing this package!
+
+  (use-package minions
+    :ensure t)
+
+  (use-package doom-modeline
+    :ensure t
+    :disabled
+    :hook (after-init . doom-modeline-init)
+    :config
+    (setq doom-modeline-lsp nil
+          doom-modeline-github nil
+          doom-modeline-width 3
+          doom-modeline-minor-modes nil
+          doom-modeline-major-mode-color-icon t))
+
+#+end_src
 
 *** File Backups
 
