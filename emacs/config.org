@@ -1004,7 +1004,10 @@ Emacs.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package helm-pass :ensure t)
+  (use-package helm-pass
+    :ensure t
+    :config
+    (setq password-store-password-length 12))
 
   (dw/leader-key-def
     "ap" '(:ignore t :which-key "pass")
