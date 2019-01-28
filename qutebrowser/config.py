@@ -16,7 +16,12 @@ c.auto_save.session = True
 c.scrolling.smooth = True
 c.session.lazy_restore = True
 c.content.autoplay = False
-c.qt.highdpi = True
+
+# Scale pages and UI better for hidpi
+c.zoom.default = "225%"
+c.fonts.statusbar = "12pt monospace"
+c.fonts.tabs = "12pt monospace"
+c.fonts.hints = "bold 12pt monospace"
 
 # Better default fonts
 c.fonts.web.family.standard = "Bitstream Vera Sans"
