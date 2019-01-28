@@ -19,8 +19,6 @@ c.content.autoplay = False
 
 # Scale pages and UI better for hidpi
 c.zoom.default = "225%"
-c.fonts.statusbar = "12pt monospace"
-c.fonts.tabs = "12pt monospace"
 c.fonts.hints = "bold 12pt monospace"
 
 # Better default fonts
