@@ -9,11 +9,17 @@ font pango:Fira Code 8
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# start a terminal
+# Start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
+
+# use vim keys for window movement
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -22,6 +28,8 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move workspace
+bindsym $mod+Mod1+h move workspace to output left
+bindsym $mod+Mod1+l move workspace to output right
 bindsym $mod+Mod1+Left move workspace to output left
 bindsym $mod+Mod1+Right move workspace to output right
 
@@ -30,9 +38,13 @@ bindsym $mod+Shift+Left move left 30 px
 bindsym $mod+Shift+Down move down 30 px
 bindsym $mod+Shift+Up move up 30 px
 bindsym $mod+Shift+Right move right 30 px
+bindsym $mod+Shift+h move left 30 px
+bindsym $mod+Shift+j move down 30 px
+bindsym $mod+Shift+k move up 30 px
+bindsym $mod+Shift+l move right 30 px
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+s split h
 
 # split in vertical orientation
 bindsym $mod+v split v
