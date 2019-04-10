@@ -1,16 +1,16 @@
-import dracula.draw
+# import dracula.draw
 
-# Use the Dracula theme: https://github.com/evannagle/qutebrowser-dracula-theme/
-dracula.draw.blood(c, {
-    'spacing': {
-        'vertical': 6,
-        'horizontal': 8
-    },
-    'font': {
-        'family': 'Menlo, Terminus, Monaco, Monospace',
-        'size': 10
-    }
-})
+# # Use the Dracula theme: https://github.com/evannagle/qutebrowser-dracula-theme/
+# dracula.draw.blood(c, {
+#     'spacing': {
+#         'vertical': 6,
+#         'horizontal': 8
+#     },
+#     'font': {
+#         'family': 'Menlo, Terminus, Monaco, Monospace',
+#         'size': 10
+#     }
+# })
 
 c.auto_save.session = True
 c.scrolling.smooth = True
