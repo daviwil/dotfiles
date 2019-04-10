@@ -1,8 +1,7 @@
 source ~/.dotfiles/zsh/antigen.zsh
 
-export PATH="$PATH:/usr/share/dotnet:~/.dotfiles/bin"
+export PATH="~/.dotfiles/bin:$HOME/.cargo/bin/:$PATH"
 export EDITOR="vim"
-export ATOM_DEV_RESOURCE_PATH="/home/daviwil/Projects/Code/atom"
 
 # Enable Emacs to track the current directory
 if [ -n "$INSIDE_EMACS" ]; then
