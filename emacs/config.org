@@ -531,6 +531,15 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
 ** Editing Configuration
 
+*** Tab Widths
+
+#+begin_src emacs-lisp
+
+(setq tab-width 2)
+(setq evil-shift-width tab-width)
+
+#+end_src>
+
 *** Bracket and quote pair completion
 
 Turn on =electric-pair-mode= for quote, paren, and bracket completion.
@@ -1026,6 +1035,19 @@ credentials for mail, etc.
     '((:source "~/.dotfiles/emacs/secrets/.authinfo.gpg")))
 
 #+END_SRC
+
+** File Browsing
+
+#+begin_src emacs-lisp
+
+(use-package treemacs
+  :ensure t)
+
+(use-package treemacs-evil
+  :ensure t
+  :after treemacs)
+
+#+end_src
 
 ** Org Mode
 
@@ -1597,7 +1619,26 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
   (use-package company
     :ensure t
     :config
-    (add-hook 'after-init-hook 'global-company-mode))
+    (add-hook 'after-init-hook 'global-company-mode)
+
+    (define-key company-active-map (kbd "<return>") #'company-complete-selection)
+    (define-key prog-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+
+    (require 'color)
+
+    (let ((bg (face-attribute 'default :background)))
+      (custom-set-faces
+       `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
+       `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
+       `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
+       `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
+       `(company-tooltip-common ((t (:inherit font-lock-constant-face)))))))
+
+  (use-package company-box
+    :ensure t
+    :hook (company-mode . company-box-mode)
+    :config
+    (setq company-box-show-single-candidate t))
 
 #+END_SRC
 
@@ -1608,12 +1649,34 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 #+BEGIN_SRC emacs-lisp
 
   (use-package lsp-mode
-    :init
-    (add-hook 'prog-mode-hook 'lsp-mode))
+    :ensure t
+    :hook ((typescript-mode js2-mode web-mode) . lsp)
+    :commands lsp)
 
   (use-package lsp-ui
     :ensure t
-    :init (add-hook 'lsp-mode-hook #'lsp-ui-mode))
+    :after lsp-mode
+    :commands lsp-ui-mode
+    :config
+    (setq lsp-ui-sideline-enable nil)
+    (lsp-ui-doc-show))
+
+  (use-package company-lsp
+    :ensure t
+    :after lsp-mode
+    :commands company-lsp
+    (setq company-minimum-prefix-length 1)
+    (setq company-idle-delay 0)
+    (setq company-lsp-cache-candidates 't))
+
+  (use-package helm-lsp
+    :ensure t
+    :after lsp-mode
+    :commands helm-lsp-workspace-symbol)
+
+  (use-package lsp-treemacs
+    :ensure t
+    :after (lsp-mode treemacs))
 
 #+END_SRC
 
@@ -1655,24 +1718,40 @@ Configure TypeScript and JavaScript language modes
   (defun setup-tide-mode ()
     (interactive)
     (tide-setup)
-    ;(flycheck-mode +1)
-    ;(setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
     (eldoc-mode +1)
     (tide-hl-identifier-mode +1)
     (company-mode +1))
 
-  ;; aligns annotation to the right hand side
-  (setq company-tooltip-align-annotations t)
-
-  (use-package tide
+  (use-package typescript-mode
     :ensure t
     :config
+    (setq typescript-indent-level 2))
 
-    ;; formats the buffer before saving
-    ;(add-hook 'before-save-hook 'tide-format-before-save)
+  ;; (use-package tide
+  ;;     :ensure t
+  ;;     :after (typescript-mode web-mode company flycheck)
+  ;;     :hook ((typescript-mode . setup-tide-mode)
+  ;;            (javascript-mode . setup-tide-mode)
+  ;;            (typescript-mode . tide-hl-identifier-mode)
+  ;;            (before-save . tide-format-before-save))
+  ;;     :config
+  ;;     (setq tide-format-options
+  ;;       '(:indentSize 2
+  ;;         :tabSize 2
+  ;;         :convertTabsToSpaces t))
 
-    (add-hook 'typescript-mode-hook #'setup-tide-mode)
-    (add-hook 'javascript-mode-hook #'setup-tide-mode))
+  ;;     (require 'evil-collection-tide)
+  ;;     (evil-collection-tide-setup)
+
+  ;;     (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+  ;;     (add-hook 'web-mode-hook
+  ;;             (lambda ()
+  ;;                 (when (string-equal "tsx" (file-name-extension buffer-file-name))
+  ;;                 (setup-tide-mode))))
+
+  ;;     (flycheck-add-mode 'typescript-tslint 'web-mode))
 
   (use-package js2-mode
     :ensure t
@@ -1688,21 +1767,12 @@ Configure TypeScript and JavaScript language modes
     (add-hook 'js2-mode-hook
       (setq js-indent-level 2)
       (setq evil-shift-width js-indent-level)
-      (setq tab-width 2)))
+      (setq-default tab-width 2)))
 
-  (use-package indium
-    :ensure t
-    :config
-    (add-hook 'js-mode-hook #'indium-interaction-mode))
-
-  ;(use-package lsp-javascript-typescript
-  ;  :ensure t
-  ;  :after lsp-mode
-  ;  :config
-  ;  (with-eval-after-load 'lsp-mode
-  ;    (require 'lsp-typescript)
-  ;    (add-hook 'js-mode-hook #'lsp-typescript-enable)
-  ;    (add-hook 'js2-mode-hook #'lsp-typescript-enable)))
+  ;; (use-package indium
+  ;;   :ensure t
+  ;;   :config
+  ;;   (add-hook 'js-mode-hook #'indium-interaction-mode))
 
 #+END_SRC
 
@@ -1792,10 +1862,15 @@ https://github.com/rust-lang/rust-mode
   (use-package web-mode
     :ensure t
     :config
-    (progn
-      (add-to-list
-         'auto-mode-alist
-         '("\\.html?\\'" . web-mode))))
+    (setq-default web-mode-code-indent-offset 2)
+    (setq-default web-mode-markup-indent-offset 2)
+    (setq-default web-mode-attribute-indent-offset 2)
+    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode)))
+    ;; (add-hook 'web-mode-hook
+    ;;   (add-to-list
+    ;;     'auto-mode-alist
+    ;;     '("\\.html?\\'" . web-mode))))
+
 #+END_SRC
 
 **** YAML
