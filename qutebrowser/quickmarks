@@ -1,7 +1,6 @@
-a https://github.com/atom/atom
-gmg https://accounts.google.com/ServiceLogin?service=mail&passive=true&Email=daviwil@github.com&continue=https://mail.google.com/mail/u/daviwil@github.com/
-gcg https://accounts.google.com/ServiceLogin?service=calendar&passive=true&Email=daviwil@github.com&continue=https://calendar.google.com/calendar/u/daviwil@github.com/
-lp https://www.lastpass.com
+ajs https://github.com/azure/azure-sdk-for-js
+anet https://github.com/azure/azure-sdk-for-net
+apy https://github.com/azure/azure-sdk-for-python
+aja https://github.com/azure/azure-sdk-for-java
+at https://github.com/azure/autorest.typescript
 1p https://my.1password.com/vaults/kyxq62du37adb3lpjh2sphdq4i/allitems/tkr5tuo4gqyuco4x25upt6iaia
-ai https://github.com/atom/atom/issues
-ap https://github.com/atom/atom/pulls
