@@ -81,6 +81,7 @@ Some tips can be found here:
     :init
     (setq evil-want-integration t)
     (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
     :config
     (add-hook 'evil-mode-hook 'dw/evil-hook)
     (evil-mode 1)
