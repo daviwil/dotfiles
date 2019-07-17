@@ -1414,19 +1414,19 @@ documentation page.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package org-gcal
-    :ensure t
-    :config
+  ;; (use-package org-gcal
+  ;;   :ensure t
+  ;;   :config
 
-    (setq org-gcal-client-id (password-store-get "API/Google/daviwil-emacs-id")
-          org-gcal-client-secret (password-store-get "API/Google/daviwil-emacs-secret")
-          org-gcal-file-alist `(("daviwil@github.com" . ,(dw/org-path "Calendar.org"))
-                                (,(password-store-get "Misc/Calendars/GitHub/AtomTeam") . ,(dw/org-path "Calendar.org"))
-                               )))
+  ;;   (setq org-gcal-client-id (password-store-get "API/Google/daviwil-emacs-id")
+  ;;         org-gcal-client-secret (password-store-get "API/Google/daviwil-emacs-secret")
+  ;;         org-gcal-file-alist `(("daviwil@github.com" . ,(dw/org-path "Calendar.org"))
+  ;;                               (,(password-store-get "Misc/Calendars/GitHub/AtomTeam") . ,(dw/org-path "Calendar.org"))
+  ;;                              )))
 
-  (dw/leader-key-def
-    "ac"  '(:ignore t :which-key "calendar")
-    "acs" '(org-gcal-fetch :which-key "sync"))
+  ;; (dw/leader-key-def
+  ;;   "ac"  '(:ignore t :which-key "calendar")
+  ;;   "acs" '(org-gcal-fetch :which-key "sync"))
 
 #+END_SRC
 
@@ -1434,15 +1434,15 @@ documentation page.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package org-wild-notifier
-    :ensure t
-    :config
-    ; Make sure we receive notifications for non-TODO events
-    ; like those synced from Google Calendar
-    (setq org-wild-notifier-keyword-whitelist nil)
-    (setq org-wild-notifier-notification-title "Agenda Reminder")
-    (setq org-wild-notifier-alert-time 15)
-    (org-wild-notifier-mode))
+  ;; (use-package org-wild-notifier
+  ;;   :ensure t
+  ;;   :config
+  ;;   ; Make sure we receive notifications for non-TODO events
+  ;;   ; like those synced from Google Calendar
+  ;;   (setq org-wild-notifier-keyword-whitelist nil)
+  ;;   (setq org-wild-notifier-notification-title "Agenda Reminder")
+  ;;   (setq org-wild-notifier-alert-time 15)
+  ;;   (org-wild-notifier-mode))
 
 #+END_SRC
 
