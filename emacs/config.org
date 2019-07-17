@@ -1666,6 +1666,9 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     :ensure t
     :after lsp-mode
     :commands company-lsp
+    :config
+    (push 'company-lsp company-backends)
+    (company-mode)
     (setq company-minimum-prefix-length 1)
     (setq company-idle-delay 0)
     (setq company-lsp-cache-candidates 't))
