@@ -500,7 +500,6 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
   (dw/leader-key-def
     "t"  '(:ignore :which-key "toggles")
     "tw" 'whitespace-mode
-    "tf" 'focus-mode
     "tt" '(counsel-load-theme :which-key "choose theme"))
 
 #+END_SRC
@@ -1985,6 +1984,38 @@ https://github.com/rust-lang/rust-mode
 
   (use-package know-your-http-well
     :ensure t)
+
+#+end_src
+
+** Writing
+
+*** =darkroom= for distraction-free writing
+
+#+begin_src emacs-lisp
+
+  (use-package darkroom
+    :ensure t
+    :config
+    (setq darkroom-text-scale-increase 0))
+
+  (defun dw/toggle-focus-mode ()
+    (interactive)
+    (darkroom-mode 1)
+    (display-line-numbers-mode 0))
+
+  (defun dw/leave-focus-mode ()
+    (interactive)
+    (darkroom-mode 0)
+    (display-line-numbers-mode 1))
+
+  (defun dw/toggle-focus-mode ()
+    (interactive)
+    (if (symbol-value darkroom-mode)
+      (dw/leave-focus-mode)
+      (dw/enter-focus-mode)))
+
+  (dw/leader-key-def
+    "tf" '(dw/toggle-focus-mode :which-key "focus mode"))
 
 #+end_src
 
