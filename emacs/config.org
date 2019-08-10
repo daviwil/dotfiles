@@ -106,22 +106,6 @@ Some tips can be found here:
 
 #+END_SRC
 
-*** Quick Normal Mode with `fd`
-
-This is a nice little trick I learned from [[https://github.com/syl20bnr/evil-escape#customization][Spacemacs]] but I currently don't use
-it a whole lot.  Might remove it in the future.
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package evil-escape
-    :ensure t
-    :diminish evil-escape-mode
-    :config
-    (evil-escape-mode)
-    (setq-default evil-escape-delay 0.1))
-
-#+END_SRC
-
 *** Keybinding Panel (which-key)
 
 [[https://github.com/justbur/emacs-which-key][which-key]] is great for getting an overview of what keybindings are available
