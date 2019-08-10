@@ -625,6 +625,15 @@ Use spaces instead of tabs for indentation.
 
 #+END_SRC
 
+** Stateful Keymaps with Hydra
+
+#+begin_src emacs-lisp
+
+  (use-package hydra
+    :ensure t)
+
+#+end_src
+
 ** Better Completions with Ivy
 
 I currently use Ivy, Counsel, and Swiper to navigate around files, buffers, and
@@ -656,6 +665,9 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     (setq ivy-count-format "(%d/%d) ")
     (setq enable-recursive-minibuffers t)
     (setq ivy-initial-inputs-alist nil)) ;; Don't start search with ^
+
+  (use-package ivy-hydra
+    :ensure t)
 
   (use-package counsel
     :ensure t
