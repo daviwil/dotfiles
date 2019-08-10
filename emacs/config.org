@@ -1684,6 +1684,7 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     :commands lsp-ui-mode
     :config
     (setq lsp-ui-sideline-enable nil)
+    (setq lsp-ui-doc-position 'bottom)
     (lsp-ui-doc-show))
 
   (use-package company-lsp
