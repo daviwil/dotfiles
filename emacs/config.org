@@ -85,6 +85,8 @@ Some tips can be found here:
     :config
     (add-hook 'evil-mode-hook 'dw/evil-hook)
     (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
     (evil-global-set-key 'motion "j" 'evil-next-visual-line)
     (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
     (evil-set-initial-state 'messages-buffer-mode 'normal)
@@ -639,32 +641,55 @@ Use spaces instead of tabs for indentation.
 
 #+END_SRC
 
-** Better Completions with Helm
+** Better Completions with Ivy
+
+I currently use Ivy, Counsel, and Swiper to navigate around files, buffers, and
+projects super quickly.  Here are some workflow notes on how to best use Ivy:
+
+- While in an Ivy minibuffer, you can search within the current results by using =S-Space=.
+- To quickly jump to an item in the minibuffer, use =C-'= to get Avy line jump keys.
+- To see actions for the selected minibuffer item, use =M-o= and then press the
+  action's key.
 
 #+BEGIN_SRC emacs-lisp
 
-    (use-package helm
-      :ensure t
-      :config
-      (require 'helm-config)
+  (use-package ivy
+    :ensure t
+    :diminish t
+    :bind (("C-s" . swiper)
+           :map ivy-minibuffer-map
+           ("C-j" . ivy-next-line)
+           ("C-k" . ivy-previous-line)
+           :map ivy-switch-buffer-map
+           ("C-k" . ivy-previous-line)
+           ("C-d" . ivy-switch-buffer-kill))
+    :init
+    (ivy-mode 1)
+    :config
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-height 15)
+    (setq ivy-wrap t)
+    (setq ivy-count-format "(%d/%d) ")
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-initial-inputs-alist nil)) ;; Don't start search with ^
 
-      (global-set-key (kbd "M-x") 'helm-M-x)
-      (global-set-key (kbd "C-x b") 'helm-mini)
-      (global-set-key (kbd "C-x C-f") 'helm-find-files)
-      (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-      (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+  (use-package counsel
+    :ensure t
+    :bind (("M-x" . counsel-M-x)
+           ("C-x b" . counsel-ibuffer)
+           ("C-x C-f" . counsel-find-file)))
 
-      (setq helm-autoresize-max-height  40
-            helm-buffers-fuzzy-matching t
-            helm-recentf-fuzzy-match    t)
+  (use-package smex ;; Adds M-x recent command sorting for counsel-M-x
+    :after (counsel)
+    :ensure t)
 
-      (helm-autoresize-mode 1)
-      (helm-mode 1))
-
-    (dw/leader-key-def
-      "f"   '(:ignore t :which-key "files")
-      "ff"  '(helm-find-files :which-key "open file")
-      "fr"  '(helm-recentf :which-key "recent files"))
+  (dw/leader-key-def
+    "r"   '(ivy-resume :which-key "ivy resume")
+    "f"   '(:ignore t :which-key "files")
+    "ff"  '(counsel-find-file :which-key "open file")
+    "fr"  '(counsel-recentf :which-key "recent files")
+    "fR"  '(revert-buffer :which-key "revert file")
+    "fj"  '(counsel-file-jump :which-key "jump to file"))
 
 #+END_SRC
 
@@ -755,7 +780,7 @@ keeping it around for now.
   (dw/leader-key-def
     "TAB" 'buffer-flip
     "b"   '(:ignore t :which-key "buffers")
-    "bb"  'helm-mini
+    "bb"  'counsel-switch-buffer
     "bd"  'evil-delete-buffer)
 
 #+END_SRC
@@ -1569,16 +1594,14 @@ files contained within the repo.  More information at the [[https://github.com/a
       (setq projectile-project-search-path '("~/Projects/Code")))
     (setq projectile-switch-project-action #'projectile-dired))
 
-  (use-package helm-projectile
-    :ensure t
-    :config
-    (helm-projectile-on))
+  (use-package counsel-projectile
+    :ensure t)
 
   (dw/leader-key-def
-    "pf"  'helm-projectile-find-file
-    "ps"  'helm-projectile-switch-project
-    "pF"  'helm-projectile-ag
-    "pp"  'helm-projectile
+    "pf"  'counsel-projectile-find-file
+    "ps"  'counsel-projectile-switch-project
+    "pF"  'counsel-projectile-ag
+    "pp"  'counsel-projectile
     "pc"  'projectile-compile-project
     "pd"  'projectile-dired)
 
