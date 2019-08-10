@@ -1964,6 +1964,17 @@ https://github.com/rust-lang/rust-mode
 #+END_SRC
 
 
+*** Reference
+
+**** HTTP
+
+#+begin_src emacs-lisp
+
+  (use-package know-your-http-well
+    :ensure t)
+
+#+end_src
+
 ** Applications
 
 *** Binding Prefix
