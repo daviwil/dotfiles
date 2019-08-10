@@ -137,8 +137,8 @@ in conjunction with Evil modes.
     (general-evil-setup t)
 
     (general-create-definer dw/leader-key-def
-      :states '(normal insert emacs)
-      :prefix "C-SPC"
+      :keymaps '(normal insert visual emacs)
+      :prefix "SPC"
       :global-prefix "C-SPC")
 
     (general-create-definer dw/ctrl-c-keys
@@ -1862,7 +1862,7 @@ https://github.com/rust-lang/rust-mode
     "eb"  '(eval-buffer :which-key "eval buffer"))
 
   (dw/leader-key-def
-    :states '(visual)
+    :keymaps '(visual)
     "er" '(eval-region :which-key "eval region"))
 
 #+END_SRC
