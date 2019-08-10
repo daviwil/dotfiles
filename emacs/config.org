@@ -1846,6 +1846,17 @@ https://github.com/rust-lang/rust-mode
 
 #+BEGIN_SRC emacs-lisp
 
+  (use-package helpful
+    :ensure t
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-function] . helpful-callable)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-variable] . helpful-variable)
+    ([remap describe-key] . helpful-key))
+
   (dw/leader-key-def
     "e"   '(:ignore t :which-key "eval")
     "eb"  '(eval-buffer :which-key "eval buffer"))
