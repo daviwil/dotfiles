@@ -1416,13 +1416,15 @@ documentation page.
     "oi"  '(:ignore t :which-key "insert")
     "oil" '(org-insert-link :which-key "insert link")
 
+    "on"  '(org-toggle-narrow-to-subtree :which-key "toggle narrow")
+
     "oa"  '(org-agenda :which-key "status")
     "oc"  '(org-capture t :which-key "capture")
     "ox"  '(org-export-dispatch t :which-key "export"))
 
 #+END_SRC
 
-*** Calendar Sync
+**** Calendar Sync
 
 #+BEGIN_SRC emacs-lisp
 
