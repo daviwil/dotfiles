@@ -705,46 +705,37 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 ** Buffer Management
 
-*** Perspectives
-
-#+BEGIN_SRC emacs-lisp
-
-;(use-package persp-mode
-;  :ensure t
-;  :init
-;  (add-hook 'after-init-hook #'(lambda () (persp-mode 1)))
-;  :config
-;  (setq persp-autokill-buffer-on-remove 'kill-weak))
-
-#+END_SRC
-
 *** Buffer Flipping
 
-Need to find a cleaner way to specify the bindings for =buffer-flip-map=, not
-thrilled with using =define-key= for this (even though it's the standard way in
-Emacs).  Couldn't easily figure out a way to do it with =general.el=.
-
 #+BEGIN_SRC emacs-lisp
 
-  (use-package buffer-flip
+  (defun dw/iflip-buffer-reset ()
+    (interactive)
+    (iflipb-restore-buffers))
+
+  (defhydra hydra-flip-buffer nil
+    "Flipping Buffers"
+    ("j" iflipb-next-buffer "next")
+    ("h" iflipb-next-buffer "next" :exit t)
+    ("k" iflipb-previous-buffer "prev")
+    ("r" dw/iflip-buffer-reset "reset" :exit t)
+    ("f" nil "exit" :exit t))
+
+  (use-package iflipb
     :ensure t
-    ;:chords (([?S ?T] . 'buffer-flip))
-    ;:chords (([? ?\t] . 'buffer-flip))
+    :bind ("C-;" . 'hydra-flip-buffer/body))
     :config
-    (setq buffer-flip-map
-          (let ((map (make-sparse-keymap)))
-            (define-key map (kbd "<tab>")   'buffer-flip-forward)
-            (define-key map (kbd "<backtab>") 'buffer-flip-backward)
-            (define-key map (kbd "C-g")     'buffer-flip-abort)
-            map)))
+    (setq iflipb-wrap-around nil))
 
-    ;(key-chord-define-global [?S ?T] 'buffer-flip)
-
-    ;; This isn't working...
-    ;:bind  (:map buffer-flip-map
-    ;             ([?\t] .   buffer-flip-forward)
-    ;             ([S-?\t] . buffer-flip-backward)
-    ;             ("C-g" .     buffer-flip-abort)))
+  ;; (use-package buffer-flip
+  ;;   :ensure t
+  ;;   :config
+  ;;   (setq buffer-flip-map
+  ;;         (let ((map (make-sparse-keymap)))
+  ;;           (define-key map (kbd "<tab>")   'buffer-flip-forward)
+  ;;           (define-key map (kbd "<backtab>") 'buffer-flip-backward)
+  ;;           (define-key map (kbd "C-g")     'buffer-flip-abort)
+  ;;           map)))
 
 #+END_SRC
 
@@ -1022,7 +1013,7 @@ tweaking Org agenda views much less annoying.
 
   (use-package expand-region
     :ensure t
-    :bind (("C-;" . 'er/expand-region)
+    :bind (("M-[" . 'er/expand-region)
            ("C-(" . 'er/mark-outside-pairs)))
 
 #+END_SRC
