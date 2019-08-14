@@ -1757,6 +1757,7 @@ Configure TypeScript and JavaScript language modes
   (use-package typescript-mode
     :ensure t
     :config
+    (flycheck-mode)
     (setq typescript-indent-level 2))
 
   ;; (use-package tide
