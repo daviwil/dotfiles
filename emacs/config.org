@@ -1680,30 +1680,29 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     :ensure t
     :init (if (< emacs-major-version 27)
             (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
-            (setq xref-show-definitions-function #'ivy-xref-show-defs)))
+            (setq xref-show-definitions-function #'ivy-xref-show-defs))))
 
   (use-package lsp-mode
     :ensure t
     :hook ((typescript-mode js2-mode web-mode) . lsp)
-    :commands lsp
-    :config
+    :commands lsp)
 
-    (dw/leader-key-def
-        "l"  '(:ignore :which-key "lsp")
-        "ld" 'xref-find-definitions
-        "lr" 'xref-find-references
-        "ln" 'lsp-ui-find-next-reference
-        "lp" 'lsp-ui-find-prev-reference
-        "ls" 'counsel-imenu
-        "lS" 'lsp-ui-sideline-mode
-        "le" 'lsp-ui-flycheck-list))
+  (dw/leader-key-def
+    "l"  '(:ignore :which-key "lsp")
+    "ld" 'xref-find-definitions
+    "lr" 'xref-find-references
+    "ln" 'lsp-ui-find-next-reference
+    "lp" 'lsp-ui-find-prev-reference
+    "ls" 'counsel-imenu
+    "lS" 'lsp-ui-sideline-mode
+    "le" 'lsp-ui-flycheck-list)
 
   (use-package lsp-ui
     :ensure t
     :after lsp-mode
     :commands lsp-ui-mode
     :config
-    (setq lsp-ui-sideline-enable nil)
+    (setq lsp-ui-sideline-enable t)
     (setq lsp-ui-doc-position 'bottom)
     (lsp-ui-doc-show))
 
