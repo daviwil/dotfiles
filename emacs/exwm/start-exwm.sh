@@ -30,4 +30,4 @@ export VISUAL=emacsclient
 export EDITOR="$VISUAL"
 
 # Fire it up
-emacs
+emacs --use-exwm

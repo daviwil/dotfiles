@@ -18,10 +18,14 @@
 ;; Ensure latest Org with contrib is installed first
 (use-package org :ensure org-plus-contrib)
 
+(setq dw/exwm-enabled
+      (and (eq window-system 'x)
+           (seq-contains command-line-args "--use-exwm")))
+
 ;; Set up exwm early in the init process
 (use-package exwm
   :ensure t
-  :if (eq window-system 'x)
+  :if dw/exwm-enabled
   :init
   (setq mouse-autoselect-window t
         focus-follows-mouse t)
