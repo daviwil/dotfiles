@@ -1011,6 +1011,7 @@ for now, need to investigate the =perspective= varieties.
                         (number-sequence 0 9))))
 
     (exwm-input-set-key (kbd "s-SPC") 'helm-run-external-command)
+    (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
     (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen)
 
     (exwm-input-set-key (kbd "s-C-s") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Slack")))
