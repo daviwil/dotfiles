@@ -10,6 +10,7 @@
   (package-refresh-contents))
 (package-initialize)
 
+(require 'subr-x)
 (setq dw/is-termux
       (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
 
