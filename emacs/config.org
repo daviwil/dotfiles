@@ -2266,7 +2266,110 @@ Agenda items.
 
 #+BEGIN_SRC emacs-lisp
 
-  (setenv "PATH" (concat (getenv "PATH") ":~/.dotfiles/bin"))
+  (use-package xterm-color
+    :ensure t)
+
+  (defun read-file (file-path)
+    (with-temp-buffer
+      (insert-file-contents file-path)
+      (buffer-string)))
+
+  (defun dw/get-current-package-version ()
+    (interactive)
+    (let ((package-json-file (concat (eshell/pwd) "/package.json")))
+      (when (file-exists-p package-json-file)
+        (let* ((package-json-contents (read-file package-json-file))
+               (package-json (ignore-errors (json-parse-string package-json-contents))))
+          (when package-json
+            (ignore-errors (gethash "version" package-json)))))))
+
+  (defun dw/map-line-to-status-char (line)
+    (cond ((string-match "^?\\? " line) "?")))
+
+  (defun dw/get-git-status-prompt ()
+    (let ((status-lines (cdr (process-lines "git" "status" "--porcelain" "-b"))))
+      (seq-uniq (seq-filter 'identity (mapcar 'dw/map-line-to-status-char status-lines)))))
+
+  (defun dw/get-prompt-path ()
+    (let* ((current-path (eshell/pwd))
+           (git-output (shell-command-to-string "git rev-parse --show-toplevel"))
+           (has-path (not (string-match "^fatal" git-output))))
+      (if (not has-path)
+        (abbreviate-file-name current-path)
+        (string-remove-prefix (file-name-directory git-output) current-path))))
+
+  ;; This prompt function mostly replicates my custom zsh prompt setup
+  ;; that is powered by github.com/denysdovhan/spaceship-prompt.
+  (defun dw/eshell-prompt ()
+    (let ((current-branch (magit-get-current-branch))
+          (package-version (dw/get-current-package-version)))
+      (concat
+        "\n"
+        (propertize (system-name) 'face `(:foreground "#62aeed"))
+        (propertize " ॐ " 'face `(:foreground "white"))
+        (propertize (dw/get-prompt-path) 'face `(:foreground "#82cfd3"))
+        (when current-branch
+          (concat
+            (propertize " • " 'face `(:foreground "white"))
+            (propertize (concat " " current-branch) 'face `(:foreground "#c475f0"))))
+        (when package-version
+          (concat
+            (propertize " @ " 'face `(:foreground "white"))
+            (propertize package-version 'face `(:foreground "#e8a206"))))
+        (propertize " • " 'face `(:foreground "white"))
+        (propertize (format-time-string "%I:%M:%S %p") 'face `(:foreground "#5a5b7f"))
+        (if (= (user-uid) 0)
+            (propertize "\n#" 'face `(:foreground "red2"))
+            (propertize "\nλ" 'face `(:foreground "#aece4a")))
+        (propertize " " 'face `(:foreground "white")))))
+
+  (defun dw/eshell-mode-hook ()
+    ;; We want to use xterm-256color when running interactive commands
+    ;; in eshell but not during other times when we might be launching
+    ;; a shell command to gather its output.
+    (add-hook 'eshell-pre-command-hook
+      '(lambda () (setenv "TERM" "xterm-256color")))
+    (add-hook 'eshell-post-command-hook
+      '(lambda () (setenv "TERM" "dumb")))
+
+    (setenv "PAGER" "cat")
+    (company-mode 0))
+
+  ;; TODO: This doesn't currently work
+  (add-hook 'eshell-banner-load-hook
+    '(lambda ()
+      (setq eshell-banner-message
+        (concat "\n" (propertize " " 'display (create-image "~/.dotfiles/emacs/images/flux_banner.png" 'png nil :scale 0.4 :align-to "center")) "\n\n"))))
+
+  (use-package eshell
+    :after xterm-color
+    :hook ((emacs-startup . eshell)
+           (eshell-mode . dw/eshell-mode-hook))
+    :config
+    (eshell/addpath "~/.dotfiles/bin")
+
+    (evil-define-key '(normal insert visual) eshell-mode-map "C-r" 'counsel-esh-history)
+    (evil-normalize-keymaps)
+    (require 'evil-collection-eshell)
+    (evil-collection-eshell-setup)
+
+    (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+    (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
+
+    (add-hook 'eshell-before-prompt-hook
+      (lambda ()
+        (setq xterm-color-preserve-properties t)))
+
+    (setq eshell-prompt-function 'dw/eshell-prompt
+          eshell-prompt-regexp   "^λ "
+          eshell-history-size    10000
+          eshell-hist-ignoredups t
+          eshell-scroll-to-bottom-on-input t
+          eshell-highlight-prompt t))
+
+  (use-package eshell-z
+    :ensure t
+    :hook (eshell-mode . (lambda () (require 'eshell-z))))
 
   (use-package exec-path-from-shell
     :ensure t
@@ -2275,13 +2378,6 @@ Agenda items.
     :config
     (when (memq window-system '(mac ns x))
       (exec-path-from-shell-initialize)))
-
-  (defun dw/eshell-mode-config-hook ()
-    (setq eshell-scroll-to-bottom-on-input t)
-    (require 'evil-collection-eshell)
-    (evil-collection-eshell-setup))
-
-  (add-hook 'eshell-mode-hook 'dw/eshell-mode-config-hook)
 
   (dw/leader-key-def
     "SPC" 'eshell)
@@ -2315,15 +2411,12 @@ Custom eshell commands will go here.
 
 **** Extras
 
+Might not need this anymore with my new custom prompt configuration.
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package eshell-prompt-extras
-    :ensure t
-    :config
-    (with-eval-after-load 'esh-opt
-      (autoload 'epe-theme-lambda "eshell-prompt-extras")
-      (setq eshell-highlight-prompt t
-            eshell-prompt-function 'epe-theme-lambda)))
+    :ensure t)
 
 #+END_SRC
 
