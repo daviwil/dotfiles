@@ -1686,7 +1686,7 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     :ensure t
     :init (if (< emacs-major-version 27)
             (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
-            (setq xref-show-definitions-function #'ivy-xref-show-defs))))
+            (setq xref-show-definitions-function #'ivy-xref-show-defs)))
 
   (use-package lsp-mode
     :ensure t
