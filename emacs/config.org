@@ -182,11 +182,13 @@ Clean up Emacs' user interface, make it more minimal.
   ;; Thanks, but no thanks
   (setq inhibit-startup-message t)
 
-  (scroll-bar-mode -1)        ; Disable visible scrollbar
-  (tool-bar-mode -1)          ; Disable the toolbar
-  (tooltip-mode -1)           ; Disable tooltips
-  (menu-bar-mode -1)          ; Disable the menu bar
-  (set-fringe-mode '(1 . 0))  ; Disable right-side fringe
+  (unless dw/is-termux
+    (scroll-bar-mode -1)        ; Disable visible scrollbar
+    (tool-bar-mode -1)          ; Disable the toolbar
+    (tooltip-mode -1)           ; Disable tooltips
+    (set-fringe-mode '(1 . 0))) ; Disable right-side fringe
+
+  (menu-bar-mode -1)            ; Disable the menu bar
 
   ;; Set up the visible bell
   (setq visible-bell t)
@@ -197,10 +199,11 @@ Improve scrolling.
 
 #+BEGIN_SRC emacs-lisp
 
+(unless dw/is-termux
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
   (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-  (setq scroll-step 1) ;; keyboard scroll one line at a timesetq use-dialog-box nil) ; Disable dialog boxes since they weren't working in Mac OSX
+  (setq scroll-step 1)) ;; keyboard scroll one line at a timesetq use-dialog-box nil) ; Disable dialog boxes since they weren't working in Mac OSX
 
 #+END_SRC
 
@@ -208,10 +211,11 @@ Set frame transparency and maximize windows by default.
 
 #+BEGIN_SRC emacs-lisp
 
-  (set-frame-parameter (selected-frame) 'alpha '(95 . 95))
-  (add-to-list 'default-frame-alist '(alpha . (95 . 95)))
-  (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  (unless dw/is-termux
+    (set-frame-parameter (selected-frame) 'alpha '(95 . 95))
+    (add-to-list 'default-frame-alist '(alpha . (95 . 95)))
+    (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+    (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 
 #+END_SRC
 
@@ -258,19 +262,20 @@ Close, but no cigar:
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package twilight-anti-bright-theme :ensure t :defer t)
-  (use-package material-theme :ensure t :defer t)
-  (use-package badger-theme :ensure t :defer t)
-  (use-package spacegray-theme :ensure t :defer t)
-  (use-package nord-theme :ensure t :defer t)
-  (use-package noctilux-theme :ensure t :defer t)
-  (use-package zerodark-theme :ensure t :defer t) ; Also: (zerodark-setup-modeline-format)
-  (use-package color-theme-sanityinc-tomorrow :ensure t :defer t)
+  (unless dw/is-termux
+    (use-package twilight-anti-bright-theme :ensure t :defer t)
+    (use-package material-theme :ensure t :defer t)
+    (use-package badger-theme :ensure t :defer t)
+    (use-package spacegray-theme :ensure t :defer t)
+    (use-package nord-theme :ensure t :defer t)
+    (use-package noctilux-theme :ensure t :defer t)
+    (use-package zerodark-theme :ensure t :defer t) ; Also: (zerodark-setup-modeline-format)
+    (use-package color-theme-sanityinc-tomorrow :ensure t :defer t)
 
-  ;(load-theme 'twilight-anti-bright)
-  ;(load-theme 'nord t)
-  ;(color-theme-sanityinc-tomorrow-night)
-  (load-theme 'spacegray t)
+    ;(load-theme 'twilight-anti-bright)
+    ;(load-theme 'nord t)
+    ;(color-theme-sanityinc-tomorrow-night)
+    (load-theme 'spacegray t))
 
 #+END_SRC
 
@@ -2083,7 +2088,9 @@ to capture links to emails with org-mode too.
 
 #+BEGIN_SRC emacs-lisp
 
-  (when (eq system-type 'gnu/linux)
+  (setq dw/mail-enabled (eq system-name "zerocool"))
+
+  (when (and (eq system-type 'gnu/linux) dw/mail-enabled)
     ;; After building/installing mu4e the .el files are here:
     ;;(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") ;; On Fedora
     (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e") ;; On Manjaro / Arch
@@ -2209,7 +2216,7 @@ Use [[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] to show notificati
 
 #+BEGIN_SRC emacs-lisp
 
-  (when (eq system-type 'gnu/linux)
+  (when (and (eq system-type 'gnu/linux) dw/mail-enabled)
     (use-package mu4e-alert
       :ensure t
       :config

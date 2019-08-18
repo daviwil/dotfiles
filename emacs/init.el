@@ -4,11 +4,18 @@
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("melpa-stable" . "https://stable.melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
-                         ("gnu" . "https://elpa.gnu.org/packages/")))
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (unless package-archive-contents
   (package-refresh-contents))
 (package-initialize)
+
+(setq dw/is-termux
+      (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
+
+;; Fix an issue accessing the elpa archive
+(when dw/is-termux
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
 ;; Initialize use-package
 (unless (package-installed-p 'use-package)
@@ -19,7 +26,8 @@
 (use-package org :ensure org-plus-contrib)
 
 (setq dw/exwm-enabled
-      (and (eq window-system 'x)
+      (and (not dw/is-termux)
+           (eq window-system 'x)
            (seq-contains command-line-args "--use-exwm")))
 
 ;; Set up exwm early in the init process
