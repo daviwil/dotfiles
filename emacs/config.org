@@ -1158,7 +1158,11 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 #+BEGIN_SRC emacs-lisp
 
-  (setq org-directory "~/Notes")
+  (setq org-directory
+    (if dw/is-termux
+        "~/storage/shared/Notes"
+        "~/Notes"))
+
 
   (defun dw/org-path (path)
     (expand-file-name path org-directory))
