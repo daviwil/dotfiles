@@ -2343,10 +2343,11 @@ Agenda items.
     (company-mode 0))
 
   ;; TODO: This doesn't currently work
-  (add-hook 'eshell-banner-load-hook
-    '(lambda ()
-      (setq eshell-banner-message
-        (concat "\n" (propertize " " 'display (create-image "~/.dotfiles/emacs/images/flux_banner.png" 'png nil :scale 0.4 :align-to "center")) "\n\n"))))
+  (unless dw/is-termux
+    (add-hook 'eshell-banner-load-hook
+      '(lambda ()
+        (setq eshell-banner-message
+          (concat "\n" (propertize " " 'display (create-image "~/.dotfiles/emacs/images/flux_banner.png" 'png nil :scale 0.4 :align-to "center")) "\n\n")))))
 
   (use-package eshell
     :after xterm-color
