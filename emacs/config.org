@@ -780,8 +780,12 @@ keeping it around for now.
 
 #+BEGIN_SRC emacs-lisp
 
+  (defun dw/use-ctrl-semi-message ()
+    (interactive)
+    (message "Use C-; yo."))
+
   (dw/leader-key-def
-    "TAB" 'buffer-flip
+    "TAB" 'dw/use-ctrl-semi-message
     "b"   '(:ignore t :which-key "buffers")
     "bb"  'counsel-switch-buffer
     "bd"  'evil-delete-buffer)
