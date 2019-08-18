@@ -740,6 +740,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     :ensure t
     :bind (("C-;" . 'hydra-flip-buffer/body))
     :config
+    (setq iflipb-ignore-buffers nil) ; Should tighten this in the future
     (setq iflipb-wrap-around nil))
 
   ;; (use-package buffer-flip
