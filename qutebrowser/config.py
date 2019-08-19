@@ -38,4 +38,8 @@ config.bind('<Ctrl-g>', 'leave-mode', mode='hint')
 config.bind('v', 'spawn ~/.dotfiles/bin/umpv {url}')
 config.bind('V', 'hint links spawn ~/.dotfiles/bin/umpv {hint-url}')
 
+# Vim-style movement keys in command mode
+config.bind('<Ctrl-j>', 'completion-item-focus --history next', mode='command')
+config.bind('<Ctrl-k>', 'completion-item-focus --history prev', mode='command')
+
 # More binding hints here: https://gitlab.com/Kaligule/qutebrowser-emacs-config/blob/master/config.py
