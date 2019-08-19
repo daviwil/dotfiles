@@ -1127,6 +1127,9 @@ everything in my life.
   (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-use-outline-path t)
 
+  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
+  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
+
 #+END_SRC
 
 *** Header Styling
@@ -1163,7 +1166,6 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
         "~/storage/shared/Notes"
         "~/Notes"))
 
-
   (defun dw/org-path (path)
     (expand-file-name path org-directory))
 
@@ -1181,22 +1183,14 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
         (make-directory journal-year-dir))
       journal-file-name))
 
-  (setq dw/org-inbox-path (dw/org-path "Inbox.org"))
-
-  (setq org-default-notes-file dw/org-inbox-path)
+  (setq org-default-notes-file (dw/org-path "Projects.org"))
 
   (setq org-agenda-files
-    `(,dw/org-inbox-path
-            ,(dw/org-path "Habits.org")
-            ,(dw/org-path "Calendar.org")
-            ,(dw/org-path "Projects.org")
-            ,(dw/get-todays-journal-file-name)))
-
-  (setq dw/org-project-files
-    '((dw/org-path "Personal.org")
-      (dw/org-path "Projects.org")
-      (dw/org-path "Work.org")
-      (dw/org-path "Emacs.org")))
+    (list
+      (dw/org-path "Habits.org")
+      (dw/org-path "Calendar.org")
+      (dw/org-path "Projects.org")))
+      ;(dw/get-todays-journal-file-name)))
 
 #+END_SRC
 
@@ -1216,11 +1210,11 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
         (todo "PROC" ((org-agenda-overriding-header "Process Tasks")))
         (todo "NEXT"
           ((org-agenda-overriding-header "Next Tasks")))
-        (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))
-        (todo "TODO"
-          ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
-           (org-agenda-files `(,dw/org-inbox-path))
-           (org-agenda-text-search-extra-files nil)))))
+        (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+        ;; (todo "TODO"
+        ;;   ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
+        ;;    (org-agenda-files `(,dw/org-inbox-path))
+        ;;    (org-agenda-text-search-extra-files nil)))))
 
       ("n" "Next Tasks"
        ((todo "NEXT"
@@ -1346,11 +1340,11 @@ Information on template expansion can be found in the [[https://orgmode.org/manu
 
   (setq org-capture-templates
     `(("t" "Tasks / Projects")
-      ("tt" "Task" entry (file+headline ,dw/org-inbox-path "Tasks")
+      ("tt" "Task" entry (file+olp ,(dw/org-path "Projects.org") "Projects" "Inbox")
            "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
       ("ts" "Clocked Entry Subtask" entry (clock)
            "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
-      ("tp" "New Project" entry (file+headline ,dw/org-inbox-path "Tasks")
+      ("tp" "New Project" entry (file+olp ,(dw/org-path "Projects.org") "Projects" "Inbox")
            "* PLAN %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
       ("j" "Journal Entries")
@@ -1389,9 +1383,9 @@ Information on template expansion can be found in the [[https://orgmode.org/manu
            "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
 
       ("m" "Metrics Capture")
-      ("mw" "Weight" table-line (file+headline "~/Notes/Fitness.org" "Weight")
+      ("mw" "Weight" table-line (file+headline "~/Notes/Metrics.org" "Weight")
        "| %U | %^{Weight} | %^{Notes} |" :kill-buffer)
-      ("mp" "Blood Pressure" table-line (file+headline "~/Notes/Fitness.org" "Blood Pressure")
+      ("mp" "Blood Pressure" table-line (file+headline "~/Notes/Metrics.org" "Blood Pressure")
        "| %U | %^{Systolic} | %^{Diastolic} | %^{Notes}" :kill-buffer)))
 
 #+END_SRC
