@@ -26,6 +26,7 @@ c.fonts.web.family.standard = "Bitstream Vera Sans"
 c.fonts.web.family.serif = "Bitstream Vera Serif"
 c.fonts.web.family.sans_serif = "Bitstream Vera Sans"
 c.fonts.web.family.fixed = "Fira Mono"
+c.fonts.monospace = "Fira Mono"
 
 # Automatically turn on insert mode when a loaded page focuses a text field
 c.input.insert_mode.auto_load = True
