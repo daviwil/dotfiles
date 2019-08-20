@@ -2845,6 +2845,7 @@ Displays a nice list of recent files and projects on startup.
 
   (use-package dashboard
     :ensure t
+    :disabled
     :config
       (dashboard-setup-startup-hook)
       (setq dashboard-items '((agenda   . 5)
