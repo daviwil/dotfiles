@@ -1,3 +1,6 @@
-alias dnu sudo dnf update --refresh
-alias vim find-file $1
+alias e find-file $1
 alias edit find-file $1
+alias vim find-file $1
+alias d deer $1
+alias gs magit-status-here
+alias gd magit-diff-unstaged
