@@ -2810,6 +2810,17 @@ to set that up.
 
 #+END_SRC
 
+** System Utilities
+
+*** Guix
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package guix
+    :ensure t)
+
+#+END_SRC
+
 *** System Monitor
 
 #+BEGIN_SRC emacs-lisp
