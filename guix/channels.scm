@@ -1,4 +1,4 @@
 (cons* (channel
-        (name 'next)
-        (url "https://gitlab.com/atlas-engineer/next-guix-channel"))
+        (name 'nonguix)
+        (url "https://gitlab.com/nonguix/nonguix"))
        %default-channels)
