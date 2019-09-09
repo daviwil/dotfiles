@@ -2817,7 +2817,15 @@ to set that up.
 #+BEGIN_SRC emacs-lisp
 
   (use-package guix
-    :ensure t)
+    :ensure t
+    :config
+    (dw/leader-key-def
+      "G"  '(:ignore t :which-key "Guix")
+      "Gg" '(guix :which-key "Guix")
+      "Gi" '(guix-installed-user-packages :which-key "user packages")
+      "GI" '(guix-installed-system-packages :which-key "system packages")
+      "Gp" '(guix-packages-by-name :which-key "search packages")
+      "GP" '(guix-pull :which-key "pull")))
 
 #+END_SRC
 
