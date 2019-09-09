@@ -1,6 +1,6 @@
 source ~/.dotfiles/zsh/antigen.zsh
 
-export PATH="~/.dotfiles/bin:$HOME/.cargo/bin/:$PATH"
+export PATH="$HOME/Tools/bin:$HOME/.dotfiles/bin:$HOME/.cargo/bin/:$PATH"
 export EDITOR="vim"
 
 # Enable Emacs to track the current directory
