@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Set XDG_DATA_DIRS because something in Manjaro broke it :/
+export XDG_DATA_DIRS="/usr/share:$XDG_DATA_DIRS"
+
 # Start authentication daemons
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg) &
 
