@@ -1873,6 +1873,17 @@ https://github.com/rust-lang/rust-mode
 ***** TODO Set up rustfmt
 ***** TODO Fix lsp-rust!
 
+**** F#
+
+#+begin_src emacs-lisp
+
+  (use-package fsharp-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.fs[iylx]?$" . fsharp-mode)))
+
+#+end_src
+
 **** Emacs Lisp
 
 #+BEGIN_SRC emacs-lisp
