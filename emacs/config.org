@@ -920,7 +920,7 @@ for now, need to investigate the =perspective= varieties.
     (setq display-time-default-load-average nil)
     (display-time-mode 1)
 
-    (setq exwm-workspace-show-all-buffers t)
+    ;;(setq exwm-workspace-show-all-buffers t)
 
     ;; Hide the modeline on all floating windows
     (add-hook 'exwm-floating-setup-hook
@@ -930,7 +930,7 @@ for now, need to investigate the =perspective= varieties.
     ;; Make workspace 1 be the one where we land at startup
     (add-hook 'exwm-init-hook
               (lambda ()
-                (exwm-workspace-switch 1))))
+                (exwm-workspace-switch-create 1))))
 
   (use-package exwm-systemtray
     :after (exwm)
@@ -1005,17 +1005,16 @@ for now, need to investigate the =perspective= varieties.
 
     ;; Workspace switching
     (setq exwm-input-global-keys
-            `(([?\s-r] . exwm-reset)
+           `(([?\s-r] . exwm-reset)
             ([?\s-w] . exwm-workspace-switch)
-            ([?\s-`] . (lambda () (exwm-workspace-switch-create 0)))
+            ([?\s-`] . (lambda () (interactive) (exwm-workspace-switch-create 0)))
             ,@(mapcar (lambda (i)
                         `(,(kbd (format "s-%d" i)) .
                             (lambda ()
-                            (interactive)
-                            (exwm-workspace-switch-create ,i))))
+                             (interactive)
+                             (exwm-workspace-switch-create ,i))))
                         (number-sequence 0 9))))
 
-    (exwm-input-set-key (kbd "s-SPC") 'helm-run-external-command)
     (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
     (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen)
 

@@ -39,8 +39,12 @@
   (setq mouse-autoselect-window t
         focus-follows-mouse t)
   :config
-  (require 'exwm-config)
-  (exwm-config-default))
+  ;; Make class name the buffer name
+  (add-hook 'exwm-update-class-hook
+            (lambda ()
+              (exwm-workspace-rename-buffer exwm-class-name)))
+
+  (exwm-enable))
 
 ;; Load customization settings from another file
 (setq custom-file "~/.emacs.d/config/customize.el")
