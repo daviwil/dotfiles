@@ -1874,9 +1874,6 @@ Because there's still a little bit in the Atom codebase.
 
 **** Rust
 
-https://github.com/emacs-lsp/lsp-rust
-https://github.com/rust-lang/rust-mode
-
 #+BEGIN_SRC emacs-lisp
 
   (use-package rust-mode
@@ -1886,22 +1883,7 @@ https://github.com/rust-lang/rust-mode
 
   (use-package cargo :ensure t)
 
-  ;; (use-package lsp-rust
-  ;;   :ensure t
-  ;;   :after lsp-mode
-  ;;   :config
-  ;;   (with-eval-after-load 'lsp-mode
-  ;;     (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls"))
-  ;;     (require 'lsp-rust)))
-
-  ;;   ;(add-hook
-  ;; 'rust-mode-hook #'lsp-rust-enable)
-    ;(add-hook 'rust-mode-hook #'flycheck-mode))
-
 #+END_SRC
-
-***** TODO Set up rustfmt
-***** TODO Fix lsp-rust!
 
 **** F#
 
