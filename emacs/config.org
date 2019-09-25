@@ -2409,6 +2409,7 @@ Agenda items.
 
     (setq eshell-prompt-function 'dw/eshell-prompt
           eshell-prompt-regexp   "^λ "
+          eshell-prefer-lisp-functions nil
           eshell-history-size    10000
           eshell-hist-ignoredups t
           eshell-scroll-to-bottom-on-input t
