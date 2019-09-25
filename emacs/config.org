@@ -980,13 +980,31 @@ for now, need to investigate the =perspective= varieties.
       ("phantom" (exwm/launch-if-screen-on "VIRTUAL1" "~/.dotfiles/screen-layouts/x1e/docked.sh"))
       ("zerocool" (exwm/launch-if-screen-on "DP1-1" "~/.dotfiles/screen-layouts/x1/docked.sh"))))
 
-  (use-package exwm-randr
-    :after (exwm)
-    :config
-    (exwm-randr-enable)
-    (setq exwm-randr-workspace-monitor-plist '(4 "eDP1")))
-
 #+END_SRC
+
+**** Window Switcher
+
+#+begin_src emacs-lisp
+
+  (defalias 'switch-to-buffer-original 'exwm-workspace-switch-to-buffer)
+  ;; (defalias 'switch-to-buffer 'exwm-workspace-switch-to-buffer)
+
+  ;; (defun dw/counsel-switch-buffer ()
+  ;;   "Switch to another buffer.
+  ;; Display a preview of the selected ivy completion candidate buffer
+  ;; in the current window."
+  ;;   (interactive)
+  ;;   (ivy-read "Switch to buffer: " 'internal-complete-buffer
+  ;;             :preselect (buffer-name (other-buffer (current-buffer)))
+  ;;             :keymap ivy-switch-buffer-map
+  ;;             :action #'ivy--switch-buffer-action
+  ;;             :matcher #'ivy--switch-buffer-matcher
+  ;;             :caller 'counsel-switch-buffer
+  ;;             :unwind #'counsel--switch-buffer-unwind
+  ;;             :update-fn 'counsel--switch-buffer-update-fn)
+  ;; )
+
+#+end_src
 
 **** Keybindings
 

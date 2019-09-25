@@ -46,6 +46,13 @@
 
   (exwm-enable))
 
+;; Enable exwm-randr before exwm-init gets called
+(use-package exwm-randr
+  :after (exwm)
+  :config
+  (exwm-randr-enable)
+  (setq exwm-randr-workspace-monitor-plist '(1 "DP-1-2" 4 "eDP-1")))
+
 ;; Load customization settings from another file
 (setq custom-file "~/.emacs.d/config/customize.el")
 (load custom-file)
