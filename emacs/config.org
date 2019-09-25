@@ -2880,9 +2880,10 @@ to set that up.
     :config
     (setq symon-monitors '(symon-linux-cpu-monitor
                            symon-linux-memory-monitor
-                           symon-linux-battery-monitor)))
+                           symon-linux-battery-monitor))
 
-  ;; TODO: Add a toggle keybinding for this mode
+    (when dw/exwm-enabled
+      (symon-mode 1)))
 
 #+END_SRC
 
