@@ -2365,7 +2365,7 @@ Agenda items.
     :config
     (eshell/addpath "~/.dotfiles/bin")
 
-    (evil-define-key '(normal insert visual) eshell-mode-map "C-r" 'counsel-esh-history)
+    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'counsel-esh-history)
     (evil-normalize-keymaps)
     (require 'evil-collection-eshell)
     (evil-collection-eshell-setup)
