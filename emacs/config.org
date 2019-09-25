@@ -914,8 +914,17 @@ for now, need to investigate the =perspective= varieties.
 
 #+BEGIN_SRC emacs-lisp
 
+  (defun dw/exwm-init-hook ()
+    ;; Make workspace 1 be the one where we land at startup
+    (exwm-workspace-switch-create 1)
+
+    ;; Launch apps that will live in the system tray
+    (exwm/run-in-background "pidgin")
+    (exwm/run-in-background "syncthing-gtk --minimized"))
+
   (use-package exwm
     :if dw/exwm-enabled
+    :hook (exwm-init . dw/exwm-init-hook)
     :config
     (setq display-time-default-load-average nil)
     (display-time-mode 1)
@@ -926,15 +935,15 @@ for now, need to investigate the =perspective= varieties.
               (lambda ()
                 (evil-local-set-key 'motion (kbd "C-u") nil)))
 
-    ;; Hide the modeline on all floating windows
-    (add-hook 'exwm-floating-setup-hook
+    ;; Hide the modeline on all X windows
+    (add-hook 'exwm-manage-finish-hook
               (lambda ()
                 (exwm-layout-hide-mode-line)))
 
-    ;; Make workspace 1 be the one where we land at startup
-    (add-hook 'exwm-init-hook
+    ;; Hide the modeline on all X windows
+    (add-hook 'exwm-floating-setup-hook
               (lambda ()
-                (exwm-workspace-switch-create 1))))
+                (exwm-layout-hide-mode-line))))
 
   (use-package exwm-systemtray
     :after (exwm)
