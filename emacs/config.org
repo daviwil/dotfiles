@@ -2432,17 +2432,6 @@ Custom eshell commands will go here.
 
 #+END_SRC
 
-**** Extras
-
-Might not need this anymore with my new custom prompt configuration.
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package eshell-prompt-extras
-    :ensure t)
-
-#+END_SRC
-
 *** multi-term
 
 Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/][here]].
