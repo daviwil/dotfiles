@@ -1861,16 +1861,9 @@ Configure TypeScript and JavaScript language modes
 
 #+END_SRC
 
-**** CoffeeScript
 
-Because there's still a little bit in the Atom codebase.
 
-#+BEGIN_SRC emacs-lisp
 
-  (use-package coffee-mode
-    :ensure t)
-
-#+END_SRC
 
 **** Rust
 
