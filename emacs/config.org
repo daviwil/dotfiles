@@ -2058,7 +2058,7 @@ https://github.com/rust-lang/rust-mode
     :config
     (setq darkroom-text-scale-increase 0))
 
-  (defun dw/toggle-focus-mode ()
+  (defun dw/enter-focus-mode ()
     (interactive)
     (darkroom-mode 1)
     (display-line-numbers-mode 0))
