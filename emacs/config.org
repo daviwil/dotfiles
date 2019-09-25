@@ -922,6 +922,10 @@ for now, need to investigate the =perspective= varieties.
 
     ;;(setq exwm-workspace-show-all-buffers t)
 
+    (add-hook 'exwm-mode-hook
+              (lambda ()
+                (evil-local-set-key 'motion (kbd "C-u") nil)))
+
     ;; Hide the modeline on all floating windows
     (add-hook 'exwm-floating-setup-hook
               (lambda ()
