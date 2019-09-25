@@ -2808,6 +2808,7 @@ to set that up.
 
   (use-package sauron
     :ensure t
+    :disabled
     :custom
     (sauron-modules
       '(sauron-erc sauron-org sauron-notifications
