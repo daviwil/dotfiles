@@ -2628,32 +2628,6 @@ I like the position of the mode line tracking better than circe.
 - https://www.emacswiki.org/emacs/rcircAutoAuthentication
 - https://www.emacswiki.org/emacs/rcircSmiley
 
-**** Slack
-
-I'd love to use this package but it's pretty flaky.  Too bad Slack shut down
-their IRC gateway!
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package slack
-    :commands (slack-start)
-
-    :init
-    (setq slack-buffer-emojify t)
-    (setq slack-prefer-current-team t)
-
-    :config
-    (slack-register-team
-     :name "github"
-     :default t
-     :client-id "aaaaaaaaaaa.00000000000"
-     :client-secret "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-     :token (password-store-get "Slack/GitHub/api-token")
-     :subscribed-channels '(atom-private)
-     :full-and-display-names t))
-
-#+END_SRC
-
 **** TODO Try weechat
 
 https://github.com/the-kenny/weechat.el
