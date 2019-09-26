@@ -344,8 +344,9 @@ anymore if I set up =diminish= correctly.
             sml/name-width 60)
 
       (setq-default mode-line-format
-        '("%e"
-          (:eval (format "[%d] " exwm-workspace-current-index))
+        `("%e"
+          ,(when dw/exwm-enabled
+             '(:eval (format "[%d] " exwm-workspace-current-index)))
           mode-line-front-space
           mode-line-mule-info
           mode-line-client
