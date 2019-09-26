@@ -1007,9 +1007,16 @@ for now, need to investigate the =perspective= varieties.
 #+BEGIN_SRC emacs-lisp
 
   (when dw/exwm-enabled
-    ;; Set Ctrl+Space as a global prefix key
-    (push ?\C-\  exwm-input-prefix-keys)
-    (push ?\C-\; exwm-input-prefix-keys)
+    ;; These keys should always pass through to Emacs
+    (setq exwm-input-prefix-keys
+      '(?\C-x
+        ?\C-h
+        ?\M-x
+        ?\M-`
+        ?\M-&
+        ?\M-:
+        ?\C-\  ;; Ctrl+Space
+        ?\C-\;))
 
     ;; Ctrl+Q will enable the next key to be sent directly
     (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
