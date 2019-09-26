@@ -952,15 +952,10 @@ for now, need to investigate the =perspective= varieties.
     (exwm-systemtray-enable)
     (setq exwm-systemtray-height 40))
 
-  (use-package helm-exwm
+  (use-package exwm-mff
     :ensure t
-    :after (exwm)
-    :config
-    (setq helm-exwm-emacs-buffers-source (helm-exwm-build-emacs-buffers-source))
-    (setq helm-exwm-source (helm-exwm-build-source))
-    (setq helm-mini-default-sources `(helm-exwm-emacs-buffers-source
-                                      helm-exwm-source
-                                      helm-source-recentf)))
+    :if dw/exwm-enabled
+    :hook (exwm-init . exwm-mff-mode))
 
 #+END_SRC
 
