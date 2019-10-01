@@ -212,8 +212,8 @@ Set frame transparency and maximize windows by default.
 #+BEGIN_SRC emacs-lisp
 
   (unless dw/is-termux
-    (set-frame-parameter (selected-frame) 'alpha '(95 . 95))
-    (add-to-list 'default-frame-alist '(alpha . (95 . 95)))
+    (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
+    (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
     (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
     (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 
