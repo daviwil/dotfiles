@@ -336,6 +336,7 @@ anymore if I set up =diminish= correctly.
 
   (use-package smart-mode-line
     :ensure t
+    :disabled
     :config
     (progn
       (sml/setup)
@@ -456,17 +457,18 @@ anymore if I set up =diminish= correctly.
   ;; installing this package!
 
   (use-package minions
-    :ensure t)
+    :ensure t
+    :hook (doom-modeline . minions-mode))
 
   (use-package doom-modeline
     :ensure t
-    :disabled
     :hook (after-init . doom-modeline-init)
     :config
-    (setq doom-modeline-lsp nil
+    (setq doom-modeline-lsp t
           doom-modeline-github nil
           doom-modeline-width 3
-          doom-modeline-minor-modes nil
+          doom-modeline-minor-modes t
+          doom-modeline-buffer-file-name-style 'truncate-except-project
           doom-modeline-major-mode-color-icon t))
 
 #+end_src
