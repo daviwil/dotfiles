@@ -2383,6 +2383,8 @@ Agenda items.
     (add-hook 'eshell-post-command-hook
       '(lambda () (setenv "TERM" "dumb")))
 
+    (emojify-mode 0)
+
     (setenv "PAGER" "cat")
     (company-mode 0))
 
