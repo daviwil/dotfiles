@@ -110,7 +110,7 @@
                               (cpu-boost-on-ac? #t)
                               (wifi-pwr-on-bat? #t)))
                   (service thermald-service-type)
-                  (bluetooth-service)
+                  (bluetooth-service #:auto-enable? #t)
                   (modify-services %desktop-services
                                    (udev-service-type config =>
                                                       (udev-configuration (inherit config)
