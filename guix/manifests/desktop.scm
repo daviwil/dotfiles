@@ -19,6 +19,7 @@
    "qsyncthingtray"
 
    ;; System Tools
+   "alsa-utils"
    "openssh"
 
    ;; Xorg Tools
