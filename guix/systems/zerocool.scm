@@ -20,6 +20,16 @@
 (use-package-modules certs)
 (use-package-modules shells)
 
+;; Allow members of the "video" group to change the screen brightness.
+(define %backlight-udev-rule
+  (udev-rule
+   "90-backlight.rules"
+   (string-append "ACTION==\"add\", SUBSYSTEM==\"backlight\", "
+                  "RUN+=\"/run/current-system/profile/bin/chgrp video /sys/class/backlight/%k/brightness\""
+                  "\n"
+                  "ACTION==\"add\", SUBSYSTEM==\"backlight\", "
+                  "RUN+=\"/run/current-system/profile/bin/chmod g+w /sys/class/backlight/%k/brightness\"")))
+
 (operating-system
  (host-name "zerocool")
  (timezone "America/Los_Angeles")
@@ -101,7 +111,11 @@
                               (wifi-pwr-on-bat? #t)))
                   (service thermald-service-type)
                   (bluetooth-service)
-                  %desktop-services))
+                  (modify-services %desktop-services
+                                   (udev-service-type config =>
+                                                      (udev-configuration (inherit config)
+                                                                          (rules (cons %backlight-udev-rule
+                                                                                       (udev-configuration-rules config))))))))
 
  ;; Allow resolution of '.local' host names with mDNS
  (name-service-switch %mdns-host-lookup-nss))
