@@ -2843,6 +2843,17 @@ to set that up.
 
 #+END_SRC
 
+*** PulseAudio
+
+#+begin_src emacs-lisp
+
+  (use-package pulseaudio-control
+    :ensure t
+    :config
+    (setq pulseaudio-control-pactl-path "/run/current-system/profile/bin/pactl"))
+
+#+end_src
+
 *** System Monitor
 
 #+BEGIN_SRC emacs-lisp
