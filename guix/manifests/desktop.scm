@@ -52,7 +52,7 @@
    "nitrogen"
    "redshift"
    "brightnessctl"
-   ;"gtk-xfce-engine"
+   "xfce4-notifyd"
 
    ;; GTK Themes
    "arc-theme"
