@@ -11,8 +11,8 @@
 ;; Gimmie that Qutebrowser feel
 (define-key :keymap *dw-keymap* "C-d" #'scroll-page-down)
 (define-key :keymap *dw-keymap* "C-u" #'scroll-page-up)
-(define-key :keymap *dw-keymap* "J" #'switch-buffer-next)
-(define-key :keymap *dw-keymap* "K" #'switch-buffer-previous)
+(define-key :keymap *dw-keymap* "J" #'switch-buffer-previous)
+(define-key :keymap *dw-keymap* "K" #'switch-buffer-next)
 
 (add-to-default-list 'vi-normal-mode 'buffer 'default-modes)
 (add-to-default-list 'dw-mode 'buffer 'default-modes)
