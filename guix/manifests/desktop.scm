@@ -37,6 +37,7 @@
 
    ;; Fonts
    "font-fira-mono"
+   "font-fira-code"
    "font-abattis-cantarell"
    "font-dejavu"
    "font-gnu-freefont-ttf"
