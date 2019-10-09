@@ -933,6 +933,7 @@ for now, need to investigate the =perspective= varieties.
 
     (add-hook 'exwm-mode-hook
               (lambda ()
+                (git-gutter-mode 0)
                 (evil-local-set-key 'motion (kbd "C-u") nil)))
 
     ;; Hide the modeline on all X windows
