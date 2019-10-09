@@ -6,6 +6,10 @@
    ;; The One
    "emacs"
 
+   ;; Developer tools
+   "glibc" ;; For ldd
+   "curl"
+
    ;; Communication
    "pidgin"
    "telegram-purple"
