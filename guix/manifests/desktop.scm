@@ -30,6 +30,7 @@
    "xhost"
    "xset"
    "setxkbmap"
+   "xrandr"
    "arandr"
 
    ;; Authentication
