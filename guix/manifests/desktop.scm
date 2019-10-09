@@ -26,6 +26,7 @@
    "xhost"
    "xset"
    "setxkbmap"
+   "arandr"
 
    ;; Authentication
    "password-store"
