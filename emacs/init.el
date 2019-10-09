@@ -37,7 +37,8 @@
   :if dw/exwm-enabled
   :init
   (setq mouse-autoselect-window t
-        focus-follows-mouse t)
+        focus-follows-mouse t
+        exwm-workspace-number 5)
   :config
   ;; Make class name the buffer name
   (add-hook 'exwm-update-class-hook
