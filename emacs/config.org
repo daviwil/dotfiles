@@ -298,10 +298,7 @@ Different platforms need different default font sizes, and
   (on-platform-do
    ((windows cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
     (osx (set-face-attribute 'default nil :font "Fira Mono" :height 170))
-    (linux (set-face-attribute 'default nil :font "Fira Mono" :height 130)))
-
-  ;; Set the mode line font to override whatever the theme sets
-  (set-face-attribute 'mode-line nil :font "Fira Mono" :height 130)
+    (linux (set-face-attribute 'default nil :font "Fira Code" :height 120)))
 
 #+END_SRC
 
