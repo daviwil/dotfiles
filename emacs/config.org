@@ -535,6 +535,23 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
 #+end_src
 
+*** Displaying World Time
+
+=display-time-world= command provides a nice display of the time at a specified
+list of timezones.  Nice for working in a team with remote members.
+
+#+begin_src emacs-lisp
+
+  (setq display-time-world-list
+    '(("America/Los_Angeles" "Seattle")
+      ("America/New_York" "New York")
+      ("Europe/Athens" "Athens")
+      ("Pacific/Auckland" "Auckland")
+      ("Asia/Shanghai" "Shanghai")))
+  (setq display-time-world-time-format "%a, %d %b %I:%M %p %Z")
+
+#+end_src
+
 ** Editing Configuration
 
 *** Tab Widths
