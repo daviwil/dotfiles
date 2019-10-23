@@ -455,7 +455,9 @@ anymore if I set up =diminish= correctly.
 
   (use-package minions
     :ensure t
-    :hook (doom-modeline-mode . minions-mode))
+    :hook (doom-modeline-mode . minions-mode)
+    :custom
+    (minions-mode-line-lighter ""))
 
   (use-package doom-modeline
     :ensure t
