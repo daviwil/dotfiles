@@ -774,7 +774,9 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
   (use-package iflipb
     :ensure t
-    :bind (("C-;" . 'hydra-flip-buffer/body))
+    :bind (("C-;" . 'hydra-flip-buffer/body)
+           ("<s-tab>" . 'iflipb-next-buffer)
+           ("<s-iso-lefttab>" . 'iflipb-previous-buffer))
     :config
     (setq iflipb-ignore-buffers nil) ; Should tighten this in the future
     (setq iflipb-wrap-around nil))
