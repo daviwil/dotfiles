@@ -1668,12 +1668,26 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 #+end_src
 
+**** git-link
+
+#+begin_src emacs-lisp
+
+  (use-package git-link
+    :ensure t
+    :config
+    (setq git-link-open-in-browser t)
+    (dw/leader-key-def
+      "gL"  'git-link))
+
+#+end_src
+
 **** Git Gutter
 
 #+BEGIN_SRC emacs-lisp
 
   (use-package git-gutter
     :ensure t
+    :diminish
     :config
     (global-git-gutter-mode +1)
     (setq git-gutter:update-interval 2)
