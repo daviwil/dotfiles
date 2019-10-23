@@ -1754,8 +1754,8 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     (define-key company-active-map (kbd "<return>") #'company-complete-selection)
     (define-key prog-mode-map (kbd "TAB") #'company-indent-or-complete-common)
 
+    ;; Make company inherit the Emacs theme more reliably
     (require 'color)
-
     (let ((bg (face-attribute 'default :background)))
       (custom-set-faces
        `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
@@ -2604,7 +2604,6 @@ features it provides.  The "static center" fill mode is really awesome.
 #+END_SRC
 
 ***** Reference
-
 - https://www.gnu.org/software/emacs/manual/html_mono/erc.html
 - https://www.emacswiki.org/emacs/ErcChannelTracking
 - [[https://www.emacswiki.org/emacs/ErcFilling][Automatic window-width filling]]
