@@ -980,7 +980,7 @@ for now, need to investigate the =perspective= varieties.
     :after (exwm)
     :config
     (exwm-systemtray-enable)
-    (setq exwm-systemtray-height 40))
+    (setq exwm-systemtray-height 35))
 
   (use-package exwm-mff
     :disabled
