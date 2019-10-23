@@ -1054,23 +1054,23 @@ for now, need to investigate the =perspective= varieties.
 
     (exwm/bind-command
       "<s-return>" "xfce4-terminal"
-      "s-l" "slock"
       "s-p" "playerctl play-pause"
       "s-[" "playerctl previous"
-      "s-]" "playerctl next"
-      "<XF86MonBrightnessUp>"   "light -A 2"
-      "<XF86MonBrightnessDown>" "light -U 2"
-      "<XF86AudioLowerVolume>"  "amixer -D pulse -- sset Master unmute 3%-"
-      "<XF86AudioRaiseVolume>"  "amixer -D pulse -- sset Master unmute 3%+"
-      "<XF86AudioMute>"         "amixer -D pulse -- sset Master toggle"
-      "<XF86AudioMicMute>"      "amixer -D pulse -- sset Capture toggle")
+      "s-]" "playerctl next")
 
-    ;; (use-package desktop-environment
-    ;;   :ensure t)
+    (use-package desktop-environment
+      :ensure t
+      :after exwm
+      :init (desktop-environment-mode)
+      :custom
+      (desktop-environment-brightness-small-increment "2%+")
+      (desktop-environment-brightness-small-decrement "2%-")
+      (desktop-environment-brightness-normal-increment "5%+")
+      (desktop-environment-brightness-normal-decrement "5%-"))
 
     ;; This needs a more elegant ASCII banner
     (defhydra hydra-exwm-move-resize (:timeout 4)
-      "Move/Resize Window"
+      "Move/Resize Window (Shift is bigger steps, Ctrl moves window)"
       ("j" (lambda () (interactive) (exwm-layout-enlarge-window 10)) "V 10")
       ("J" (lambda () (interactive) (exwm-layout-enlarge-window 30)) "V 30")
       ("k" (lambda () (interactive) (exwm-layout-shrink-window 10)) "^ 10")
