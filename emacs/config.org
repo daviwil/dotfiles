@@ -1843,6 +1843,15 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
 #+END_SRC
 
+**** Common Lisp
+
+#+begin_src emacs-lisp
+
+  (use-package sly
+    :ensure t)
+
+#+end_src>
+
 **** TypeScript and JavaScript
 
 Set up nvm so that we can manage Node versions
