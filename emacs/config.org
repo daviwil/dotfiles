@@ -1608,7 +1608,9 @@ https://magit.vc/manual/magit/
 
   (use-package magit
     :ensure t
-    :custom (global-magit-file-mode t))
+    :custom
+    (global-magit-file-mode t)
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
   (use-package evil-magit
     :ensure t
