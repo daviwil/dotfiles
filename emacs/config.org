@@ -1814,8 +1814,9 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     "ln" 'lsp-ui-find-next-reference
     "lp" 'lsp-ui-find-prev-reference
     "ls" 'counsel-imenu
+    "le" 'lsp-ui-flycheck-list
     "lS" 'lsp-ui-sideline-mode
-    "le" 'lsp-ui-flycheck-list)
+    "lX" 'lsp-execute-code-action)
 
   (use-package lsp-ui
     :ensure t
