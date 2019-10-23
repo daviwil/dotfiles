@@ -1096,6 +1096,7 @@ for now, need to investigate the =perspective= varieties.
            `(([?\s-\C-r] . exwm-reset)
              ([?\s-w] . exwm-workspace-switch)
              ([?\s-r] . hydra-exwm-move-resize/body)
+             ([?\s-e] . deer)
              ([?\s-`] . (lambda () (interactive) (exwm-workspace-switch-create 0)))
              ,@(mapcar (lambda (i)
                          `(,(kbd (format "s-%d" i)) .
@@ -2150,12 +2151,12 @@ Configure TypeScript and JavaScript language modes
 
 **** Ranger
 
-Not really using this one yet, trying to get comfortable with =dired= first before
-I try something else.  I really do like [[http://ranger.github.io/][Ranger]] on the command line, though.
-
 #+BEGIN_SRC emacs-lisp
 
-  (use-package ranger :ensure t)
+  (use-package ranger
+    :ensure t
+    :config
+    (ranger-override-dired-mode t))
 
   (dw/leader-key-def
     "ar"  '(ranger :which-key "ranger"))
