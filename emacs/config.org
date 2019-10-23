@@ -2421,6 +2421,9 @@ Agenda items.
     (add-hook 'eshell-post-command-hook
       '(lambda () (setenv "TERM" "dumb")))
 
+    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'counsel-esh-history)
+    (evil-normalize-keymaps)
+
     (emojify-mode 0)
 
     (setenv "PAGER" "cat")
@@ -2440,8 +2443,6 @@ Agenda items.
     :config
     (eshell/addpath "~/.dotfiles/bin")
 
-    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'counsel-esh-history)
-    (evil-normalize-keymaps)
     (require 'evil-collection-eshell)
     (evil-collection-eshell-setup)
 
