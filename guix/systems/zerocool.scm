@@ -75,8 +75,8 @@
                (comment "David Wilson")
                (group "users")
                (home-directory "/home/daviwil")
-               (shell #~(string-append #$zsh "/bin/zsh"))
                (supplementary-groups '("wheel" "netdev" "kvm" "tty" "input" "lp" "audio" "video")))
+               ;(shell #~(string-append #$zsh "/bin/zsh"))
               %base-user-accounts))
 
  ;; Install bare-minimum system packages
