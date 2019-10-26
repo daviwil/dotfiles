@@ -11,6 +11,7 @@
    "glibc" ;; For ldd
    "node"
    "docker-cli"
+   "gcc-toolchain"
    "curl"
    "the-silver-searcher"
 
