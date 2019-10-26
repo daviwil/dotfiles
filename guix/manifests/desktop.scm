@@ -76,6 +76,7 @@
 
    ;; Games
    "aisleriot" ;; The binary is called 'sol'!
+   "gnome-mahjongg"
 
    ;; Media Players
    "mpv"
