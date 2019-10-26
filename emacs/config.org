@@ -2903,6 +2903,15 @@ to set that up.
 
 #+END_SRC
 
+*** Daemons
+
+#+begin_src emacs-lisp
+
+  (use-package daemons
+    :ensure t)
+
+#+end_src
+
 *** PulseAudio
 
 #+begin_src emacs-lisp
