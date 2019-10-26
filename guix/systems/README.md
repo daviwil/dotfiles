@@ -7,7 +7,7 @@ blobs from the [`nonguix`](https://gitlab.com/nonguix/nonguix) channel.  After
 cloning the repo, the installation image can be built with this command:
 
 ```shell
-guix system disk-image ~/Projects/Code/nonguix/nongnu/system/install.scm
+guix system disk-image ./install.scm
 ```
 
 **NOTE:** It can take an hour or more for this to complete, so be patient...
