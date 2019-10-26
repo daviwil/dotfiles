@@ -25,6 +25,7 @@
    ;; System Tools
    "alsa-utils"
    "openssh"
+   "unzip"
 
    ;; Xorg Tools
    "xhost"
