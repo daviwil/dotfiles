@@ -10,6 +10,7 @@
    ;; Developer tools
    "glibc" ;; For ldd
    "curl"
+   "the-silver-searcher"
 
    ;; Communication
    "pidgin"
