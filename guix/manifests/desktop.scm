@@ -5,6 +5,7 @@
  '(
    ;; The One
    "emacs"
+   "emacs-pinentry"
 
    ;; Developer tools
    "glibc" ;; For ldd
