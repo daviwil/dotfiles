@@ -30,6 +30,7 @@
    ;; Xorg Tools
    "xhost"
    "xset"
+   "xrdb"
    "setxkbmap"
    "xrandr"
    "arandr"
