@@ -2,6 +2,7 @@
              (gnu system nss)
              (gnu services pm)
              (gnu services desktop)
+             (gnu services docker)
              (gnu packages wm)
              (gnu packages vim)
              (gnu packages gtk)
@@ -75,8 +76,18 @@
                (comment "David Wilson")
                (group "users")
                (home-directory "/home/daviwil")
-               (supplementary-groups '("wheel" "netdev" "kvm" "tty" "input" "lp" "audio" "video")))
                ;(shell #~(string-append #$zsh "/bin/zsh"))
+               (supplementary-groups '(
+                                       "wheel"     ;; sudo
+                                       "netdev"    ;; network devices
+                                       "kvm"
+                                       "tty"
+                                       "input"
+                                       "docker"
+                                       "lp"        ;; control bluetooth devices
+                                       "audio"     ;; control audio devices
+                                       "video")))  ;; control video devices
+
               %base-user-accounts))
 
  ;; Install bare-minimum system packages
@@ -109,6 +120,7 @@
                               (cpu-boost-on-ac? #t)
                               (wifi-pwr-on-bat? #t)))
                   (service thermald-service-type)
+                  (service docker-service-type)
                   (bluetooth-service #:auto-enable? #t)
                   (modify-services %desktop-services
                                    (udev-service-type config =>
