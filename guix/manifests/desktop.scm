@@ -17,6 +17,7 @@
    ;; Browsers
    "next"
    "qutebrowser"
+   "ungoogled-chromium"
 
    ;; Syncthing
    "syncthing"
