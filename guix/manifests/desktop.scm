@@ -8,10 +8,11 @@
    "emacs-pinentry"
 
    ;; Developer tools
-   "glibc" ;; For ldd
    "node"
+   "sbcl"
    "docker-cli"
    "gcc-toolchain"
+   ;; "glibc" ;; For ldd
    "curl"
    "the-silver-searcher"
 
