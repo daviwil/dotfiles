@@ -9,6 +9,7 @@
 
    ;; Developer tools
    "glibc" ;; For ldd
+   "node"
    "docker-cli"
    "curl"
    "the-silver-searcher"
