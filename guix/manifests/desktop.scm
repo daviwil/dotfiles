@@ -59,6 +59,9 @@
    "redshift"
    "brightnessctl"
    "xfce4-notifyd"
+   "xdg-utils"     ;; For xdg-open, etc
+   "gtk+:bin"      ;; For gtk-launch
+   "glib:bin"      ;; For gio-launch-desktop
 
    ;; GTK Themes
    "arc-theme"
