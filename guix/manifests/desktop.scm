@@ -77,9 +77,10 @@
    ;; Games
    "aisleriot" ;; The binary is called 'sol'!
 
-   ;; Video Players
+   ;; Media Players
    "mpv"
    "youtube-dl"
+   "playerctl"
 
    ;; Video Codecs
    "gstreamer"
