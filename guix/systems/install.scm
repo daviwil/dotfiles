@@ -21,6 +21,11 @@
 (define-module (nongnu system install)
   #:use-module (gnu system)
   #:use-module (gnu system install)
+  #:use-module (gnu packages version-control)
+  #:use-module (gnu packages vim)
+  #:use-module (gnu packages linux)
+  #:use-module (gnu packages mtools)
+  #:use-module (gnu packages package-management)
   #:use-module (nongnu packages linux)
   #:export (installation-os-nonfree))
 
@@ -32,8 +37,7 @@
 
     ;; Add some extra packages useful for the installation process
     (packages
-     (inherit packages)
      (append (list git exfat-utils fuse-exfat stow vim)
-             packages))))
+             (operating-system-packages installation-os)))))
 
 installation-os-nonfree
