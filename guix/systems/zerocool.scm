@@ -93,10 +93,9 @@
                     bluez
                     bluez-alsa
                     pulseaudio
-                    ;; for HTTPS access
-                    nss-certs
-                    ;; for user mounts
-                    gvfs)
+                    tlp
+                    nss-certs     ;; for HTTPS access
+                    gvfs)         ;; for user mounts
                    %base-packages))
 
  ;; Use the "desktop" services, which include the X11 log-in service,
