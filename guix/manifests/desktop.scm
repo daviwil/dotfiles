@@ -34,6 +34,7 @@
    "setxkbmap"
    "xrandr"
    "arandr"
+   "xss-lock"
 
    ;; Authentication
    "password-store"
