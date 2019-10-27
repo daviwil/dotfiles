@@ -132,6 +132,29 @@ If you see any errors during installation, don't fret, you can usually resume
 from where you left off because your Guix store will have any packages that were
 already installed.
 
+## Initial System Setup
+
+Congrats!  You now have a new Guix system installed, reboot now to complete the
+initial setup of your user account.
+
+The first thing you'll want to do when you land at the login prompt is login as
+`root` and immediately change the password using `passwd` (there isn't a root
+password by default!).  Once you do that, change the password for your user
+account also using `passwd <username>`.  Now you can log out of the `root`
+account and log back in as yourself.
+
+Next, install the packages that you want to use for day-to-day activities.  I
+like to keep this list of packages in a [manifest
+file](../manifests/desktop.scm) so that I can install them all at once like
+this:
+
+```
+guix package -m ~/.dotfiles/guix/manifests/desktop.scm
+```
+
+You can edit this file and then re-run that command any time to reflect the
+updates you made.
+
 ## Reference
 
 - [Building the Installation Image](https://guix.gnu.org/manual/en/html_node/Building-the-Installation-Image.html#Building-the-Installation-Image)
