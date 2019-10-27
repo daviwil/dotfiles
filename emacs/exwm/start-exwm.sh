@@ -1,26 +1,40 @@
 #!/bin/sh
 
+# Disable access control for the current user
+xhost +SI:localuser:$USER
+
+# Make Java applications aware this is a non-reparenting window manager
+export _JAVA_AWT_WM_NONREPARENTING=1
+
 # Set XDG_DATA_DIRS because something in Manjaro broke it :/
-export XDG_DATA_DIRS="/usr/share:$XDG_DATA_DIRS"
+#export XDG_DATA_DIRS="/usr/share:$XDG_DATA_DIRS"
 
 # Start authentication daemons
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg) &
+# TODO: This will be unnecessary once I switch to a GPG subkey for SSH auth
+eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg) &
+export SSH_AUTH_SOCK
 
 # Make things look nice
-compton --config ~/.dotfiles/emacs/compton.conf &
+compton &
 nitrogen --restore &
 
-# Start Xfce's settings and power managers
-xfsettingsd &
-xfce4-power-manager &
+# Start the PulseAudio daemon to run persistently
+#pulseaudio --daemonize
 
-# Load system tray apps for sound, bluetooth, and networking
-blueman-applet &
-pasystray &
+# Start Xfce's settings manager
+xfsettingsd &
+
+# Turn off the system bell
+xset -b
+
+# Remap caps lock to ctrl
+setxkbmap -layout us -option ctrl:nocaps
+
+# Load system tray apps
 nm-applet &
 
 # Enable Manjaro update checks
-pamac-tray &
+#pamac-tray &
 
 # Enable screen locking on suspend
 xss-lock -- slock &
@@ -30,4 +44,4 @@ export VISUAL=emacsclient
 export EDITOR="$VISUAL"
 
 # Fire it up
-emacs --use-exwm
+exec dbus-launch --exit-with-session emacs -mm --use-exwm
