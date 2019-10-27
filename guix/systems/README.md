@@ -143,8 +143,20 @@ password by default!).  Once you do that, change the password for your user
 account also using `passwd <username>`.  Now you can log out of the `root`
 account and log back in as yourself.
 
-Next, install the packages that you want to use for day-to-day activities.  I
-like to keep this list of packages in a [manifest
+Since we used the `nonguix` channel to install the non-free Linux kernel, we'll
+need to make sure that channel is configured in our user account so that we have
+access to those packages the next time we `guix pull`.  At the moment I just
+symlink my Guix config folder under `~/.config`:
+
+```
+ln -sf ~/.dotfiles/guix ~/.config/guix
+```
+
+Verify that your `channels.scm` file is in the target path and then run `guix
+pull` to sync in the new channel.
+
+Now you can install the packages that you want to use for day-to-day activities.
+I like to keep this list of packages in a [manifest
 file](../manifests/desktop.scm) so that I can install them all at once like
 this:
 
