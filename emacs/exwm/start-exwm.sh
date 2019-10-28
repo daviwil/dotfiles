@@ -10,16 +10,18 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 #export XDG_DATA_DIRS="/usr/share:$XDG_DATA_DIRS"
 
 # Start authentication daemons
-# TODO: This will be unnecessary once I switch to a GPG subkey for SSH auth
-eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg) &
-export SSH_AUTH_SOCK
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpg-connect-agent /bye
+
+# Make Flatpak apps visible to launcher
+export XDG_DATA_DIRS="$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share"
 
 # Make things look nice
 compton &
 nitrogen --restore &
 
 # Start the PulseAudio daemon to run persistently
-#pulseaudio --daemonize
+pulseaudio --daemonize
 
 # Start Xfce's settings manager
 xfsettingsd &
