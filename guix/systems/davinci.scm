@@ -55,13 +55,13 @@
  ;; The UUID is that returned by 'cryptsetup luksUUID'.
  (mapped-devices
   (list (mapped-device
-         (source (uuid "6690133b-8331-4168-acdf-933a9e1a2e19"))
+         (source (uuid "eaba53d9-d7e5-4129-82c8-df28bfe6527e"))
          (target "system-root")
          (type luks-device-mapping))))
 
  (file-systems (cons*
                 (file-system
-                 (device (file-system-label "davinci"))
+                 (device (file-system-label "system-root"))
                  (mount-point "/")
                  (type "ext4")
                  (dependencies mapped-devices))
