@@ -33,6 +33,7 @@
    "alsa-utils"
    "openssh"
    "unzip"
+   "pinentry-emacs"
 
    ;; Xorg Tools
    "xhost"
