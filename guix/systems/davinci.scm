@@ -2,7 +2,7 @@
              (gnu system nss)
              (gnu services pm)
              (gnu services desktop)
-             (gnu services docker)
+             ;; (gnu services docker)
              (gnu packages wm)
              (gnu packages vim)
              (gnu packages gtk)
@@ -83,7 +83,7 @@
                                        "kvm"
                                        "tty"
                                        "input"
-                                       "docker"
+                                       ;; "docker"
                                        "lp"        ;; control bluetooth devices
                                        "audio"     ;; control audio devices
                                        "video")))  ;; control video devices
@@ -120,7 +120,7 @@
                               (cpu-boost-on-ac? #t)
                               (wifi-pwr-on-bat? #t)))
                   (service thermald-service-type)
-                  (service docker-service-type)
+                  ;; (service docker-service-type)
                   (bluetooth-service #:auto-enable? #t)
                   (modify-services %desktop-services
                                    (udev-service-type config =>
