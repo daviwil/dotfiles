@@ -39,10 +39,12 @@
    "xhost"
    "xset"
    "xrdb"
+   "xmodmap"
    "setxkbmap"
    "xrandr"
    "arandr"
    "xss-lock"
+   "xinput"
 
    ;; Authentication
    "password-store"
