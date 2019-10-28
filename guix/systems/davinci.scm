@@ -1,4 +1,5 @@
 (use-modules (gnu)
+             (srfi srfi-1)
              (gnu system nss)
              (gnu services pm)
              (gnu services desktop)
@@ -30,6 +31,13 @@
                   "\n"
                   "ACTION==\"add\", SUBSYSTEM==\"backlight\", "
                   "RUN+=\"/run/current-system/profile/bin/chmod g+w /sys/class/backlight/%k/brightness\"")))
+
+(define %my-desktop-services
+  (modify-services %desktop-services
+                   (udev-service-type config =>
+                                      (udev-configuration (inherit config)
+                                                          (rules (cons %backlight-udev-rule
+                                                                       (udev-configuration-rules config)))))))
 
 (operating-system
  (host-name "davinci")
@@ -112,9 +120,11 @@
  ;; Use the "desktop" services, which include the X11 log-in service,
  ;; networking with NetworkManager, and more
  (services (cons* (service xfce-desktop-service-type)
-                  (set-xorg-configuration
-                   (xorg-configuration
-                    (keyboard-layout keyboard-layout)))
+                  (service slim-service-type
+                           (slim-configuration
+                              (xorg-configuration
+                                (xorg-configuration
+                                   (keyboard-layout keyboard-layout)))))
                   (service tlp-service-type
                            (tlp-configuration
                               (cpu-boost-on-ac? #t)
@@ -122,11 +132,9 @@
                   (service thermald-service-type)
                   ;; (service docker-service-type)
                   (bluetooth-service #:auto-enable? #t)
-                  (modify-services %desktop-services
-                                   (udev-service-type config =>
-                                                      (udev-configuration (inherit config)
-                                                                          (rules (cons %backlight-udev-rule
-                                                                                       (udev-configuration-rules config))))))))
+                  (remove (lambda (service)
+                             (eq? (service-kind service) gdm-service-type))
+                          %my-desktop-services)))
 
  ;; Allow resolution of '.local' host names with mDNS
  (name-service-switch %mdns-host-lookup-nss))
