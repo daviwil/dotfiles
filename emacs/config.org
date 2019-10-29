@@ -706,7 +706,10 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
            ("C-k" . ivy-previous-line)
            :map ivy-switch-buffer-map
            ("C-k" . ivy-previous-line)
-           ("C-d" . ivy-switch-buffer-kill))
+           ("C-d" . ivy-switch-buffer-kill)
+           :map ivy-reverse-i-search-map
+           ("C-k" . ivy-previous-line)
+           ("C-d" . ivy-reverse-i-search-kill))
     :init
     (ivy-mode 1)
     :config
