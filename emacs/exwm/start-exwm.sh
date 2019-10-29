@@ -30,7 +30,7 @@ xfsettingsd &
 xset -b
 
 # Remap caps lock to ctrl
-setxkbmap -layout us -option ctrl:nocaps
+xmodmap ~/.dotfiles/i3/Xmodmap
 
 # Load system tray apps
 nm-applet &
