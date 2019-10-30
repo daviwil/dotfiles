@@ -6,9 +6,6 @@ xhost +SI:localuser:$USER
 # Make Java applications aware this is a non-reparenting window manager
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-# Set XDG_DATA_DIRS because something in Manjaro broke it :/
-#export XDG_DATA_DIRS="/usr/share:$XDG_DATA_DIRS"
-
 # Start authentication daemons
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpg-connect-agent /bye
@@ -26,17 +23,12 @@ shepherd
 compton &
 nitrogen --restore &
 
-# Turn off the system bell
-xset -b
-
-# Remap caps lock to ctrl
+# Remap caps lock to ctrl and turn off the system bell
 xmodmap ~/.dotfiles/i3/Xmodmap
+xset -b
 
 # Load system tray apps
 nm-applet &
-
-# Enable Manjaro update checks
-#pamac-tray &
 
 # Enable screen locking on suspend
 xss-lock -- slock &
