@@ -66,23 +66,30 @@
 
    ;; Desktop
    "feh"
+   "scrot"
    "dmenu"
-   "gnome-backgrounds"
    "compton"
    "redshift"
    "brightnessctl"
-   "xfce4-notifyd"
    "xdg-utils"     ;; For xdg-open, etc
    "gtk+:bin"      ;; For gtk-launch
    "glib:bin"      ;; For gio-launch-desktop
+   "gtk-xfce-engine"
+   "shared-mime-info"
+
+   ;; Xfce Tools
+   "xfconf"
+   "xfce4-terminal"
+   "xfce4-settings"
+   "xfce4-notifyd"
+   "xfce4-screenshooter"
 
    ;; GTK Themes
    "arc-theme"
    "arc-icon-theme"
-
-   ;; Screenshots
-   "xfce4-screenshooter"
-   "scrot"
+   "hicolor-icon-theme"
+   "gnome-icon-theme"
+   "gnome-backgrounds"
 
    ;; Games
    "aisleriot" ;; The binary is called 'sol'!

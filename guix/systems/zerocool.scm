@@ -111,8 +111,7 @@
 
  ;; Use the "desktop" services, which include the X11 log-in service,
  ;; networking with NetworkManager, and more
- (services (cons* (service xfce-desktop-service-type)
-                  (set-xorg-configuration
+ (services (cons* (set-xorg-configuration
                    (xorg-configuration
                     (keyboard-layout keyboard-layout)))
                   (service tlp-service-type
