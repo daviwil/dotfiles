@@ -26,9 +26,6 @@ shepherd
 compton &
 nitrogen --restore &
 
-# Start the PulseAudio daemon to run persistently
-pulseaudio --daemonize
-
 # Turn off the system bell
 xset -b
 
