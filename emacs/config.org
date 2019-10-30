@@ -988,12 +988,6 @@ for now, need to investigate the =perspective= varieties.
     (exwm-systemtray-enable)
     (setq exwm-systemtray-height 35))
 
-  (use-package exwm-mff
-    :disabled
-    :ensure t
-    :if dw/exwm-enabled
-    :hook (exwm-init . exwm-mff-mode))
-
 #+END_SRC
 
 **** Desktop Configuration
