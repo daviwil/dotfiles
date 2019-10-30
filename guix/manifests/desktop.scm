@@ -36,9 +36,10 @@
    "pinentry-emacs"
 
    ;; Xorg Tools
-   "xhost"
+   "xev"
    "xset"
    "xrdb"
+   "xhost"
    "xmodmap"
    "setxkbmap"
    "xrandr"
