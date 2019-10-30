@@ -21,10 +21,8 @@ shepherd
 
 # Make things look nice
 compton &
-nitrogen --restore &
 
-# Remap caps lock to ctrl and turn off the system bell
-xmodmap ~/.dotfiles/i3/Xmodmap
+# Turn off the system bell
 xset -b
 
 # Load system tray apps

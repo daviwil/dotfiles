@@ -65,10 +65,10 @@
    "gs-fonts"
 
    ;; Desktop
+   "feh"
    "dmenu"
    "gnome-backgrounds"
    "compton"
-   "nitrogen"
    "redshift"
    "brightnessctl"
    "xfce4-notifyd"

@@ -997,22 +997,38 @@ for now, need to investigate the =perspective= varieties.
 
 #+END_SRC
 
-**** Screen Layouts
+**** Desktop Configuration
 
 #+BEGIN_SRC emacs-lisp
 
-  (defun exwm/launch-if-display-on (display-name script-path)
-    (let ((xrandr-output-regexp (format "%s connected " display-name)))
-      (with-temp-buffer
-        (call-process "xrandr" nil t nil)
-        (goto-char (point-min))
-        (when (re-search-forward xrandr-output-regexp nil 'noerror)
-          (call-process "sh" nil nil nil script-path)))))
+  (defun dw/run-xmodmap ()
+    (interactive)
+    (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/i3/Xmodmap"))
 
-  (defun exwm/update-screen-layout ()
-    (pcase (system-name)
-      ("phantom" (exwm/launch-if-screen-on "VIRTUAL1" "~/.dotfiles/screen-layouts/x1e/docked.sh"))
-      ("zerocool" (exwm/launch-if-screen-on "DP1-1" "~/.dotfiles/screen-layouts/x1/docked.sh"))))
+  (defun dw/update-wallpapers ()
+    (interactive)
+    (start-process-shell-command "feh" nil "feh --bg-scale ~/Pictures/Backgrounds/mountains-1412683.jpg"))
+
+  (defun dw/update-screen-layout ()
+    (interactive)
+    (let ((layout-script (pcase (system-name)
+                            ("phantom" "~/.dotfiles/screen-layouts/x1e/docked.sh")
+                            ("zerocool" "~/.dotfiles/screen-layouts/x1/docked.sh")
+                            ("davinci" "~/.dotfiles/screen-layouts/t480s/docked.sh"))))
+       (message "Running screen layout script: %s" layout-script)
+       (start-process-shell-command "xrandr" nil layout-script)))
+
+  (defun dw/configure-desktop ()
+    (interactive)
+      (dw/run-xmodmap)
+      (dw/update-screen-layout)
+      (dw/update-wallpapers))
+
+  (when dw/exwm-enabled
+    ;; Configure the desktop for first load and then listen
+    ;; for any future screen changes (connecting to docks, etc)
+    (dw/configure-desktop)
+    (add-hook 'exwm-randr-screen-change-hook #'dw/configure-desktop))
 
 #+END_SRC
 
