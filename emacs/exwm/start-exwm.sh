@@ -27,7 +27,6 @@ xset -b
 
 # Load system tray apps
 nm-applet &
-QSyncthingTray &
 
 # Enable screen locking on suspend
 xss-lock -- slock &
