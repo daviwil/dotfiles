@@ -954,10 +954,8 @@ for now, need to investigate the =perspective= varieties.
     ;; Make workspace 1 be the one where we land at startup
     (exwm-workspace-switch-create 1)
 
-    (exwm/run-in-background "pidgin")
-    (exwm/run-in-background "syncthing-gtk --minimized"))
     ;; Launch apps that will run in the background
-    (exwm/run-in-background "redshift -l 47.675510:-122.203362 -t 6500:3500")
+    (exwm/run-in-background "redshift -l 47.675510:-122.203362 -t 6500:3500"))
 
   (use-package exwm
     :if dw/exwm-enabled

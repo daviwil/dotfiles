@@ -19,7 +19,7 @@ xfsettingsd &
 # Start Shepherd to manage user daemons
 shepherd
 
-# Make things look nice
+# Enable screen compositing
 compton &
 
 # Turn off the system bell
@@ -27,6 +27,7 @@ xset -b
 
 # Load system tray apps
 nm-applet &
+QSyncthingTray &
 
 # Enable screen locking on suspend
 xss-lock -- slock &
