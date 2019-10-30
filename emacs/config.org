@@ -955,6 +955,7 @@ for now, need to investigate the =perspective= varieties.
     (exwm-workspace-switch-create 1)
 
     ;; Launch apps that will run in the background
+    (exwm/run-in-background "QSyncthingTray")
     (exwm/run-in-background "redshift -l 47.675510:-122.203362 -t 6500:3500"))
 
   (use-package exwm
