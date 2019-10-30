@@ -972,9 +972,21 @@ for now, need to investigate the =perspective= varieties.
                 (git-gutter-mode 0)
                 (evil-local-set-key 'motion (kbd "C-u") nil)))
 
-    ;; Hide the modeline on all X windows
+    (defun dw/move-window-by-class ()
+      (interactive)
+      (pcase exwm-class-name
+        ("Pidgin" (exwm-workspace-move-window 0))
+        ("Pidgin<2>" (exwm-workspace-move-window 0))
+        ("teams-for-linux" (exwm-workspace-move-window 3))
+        ("Spotify" (exwm-workspace-move-window 4))))
+
+    ;; Manipulate windows as they're created
     (add-hook 'exwm-manage-finish-hook
               (lambda ()
+                ;; Send the window where it belongs
+                (dw/move-window-by-class)
+
+                ;; Hide the modeline on all X windows
                 (exwm-layout-hide-mode-line)))
 
     ;; Hide the modeline on all X windows
