@@ -1889,6 +1889,9 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
   (use-package sly
     :ensure t)
 
+  (use-package slime
+    :ensure t)
+
 #+end_src>
 
 **** TypeScript and JavaScript
