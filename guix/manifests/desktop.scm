@@ -51,6 +51,9 @@
    "gnome-keyring"
    "polkit-gnome"
 
+   ;; Work Tools
+   "freerdp"
+
    ;; Containerized Applications
    "flatpak"
 
