@@ -44,6 +44,7 @@
    "xrandr"
    "arandr"
    "xss-lock"
+   "libinput"
    "xinput"
 
    ;; Authentication

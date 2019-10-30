@@ -7,6 +7,7 @@
              (gnu packages wm)
              (gnu packages vim)
              (gnu packages gtk)
+             (gnu packages xorg)
              (gnu packages gnome)
              (gnu packages mtools)
              (gnu packages linux)
@@ -38,6 +39,27 @@
                                       (udev-configuration (inherit config)
                                                           (rules (cons %backlight-udev-rule
                                                                        (udev-configuration-rules config)))))))
+
+(define %xorg-libinput-config
+  "Section \"InputClass\"
+  Identifier \"Touchpads\"
+  Driver \"libinput\"
+  MatchDevicePath \"/dev/input/event*\"
+  MatchIsTouchpad \"on\"
+
+  Option \"Tapping\" \"on\"
+  Option \"TappingDrag\" \"on\"
+  Option \"DisableWhileTyping\" \"on\"
+  Option \"MiddleEmulation\" \"on\"
+  Option \"ScrollMethod\" \"twofinger\"
+EndSection
+Section \"InputClass\"
+  Identifier \"Keyboards\"
+  Driver \"libinput\"
+  MatchDevicePath \"/dev/input/event*\"
+  MatchIsKeyboard \"on\"
+EndSection
+")
 
 (operating-system
  (host-name "davinci")
@@ -113,6 +135,7 @@
                     bluez-alsa
                     pulseaudio
                     tlp
+                    xf86-input-libinput
                     nss-certs     ;; for HTTPS access
                     gvfs)         ;; for user mounts
                    %base-packages))
@@ -123,7 +146,8 @@
                            (slim-configuration
                               (xorg-configuration
                                 (xorg-configuration
-                                   (keyboard-layout keyboard-layout)))))
+                                   (keyboard-layout keyboard-layout)
+                                   (extra-config (list %xorg-libinput-config))))))
                   (service tlp-service-type
                            (tlp-configuration
                               (cpu-boost-on-ac? #t)
