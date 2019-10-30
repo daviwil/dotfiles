@@ -1,0 +1,12 @@
+#+TITLE: Personal System Configuration
+
+This repo contains my personal system configuration which enables a consistent
+working experience across multiple machines.  These days I primarily use
+GNU/Linux via the [[https://guix.gnu.org][Guix System Distribution]].  This makes my configuration highly
+replicable and consistent across multiple machines.
+
+I manage the linking of the various configuration files in this repo using [[https://www.gnu.org/software/stow/][GNU
+Stow]].
+
+Released under the [MIT License](./LICENSE) unless otherwise specified by
+license files in subfolders.
