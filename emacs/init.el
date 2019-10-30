@@ -38,6 +38,7 @@
   :init
   (setq mouse-autoselect-window t
         focus-follows-mouse t
+        exwm-workspace-warp-cursor t
         exwm-workspace-number 5)
   :config
   ;; Make class name the buffer name
