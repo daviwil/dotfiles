@@ -32,6 +32,9 @@ QSyncthingTray &
 # Enable screen locking on suspend
 xss-lock -- slock &
 
+# Development related environment vars
+export PUPPETEER_EXECUTABLE_PATH=$(which chromium)
+
 # We're in Emacs, yo
 export VISUAL=emacsclient
 export EDITOR="$VISUAL"
