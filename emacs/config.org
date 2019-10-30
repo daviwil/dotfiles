@@ -1123,6 +1123,7 @@ for now, need to investigate the =perspective= varieties.
              ([?\s-w] . exwm-workspace-switch)
              ([?\s-r] . hydra-exwm-move-resize/body)
              ([?\s-e] . deer)
+             ([?\s-Q] . (lambda () (interactive) (kill-buffer)))
              ([?\s-`] . (lambda () (interactive) (exwm-workspace-switch-create 0)))
              ,@(mapcar (lambda (i)
                          `(,(kbd (format "s-%d" i)) .
