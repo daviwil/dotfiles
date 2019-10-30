@@ -16,15 +16,18 @@ gpg-connect-agent /bye
 # Make Flatpak apps visible to launcher
 export XDG_DATA_DIRS="$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share"
 
+# Start Xfce's settings manager
+xfsettingsd &
+
+# Start Shepherd to manage user daemons
+shepherd
+
 # Make things look nice
 compton &
 nitrogen --restore &
 
 # Start the PulseAudio daemon to run persistently
 pulseaudio --daemonize
-
-# Start Xfce's settings manager
-xfsettingsd &
 
 # Turn off the system bell
 xset -b
