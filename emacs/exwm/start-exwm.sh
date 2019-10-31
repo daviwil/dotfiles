@@ -20,7 +20,9 @@ export LC_COLLATE="C"
 xfsettingsd &
 
 # Start Shepherd to manage user daemons
-shepherd
+if [ -z "$(pgrep -u daviwil shepherd)" ]; then
+  shepherd
+fi
 
 # Enable screen compositing
 compton &
