@@ -3,8 +3,8 @@
   #:use-module (gnu))
 
 (operating-system
- (host-name "zerocool")
  (inherit base-operating-system)
+ (host-name "zerocool")
 
  (mapped-devices
   (list (mapped-device

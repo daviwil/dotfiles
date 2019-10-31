@@ -3,8 +3,8 @@
   #:use-module (gnu))
 
 (operating-system
- (host-name "davinci")
  (inherit base-operating-system)
+ (host-name "davinci")
 
  (mapped-devices
   (list (mapped-device
