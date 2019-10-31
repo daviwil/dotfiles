@@ -2496,6 +2496,13 @@ Agenda items.
     (require 'evil-collection-eshell)
     (evil-collection-eshell-setup)
 
+    ;; Save command history when commands are entered
+    (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
+
+    ;; Truncate buffer for performance
+    (setq eshell-buffer-maximum-lines 10000)
+    (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
+
     (add-to-list 'eshell-modules-list 'eshell-tramp)
     (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
     (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
