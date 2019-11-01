@@ -13,6 +13,9 @@ gpg-connect-agent /bye
 # Make Flatpak apps visible to launcher
 export XDG_DATA_DIRS="$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share"
 
+# Make sure `ls` collates dotfiles first (for dired)
+export LC_COLLATE="C"
+
 # Start Xfce's settings manager
 xfsettingsd &
 
