@@ -2543,8 +2543,6 @@ Agenda items.
     :hook ((emacs-startup . eshell)
            (eshell-mode . dw/eshell-mode-hook))
     :config
-    (eshell/addpath "~/.dotfiles/bin")
-
     (require 'evil-collection-eshell)
     (evil-collection-eshell-setup)
 
