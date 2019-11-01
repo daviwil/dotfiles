@@ -10,3 +10,5 @@ Stow]].
 
 Released under the [MIT License](./LICENSE) unless otherwise specified by
 license files in subfolders.
+Released under the [[./LICENSE][GPL v3]] unless otherwise specified by license files in
+subfolders.
