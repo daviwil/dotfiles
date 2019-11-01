@@ -1257,6 +1257,30 @@ credentials for mail, etc.
     "X" 'dired-ranger-move
     "p" 'dired-ranger-paste)
 
+#+END_SRC
+
+*** Opening Files Externally
+
+#+begin_src emacs-lisp
+
+  (use-package openwith
+    :ensure t
+    :config
+    (setq openwith-associations
+      (list
+        (list (openwith-make-extension-regexp
+               '("mpg" "mpeg" "mp3" "mp4"
+                 "avi" "wmv" "wav" "mov" "flv"
+                 "ogm" "ogg" "mkv"))
+               "mpv"
+               '(file))
+        (list (openwith-make-extension-regexp
+               '("xbm" "pbm" "pgm" "ppm" "pnm"
+                 "png" "gif" "bmp" "tif" "jpeg" "jpg"))
+               "feh"
+               '(file))))
+    (openwith-mode 1))
+
 #+end_src
 
 ** Org Mode
