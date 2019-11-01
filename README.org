@@ -1,14 +1,15 @@
-#+TITLE: Personal System Configuration
+#+TITLE: //home/daviwil//.dotfiles
 
 This repo contains my personal system configuration which enables a consistent
-working experience across multiple machines.  These days I primarily use
-GNU/Linux via the [[https://guix.gnu.org][Guix System Distribution]].  This makes my configuration highly
-replicable and consistent across multiple machines.
+computing experience across multiple machines.  These days I primarily use
+GNU/Linux via the [[https://guix.gnu.org][Guix System Distribution]].
 
-I manage the linking of the various configuration files in this repo using [[https://www.gnu.org/software/stow/][GNU
-Stow]].
+I manage the various configuration files in this repo using [[https://www.gnu.org/software/stow/][GNU Stow]].  This
+allows me to set up symlinks for all of my dotfiles using a single command:
 
-Released under the [MIT License](./LICENSE) unless otherwise specified by
-license files in subfolders.
+#+BEGIN_SRC sh
+stow .
+#+END_SRC
+
 Released under the [[./LICENSE][GPL v3]] unless otherwise specified by license files in
 subfolders.
