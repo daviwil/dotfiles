@@ -1017,10 +1017,7 @@ for now, need to investigate the =perspective= varieties.
 
   (defun dw/update-screen-layout ()
     (interactive)
-    (let ((layout-script (pcase (system-name)
-                            ("phantom" "~/.dotfiles/screen-layouts/x1e/docked.sh")
-                            ("zerocool" "~/.dotfiles/screen-layouts/x1/docked.sh")
-                            ("davinci" "~/.dotfiles/screen-layouts/t480s/docked.sh"))))
+    (let ((layout-script "~/.bin/update-screens.sh"))
        (message "Running screen layout script: %s" layout-script)
        (start-process-shell-command "xrandr" nil layout-script)))
 
