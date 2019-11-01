@@ -1009,7 +1009,7 @@ for now, need to investigate the =perspective= varieties.
 
   (defun dw/run-xmodmap ()
     (interactive)
-    (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/i3/Xmodmap"))
+    (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/.config/i3/Xmodmap"))
 
   (defun dw/update-wallpapers ()
     (interactive)
