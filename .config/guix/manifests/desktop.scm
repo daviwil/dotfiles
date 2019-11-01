@@ -71,6 +71,7 @@
 
    ;; Desktop
    "feh"
+   "cups"
    "scrot"
    "dmenu"
    "compton"
