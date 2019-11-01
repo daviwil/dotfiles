@@ -2182,7 +2182,6 @@ Configure TypeScript and JavaScript language modes
 
 #+END_SRC
 
-
 *** Reference
 
 **** HTTP
@@ -2789,34 +2788,6 @@ I like the position of the mode line tracking better than circe.
 https://github.com/the-kenny/weechat.el
 
 
-*** Twitter
-
-Tried using =twittering-mode= and it managed to delete entire buffers of text for
-other files.  Right now I'm happier using Bitlbee's Twitter integration so I'm
-not using this mode at all.
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package twittering-mode
-    :ensure t
-    :defer t
-    :config
-    (twittering-icon-mode 1)
-    (twittering-enable-unread-status-notifier)
-    (setq twittering-username "daviwil")
-    (setq twittering-use-master-password t)
-    (setq twittering-convert-fix-size 96)
-    (setq twittering-connection-type-order ;; curl throws errors, deprioritize it...
-      '(wget curl urllib-http native urllib-https))
-
-    (dw/leader-key-def
-      "at"  '(:ignore t :which-key "twitter")
-      "att" '(twit :which-key "home feed")
-      "atd" '(twittering-direct-messages-timeline :which-key "direct messages")
-      "ats" '(twittering-direct-message :which-key "send message")))
-
-#+END_SRC
-
 *** Mastodon
 
 #+BEGIN_SRC emacs-lisp
@@ -2894,15 +2865,6 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
     (dw/leader-key-def
       "aw"  '(wttrin :which-key "weather")))
-
-#+END_SRC
-
-*** System Package Management
-
-#+BEGIN_SRC emacs-lisp
-
-    (use-package system-packages
-      :ensure t)
 
 #+END_SRC
 
