@@ -2,7 +2,6 @@
 .gitignore
 .gitmodules
 archive
-emacs
 mail
 screen-layouts
 README.org
