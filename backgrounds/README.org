@@ -1,0 +1,5 @@
+#+TITLE: Desktop Backgrounds
+
+This folder contains backgrounds that I enjoy using and their attribution.
+
+- [[./mountains-1412683.jpg][mountains-1412683.jpg]]: From Manjaro's [[https://gitlab.manjaro.org/artwork/wallpapers/wallpapers-2018][wallpapers-2018]] package, licensed [[https://gitlab.manjaro.org/artwork/wallpapers/wallpapers-2018/blob/master/LICENSE][CC0]]

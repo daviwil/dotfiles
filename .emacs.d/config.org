@@ -1021,7 +1021,7 @@ for now, need to investigate the =perspective= varieties.
 
   (defun dw/update-wallpapers ()
     (interactive)
-    (start-process-shell-command "feh" nil "feh --bg-scale ~/Pictures/Backgrounds/mountains-1412683.jpg"))
+    (start-process-shell-command "feh" nil "feh --bg-scale ~/.dotfiles/backgrounds/mountains-1412683.jpg"))
 
   (defun dw/update-screen-layout ()
     (interactive)

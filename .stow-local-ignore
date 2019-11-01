@@ -2,6 +2,7 @@
 .gitignore
 .gitmodules
 archive
+backgrounds
 mail
 README.org
 LICENSE
