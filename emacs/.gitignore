@@ -6,6 +6,7 @@ elpa/
 emms/
 eshell/*
 !eshell/alias
+!eshell/profile
 jabber-avatar-cache/
 jabber-history/
 thumbs/
