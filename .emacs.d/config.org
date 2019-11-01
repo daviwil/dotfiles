@@ -235,6 +235,14 @@ Enable line numbers and customize their format.
 
 #+END_SRC
 
+Don't warn for large files (shows up when launching videos)
+
+#+begin_src emacs-lisp
+
+  (setq large-file-warning-threshold nil)
+
+#+end_src
+
 *** Theme
 
 **** Theme Config
