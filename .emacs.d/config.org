@@ -2516,6 +2516,7 @@ Agenda items.
       '(lambda () (setenv "TERM" "dumb")))
 
     (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'counsel-esh-history)
+    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
     (evil-normalize-keymaps)
 
     (emojify-mode 0)
