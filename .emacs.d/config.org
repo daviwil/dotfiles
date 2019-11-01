@@ -1195,7 +1195,7 @@ credentials for mail, etc.
 #+BEGIN_SRC emacs-lisp
 
   (setq auth-sources
-    '((:source "~/.dotfiles/emacs/secrets/.authinfo.gpg")))
+    '((:source "~/.emacs.d/secrets/.authinfo.gpg")))
 
 #+END_SRC
 
