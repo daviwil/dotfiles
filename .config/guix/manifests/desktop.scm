@@ -57,7 +57,7 @@
    "freerdp"
 
    ;; Containerized Applications
-   "flatpak"
+   "flatpak"  ;; For Teams, Spotify, and qutebrowser
 
    ;; Fonts
    "font-fira-mono"
@@ -97,7 +97,7 @@
    "gnome-backgrounds"
 
    ;; Games
-   "aisleriot" ;; The binary is called 'sol'!
+   "aisleriot"
    "gnome-mahjongg"
 
    ;; Media Players
