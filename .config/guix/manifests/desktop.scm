@@ -76,6 +76,7 @@
    "dmenu"
    "compton"
    "redshift"
+   "gucharmap"
    "brightnessctl"
    "xdg-utils"     ;; For xdg-open, etc
    "gtk+:bin"      ;; For gtk-launch
