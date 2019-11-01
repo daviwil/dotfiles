@@ -1,4 +1,4 @@
-#+TITLE: /home/daviwil/.dotfiles
+#+TITLE: =/home/daviwil/.dotfiles=
 
 This repo contains my personal system configuration which enables a consistent
 computing experience across multiple machines.  These days I primarily use
