@@ -1039,8 +1039,8 @@ for now, need to investigate the =perspective= varieties.
   (when dw/exwm-enabled
     ;; Configure the desktop for first load and then listen
     ;; for any future screen changes (connecting to docks, etc)
-    (dw/configure-desktop)
-    (add-hook 'exwm-randr-screen-change-hook #'dw/configure-desktop))
+    (dw/configure-desktop))
+    ;;(add-hook 'exwm-randr-screen-change-hook #'dw/configure-desktop))
 
 #+END_SRC
 
