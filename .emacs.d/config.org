@@ -3019,8 +3019,7 @@ to set that up.
 #+BEGIN_SRC emacs-lisp
 
   (use-package emojify
-    :ensure t
-    :init (global-emojify-mode))
+    :ensure t)
 
 #+END_SRC
 
