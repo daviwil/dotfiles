@@ -2971,6 +2971,19 @@ to set that up.
 
 #+end_src
 
+*** Proced
+
+#+begin_src emacs-lisp
+
+  (use-package proced
+    :config
+    (setq proced-auto-update-interval 1)
+    (add-hook 'proced-mode-hook
+              (lambda ()
+                (proced-toggle-auto-update 1))))
+
+#+end_src
+
 *** System Monitor
 
 #+BEGIN_SRC emacs-lisp
