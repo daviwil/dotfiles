@@ -19,10 +19,10 @@
 ;; providing them as arguments to 'register-services'.
 (register-services syncthing pulseaudio)
 
+;; Send shepherd into the background
+(action 'shepherd 'daemonize)
+
 ;; Services to start when shepherd starts:
 ;; Add the name of each service that should be started to the list
 ;; below passed to 'for-each'.
 (for-each start '(syncthing pulseaudio))
-
-;; Send shepherd into the background
-(action 'shepherd 'daemonize)
