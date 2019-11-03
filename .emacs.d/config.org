@@ -252,6 +252,14 @@ Don't warn for following symlinked files
 
 #+end_src
 
+Don't warn when advice is added for functions
+
+#+begin_src emacs-lisp
+
+  (setq ad-redefinition-action 'accept)
+
+#+end_src
+
 *** Theme
 
 **** Theme Config
