@@ -117,7 +117,8 @@ Some tips can be found here:
 
   (use-package org-evil
     :ensure t
-    :after evil)
+    :after evil
+    :hook (org-mode . org-evil-mode))
 
 #+END_SRC
 
@@ -517,6 +518,7 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
   (use-package super-save
     :ensure t
+    :defer 1
     :diminish super-save-mode
     :config
     (super-save-mode +1)
@@ -700,7 +702,8 @@ Use spaces instead of tabs for indentation.
 #+begin_src emacs-lisp
 
   (use-package hydra
-    :ensure t)
+    :ensure t
+    :defer 1)
 
 #+end_src
 
@@ -741,7 +744,8 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     (setq ivy-initial-inputs-alist nil)) ;; Don't start search with ^
 
   (use-package ivy-hydra
-    :ensure t)
+    :ensure t
+    :after hydra)
 
   (use-package counsel
     :ensure t
@@ -750,8 +754,9 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
            ("C-x C-f" . counsel-find-file)))
 
   (use-package smex ;; Adds M-x recent command sorting for counsel-M-x
-    :after (counsel)
-    :ensure t)
+    :ensure t
+    :defer 1
+    :after counsel)
 
   (dw/leader-key-def
     "r"   '(ivy-resume :which-key "ivy resume")
@@ -866,7 +871,9 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
   (use-package default-text-scale
     :ensure t
-    :init (default-text-scale-mode))
+    :defer 1
+    :config
+    (default-text-scale-mode))
 
 #+END_SRC
 
@@ -1223,13 +1230,14 @@ credentials for mail, etc.
 #+BEGIN_SRC emacs-lisp
 
   (use-package dired
+    :defer 1
     :commands (dired dired-jump)
     :config
     (setq dired-listing-switches "-agho --group-directories-first"
           dired-omit-files "^\\.[^.].*"
           dired-omit-verbose nil)
 
-    (load "dired-x")
+    (autoload 'dired-omit-mode "dired-x")
 
     (add-hook 'dired-load-hook
       (lambda ()
@@ -1244,6 +1252,7 @@ credentials for mail, etc.
 
     (use-package dired-rainbow
       :ensure t
+      :defer 2
       :config
       (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
       (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
@@ -1266,9 +1275,17 @@ credentials for mail, etc.
       (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
       (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
-    (use-package dired-single :ensure t)
-    (use-package dired-ranger :ensure t)
-    (use-package dired-collapse :ensure t)
+    (use-package dired-single
+      :ensure t
+      :defer t)
+
+    (use-package dired-ranger
+      :ensure t
+      :defer t)
+
+    (use-package dired-collapse
+      :ensure t
+      :defer t)
 
     (evil-collection-define-key 'normal 'dired-mode-map
       "h" 'dired-single-up-directory
