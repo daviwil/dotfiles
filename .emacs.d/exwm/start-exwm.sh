@@ -9,7 +9,7 @@ xhost +SI:localuser:$USER
 # Make Java applications aware this is a non-reparenting window manager
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-# Start authentication daemons
+# Start authentication daemon
 gpg-connect-agent /bye
 
 # Start Xfce's settings manager
