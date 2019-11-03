@@ -11,6 +11,9 @@
                               (time-subtract after-init-time before-init-time)))
                      gcs-done)))
 
+;; Uncomment this to get a reading on packages that get loaded at startup
+;;(setq use-package-verbose t)
+
 ;; Initialize package sources
 (require 'package)
 

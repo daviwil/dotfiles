@@ -167,6 +167,7 @@ in conjunction with Evil modes.
 
   (use-package use-package-chords
     :ensure t
+    :disabled
     :config (key-chord-mode 1))
 
 #+END_SRC
@@ -477,6 +478,7 @@ anymore if I set up =diminish= correctly.
 
   (use-package doom-modeline
     :ensure t
+    :after eshell     ;; Make sure it gets hooked after eshell
     :hook (after-init . doom-modeline-init)
     :config
     (setq doom-modeline-lsp t
@@ -527,7 +529,8 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 #+BEGIN_SRC emacs-lisp
 
   (use-package focus
-    :ensure t)
+    :ensure t
+    :commands focus-mode)
 
 #+END_SRC
 
@@ -541,17 +544,6 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
     "tt" '(counsel-load-theme :which-key "choose theme"))
 
 #+END_SRC
-
-*** File Tree
-
-#+begin_src emacs-lisp
-
-  (use-package neotree
-    :ensure t
-    :config
-    (setq neo-vc-integration '(face)))
-
-#+end_src
 
 *** Displaying World Time
 
@@ -617,8 +609,7 @@ Use spaces instead of tabs for indentation.
 
   (use-package evil-nerd-commenter
     :ensure t
-    :config
-    (global-set-key (kbd "M-/") 'evilnc-comment-or-uncomment-lines))
+    :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
 #+END_SRC
 
@@ -639,6 +630,11 @@ Use spaces instead of tabs for indentation.
 
   (use-package parinfer
     :ensure t
+    :hook ((clojure-mode . parinfer-mode)
+           (emacs-lisp-mode . parinfer-mode)
+           (common-lisp-mode . parinfer-mode)
+           (scheme-mode . parinfer-mode)
+           (lisp-mode . parinfer-mode))
     :init
     (progn
       (setq parinfer-extensions
@@ -763,7 +759,9 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package avy :ensure t)
+  (use-package avy
+    :ensure t
+    :commands (avy-goto-char avy-goto-word-0 avy-goto-line))
 
   (dw/leader-key-def
     "j"   '(:ignore t :which-key "jump")
@@ -793,9 +791,10 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
   (use-package iflipb
     :ensure t
-    :bind (("C-;" . 'hydra-flip-buffer/body)
-           ("<s-tab>" . 'iflipb-next-buffer)
-           ("<s-iso-lefttab>" . 'iflipb-previous-buffer))
+    :defer t
+    :bind (("C-;" . hydra-flip-buffer/body)
+           ("<s-tab>" . iflipb-next-buffer)
+           ("<s-iso-lefttab>" . iflipb-previous-buffer))
     :config
     (setq iflipb-ignore-buffers nil) ; Should tighten this in the future
     (setq iflipb-wrap-around nil))
@@ -1047,7 +1046,7 @@ for now, need to investigate the =perspective= varieties.
   (when dw/exwm-enabled
     ;; Configure the desktop for first load and then listen
     ;; for any future screen changes (connecting to docks, etc)
-    (dw/configure-desktop))
+    (add-hook 'exwm-init-hook #'dw/configure-desktop))
     ;;(add-hook 'exwm-randr-screen-change-hook #'dw/configure-desktop))
 
 #+END_SRC
@@ -1104,7 +1103,7 @@ for now, need to investigate the =perspective= varieties.
     (use-package desktop-environment
       :ensure t
       :after exwm
-      :init (desktop-environment-mode)
+      :hook (exwm-init . desktop-environment-mode)
       :custom
       (desktop-environment-brightness-small-increment "2%+")
       (desktop-environment-brightness-small-decrement "2%-")
@@ -1172,8 +1171,8 @@ tweaking Org agenda views much less annoying.
 
   (use-package expand-region
     :ensure t
-    :bind (("M-[" . 'er/expand-region)
-           ("C-(" . 'er/mark-outside-pairs)))
+    :bind (("M-[" . er/expand-region)
+           ("C-(" . er/mark-outside-pairs)))
 
 #+END_SRC
 
@@ -1187,6 +1186,7 @@ Emacs.
 
   (use-package helm-pass
     :ensure t
+    :commands helm-pass
     :config
     (setq password-store-password-length 12))
 
@@ -1214,57 +1214,61 @@ credentials for mail, etc.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package dired-rainbow
-    :ensure t
+  (use-package dired
+    :commands (dired dired-jump)
     :config
-    (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
-    (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
-    (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
-    (dired-rainbow-define document "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx"))
-    (dired-rainbow-define markdown "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt"))
-    (dired-rainbow-define database "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc"))
-    (dired-rainbow-define media "#de751f" ("mp3" "mp4" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac"))
-    (dired-rainbow-define image "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg"))
-    (dired-rainbow-define log "#c17d11" ("log"))
-    (dired-rainbow-define shell "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim"))
-    (dired-rainbow-define interpreted "#38c172" ("py" "ipynb" "rb" "pl" "t" "msql" "mysql" "pgsql" "sql" "r" "clj" "cljs" "scala" "js"))
-    (dired-rainbow-define compiled "#4dc0b5" ("asm" "cl" "lisp" "el" "c" "h" "c++" "h++" "hpp" "hxx" "m" "cc" "cs" "cp" "cpp" "go" "f" "for" "ftn" "f90" "f95" "f03" "f08" "s" "rs" "hi" "hs" "pyc" ".java"))
-    (dired-rainbow-define executable "#8cc4ff" ("exe" "msi"))
-    (dired-rainbow-define compressed "#51d88a" ("7z" "zip" "bz2" "tgz" "txz" "gz" "xz" "z" "Z" "jar" "war" "ear" "rar" "sar" "xpi" "apk" "xz" "tar"))
-    (dired-rainbow-define packaged "#faad63" ("deb" "rpm" "apk" "jad" "jar" "cab" "pak" "pk3" "vdf" "vpk" "bsp"))
-    (dired-rainbow-define encrypted "#ffed4a" ("gpg" "pgp" "asc" "bfe" "enc" "signature" "sig" "p12" "pem"))
-    (dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf"))
-    (dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak"))
-    (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
-    (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
+    (setq dired-listing-switches "-agho --group-directories-first"
+          dired-omit-files "^\\.[^.].*"
+          dired-omit-verbose nil)
 
-  (use-package dired-single :ensure t)
-  (use-package dired-ranger :ensure t)
-  (use-package dired-collapse :ensure t)
+    (load "dired-x")
 
-  (setq dired-listing-switches "-agho --group-directories-first")
-
-  (load "dired-x")
-  (setq dired-omit-files "^\\.[^.].*")
-
-  (add-hook 'dired-load-hook
-    (lambda ()
+    (add-hook 'dired-load-hook
+      (lambda ()
       (interactive)
       (dired-collapse)))
 
-  (add-hook 'dired-mode-hook
-    (lambda ()
+    (add-hook 'dired-mode-hook
+      (lambda ()
       (interactive)
       (dired-omit-mode 1)
       (hl-line-mode 1)))
 
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-single-up-directory
-    "H" 'dired-omit-mode
-    "l" 'dired-single-buffer
-    "y" 'dired-ranger-copy
-    "X" 'dired-ranger-move
-    "p" 'dired-ranger-paste)
+    (use-package dired-rainbow
+      :ensure t
+      :config
+      (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
+      (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
+      (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
+      (dired-rainbow-define document "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx"))
+      (dired-rainbow-define markdown "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt"))
+      (dired-rainbow-define database "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc"))
+      (dired-rainbow-define media "#de751f" ("mp3" "mp4" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac"))
+      (dired-rainbow-define image "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg"))
+      (dired-rainbow-define log "#c17d11" ("log"))
+      (dired-rainbow-define shell "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim"))
+      (dired-rainbow-define interpreted "#38c172" ("py" "ipynb" "rb" "pl" "t" "msql" "mysql" "pgsql" "sql" "r" "clj" "cljs" "scala" "js"))
+      (dired-rainbow-define compiled "#4dc0b5" ("asm" "cl" "lisp" "el" "c" "h" "c++" "h++" "hpp" "hxx" "m" "cc" "cs" "cp" "cpp" "go" "f" "for" "ftn" "f90" "f95" "f03" "f08" "s" "rs" "hi" "hs" "pyc" ".java"))
+      (dired-rainbow-define executable "#8cc4ff" ("exe" "msi"))
+      (dired-rainbow-define compressed "#51d88a" ("7z" "zip" "bz2" "tgz" "txz" "gz" "xz" "z" "Z" "jar" "war" "ear" "rar" "sar" "xpi" "apk" "xz" "tar"))
+      (dired-rainbow-define packaged "#faad63" ("deb" "rpm" "apk" "jad" "jar" "cab" "pak" "pk3" "vdf" "vpk" "bsp"))
+      (dired-rainbow-define encrypted "#ffed4a" ("gpg" "pgp" "asc" "bfe" "enc" "signature" "sig" "p12" "pem"))
+      (dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf"))
+      (dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak"))
+      (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
+      (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
+
+    (use-package dired-single :ensure t)
+    (use-package dired-ranger :ensure t)
+    (use-package dired-collapse :ensure t)
+
+    (evil-collection-define-key 'normal 'dired-mode-map
+      "h" 'dired-single-up-directory
+      "H" 'dired-omit-mode
+      "l" 'dired-single-buffer
+      "y" 'dired-ranger-copy
+      "X" 'dired-ranger-move
+      "p" 'dired-ranger-paste))
 
 #+END_SRC
 
@@ -1349,10 +1353,9 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
   (use-package org-bullets
     :ensure t
+    :hook (org-mode . org-bullets-mode)
     :custom
-    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●"))
-    :config
-      (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
   (defun dw/set-org-header-font-sizes ()
     (dolist (face '((org-level-1 . 1.2)
@@ -1621,6 +1624,7 @@ documentation page.
 
   (use-package org-pomodoro
     :ensure t
+    :commands org-pomodoro
     :config
     (setq org-pomodoro-start-sound "~/.emacs.d/sounds/focus_bell.wav")
     (setq org-pomodoro-short-break-sound "~/.emacs.d/sounds/three_beeps.wav")
@@ -1725,8 +1729,8 @@ https://magit.vc/manual/magit/
 
   (use-package magit
     :ensure t
+    :commands (magit-status magit-get-current-branch)
     :custom
-    (global-magit-file-mode t)
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
   (use-package evil-magit
@@ -1763,7 +1767,8 @@ how useful it will be.
 #+BEGIN_SRC emacs-lisp
 
   (use-package forge
-    :ensure t)
+    :ensure t
+    :disabled)
 
 #+END_SRC
 
@@ -1777,9 +1782,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 
   (use-package magit-todos
     :ensure t
-    :after magit
-    :config
-    (magit-todos-mode 1))
+    :defer t)
 
 #+end_src
 
@@ -1789,6 +1792,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 
   (use-package git-link
     :ensure t
+    :commands git-link
     :config
     (setq git-link-open-in-browser t)
     (dw/leader-key-def
@@ -1803,6 +1807,8 @@ files contained within the repo.  More information at the [[https://github.com/a
   (use-package git-gutter
     :ensure t
     :diminish
+    :hook ((text-mode . git-gutter-mode)
+           (prog-mode . git-gutter-mode))
     :config
     (global-git-gutter-mode +1)
     (setq git-gutter:update-interval 2)
@@ -1843,18 +1849,6 @@ files contained within the repo.  More information at the [[https://github.com/a
     "pp"  'counsel-projectile
     "pc"  'projectile-compile-project
     "pd"  'projectile-dired)
-
-#+END_SRC
-
-**** Searching with =ag=
-
-This package needs The Silver Searcher to be installed on the local machine.  On
-Manjaro/Arch this is the =the_silver_searcher= package.
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package helm-ag
-    :ensure t)
 
 #+END_SRC
 
@@ -1958,10 +1952,6 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     :after lsp-mode
     :commands helm-lsp-workspace-symbol)
 
-  (use-package lsp-treemacs
-    :ensure t
-    :after (lsp-mode treemacs))
-
 #+END_SRC
 
 **** Clojure
@@ -1970,11 +1960,13 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
   (use-package cider
     :ensure t
+    :mode "\\.clj[sc]?\\'"
     :config
     (evil-collection-cider-setup))
 
   (use-package helm-cider
     :ensure t
+    :after cider
     :config
     (helm-cider-mode 1))
 
@@ -1985,10 +1977,12 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 #+begin_src emacs-lisp
 
   (use-package sly
-    :ensure t)
+    :ensure t
+    :mode "\\.lisp\\'")
 
   (use-package slime
-    :ensure t)
+    :ensure t
+    :mode "\\.lisp\\'")
 
 #+end_src>
 
@@ -1999,7 +1993,8 @@ Set up nvm so that we can manage Node versions
 #+BEGIN_SRC emacs-lisp
 
   (use-package nvm
-    :ensure t)
+    :ensure t
+    :defer t)
 
 #+END_SRC
 
@@ -2007,50 +2002,18 @@ Configure TypeScript and JavaScript language modes
 
 #+BEGIN_SRC emacs-lisp
 
-  (defun setup-tide-mode ()
-    (interactive)
-    (tide-setup)
-    (flycheck-mode +1)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode +1)
-    (tide-hl-identifier-mode +1)
-    (company-mode +1))
-
   (use-package typescript-mode
     :ensure t
+    :mode "\\.tsx?\\'"
     :config
     (flycheck-mode)
     (setq typescript-indent-level 2))
 
-  ;; (use-package tide
-  ;;     :ensure t
-  ;;     :after (typescript-mode web-mode company flycheck)
-  ;;     :hook ((typescript-mode . setup-tide-mode)
-  ;;            (javascript-mode . setup-tide-mode)
-  ;;            (typescript-mode . tide-hl-identifier-mode)
-  ;;            (before-save . tide-format-before-save))
-  ;;     :config
-  ;;     (setq tide-format-options
-  ;;       '(:indentSize 2
-  ;;         :tabSize 2
-  ;;         :convertTabsToSpaces t))
-
-  ;;     (require 'evil-collection-tide)
-  ;;     (evil-collection-tide-setup)
-
-  ;;     (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-  ;;     (add-hook 'web-mode-hook
-  ;;             (lambda ()
-  ;;                 (when (string-equal "tsx" (file-name-extension buffer-file-name))
-  ;;                 (setup-tide-mode))))
-
-  ;;     (flycheck-add-mode 'typescript-tslint 'web-mode))
-
   (use-package js2-mode
     :ensure t
+    :mode "\\.jsx?\\'"
     :config
-    ;; Use js2-mode for JavaScript files
-    (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+    ;; Use js2-mode for Node scripts
     (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
 
     ;; Don't use built-in syntax checking
@@ -2062,16 +2025,7 @@ Configure TypeScript and JavaScript language modes
       (setq evil-shift-width js-indent-level)
       (setq-default tab-width 2)))
 
-  ;; (use-package indium
-  ;;   :ensure t
-  ;;   :config
-  ;;   (add-hook 'js-mode-hook #'indium-interaction-mode))
-
 #+END_SRC
-
-
-
-
 
 **** Rust
 
@@ -2082,7 +2036,9 @@ Configure TypeScript and JavaScript language modes
     :mode "\\.rs\\'"
     :init (setq rust-format-on-save t))
 
-  (use-package cargo :ensure t)
+  (use-package cargo
+    :ensure t
+    :defer t)
 
 #+END_SRC
 
@@ -2092,8 +2048,7 @@ Configure TypeScript and JavaScript language modes
 
   (use-package fsharp-mode
     :ensure t
-    :config
-    (add-to-list 'auto-mode-alist '("\\.fs[iylx]?$" . fsharp-mode)))
+    :mode ".fs[iylx]?\\'")
 
 #+end_src
 
@@ -2128,6 +2083,7 @@ Configure TypeScript and JavaScript language modes
 
   (use-package markdown-mode
     :ensure t
+    :mode "\\.md\\'"
     :config
     (setq markdown-command "marked")
     (defun dw/set-markdown-header-font-sizes ()
@@ -2139,7 +2095,6 @@ Configure TypeScript and JavaScript language modes
         (set-face-attribute (car face) nil :weight 'normal :height (cdr face))))
 
     (defun dw/markdown-mode-hook ()
-      (turn-on-auto-fill)
       (dw/set-markdown-header-font-sizes))
 
     (add-hook 'markdown-mode-hook 'dw/markdown-mode-hook))
@@ -2152,15 +2107,12 @@ Configure TypeScript and JavaScript language modes
 
   (use-package web-mode
     :ensure t
+    :mode "\\.html?\\'"
     :config
     (setq-default web-mode-code-indent-offset 2)
     (setq-default web-mode-markup-indent-offset 2)
     (setq-default web-mode-attribute-indent-offset 2)
     (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode)))
-    ;; (add-hook 'web-mode-hook
-    ;;   (add-to-list
-    ;;     'auto-mode-alist
-    ;;     '("\\.html?\\'" . web-mode))))
 
 #+END_SRC
 
@@ -2169,7 +2121,8 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package yaml-mode
-    :ensure t)
+    :ensure t
+    :mode "\\.ya?ml\\'")
 
 #+END_SRC
 
@@ -2180,7 +2133,8 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package flycheck
-    :ensure t)
+    :ensure t
+    :defer t)
 
 #+END_SRC
 
@@ -2189,20 +2143,20 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
 (use-package yasnippet
-  :ensure t)
-
+  :ensure t
+  :hook (prog-mode . (lambda ()
+                            (interactive)
+                            (yas-reload-all)
+                            (yas-minor-mode))))
 #+END_SRC
 
 **** Smart Parens
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package smartparens
-  :ensure t
-  :config
-  (progn
-    (require 'smartparens-config)
-    (show-paren-mode 1)))
+  (use-package smartparens
+    :ensure t
+    :hook (prog-mode . smartparens-mode))
 
 #+END_SRC
 
@@ -2210,11 +2164,9 @@ Configure TypeScript and JavaScript language modes
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package rainbow-delimiters
-  :ensure t
-  :config
-  (progn
-    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
+  (use-package rainbow-delimiters
+    :ensure t
+    :hook (prog-mode . rainbow-delimiters-mode))
 
 #+END_SRC
 
@@ -2225,7 +2177,8 @@ Configure TypeScript and JavaScript language modes
 #+begin_src emacs-lisp
 
   (use-package know-your-http-well
-    :ensure t)
+    :ensure t
+    :defer t)
 
 #+end_src
 
@@ -2237,6 +2190,7 @@ Configure TypeScript and JavaScript language modes
 
   (use-package darkroom
     :ensure t
+    :commands darkroom-mode
     :config
     (setq darkroom-text-scale-increase 0))
 
@@ -2441,6 +2395,7 @@ Agenda items.
 
   (use-package calfw
     :ensure t
+    :commands cfw:open-org-calendar
     :config
     (setq cfw:fchar-junction ?╋
           cfw:fchar-vertical-line ?┃
@@ -2466,9 +2421,6 @@ Agenda items.
 **** Configuration
 
 #+BEGIN_SRC emacs-lisp
-
-  (use-package xterm-color
-    :ensure t)
 
   (defun read-file (file-path)
     (with-temp-buffer
@@ -2550,12 +2502,13 @@ Agenda items.
           (concat "\n" (propertize " " 'display (create-image "~/.dotfiles/emacs/images/flux_banner.png" 'png nil :scale 0.4 :align-to "center")) "\n\n")))))
 
   (use-package eshell
-    :after xterm-color
-    :hook ((emacs-startup . eshell)
+    :hook ((after-init . eshell)
            (eshell-mode . dw/eshell-mode-hook))
     :config
     (require 'evil-collection-eshell)
     (evil-collection-eshell-setup)
+
+    (use-package xterm-color :ensure t)
 
     ;; Save command history when commands are entered
     (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
@@ -2617,8 +2570,7 @@ Custom eshell commands will go here.
 
   (use-package eterm-256color
     :ensure t
-    :config
-    (add-hook 'term-mode-hook #'eterm-256color-mode))
+    :hook (term-mode . eterm-256color-mode))
 
 #+END_SRC
 
@@ -2630,6 +2582,7 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
 
   (use-package multi-term
     :ensure t
+    :commands multi-term-next
     :config
     (setq multi-term-program "/bin/zsh")
     (setq multi-term-program-switches "--login")
@@ -2641,7 +2594,6 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
           (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next)))))
 
   (dw/leader-key-def
-    "at"    'multi-term
     "C-SPC" 'multi-term-next)
 
 #+END_SRC
@@ -2658,51 +2610,59 @@ features it provides.  The "static center" fill mode is really awesome.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package erc-hl-nicks :ensure t)
-  (use-package erc-image :ensure t)
+  (use-package erc-hl-nicks
+    :ensure t
+    :after erc)
 
-  (setq erc-modules
-    '(autoaway autojoin button completion fill irccontrols keep-place
-      list match menu move-to-prompt netsplit networks noncommands notify
-      notifications readonly ring smiley stamp track image hl-nicks))
+  (use-package erc-image
+    :ensure t
+    :after erc)
 
-  (setq
-    erc-nick "daviwil"
-    erc-prompt-for-nickserv-password nil
-    erc-auto-query 'bury
-    erc-join-buffer 'bury
-    erc-interpret-mirc-color t
-    erc-rename-buffers t
-    erc-lurker-hide-list '("JOIN" "PART" "QUIT")
-    erc-track-exclude-types '("JOIN" "NICK" "QUIT" "MODE")
-    erc-fill-column 105
-    erc-fill-function 'erc-fill-static
-    erc-fill-static-center 20
-    erc-track-exclude '("#twitter_daviwil")
-    erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#guile" "#guix" "#next-browser"))
-    erc-quit-reason (lambda (s) (or s "Fading out..."))
-    erc-modules
-      '(autoaway autojoin button completion fill irccontrols keep-place
-        list match menu move-to-prompt netsplit networks noncommands notify
-        notifications readonly ring smiley stamp track image hl-nicks))
+  (use-package erc
+    :commands erc
+    :config
+    (setq erc-modules
+        '(autoaway autojoin button completion fill irccontrols keep-place
+          list match menu move-to-prompt netsplit networks noncommands notify
+          notifications readonly ring smiley stamp track image hl-nicks))
 
-  (add-hook 'erc-join-hook 'bitlbee-identify)
-  (defun bitlbee-identify ()
-   "If we're on the bitlbee server, send the identify command to the &bitlbee channel."
-   (when (and (string= "127.0.0.1" erc-session-server)
-              (string= "&bitlbee" (buffer-name)))
-     (erc-message "PRIVMSG" (format "%s identify %s"
-                                    (erc-default-target)
-                                    (password-store-get "IRC/Bitlbee")))))
+    (setq
+        erc-nick "daviwil"
+        erc-prompt-for-nickserv-password nil
+        erc-auto-query 'bury
+        erc-join-buffer 'bury
+        erc-interpret-mirc-color t
+        erc-rename-buffers t
+        erc-lurker-hide-list '("JOIN" "PART" "QUIT")
+        erc-track-exclude-types '("JOIN" "NICK" "QUIT" "MODE")
+        erc-fill-column 105
+        erc-fill-function 'erc-fill-static
+        erc-fill-static-center 20
+        erc-track-exclude '("#twitter_daviwil")
+        erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#guile" "#guix" "#next-browser"))
+        erc-quit-reason (lambda (s) (or s "Fading out..."))
+        erc-modules
+        '(autoaway autojoin button completion fill irccontrols keep-place
+            list match menu move-to-prompt netsplit networks noncommands notify
+            notifications readonly ring smiley stamp track image hl-nicks))
+
+    (add-hook 'erc-join-hook 'bitlbee-identify)
+    (defun bitlbee-identify ()
+      "If we're on the bitlbee server, send the identify command to the &bitlbee channel."
+      (when (and (string= "127.0.0.1" erc-session-server)
+                 (string= "&bitlbee" (buffer-name)))
+        (erc-message "PRIVMSG" (format "%s identify %s"
+                                       (erc-default-target)
+                                       (password-store-get "IRC/Bitlbee"))))))
 
   (defun dw/connect-irc ()
     (interactive)
     (erc
-       :server "127.0.0.1" :port 6667
-       :nick "daviwil" :password (password-store-get "IRC/Bitlbee")))
-  ;  (erc
-  ;     :server "irc.freenode.net" :port 6667
-  ;     :nick "daviwil" :password (password-store-get "IRC/Freenode")))
+       :server "irc.freenode.net" :port 6667
+       :nick "daviwil" :password (password-store-get "IRC/Freenode")))
+    ;; (erc
+    ;;    :server "127.0.0.1" :port 6667
+    ;;    :nick "daviwil" :password (password-store-get "IRC/Bitlbee")))
 
 #+END_SRC
 
@@ -2741,6 +2701,7 @@ modeline indicators (though there's probably a way to fix that).
 
   (use-package circe
     :ensure t
+    :commands circe
     :config
     (setq tracking-postition 'end)
     (enable-circe-color-nicks)
@@ -2750,8 +2711,8 @@ modeline indicators (though there's probably a way to fix that).
 
   (use-package circe-notifications
     :ensure t
-    :disabled t
     :after circe
+    :commands circe
     :config
     (add-hook 'circe-server-connected-hook 'enable-circe-notifications))
 
@@ -2766,12 +2727,11 @@ I like the position of the mode line tracking better than circe.
 
   (use-package rcirc
     :defer t
-    :init
+    :config
     (setq rcirc-server-alist
       '(("localhost")))
     (setq rcirc-authinfo
       `(("localhost" bitlbee "daviwil" ,(password-store-get "IRC/Bitlbee"))))
-    :config
     (set (make-local-variable 'scroll-conservatively) 8192)
     (setq rcirc-prompt "» "
           rcirc-time-format "%m/%d %H:%M "
@@ -2828,6 +2788,7 @@ https://github.com/the-kenny/weechat.el
 
   (use-package mastodon
     :ensure t
+    :defer t
     :config
     (setq mastodon-instance-url "https://mastodon.social"))
 
@@ -2846,6 +2807,7 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
   (use-package elfeed
     :ensure t
+    :commands elfeed
     :config
     (setq elfeed-feeds
       '("http://nullprogram.com/feed/"
@@ -2862,6 +2824,7 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
   (use-package emms
     :ensure t
+    :commands emms
     :config
     (require 'emms-setup)
     (emms-standard)
@@ -2893,6 +2856,7 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
   (use-package wttrin
     :ensure t
+    :defer t
     :config
     (setq wttrin-default-cities '("Kirkland, WA"))
     (setq wttrin-default-accept-language '("Accept-Language" . "eh-US"))
@@ -2913,7 +2877,7 @@ for now I just use the normal notification bubbles.
 #+BEGIN_SRC emacs-lisp
 
   (use-package alert
-    :commands (alert)
+    :commands alert
     :config
     (setq alert-default-style 'notifications))
 
@@ -2951,14 +2915,15 @@ to set that up.
 
   (use-package guix
     :ensure t
-    :config
-    (dw/leader-key-def
-      "G"  '(:ignore t :which-key "Guix")
-      "Gg" '(guix :which-key "Guix")
-      "Gi" '(guix-installed-user-packages :which-key "user packages")
-      "GI" '(guix-installed-system-packages :which-key "system packages")
-      "Gp" '(guix-packages-by-name :which-key "search packages")
-      "GP" '(guix-pull :which-key "pull")))
+    :defer t)
+
+  (dw/leader-key-def
+    "G"  '(:ignore t :which-key "Guix")
+    "Gg" '(guix :which-key "Guix")
+    "Gi" '(guix-installed-user-packages :which-key "user packages")
+    "GI" '(guix-installed-system-packages :which-key "system packages")
+    "Gp" '(guix-packages-by-name :which-key "search packages")
+    "GP" '(guix-pull :which-key "pull"))
 
 #+END_SRC
 
@@ -2967,7 +2932,8 @@ to set that up.
 #+begin_src emacs-lisp
 
   (use-package daemons
-    :ensure t)
+    :ensure t
+    :commands daemons)
 
 #+end_src
 
@@ -2977,6 +2943,7 @@ to set that up.
 
   (use-package pulseaudio-control
     :ensure t
+    :commands pulseaudio-control-select-sink-by-name
     :config
     (setq pulseaudio-control-pactl-path "/run/current-system/profile/bin/pactl"))
 
@@ -2987,6 +2954,7 @@ to set that up.
 #+begin_src emacs-lisp
 
   (use-package proced
+    :commands proced
     :config
     (setq proced-auto-update-interval 1)
     (add-hook 'proced-mode-hook
@@ -3001,13 +2969,12 @@ to set that up.
 
   (use-package symon
     :ensure t
+    :after exwm
+    :hook (exwm-init . symon-mode)
     :config
     (setq symon-monitors '(symon-linux-cpu-monitor
                            symon-linux-memory-monitor
-                           symon-linux-battery-monitor))
-
-    (when dw/exwm-enabled
-      (symon-mode 1)))
+                           symon-linux-battery-monitor)))
 
 #+END_SRC
 
@@ -3016,10 +2983,13 @@ to set that up.
 #+begin_src emacs-lisp
 
   (use-package docker
-    :ensure t)
+    :ensure t
+    :commands docker)
 
   (use-package docker-tramp
-    :ensure t)
+    :ensure t
+    :defer t
+    :after docker)
 
 #+end_src>
 
@@ -3030,7 +3000,8 @@ to set that up.
 #+BEGIN_SRC emacs-lisp
 
   (use-package emojify
-    :ensure t)
+    :ensure t
+    :commands emojify-mode)
 
 #+END_SRC
 
