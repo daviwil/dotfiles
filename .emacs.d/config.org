@@ -243,6 +243,14 @@ Don't warn for large files (shows up when launching videos)
 
 #+end_src
 
+Don't warn for following symlinked files
+
+#+begin_src emacs-lisp
+
+  (setq vc-follow-symlinks t)
+
+#+end_src
+
 *** Theme
 
 **** Theme Config
