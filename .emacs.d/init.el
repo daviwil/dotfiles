@@ -55,10 +55,13 @@
   (exwm-randr-enable)
   (setq exwm-randr-workspace-monitor-plist '(1 "DP-1-2" 4 "eDP-1")))
 
-;; Load customization settings from another file
-(setq custom-file "~/.emacs.d/config/customize.el")
-(load custom-file)
-
 ;; Load real configuration from config.org
 (when (file-readable-p "~/.emacs.d/config.org")
   (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+
+;; Keep customization settings in a temporary file (thanks Ambrevar!)
+(setq custom-file
+      (if (boundp 'server-socket-dir)
+          (expand-file-name "custom.el" server-socket-dir)
+        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+(load custom-file t)

@@ -1294,10 +1294,13 @@ everything in my life.
 
 #+BEGIN_SRC emacs-lisp
 
-    (setq org-ellipsis " »")
-    (setq org-hide-emphasis-markers t)
-    (setq org-src-fontify-natively t)
-    (setq org-src-tab-acts-natively t)
+    (setq org-ellipsis " »"
+          org-hide-emphasis-markers t
+          org-src-fontify-natively t
+          org-src-tab-acts-natively t
+          org-hide-block-startup t
+          org-startup-folded 'content
+          org-cycle-separator-lines 1)
 
     (setq-default fill-column 80)
 
