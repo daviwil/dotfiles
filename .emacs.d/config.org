@@ -1893,9 +1893,8 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
   (use-package company
     :ensure t
+    :hook (prog-mode . company-mode)
     :config
-    (add-hook 'after-init-hook 'global-company-mode)
-
     (define-key company-active-map (kbd "<return>") #'company-complete-selection)
     (define-key prog-mode-map (kbd "TAB") #'company-indent-or-complete-common)
 
@@ -1960,7 +1959,6 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     :commands company-lsp
     :config
     (push 'company-lsp company-backends)
-    (company-mode)
     (setq company-minimum-prefix-length 1)
     (setq company-idle-delay 0)
     (setq company-lsp-cache-candidates 't))
