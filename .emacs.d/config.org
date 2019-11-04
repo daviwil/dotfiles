@@ -334,8 +334,7 @@ Different platforms need different default font sizes, and
 
 #+begin_src emacs-lisp
 
-  (setq display-time-format "%l:%M %p %b %y"
-        global-mode-string '("" (:eval mu4e-alert-mode-line) display-time-string))
+  (setq display-time-format "%l:%M %p %b %y")
 
 #+end_src
 
