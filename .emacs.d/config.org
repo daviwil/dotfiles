@@ -1930,8 +1930,8 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
   (use-package lsp-mode
     :ensure t
-    :hook ((typescript-mode js2-mode web-mode) . lsp)
-    :commands lsp)
+    :commands lsp
+    :hook ((typescript-mode js2-mode web-mode) . lsp))
 
   (dw/leader-key-def
     "l"  '(:ignore t :which-key "lsp")
@@ -1946,8 +1946,7 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
   (use-package lsp-ui
     :ensure t
-    :after lsp-mode
-    :commands lsp-ui-mode
+    :hook (lsp-mode . lsp-ui-mode)
     :config
     (setq lsp-ui-sideline-enable t)
     (setq lsp-ui-doc-position 'bottom)
