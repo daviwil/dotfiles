@@ -14,6 +14,10 @@
 ;; Uncomment this to get a reading on packages that get loaded at startup
 ;;(setq use-package-verbose t)
 
+(require 'subr-x)
+(setq dw/is-termux
+      (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
+
 ;; Initialize package sources
 (require 'package)
 
@@ -22,17 +26,13 @@
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
+;; Fix an issue accessing the ELPA archive in Termux
+(when dw/is-termux
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
 (unless package-archive-contents
   (package-refresh-contents))
 (package-initialize)
-
-(require 'subr-x)
-(setq dw/is-termux
-      (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
-
-;; Fix an issue accessing the elpa archive
-(when dw/is-termux
-  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
 ;; Initialize use-package
 (unless (package-installed-p 'use-package)
