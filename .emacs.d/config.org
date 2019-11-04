@@ -2524,8 +2524,7 @@ Agenda items.
       '(lambda () (setenv "TERM" "dumb")))
 
     ;; Use Ivy to provide completions in eshell
-    (define-key eshell-mode-map (kbd "<tab>")
-        (lambda () (interactive) (pcomplete-std-complete)))
+    (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)
 
     (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'counsel-esh-history)
     (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
@@ -2586,6 +2585,31 @@ Custom eshell commands will go here.
     :hook (term-mode . eterm-256color-mode))
 
 #+END_SRC
+
+**** Fish Completion
+
+This enhances eshell's completions with those that Fish is capable of and also
+falls back to any additional completions that are configured for Bash on the
+system.  The primary benefit here (for me) is getting completion for commits and
+branches in =git= commands.
+
+#+begin_src emacs-lisp
+
+  (use-package fish-completion
+    :ensure t
+    :hook (eshell-mode . fish-completion-mode))
+
+#+end_src
+
+**** History Autocompletion
+
+#+begin_src emacs-lisp
+
+  (use-package esh-autosuggest
+    :ensure t
+    :hook (eshell-mode . esh-autosuggest-mode))
+
+#+end_src
 
 *** multi-term
 
