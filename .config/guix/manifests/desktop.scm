@@ -15,6 +15,7 @@
    ;; "glibc" ;; For ldd
    "curl"
    "the-silver-searcher"
+   "fish"  ;; Powers Emacs fish-completion
 
    ;; Communication
    "pidgin"
