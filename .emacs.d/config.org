@@ -993,7 +993,6 @@ for now, need to investigate the =perspective= varieties.
 
     (add-hook 'exwm-mode-hook
               (lambda ()
-                (git-gutter-mode 0)
                 (evil-local-set-key 'motion (kbd "C-u") nil)))
 
     (defun dw/setup-window-by-class ()
@@ -1828,7 +1827,6 @@ files contained within the repo.  More information at the [[https://github.com/a
     :hook ((text-mode . git-gutter-mode)
            (prog-mode . git-gutter-mode))
     :config
-    (global-git-gutter-mode +1)
     (setq git-gutter:update-interval 2)
     (setq git-gutter:modified-sign "≡")
     (setq git-gutter:added-sign "≡")
