@@ -2251,8 +2251,6 @@ to capture links to emails with org-mode too.
 
 #+BEGIN_SRC emacs-lisp
 
-  (setq dw/mail-enabled (eq system-name "zerocool"))
-
   (when (and (eq system-type 'gnu/linux) dw/mail-enabled)
     ;; After building/installing mu4e the .el files are here:
     ;;(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") ;; On Fedora
