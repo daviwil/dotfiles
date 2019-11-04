@@ -742,7 +742,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
   (use-package counsel
     :ensure t
-    :bind (("M-x" . counsel-M-x)
+    :bind (("M-x" . (lambda () (interactive) (counsel-M-x "")))
            ("C-x b" . counsel-ibuffer)
            ("C-x C-f" . counsel-find-file)))
 
