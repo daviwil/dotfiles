@@ -2160,12 +2160,12 @@ Configure TypeScript and JavaScript language modes
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package yasnippet
-  :ensure t
-  :hook (prog-mode . (lambda ()
-                            (interactive)
-                            (yas-reload-all)
-                            (yas-minor-mode))))
+  (use-package yasnippet
+    :ensure t
+    :hook (prog-mode . yas-minor-mode)
+    :config
+    (yas-reload-all))
+
 #+END_SRC
 
 **** Smart Parens
