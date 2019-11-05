@@ -12,9 +12,6 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 # Start authentication daemon
 gpg-connect-agent /bye
 
-# Start Xfce's settings manager
-xfsettingsd &
-
 # Start Shepherd to manage user daemons
 if [ -z "$(pgrep -u daviwil shepherd)" ]; then
   shepherd
