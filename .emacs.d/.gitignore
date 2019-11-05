@@ -4,6 +4,7 @@ auto-save-list/
 bookmarks
 elpa/
 emms/
+transient/
 eshell/*
 !eshell/alias
 !eshell/profile
@@ -17,6 +18,7 @@ var/
 backups/
 image-dired/
 magithub/
+.lsp-session-v1
 network-security.data
 forge-database.sqlite
 tramp
