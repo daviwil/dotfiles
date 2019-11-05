@@ -1,0 +1,18 @@
+* Configuration Notes
+
+** Connecting to Bluetooth Devices with =bluetoothctl=
+
+If you need to manually connect to Bluetooth audio devices using =bluetoothctl=,
+as I currently do in Guix, you'll need to enter these commands at the
+=bluetoothctl= prompt:
+
+#+begin_src shell
+  system-alias "my-hostname" # To configure your laptop's device name
+  default-agent
+  power on
+  scan on
+  # Wait for your device to appear
+  pair 04:52:C7:5E:5C:A8
+  trust 04:52:C7:5E:5C:A8 # To enable auto-connect
+  connect 04:52:C7:5E:5C:A8
+#+end_src
