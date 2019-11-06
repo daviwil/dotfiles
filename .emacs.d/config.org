@@ -1559,11 +1559,16 @@ might go back to [[https://github.com/bastibe/org-journal/][org-journal]], keepi
 
 #+BEGIN_SRC emacs-lisp
 
-  ;(use-package org-journal
-  ;  :ensure t
-  ;  :config
-  ;  (setq org-journal-dir "~/Notes/Journal/")
-  ;  (setq org-journal-file-format "%Y-%m-%d.org"))
+  ;; (use-package org-journal
+  ;;   :ensure t
+  ;;   :defer t
+  ;;   :load-path "~/Projects/Code/org-journal"
+  ;;   :custom
+  ;;   (org-journal-file-type 'monthly)
+  ;;   (org-journal-date-format "%A, %d %B %Y")
+  ;;   (org-journal-dir "~/Notes/Journal/")
+  ;;   (org-journal-file-format "%Y-%m.org")
+  ;;   (org-journal-enable-agenda-integration t))
 
 #+END_SRC
 
