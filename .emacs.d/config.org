@@ -744,7 +744,9 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     :ensure t
     :bind (("M-x" . (lambda () (interactive) (counsel-M-x "")))
            ("C-x b" . counsel-ibuffer)
-           ("C-x C-f" . counsel-find-file)))
+           ("C-x C-f" . counsel-find-file)
+           :map minibuffer-local-map
+           ("C-r" . 'counsel-minibuffer-history)))
 
   (use-package smex ;; Adds M-x recent command sorting for counsel-M-x
     :ensure t
