@@ -600,7 +600,7 @@ Turn on =electric-pair-mode= for quote, paren, and bracket completion.
 
 #+BEGIN_SRC emacs-lisp
 
-  (electric-pair-mode 1)
+  ;;(electric-pair-mode 1)
 
 #+END_SRC
 
