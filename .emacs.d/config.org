@@ -730,11 +730,15 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     (ivy-mode 1)
     :config
     (setq ivy-use-virtual-buffers t)
-    (setq ivy-height 15)
     (setq ivy-wrap t)
     (setq ivy-count-format "(%d/%d) ")
     (setq enable-recursive-minibuffers t)
-    (setq ivy-initial-inputs-alist nil)) ;; Don't start search with ^
+    (setq ivy-initial-inputs-alist nil) ;; Don't start search with ^
+
+    ;; Set minibuffer height for different commands
+    (setf (alist-get 'counsel-projectile-ag ivy-height-alist) 15)
+    (setf (alist-get 'swiper ivy-height-alist) 15)
+    (setf (alist-get 'counsel-switch-buffer ivy-height-alist) 7))
 
   (use-package ivy-hydra
     :ensure t
