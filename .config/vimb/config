@@ -1,0 +1,47 @@
+# Use home-row keys for hints
+set hint-keys=asdfg;lkjh
+set hint-keys-same-length=true
+set hint-timeout=0
+
+# Enable smooth scrolling
+set smooth-scrolling=true
+
+# Fake a Chromium User-Agent header
+set header=User-Agent='Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Firefox/70.0'
+
+# If enabled the inputbox will be hidden whenever it contains no text
+set input-autohide=true
+
+# Set the default zoom
+set default-zoom=140
+
+# Use Emacs as the external editor
+set editor-command=emacsclient
+
+# Enable or disable support for WebGL on pages.
+set webgl=true
+
+# While typing a search command, show where the pattern typed so far matches.
+set incsearch=true
+
+# Navigation keys
+nn H <C-O>
+nn L <C-I>
+nn <C-g> <ESC>
+nm D :q<CR>
+
+# Zoom keys
+nmap + zI
+nmap - zO
+nmap = zz
+
+# Shortcuts
+shortcut-add ajs=https://github.com/Azure/azure-sdk-for-js
+shortcut-add anet=https://github.com/Azure/azure-sdk-for-net
+shortcut-add aja=https://github.com/Azure/azure-sdk-for-java
+shortcut-add apy=https://github.com/Azure/azure-sdk-for-python
+shortcut-add dict=http://dict.cc/?s=$0
+shortcut-add oms=https://outlook.com/microsoft.com
+shortcut-add man=https://fanglingsu.github.io/vimb/man.html
+
+# For some inexplicable reason, a newline is needed at EOF

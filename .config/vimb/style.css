@@ -1,0 +1,51 @@
+/* *,div,pre,textarea,body,input,td,tr,p { */
+/*     background-color: #303030 !important; */
+/*     background-image: none !important; */
+/*     color: #bbbbbb !important; */
+/* } */
+/* h1,h2,h3,h4 { */
+/*     background-color: #303030 !important; */
+/*     color: #b8ddea !important; */
+/* } */
+/* a { */
+/*     color: #70e070 !important; */
+/* } */
+/* a:hover,a:focus { */
+/*     color: #7070e0 !important; */
+/* } */
+/* a:visited { */
+/*     color: #e07070 !important; */
+/* } */
+/* img { */
+/*     opacity: .5; */
+/* } */
+/* img:hover { */
+/*     opacity: 1; */
+/* } */
+
+/* Hint mode color styling
+ * Color scheme: Base16 Eighties (https://github.com/chriskempson/base16)
+ *
+ * The precedence of the user style is lower than that of the website so you
+ * have to mark your style definition to have higher priority.
+ */
+span[vimbhint^='label'] {
+    background-color: #f2f0ec !important;
+    border: 1px solid #2d2d2d !important;
+    color: #2d2d2d !important;
+    font: bold 10pt monospace !important;
+    opacity: 1 !important;
+    padding: .1em .4em !important;
+    text-transform: uppercase !important;
+}
+span[vimbhint='label focus'] {
+    font: bold 13pt monospace !important;
+}
+*[vimbhint^='hint'] {
+    background-color: #ffcc66 !important;
+    color: #2d2d2d !important;
+}
+*[vimbhint='hint focus'] {
+    background-color: #6699cc !important;
+    color: #2d2d2d !important;
+}

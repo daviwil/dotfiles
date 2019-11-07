@@ -61,6 +61,10 @@
   (add-hook 'exwm-update-class-hook
             (lambda ()
               (exwm-workspace-rename-buffer exwm-class-name)))
+  (add-hook 'exwm-update-title-hook
+            (lambda ()
+              (when (string-equal exwm-class-name "Vimb")
+                (exwm-workspace-rename-buffer (format "Vimb: %s" exwm-title)))))
 
   (exwm-enable))
 

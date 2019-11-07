@@ -24,6 +24,7 @@
    ;; Browsers
    "next"
    "qutebrowser"
+   "vimb"
    "ungoogled-chromium"
 
    ;; Syncthing
