@@ -31,8 +31,8 @@ set incsearch=true
 # - 'H' navigates back
 # - 'L' navigates forward
 # - 'D' closes the window
-# - 'C-g' exits
-# - 'C-g' exits
+# - 'C-g' exits command and input mode
+# - 'C-j' and 'C-k' move down and up command selections
 nn e O
 nn E T
 nm O :tabopen<Space>
@@ -40,7 +40,8 @@ nn H <C-O>
 nn L <C-I>
 nm D :q<CR>
 ino <C-G> <Esc>
-cno <C-G> <Esc>
+cno <C-J> <Tab>
+cno <C-K> <S-Tab>
 
 # Zoom keys
 nmap + zI
