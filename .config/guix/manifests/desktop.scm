@@ -101,6 +101,10 @@
    "syncthing"
    "qsyncthingtray"
 
+   ;; Mail
+   "mu"
+   "offlineimap"
+
    ;; System Tools
    "alsa-utils"
    "openssh"
