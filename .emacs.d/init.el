@@ -34,13 +34,22 @@
   (package-refresh-contents))
 (package-initialize)
 
-;; Initialize use-package
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+;; Are we running in Guix System?
+;; TODO: Need a more accurate check for this!
+(setq dw/is-guix-system (eq window-system 'x))
+
+;; Initialize use-package on non-Linux platforms
+(unless (or (package-installed-p 'use-package)
+            dw/is-guix-system)
+   (package-install 'use-package))
 (require 'use-package)
 
+;; On non-Guix systems, "ensure" packages by default
+(setq use-package-always-ensure (not dw/is-guix-system))
+
 ;; Ensure latest Org with contrib is installed first
-(use-package org :ensure org-plus-contrib)
+(when (not dw/is-guix-system)
+  (use-package org :ensure org-plus-contrib))
 
 (setq dw/exwm-enabled
       (and (not dw/is-termux)
@@ -49,7 +58,6 @@
 
 ;; Set up exwm early in the init process
 (use-package exwm
-  :ensure t
   :if dw/exwm-enabled
   :init
   (setq mouse-autoselect-window t

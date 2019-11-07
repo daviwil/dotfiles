@@ -81,7 +81,6 @@ Some tips can be found here:
     (message "Arrow keys are bad, you know?"))
 
   (use-package evil
-    :ensure t
     :init
     (setq evil-want-integration t)
     (setq evil-want-keybinding nil)
@@ -108,7 +107,6 @@ Some tips can be found here:
     (evil-set-initial-state 'dashboard-mode 'normal))
 
   (use-package evil-collection
-    :ensure t
     :after evil
     :custom
     (evil-collection-outline-bind-tab-p nil)
@@ -130,7 +128,6 @@ based on the prefix keys you entered.  Learned about this one from Spacemacs.
 #+BEGIN_SRC emacs-lisp
 
   (use-package which-key
-    :ensure t
     :init (which-key-mode)
     :diminish which-key-mode
     :config
@@ -148,7 +145,7 @@ in conjunction with Evil modes.
   (setq c-spc-leader "C-SPC")
   (setq spc-leader "C-SPC")
 
-  (use-package general :ensure t
+  (use-package general
     :config
     (general-evil-setup t)
 
@@ -167,7 +164,6 @@ in conjunction with Evil modes.
 #+BEGIN_SRC emacs-lisp
 
   (use-package use-package-chords
-    :ensure t
     :disabled
     :config (key-chord-mode 1))
 
@@ -289,18 +285,9 @@ Close, but no cigar:
 #+BEGIN_SRC emacs-lisp
 
   (unless dw/is-termux
-    (use-package twilight-anti-bright-theme :ensure t :defer t)
-    (use-package material-theme :ensure t :defer t)
-    (use-package badger-theme :ensure t :defer t)
     (use-package spacegray-theme :ensure t :defer t)
-    (use-package nord-theme :ensure t :defer t)
-    (use-package noctilux-theme :ensure t :defer t)
-    (use-package zerodark-theme :ensure t :defer t) ; Also: (zerodark-setup-modeline-format)
-    (use-package color-theme-sanityinc-tomorrow :ensure t :defer t)
-
-    ;(load-theme 'twilight-anti-bright)
-    ;(load-theme 'nord t)
-    ;(color-theme-sanityinc-tomorrow-night)
+    (use-package twilight-anti-bright-theme :defer t)
+    (use-package color-theme-sanityinc-tomorrow :defer t)
     (load-theme 'spacegray t))
 
 #+END_SRC
@@ -344,7 +331,7 @@ The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky min
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package diminish :ensure t)
+  (use-package diminish)
 
 #+END_SRC
 
@@ -357,7 +344,6 @@ anymore if I set up =diminish= correctly.
 #+BEGIN_SRC emacs-lisp
 
   (use-package smart-mode-line
-    :ensure t
     :disabled
     :config
     (progn
@@ -403,7 +389,6 @@ anymore if I set up =diminish= correctly.
 #+begin_src emacs-lisp
 
   (use-package spaceline
-    :ensure t
     :disabled
     :config
     ;(spaceline-emacs-theme)
@@ -457,7 +442,6 @@ anymore if I set up =diminish= correctly.
 #+begin_src emacs-lisp
 
   (use-package telephone-line
-    :ensure t
     :disabled
     :config
     (setq telephone-line-evil-use-short-tag t
@@ -479,7 +463,6 @@ anymore if I set up =diminish= correctly.
   ;; installing this package!
 
   (use-package minions
-    :ensure t
     :hook (doom-modeline-mode . minions-mode)
     :custom
     (minions-mode-line-lighter ""))
@@ -617,7 +600,6 @@ Use spaces instead of tabs for indentation.
 #+BEGIN_SRC emacs-lisp
 
   (use-package evil-nerd-commenter
-    :ensure t
     :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
 #+END_SRC
@@ -638,7 +620,6 @@ Use spaces instead of tabs for indentation.
 #+BEGIN_SRC emacs-lisp
 
   (use-package parinfer
-    :ensure t
     :hook ((clojure-mode . parinfer-mode)
            (emacs-lisp-mode . parinfer-mode)
            (common-lisp-mode . parinfer-mode)
@@ -695,7 +676,6 @@ Use spaces instead of tabs for indentation.
 #+begin_src emacs-lisp
 
   (use-package hydra
-    :ensure t
     :defer 1)
 
 #+end_src
@@ -713,7 +693,6 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 #+BEGIN_SRC emacs-lisp
 
   (use-package ivy
-    :ensure t
     :diminish
     :bind (("C-s" . swiper)
            :map ivy-minibuffer-map
@@ -741,11 +720,9 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     (setf (alist-get 'counsel-switch-buffer ivy-height-alist) 7))
 
   (use-package ivy-hydra
-    :ensure t
     :after hydra)
 
   (use-package counsel
-    :ensure t
     :bind (("M-x" . (lambda () (interactive) (counsel-M-x "")))
            ("C-x b" . counsel-ibuffer)
            ("C-x C-f" . counsel-find-file)
@@ -753,7 +730,6 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
            ("C-r" . 'counsel-minibuffer-history)))
 
   (use-package smex ;; Adds M-x recent command sorting for counsel-M-x
-    :ensure t
     :defer 1
     :after counsel)
 
@@ -772,7 +748,6 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 #+BEGIN_SRC emacs-lisp
 
   (use-package avy
-    :ensure t
     :commands (avy-goto-char avy-goto-word-0 avy-goto-line))
 
   (dw/leader-key-def
@@ -869,7 +844,6 @@ The keybindings for this are =C+M+-= and =C+M+==.
 #+BEGIN_SRC emacs-lisp
 
   (use-package default-text-scale
-    :ensure t
     :defer 1
     :config
     (default-text-scale-mode))
@@ -1114,7 +1088,6 @@ for now, need to investigate the =perspective= varieties.
       "s-]" "playerctl next")
 
     (use-package desktop-environment
-      :ensure t
       :after exwm
       :hook (exwm-init . desktop-environment-mode)
       :custom
@@ -1183,7 +1156,6 @@ tweaking Org agenda views much less annoying.
 #+BEGIN_SRC emacs-lisp
 
   (use-package expand-region
-    :ensure t
     :bind (("M-[" . er/expand-region)
            ("C-(" . er/mark-outside-pairs)))
 
@@ -1249,7 +1221,6 @@ credentials for mail, etc.
       (hl-line-mode 1)))
 
     (use-package dired-rainbow
-      :ensure t
       :defer 2
       :config
       (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
@@ -1278,11 +1249,9 @@ credentials for mail, etc.
       :defer t)
 
     (use-package dired-ranger
-      :ensure t
       :defer t)
 
     (use-package dired-collapse
-      :ensure t
       :defer t)
 
     (evil-collection-define-key 'normal 'dired-mode-map
@@ -1375,7 +1344,6 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 #+BEGIN_SRC emacs-lisp
 
   (use-package org-bullets
-    :ensure t
     :hook (org-mode . org-bullets-mode)
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
@@ -1560,7 +1528,6 @@ might go back to [[https://github.com/bastibe/org-journal/][org-journal]], keepi
 #+BEGIN_SRC emacs-lisp
 
   ;; (use-package org-journal
-  ;;   :ensure t
   ;;   :defer t
   ;;   :load-path "~/Projects/Code/org-journal"
   ;;   :custom
@@ -1651,7 +1618,6 @@ documentation page.
 #+BEGIN_SRC emacs-lisp
 
   (use-package org-pomodoro
-    :ensure t
     :commands org-pomodoro
     :config
     (setq org-pomodoro-start-sound "~/.emacs.d/sounds/focus_bell.wav")
@@ -1695,7 +1661,6 @@ documentation page.
 #+BEGIN_SRC emacs-lisp
 
   ;; (use-package org-gcal
-  ;;   :ensure t
   ;;   :config
 
   ;;   (setq org-gcal-client-id (password-store-get "API/Google/daviwil-emacs-id")
@@ -1715,7 +1680,6 @@ documentation page.
 #+BEGIN_SRC emacs-lisp
 
   ;; (use-package org-wild-notifier
-  ;;   :ensure t
   ;;   :config
   ;;   ; Make sure we receive notifications for non-TODO events
   ;;   ; like those synced from Google Calendar
@@ -1756,13 +1720,11 @@ https://magit.vc/manual/magit/
 #+BEGIN_SRC emacs-lisp
 
   (use-package magit
-    :ensure t
     :commands (magit-status magit-get-current-branch)
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
   (use-package evil-magit
-    :ensure t
     :after magit)
 
   (dw/leader-key-def
@@ -1795,7 +1757,6 @@ how useful it will be.
 #+BEGIN_SRC emacs-lisp
 
   (use-package forge
-    :ensure t
     :disabled)
 
 #+END_SRC
@@ -1809,7 +1770,6 @@ files contained within the repo.  More information at the [[https://github.com/a
 #+begin_src emacs-lisp
 
   (use-package magit-todos
-    :ensure t
     :defer t)
 
 #+end_src
@@ -1819,7 +1779,6 @@ files contained within the repo.  More information at the [[https://github.com/a
 #+begin_src emacs-lisp
 
   (use-package git-link
-    :ensure t
     :commands git-link
     :config
     (setq git-link-open-in-browser t)
@@ -1833,7 +1792,6 @@ files contained within the repo.  More information at the [[https://github.com/a
 #+BEGIN_SRC emacs-lisp
 
   (use-package git-gutter
-    :ensure t
     :diminish
     :hook ((text-mode . git-gutter-mode)
            (prog-mode . git-gutter-mode))
@@ -1855,7 +1813,6 @@ files contained within the repo.  More information at the [[https://github.com/a
 #+BEGIN_SRC emacs-lisp
 
   (use-package projectile
-    :ensure t
     :diminish projectile-mode
     :config (projectile-global-mode)
     :bind-keymap
@@ -1866,8 +1823,7 @@ files contained within the repo.  More information at the [[https://github.com/a
       (setq projectile-project-search-path '("~/Projects/Code")))
     (setq projectile-switch-project-action #'projectile-dired))
 
-  (use-package counsel-projectile
-    :ensure t)
+  (use-package counsel-projectile)
 
   (dw/leader-key-def
     "pf"  'counsel-projectile-find-file
@@ -1901,7 +1857,6 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 #+BEGIN_SRC emacs-lisp
 
   (use-package company
-    :ensure t
     :hook (prog-mode . company-mode)
     :config
     (define-key company-active-map (kbd "<return>") #'company-complete-selection)
@@ -1932,13 +1887,11 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 #+BEGIN_SRC emacs-lisp
 
   (use-package ivy-xref
-    :ensure t
     :init (if (< emacs-major-version 27)
             (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
             (setq xref-show-definitions-function #'ivy-xref-show-defs)))
 
   (use-package lsp-mode
-    :ensure t
     :commands lsp
     :hook ((typescript-mode js2-mode web-mode) . lsp))
 
@@ -1954,7 +1907,6 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     "lX" 'lsp-execute-code-action)
 
   (use-package lsp-ui
-    :ensure t
     :hook (lsp-mode . lsp-ui-mode)
     :config
     (setq lsp-ui-sideline-enable t)
@@ -1962,7 +1914,6 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     (lsp-ui-doc-show))
 
   (use-package company-lsp
-    :ensure t
     :after lsp-mode
     :commands company-lsp
     :config
@@ -1972,7 +1923,6 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     (setq company-lsp-cache-candidates 't))
 
   (use-package helm-lsp
-    :ensure t
     :after lsp-mode
     :commands helm-lsp-workspace-symbol)
 
@@ -1983,13 +1933,11 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 #+BEGIN_SRC emacs-lisp
 
   (use-package cider
-    :ensure t
     :mode "\\.clj[sc]?\\'"
     :config
     (evil-collection-cider-setup))
 
   (use-package helm-cider
-    :ensure t
     :after cider
     :config
     (helm-cider-mode 1))
@@ -2001,11 +1949,9 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 #+begin_src emacs-lisp
 
   (use-package sly
-    :ensure t
     :mode "\\.lisp\\'")
 
   (use-package slime
-    :ensure t
     :mode "\\.lisp\\'")
 
 #+end_src>
@@ -2017,7 +1963,6 @@ Set up nvm so that we can manage Node versions
 #+BEGIN_SRC emacs-lisp
 
   (use-package nvm
-    :ensure t
     :defer t)
 
 #+END_SRC
@@ -2027,14 +1972,12 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package typescript-mode
-    :ensure t
     :mode "\\.tsx?\\'"
     :config
     (flycheck-mode)
     (setq typescript-indent-level 2))
 
   (use-package js2-mode
-    :ensure t
     :mode "\\.jsx?\\'"
     :config
     ;; Use js2-mode for Node scripts
@@ -2056,7 +1999,6 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package rust-mode
-    :ensure t
     :mode "\\.rs\\'"
     :init (setq rust-format-on-save t))
 
@@ -2071,7 +2013,6 @@ Configure TypeScript and JavaScript language modes
 #+begin_src emacs-lisp
 
   (use-package fsharp-mode
-    :ensure t
     :mode ".fs[iylx]?\\'")
 
 #+end_src
@@ -2081,7 +2022,6 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package helpful
-    :ensure t
     :custom
     (counsel-describe-function-function #'helpful-callable)
     (counsel-describe-variable-function #'helpful-variable)
@@ -2106,7 +2046,7 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package markdown-mode
-    :ensure t
+    :pin melpa-stable
     :mode "\\.md\\'"
     :config
     (setq markdown-command "marked")
@@ -2130,7 +2070,6 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package web-mode
-    :ensure t
     :mode "\\.html?\\'"
     :config
     (setq-default web-mode-code-indent-offset 2)
@@ -2145,7 +2084,6 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package yaml-mode
-    :ensure t
     :mode "\\.ya?ml\\'")
 
 #+END_SRC
@@ -2157,7 +2095,6 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package flycheck
-    :ensure t
     :defer t)
 
 #+END_SRC
@@ -2167,7 +2104,6 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package yasnippet
-    :ensure t
     :hook (prog-mode . yas-minor-mode)
     :config
     (yas-reload-all))
@@ -2179,7 +2115,6 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package smartparens
-    :ensure t
     :hook (prog-mode . smartparens-mode))
 
 #+END_SRC
@@ -2189,7 +2124,6 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package rainbow-delimiters
-    :ensure t
     :hook (prog-mode . rainbow-delimiters-mode))
 
 #+END_SRC
@@ -2201,7 +2135,6 @@ Configure TypeScript and JavaScript language modes
 #+begin_src emacs-lisp
 
   (use-package know-your-http-well
-    :ensure t
     :defer t)
 
 #+end_src
@@ -2213,7 +2146,6 @@ Configure TypeScript and JavaScript language modes
 #+begin_src emacs-lisp
 
   (use-package darkroom
-    :ensure t
     :commands darkroom-mode
     :config
     (setq darkroom-text-scale-increase 0))
@@ -2388,7 +2320,6 @@ Use [[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] to show notificati
 
   (when (and (eq system-type 'gnu/linux) dw/mail-enabled)
     (use-package mu4e-alert
-      :ensure t
       :config
       ;; Use Emacs' built-in notifier
       (mu4e-alert-set-default-style 'notifications)
@@ -2416,7 +2347,6 @@ Agenda items.
 #+BEGIN_SRC emacs-lisp
 
   (use-package calfw
-    :ensure t
     :commands cfw:open-org-calendar
     :config
     (setq cfw:fchar-junction ?╋
@@ -2429,7 +2359,6 @@ Agenda items.
           cfw:fchar-top-right-corner ?┓)
 
     (use-package calfw-org
-      :ensure t
       :config
       (setq cfw:org-agenda-schedule-args '(:timestamp))))
 
@@ -2508,7 +2437,7 @@ Agenda items.
     (require 'evil-collection-eshell)
     (evil-collection-eshell-setup)
 
-    (use-package xterm-color :ensure t)
+    (use-package xterm-color)
 
     (push 'eshell-tramp eshell-modules-list)
     (push 'xterm-color-filter eshell-preoutput-filter-functions)
@@ -2556,11 +2485,9 @@ Agenda items.
            (eshell-first-time-mode . dw/eshell-configure)))
 
   (use-package eshell-z
-    :ensure t
     :hook (eshell-mode . (lambda () (require 'eshell-z))))
 
   (use-package exec-path-from-shell
-    :ensure t
     :init
     (setq exec-path-from-shell-check-startup-files nil)
     :config
@@ -2591,7 +2518,6 @@ Custom eshell commands will go here.
 #+BEGIN_SRC emacs-lisp
 
   (use-package eterm-256color
-    :ensure t
     :hook (term-mode . eterm-256color-mode))
 
 #+END_SRC
@@ -2606,7 +2532,6 @@ branches in =git= commands.
 #+begin_src emacs-lisp
 
   (use-package fish-completion
-    :ensure t
     :hook (eshell-mode . fish-completion-mode))
 
 #+end_src
@@ -2616,7 +2541,6 @@ branches in =git= commands.
 #+begin_src emacs-lisp
 
   (use-package esh-autosuggest
-    :ensure t
     :hook (eshell-mode . esh-autosuggest-mode)
     :config
     (setq esh-autosuggest-delay 0.5)
@@ -2632,7 +2556,6 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
 #+BEGIN_SRC emacs-lisp
 
   (use-package multi-term
-    :ensure t
     :commands multi-term-next
     :config
     (setq multi-term-program "/bin/zsh")
@@ -2662,11 +2585,9 @@ features it provides.  The "static center" fill mode is really awesome.
 #+BEGIN_SRC emacs-lisp
 
   (use-package erc-hl-nicks
-    :ensure t
     :after erc)
 
   (use-package erc-image
-    :ensure t
     :after erc)
 
   (use-package erc
@@ -2751,7 +2672,6 @@ modeline indicators (though there's probably a way to fix that).
     (circe "Bitlbee" :host "127.0.0.1"))
 
   (use-package circe
-    :ensure t
     :commands circe
     :config
     (setq tracking-postition 'end)
@@ -2761,7 +2681,6 @@ modeline indicators (though there's probably a way to fix that).
     (enable-lui-irc-colors))
 
   (use-package circe-notifications
-    :ensure t
     :after circe
     :commands circe
     :config
@@ -2838,7 +2757,6 @@ https://github.com/the-kenny/weechat.el
 #+BEGIN_SRC emacs-lisp
 
   (use-package mastodon
-    :ensure t
     :defer t
     :config
     (setq mastodon-instance-url "https://mastodon.social"))
@@ -2857,7 +2775,6 @@ follow using Twitter.  Also seems to be great for following subreddits like
 #+BEGIN_SRC emacs-lisp
 
   (use-package elfeed
-    :ensure t
     :commands elfeed
     :config
     (setq elfeed-feeds
@@ -2874,7 +2791,6 @@ follow using Twitter.  Also seems to be great for following subreddits like
 #+BEGIN_SRC emacs-lisp
 
   (use-package emms
-    :ensure t
     :commands emms
     :config
     (require 'emms-setup)
@@ -2894,7 +2810,6 @@ follow using Twitter.  Also seems to be great for following subreddits like
 #+BEGIN_SRC emacs-lisp
 
   ;; (use-package counsel-spotify
-  ;;   :ensure t
   ;;   :init
   ;;   (setq counsel-spotify-client-id "9b50922412914b6cba8aa0c9d83b46f4")
   ;;   (setq counsel-spotify-client-secret (password-store-get "API/Spotify/daviwil-emacs-secret")))
@@ -2906,7 +2821,6 @@ follow using Twitter.  Also seems to be great for following subreddits like
 #+BEGIN_SRC emacs-lisp
 
   (use-package wttrin
-    :ensure t
     :defer t
     :config
     (setq wttrin-default-cities '("Kirkland, WA"))
@@ -2944,7 +2858,6 @@ to set that up.
 #+BEGIN_SRC emacs-lisp
 
   (use-package sauron
-    :ensure t
     :disabled
     :custom
     (sauron-modules
@@ -2965,7 +2878,6 @@ to set that up.
 #+BEGIN_SRC emacs-lisp
 
   (use-package guix
-    :ensure t
     :defer t)
 
   (dw/leader-key-def
@@ -2983,7 +2895,6 @@ to set that up.
 #+begin_src emacs-lisp
 
   (use-package daemons
-    :ensure t
     :commands daemons)
 
 #+end_src
@@ -2993,7 +2904,6 @@ to set that up.
 #+begin_src emacs-lisp
 
   (use-package pulseaudio-control
-    :ensure t
     :commands pulseaudio-control-select-sink-by-name
     :config
     (setq pulseaudio-control-pactl-path "/run/current-system/profile/bin/pactl"))
@@ -3019,7 +2929,6 @@ to set that up.
 #+BEGIN_SRC emacs-lisp
 
   (use-package symon
-    :ensure t
     :after exwm
     :hook (exwm-init . symon-mode)
     :config
@@ -3034,11 +2943,9 @@ to set that up.
 #+begin_src emacs-lisp
 
   (use-package docker
-    :ensure t
     :commands docker)
 
   (use-package docker-tramp
-    :ensure t
     :defer t
     :after docker)
 
@@ -3051,7 +2958,6 @@ to set that up.
 #+BEGIN_SRC emacs-lisp
 
   (use-package emojify
-    :ensure t
     :commands emojify-mode)
 
 #+END_SRC
@@ -3063,7 +2969,6 @@ Displays a nice list of recent files and projects on startup.
 #+BEGIN_SRC emacs-lisp
 
   (use-package dashboard
-    :ensure t
     :disabled
     :config
       (dashboard-setup-startup-hook)
