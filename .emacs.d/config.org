@@ -113,11 +113,6 @@ Some tips can be found here:
     :config
     (evil-collection-init))
 
-  (use-package org-evil
-    :ensure t
-    :after evil
-    :hook (org-mode . org-evil-mode))
-
 #+END_SRC
 
 *** Keybinding Panel (which-key)
@@ -516,16 +511,6 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
 #+END_SRC
 
-*** Focusing Sections
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package focus
-    :ensure t
-    :commands focus-mode)
-
-#+END_SRC
-
 *** UI Toggles
 
 #+BEGIN_SRC emacs-lisp
@@ -786,16 +771,6 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     (setq iflipb-ignore-buffers nil) ; Should tighten this in the future
     (setq iflipb-wrap-around nil))
 
-  ;; (use-package buffer-flip
-  ;;   :ensure t
-  ;;   :config
-  ;;   (setq buffer-flip-map
-  ;;         (let ((map (make-sparse-keymap)))
-  ;;           (define-key map (kbd "<tab>")   'buffer-flip-forward)
-  ;;           (define-key map (kbd "<backtab>") 'buffer-flip-backward)
-  ;;           (define-key map (kbd "C-g")     'buffer-flip-abort)
-  ;;           map)))
-
 #+END_SRC
 
 *** Helpers
@@ -847,41 +822,6 @@ The keybindings for this are =C+M+-= and =C+M+==.
     :defer 1
     :config
     (default-text-scale-mode))
-
-#+END_SRC
-
-*** Workspaces
-
-I really need a better way to manage windows in Emacs.  Holding off on Eyebrowse
-for now, need to investigate the =perspective= varieties.
-
-#+BEGIN_SRC emacs-lisp
-
-;(use-package eyebrowse
-;  :ensure t
-;  :config
-;  (eyebrowse-mode t)
-;  (general-define-key
-;    :states '(normal)
-;    :prefix spc-leader
-;    "1"  '(eyebrowse-switch-to-window-config-1 :which-key "workspace 1")
-;    "2"  '(eyebrowse-switch-to-window-config-2 :which-key "workspace 2")
-;    "3"  '(eyebrowse-switch-to-window-config-3 :which-key "workspace 3")
-;    "4"  '(eyebrowse-switch-to-window-config-4 :which-key "workspace 4")))
-
-#+END_SRC
-
-*** Auto-sizing Windows with Zoom
-
-#+BEGIN_SRC emacs-lisp
-
-  ;; (use-package zoom
-  ;;   :ensure t
-  ;;   :init (zoom-mode t)
-  ;;   :config
-  ;;   ;; Use the golden ratio for sizing
-  ;;   (custom-set-variables
-  ;;     '(zoom-size '(0.618 . 0.618))))
 
 #+END_SRC
 
