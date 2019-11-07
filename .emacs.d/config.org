@@ -1109,15 +1109,14 @@ Emacs.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package helm-pass
-    :ensure t
-    :commands helm-pass
+  (use-package ivy-pass
+    :commands ivy-pass
     :config
     (setq password-store-password-length 12))
 
   (dw/leader-key-def
     "ap" '(:ignore t :which-key "pass")
-    "app" 'helm-pass
+    "app" 'ivy-pass
     "api" 'password-store-insert
     "apg" 'password-store-generate)
 
