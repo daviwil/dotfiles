@@ -922,6 +922,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
         ("Pidgin<2>" (exwm-workspace-move-window 0))
         ("teams-for-linux" (exwm-workspace-move-window 3))
         ("Spotify" (exwm-workspace-move-window 4))
+        ("Vimb" (exwm-workspace-move-window 2))
         ("mpv" (exwm-floating-toggle-floating))))
 
     ;; Manipulate windows as they're created
