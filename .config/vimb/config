@@ -1,5 +1,5 @@
 # Use home-row keys for hints
-set hint-keys=asdfg;lkjh
+#set hint-keys=asdfg;lkjh
 set hint-keys-same-length=true
 set hint-timeout=0
 
@@ -13,7 +13,7 @@ set header=User-Agent='Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Fir
 set input-autohide=true
 
 # Set the default zoom
-set default-zoom=140
+set default-zoom=180
 
 # Use Emacs as the external editor
 set editor-command=emacsclient
@@ -24,11 +24,23 @@ set webgl=true
 # While typing a search command, show where the pattern typed so far matches.
 set incsearch=true
 
-# Navigation keys
+# Keybindings
+# - 'e' edits URL in current window
+# - 'E' edits URL in new window
+# - 'O' opens URL in new window
+# - 'H' navigates back
+# - 'L' navigates forward
+# - 'D' closes the window
+# - 'C-g' exits
+# - 'C-g' exits
+nn e O
+nn E T
+nm O :tabopen<Space>
 nn H <C-O>
 nn L <C-I>
-nn <C-g> <ESC>
 nm D :q<CR>
+ino <C-G> <Esc>
+cno <C-G> <Esc>
 
 # Zoom keys
 nmap + zI
