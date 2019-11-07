@@ -395,13 +395,15 @@ anymore if I set up =diminish= correctly.
     :ensure t
     :after eshell     ;; Make sure it gets hooked after eshell
     :hook (after-init . doom-modeline-init)
+    :custom
+    (doom-modeline-lsp t)
+    (doom-modeline-github nil)
+    (doom-modeline-minor-modes t)
+    (doom-modeline-persp-name nil)
+    (doom-modeline-buffer-file-name-style 'truncate-except-project)
+    (doom-modeline-major-mode-color-icon t)
     :config
-    (setq doom-modeline-lsp t
-          doom-modeline-github nil
-          doom-modeline-width 3
-          doom-modeline-minor-modes t
-          doom-modeline-buffer-file-name-style 'truncate-except-project
-          doom-modeline-major-mode-color-icon t))
+    (display-battery-mode))
 
 #+end_src
 
@@ -2805,8 +2807,7 @@ to set that up.
     :hook (exwm-init . symon-mode)
     :config
     (setq symon-monitors '(symon-linux-cpu-monitor
-                           symon-linux-memory-monitor
-                           symon-linux-battery-monitor)))
+                           symon-linux-memory-monitor)))
 
 #+END_SRC
 
