@@ -1853,6 +1853,7 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     :hook (lsp-mode . lsp-ui-mode)
     :config
     (setq lsp-ui-sideline-enable t)
+    (setq lsp-ui-sideline-show-hover nil)
     (setq lsp-ui-doc-position 'bottom)
     (lsp-ui-doc-show))
 
