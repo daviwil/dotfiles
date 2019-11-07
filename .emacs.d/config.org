@@ -897,6 +897,9 @@ The keybindings for this are =C+M+-= and =C+M+==.
     ;; Make workspace 1 be the one where we land at startup
     (exwm-workspace-switch-create 1)
 
+    ;; Open eshell by default
+    (eshell)
+
     ;; Launch apps that will run in the background
     (exwm/run-in-background "nm-applet")
     (exwm/run-in-background "QSyncthingTray")
@@ -2421,8 +2424,7 @@ Agenda items.
           eshell-prefer-lisp-functions nil))
 
   (use-package eshell
-    :hook ((after-init . eshell)
-           (eshell-first-time-mode . dw/eshell-configure)))
+    :hook (eshell-first-time-mode . dw/eshell-configure))
 
   (use-package eshell-z
     :hook (eshell-mode . (lambda () (require 'eshell-z))))
