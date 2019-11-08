@@ -8,6 +8,7 @@
   #:use-module (gnu services pm)
   #:use-module (gnu services desktop)
   #:use-module (gnu services docker)
+  #:use-module (gnu services networking)
   #:use-module (gnu packages wm)
   #:use-module (gnu packages vim)
   #:use-module (gnu packages gtk)
@@ -42,7 +43,10 @@
                    (udev-service-type config =>
                                       (udev-configuration (inherit config)
                                                           (rules (cons %backlight-udev-rule
-                                                                       (udev-configuration-rules config)))))))
+                                                                       (udev-configuration-rules config)))))
+                   (network-manager-service-type config =>
+                                                 (network-manager-configuration (inherit config)
+                                                                                (vpn-plugins (list network-manager-openvpn))))))
 
 (define %xorg-libinput-config
   "Section \"InputClass\"
