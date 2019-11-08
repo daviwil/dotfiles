@@ -20,6 +20,7 @@
    "emacs-ivy"
    "emacs-ivy-xref"
    "emacs-ivy-pass"
+   "emacs-smex"
    "emacs-counsel-projectile"
    "emacs-pinentry"
    "emacs-parinfer-mode"
