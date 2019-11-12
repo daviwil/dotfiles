@@ -2784,6 +2784,20 @@ to set that up.
 
 #+end_src
 
+*** Bluetooth
+
+#+begin_src emacs-lisp
+
+  (defun dw/bluetooth-connect-q30 ()
+    (interactive)
+    (start-process-shell-command "bluetoothctl" nil "bluetoothctl -- connect 11:14:00:00:1E:1A"))
+
+  (defun dw/bluetooth-connect-qc35 ()
+    (interactive)
+    (start-process-shell-command "bluetoothctl" nil "bluetoothctl -- connect 04:52:C7:5E:5C:A8"))
+
+#+end_src
+
 *** Proced
 
 #+begin_src emacs-lisp
