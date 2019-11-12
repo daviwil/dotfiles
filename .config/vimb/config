@@ -1,3 +1,6 @@
+# Set the home page to a local file
+set home-page=file:///home/daviwil/.config/vimb/home.html
+
 # Use home-row keys for hints
 #set hint-keys=asdfg;lkjh
 set hint-keys-same-length=true
