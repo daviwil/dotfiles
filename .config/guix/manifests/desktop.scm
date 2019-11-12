@@ -110,6 +110,7 @@
    ;; System Tools
    "alsa-utils"
    "openssh"
+   "zip"
    "unzip"
    "pinentry-emacs"
 
