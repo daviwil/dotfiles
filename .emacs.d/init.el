@@ -34,6 +34,9 @@
   (package-refresh-contents))
 (package-initialize)
 
+;; Add my elisp path to load-path
+(push "~/.emacs.d/elisp" load-path)
+
 ;; Are we running in Guix System?
 ;; TODO: Need a more accurate check for this!
 (setq dw/is-guix-system (eq window-system 'x))
