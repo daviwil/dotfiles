@@ -838,12 +838,9 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
   (use-package exwm
     :if dw/exwm-enabled
-    :hook (exwm-init . dw/exwm-init-hook)
     :config
     (setq display-time-default-load-average nil)
     (display-time-mode 1)
-
-    ;;(setq exwm-workspace-show-all-buffers t)
 
     (add-hook 'exwm-mode-hook
               (lambda ()
@@ -859,6 +856,9 @@ The keybindings for this are =C+M+-= and =C+M+==.
         ("Vimb" (exwm-workspace-move-window 2))
         ("mpv" (exwm-floating-toggle-floating)
                (dw/exwm-floating-toggle-pinned))))
+
+    ;; Do some post-init setup
+    (add-hook 'exwm-init-hook #'dw/exwm-init-hook)
 
     ;; Manipulate windows as they're created
     (add-hook 'exwm-manage-finish-hook
@@ -965,7 +965,6 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
     (use-package desktop-environment
       :after exwm
-      :hook (exwm-init . desktop-environment-mode)
       :custom
       (desktop-environment-brightness-small-increment "2%+")
       (desktop-environment-brightness-small-decrement "2%-")
