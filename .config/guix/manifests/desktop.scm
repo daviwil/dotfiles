@@ -82,6 +82,7 @@
 
    ;; Developer tools
    "node"
+   "python2"
    "sbcl"
    "docker-cli"
    "gcc-toolchain"
