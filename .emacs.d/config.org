@@ -2432,8 +2432,6 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
   (use-package multi-term
     :commands multi-term-next
     :config
-    (setq multi-term-program "/bin/zsh")
-    (setq multi-term-program-switches "--login")
     (setq term-buffer-maximum-size 10000)
     (setq term-scroll-to-bottom-on-output t)
     (add-hook 'term-mode-hook
