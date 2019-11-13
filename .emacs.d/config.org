@@ -2674,9 +2674,11 @@ follow using Twitter.  Also seems to be great for following subreddits like
     :commands elfeed
     :config
     (setq elfeed-feeds
-      '("http://nullprogram.com/feed/"
-        "https://www.reddit.com/r/emacs/.rss"
-        "https://atom.io/packages.atom")))
+      '("https://nullprogram.com/feed/"
+        "https://ambrevar.xyz/atom.xml"
+        "https://guix.gnu.org/feeds/blog.atom"
+        "https://valdyas.org/fading/feed/"
+        "https://www.reddit.com/r/emacs/.rss")))
 
 #+END_SRC
 
