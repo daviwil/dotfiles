@@ -52,11 +52,15 @@ nmap - zO
 nmap = zz
 
 # Shortcuts
+shortcut-add dot=https://github.com/daviwil/dotfiles
+shortcut-add az=https://portal.azure.com
 shortcut-add ajs=https://github.com/Azure/azure-sdk-for-js
 shortcut-add anet=https://github.com/Azure/azure-sdk-for-net
 shortcut-add aja=https://github.com/Azure/azure-sdk-for-java
 shortcut-add apy=https://github.com/Azure/azure-sdk-for-python
-shortcut-add dict=http://dict.cc/?s=$0
+shortcut-add ats=https://github.com/Azure/autorest.typescript
+shortcut-add ats3=https://github.com/Azure/autorest.typescript.v3
+shortcut-add specs=https://github.com/Azure/azure-rest-api-specs
 shortcut-add oms=https://outlook.com/microsoft.com
 shortcut-add man=https://fanglingsu.github.io/vimb/man.html
 
