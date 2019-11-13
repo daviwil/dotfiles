@@ -55,6 +55,7 @@ nmap = zz
 shortcut-add dot=https://github.com/daviwil/dotfiles
 shortcut-add az=https://portal.azure.com
 shortcut-add ajs=https://github.com/Azure/azure-sdk-for-js
+shortcut-add dajs=https://github.com/daviwil/azure-sdk-for-js
 shortcut-add anet=https://github.com/Azure/azure-sdk-for-net
 shortcut-add aja=https://github.com/Azure/azure-sdk-for-java
 shortcut-add apy=https://github.com/Azure/azure-sdk-for-python
