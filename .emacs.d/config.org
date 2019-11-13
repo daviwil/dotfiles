@@ -677,34 +677,6 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 ** Buffer Management
 
-*** Buffer Flipping
-
-#+BEGIN_SRC emacs-lisp
-
-  (defun dw/iflip-buffer-reset ()
-    (interactive)
-    (iflipb-restore-buffers))
-
-  (defhydra hydra-flip-buffer (:timeout 4)
-    "Flipping Buffers"
-    ("j" iflipb-next-buffer "next")
-    ("h" iflipb-next-buffer "next" :exit t)
-    ("k" iflipb-previous-buffer "prev")
-    ("r" dw/iflip-buffer-reset "reset" :exit t)
-    ("f" nil "exit" :exit t))
-
-  (use-package iflipb
-    :ensure t
-    :defer t
-    :bind (("C-;" . hydra-flip-buffer/body)
-           ("<s-tab>" . iflipb-next-buffer)
-           ("<s-iso-lefttab>" . iflipb-previous-buffer))
-    :config
-    (setq iflipb-ignore-buffers nil) ; Should tighten this in the future
-    (setq iflipb-wrap-around nil))
-
-#+END_SRC
-
 *** Helpers
 
 Simplify new buffer creation:
