@@ -750,7 +750,7 @@ keeping it around for now.
                 :action #'ivy--switch-buffer-action
                 :caller #'ivy-switch-buffer)))
 
-  (global-set-key (kbd "C-M-j") 'switch-to-buffer)
+  (global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
   (global-set-key (kbd "C-M-k") 'dw/switch-to-browser-buffer) ;; TODO: Which binding is best?
   (global-set-key (kbd "C-S-j") 'dw/switch-to-browser-buffer)
 
