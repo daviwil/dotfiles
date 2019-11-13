@@ -989,6 +989,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
     (use-package desktop-environment
       :after exwm
       :custom
+      (desktop-environment-mode)
       (desktop-environment-brightness-small-increment "2%+")
       (desktop-environment-brightness-small-decrement "2%-")
       (desktop-environment-brightness-normal-increment "5%+")
