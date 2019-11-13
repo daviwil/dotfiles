@@ -75,6 +75,7 @@
    "emacs-symon"
    "emacs-docker"
    "emacs-docker-tramp"
+   "emacs-dockerfile-mode"
    "emacs-emojify"
    "emacs-minions"
    "emacs-which-key"
