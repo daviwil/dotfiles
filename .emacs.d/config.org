@@ -617,6 +617,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
            ("C-k" . ivy-previous-line)
            :map ivy-switch-buffer-map
            ("C-k" . ivy-previous-line)
+           ("C-l" . ivy-done)
            ("C-d" . ivy-switch-buffer-kill)
            :map ivy-reverse-i-search-map
            ("C-k" . ivy-previous-line)
@@ -729,12 +730,31 @@ keeping it around for now.
 
 #+BEGIN_SRC emacs-lisp
 
-  (defun dw/use-ctrl-semi-message ()
+  (defun dw/get-vimb-buffers ()
+    (let (bufs)
+      (dolist (buf (buffer-list))
+        (with-current-buffer buf
+          (when (and (derived-mode-p 'exwm-mode)
+                     (string-equal exwm-class-name "Vimb"))
+            (push (buffer-name buf) bufs))))
+      (nreverse bufs)))
+
+  (defun dw/switch-to-browser-buffer ()
     (interactive)
-    (message "Use C-; yo."))
+    (let ((ivy-update-fns-alist
+             '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
+          (ivy-unwind-fns-alist
+             '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
+      (ivy-read "Vimb buffer: " (dw/get-vimb-buffers)
+                :keymap ivy-switch-buffer-map
+                :action #'ivy--switch-buffer-action
+                :caller #'ivy-switch-buffer)))
+
+  (global-set-key (kbd "C-M-j") 'switch-to-buffer)
+  (global-set-key (kbd "C-M-k") 'dw/switch-to-browser-buffer) ;; TODO: Which binding is best?
+  (global-set-key (kbd "C-S-j") 'dw/switch-to-browser-buffer)
 
   (dw/leader-key-def
-    "TAB" 'dw/use-ctrl-semi-message
     "b"   '(:ignore t :which-key "buffers")
     "bb"  'counsel-switch-buffer
     "bd"  'evil-delete-buffer)
@@ -951,7 +971,10 @@ The keybindings for this are =C+M+-= and =C+M+==.
         ?\M-`
         ?\M-&
         ?\M-:
-        ?\C-\  ;; Ctrl+Space
+        ?\C-\M-j  ;; Buffer list
+        ?\C-\S-j  ;; Browser list
+        ?\C-\M-k  ;; Browser list
+        ?\C-\     ;; Ctrl+Space
         ?\C-\;))
 
     ;; Ctrl+Q will enable the next key to be sent directly
