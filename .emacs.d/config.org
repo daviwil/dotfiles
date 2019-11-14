@@ -838,6 +838,8 @@ The keybindings for this are =C+M+-= and =C+M+==.
               (lambda ()
                 (evil-local-set-key 'motion (kbd "C-u") nil)))
 
+    (require 'dw-exwm)
+
     (defun dw/setup-window-by-class ()
       (interactive)
       (pcase exwm-class-name
