@@ -61,6 +61,7 @@
    "emacs-esh-autosuggest"
    "emacs-fish-completion"
    "emacs-multi-term"
+   "emacs-xterm-color"
    "emacs-multiple-cursors" ;; Not in config yet
    "emacs-erc-image"
    "emacs-erc-hl-nicks"
