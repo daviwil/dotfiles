@@ -702,25 +702,18 @@ keeping it around for now.
 
 #+BEGIN_SRC emacs-lisp
 
-  (defun dw/get-vimb-buffers ()
-    (let (bufs)
-      (dolist (buf (buffer-list))
+  (defun dw/ignore-non-vimb-buffers (buffer-name)
+    (if-let ((buf (get-buffer buffer-name)))
+      (when buf
         (with-current-buffer buf
-          (when (and (derived-mode-p 'exwm-mode)
-                     (string-equal exwm-class-name "Vimb"))
-            (push (buffer-name buf) bufs))))
-      (nreverse bufs)))
+          (not (and (derived-mode-p 'exwm-mode)
+                    (string-equal exwm-class-name "Vimb")))))))
 
   (defun dw/switch-to-browser-buffer ()
     (interactive)
-    (let ((ivy-update-fns-alist
-             '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
-          (ivy-unwind-fns-alist
-             '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
-      (ivy-read "Vimb buffer: " (dw/get-vimb-buffers)
-                :keymap ivy-switch-buffer-map
-                :action #'ivy--switch-buffer-action
-                :caller #'ivy-switch-buffer)))
+    (let ((ivy-use-virtual-buffers nil)
+          (ivy-ignore-buffers (append ivy-ignore-buffers '(dw/ignore-non-vimb-buffers))))
+      (counsel-switch-buffer)))
 
   (global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
   (global-set-key (kbd "C-M-k") 'dw/switch-to-browser-buffer) ;; TODO: Which binding is best?
