@@ -79,6 +79,7 @@
    "emacs-dockerfile-mode"
    "emacs-emojify"
    "emacs-minions"
+   "emacs-spacegray-theme"
    "emacs-which-key"
    "emacs-exec-path-from-shell"
 
