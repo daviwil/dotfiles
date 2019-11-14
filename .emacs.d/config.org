@@ -1724,34 +1724,6 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
 #+END_SRC
 
-*** Completions
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package company
-    :hook (prog-mode . company-mode)
-    :config
-    (define-key company-active-map (kbd "<return>") #'company-complete-selection)
-    (define-key prog-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-
-    ;; Make company inherit the Emacs theme more reliably
-    (require 'color)
-    (let ((bg (face-attribute 'default :background)))
-      (custom-set-faces
-       `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
-       `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
-       `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
-       `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
-       `(company-tooltip-common ((t (:inherit font-lock-constant-face)))))))
-
-  (use-package company-box
-    :ensure t
-    :hook (company-mode . company-box-mode)
-    :config
-    (setq company-box-show-single-candidate t))
-
-#+END_SRC
-
 *** Languages
 
 **** Language Server Support
@@ -1765,7 +1737,9 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
   (use-package lsp-mode
     :commands lsp
-    :hook ((typescript-mode js2-mode web-mode) . lsp))
+    :hook ((typescript-mode js2-mode web-mode) . lsp)
+    :bind (:map lsp-mode-map
+           ("TAB" . completion-at-point)))
 
   (dw/leader-key-def
     "l"  '(:ignore t :which-key "lsp")
@@ -1785,19 +1759,6 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     (setq lsp-ui-sideline-show-hover nil)
     (setq lsp-ui-doc-position 'bottom)
     (lsp-ui-doc-show))
-
-  (use-package company-lsp
-    :after lsp-mode
-    :commands company-lsp
-    :config
-    (push 'company-lsp company-backends)
-    (setq company-minimum-prefix-length 1)
-    (setq company-idle-delay 0)
-    (setq company-lsp-cache-candidates 't))
-
-  (use-package helm-lsp
-    :after lsp-mode
-    :commands helm-lsp-workspace-symbol)
 
 #+END_SRC
 

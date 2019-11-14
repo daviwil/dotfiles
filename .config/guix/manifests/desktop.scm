@@ -34,8 +34,6 @@
    "emacs-git-link"
    "emacs-git-gutter"
    "emacs-projectile"
-   "emacs-company"
-   "emacs-company-lsp"
    "emacs-lsp-mode"
    "emacs-lsp-ui"
    "emacs-cider"
