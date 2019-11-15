@@ -731,8 +731,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
       (counsel-switch-buffer)))
 
   (global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
-  (global-set-key (kbd "C-M-k") 'dw/switch-to-browser-buffer) ;; TODO: Which binding is best?
-  (global-set-key (kbd "C-S-j") 'dw/switch-to-browser-buffer)
+  (global-set-key (kbd "C-M-k") 'dw/switch-to-browser-buffer)
 
   (dw/leader-key-def
     "b"   '(:ignore t :which-key "buffers")
@@ -954,7 +953,6 @@ The keybindings for this are =C+M+-= and =C+M+==.
         ?\M-&
         ?\M-:
         ?\C-\M-j  ;; Buffer list
-        ?\C-\S-j  ;; Browser list
         ?\C-\M-k  ;; Browser list
         ?\C-\     ;; Ctrl+Space
         ?\C-\;))
