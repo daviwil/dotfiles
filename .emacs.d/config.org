@@ -2658,21 +2658,6 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
 #+END_SRC
 
-*** Weather
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package wttrin
-    :defer t
-    :config
-    (setq wttrin-default-cities '("Kirkland, WA"))
-    (setq wttrin-default-accept-language '("Accept-Language" . "eh-US"))
-
-    (dw/leader-key-def
-      "aw"  '(wttrin :which-key "weather")))
-
-#+END_SRC
-
 ** Notifications
 
 *** Alert

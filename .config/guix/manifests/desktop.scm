@@ -68,7 +68,6 @@
    "emacs-mastodon"
    "emacs-elfeed"
    "emacs-emms"
-   "emacs-wttrin"
    "emacs-alert"
    "emacs-guix"
    "emacs-daemons"
