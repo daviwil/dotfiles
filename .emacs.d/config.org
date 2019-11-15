@@ -639,6 +639,11 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
   (use-package ivy-hydra
     :after hydra)
 
+  (use-package ivy-rich
+    :init
+    (ivy-rich-mode 1)
+    (setq ivy-format-function #'ivy-format-function-line))
+
   (use-package counsel
     :bind (("M-x" . (lambda () (interactive) (counsel-M-x "")))
            ("C-x b" . counsel-ibuffer)

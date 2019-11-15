@@ -20,6 +20,7 @@
    "emacs-ivy"
    "emacs-ivy-xref"
    "emacs-ivy-pass"
+   "emacs-ivy-rich"
    "emacs-smex"
    "emacs-counsel-projectile"
    "emacs-pinentry"
@@ -80,6 +81,8 @@
    "emacs-spacegray-theme"
    "emacs-which-key"
    "emacs-exec-path-from-shell"
+   "emacs-all-the-icons"
+   "emacs-all-the-icons-dired"
 
    ;; Developer tools
    "node"
