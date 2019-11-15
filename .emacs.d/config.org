@@ -613,6 +613,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     :bind (("C-s" . swiper)
            :map ivy-minibuffer-map
            ("TAB" . ivy-alt-done)
+           ("C-l" . ivy-alt-done)
            ("C-j" . ivy-next-line)
            ("C-k" . ivy-previous-line)
            :map ivy-switch-buffer-map
@@ -631,12 +632,17 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     (setq enable-recursive-minibuffers t)
     (setq ivy-initial-inputs-alist nil) ;; Don't start search with ^
 
+    ;; Use different regex strategies per completion command
+    (push '(completion-at-point . ivy--regex-fuzzy) ivy-re-builders-alist) ;; This doesn't seem to work...
+    (push '(counsel-M-x . ivy--regex-ignore-order) ivy-re-builders-alist)
+
     ;; Set minibuffer height for different commands
     (setf (alist-get 'counsel-projectile-ag ivy-height-alist) 15)
     (setf (alist-get 'swiper ivy-height-alist) 15)
     (setf (alist-get 'counsel-switch-buffer ivy-height-alist) 7))
 
   (use-package ivy-hydra
+    :defer t
     :after hydra)
 
   (use-package ivy-rich
@@ -645,11 +651,16 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     (setq ivy-format-function #'ivy-format-function-line))
 
   (use-package counsel
-    :bind (("M-x" . (lambda () (interactive) (counsel-M-x "")))
+    :bind (("M-x" . counsel-M-x)
            ("C-x b" . counsel-ibuffer)
            ("C-x C-f" . counsel-find-file)
            :map minibuffer-local-map
            ("C-r" . 'counsel-minibuffer-history)))
+
+  (use-package flx  ;; Improves sorting for fuzzy-matched results
+    :defer t
+    :init
+    (setq ivy-flx-limit 10000))
 
   (use-package smex ;; Adds M-x recent command sorting for counsel-M-x
     :defer 1

@@ -21,6 +21,7 @@
    "emacs-ivy-xref"
    "emacs-ivy-pass"
    "emacs-ivy-rich"
+   "emacs-flx"
    "emacs-smex"
    "emacs-counsel-projectile"
    "emacs-pinentry"
