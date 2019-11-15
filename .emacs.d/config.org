@@ -1,8 +1,7 @@
 * daviwil's Emacs Configuration
 
 This is an ongoing evolution of my original Emacs configuration files, inspired
-by a bunch of resources I've found online.  Ultimately I'd like to write about
-how I use Emacs once this configuration (and my workflow) stabilizes!
+by a bunch of resources I've found online.
 
 ** Helper Functions
 
@@ -42,10 +41,6 @@ there's probably a more appropriate way to do this built in to Emacs.
 
 ** Keyboard Bindings
 
-The Spacemacs-like configuration here was inspired by [[https://sam217pa.github.io/2016/08/30/how-to-make-your-own-spacemacs/][this post]].  I'm having a
-hard time getting a totally smooth Evil/Emacs hybrid keybinding setup going so
-it may turn out that I eschew Evil for everything but programming modes...
-
 *** ESC Cancels All
 
 #+BEGIN_SRC emacs-lisp
@@ -72,7 +67,6 @@ Some tips can be found here:
                     circe-chat-mode
                     circe-query-mode
                     sauron-mode
-                    sunshine-mode
                     term-mode))
     (add-to-list 'evil-emacs-state-modes mode)))
 
