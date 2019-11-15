@@ -637,6 +637,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
     ;; Use different regex strategies per completion command
     (push '(completion-at-point . ivy--regex-fuzzy) ivy-re-builders-alist) ;; This doesn't seem to work...
+    (push '(swiper . ivy--regex-ignore-order) ivy-re-builders-alist)
     (push '(counsel-M-x . ivy--regex-ignore-order) ivy-re-builders-alist)
 
     ;; Set minibuffer height for different commands
