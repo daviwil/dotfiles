@@ -1,0 +1,21 @@
+#!/bin/sh
+
+GREEN='\033[0;32m'
+NC='\033[0m'
+GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles
+
+profiles=$*
+if [[ $# -eq 0 ]]; then
+    profiles="$GUIX_EXTRA_PROFILES/*";
+fi
+
+for profile in "$GUIX_EXTRA_PROFILES"/*; do
+  profileName=$(basename $profile)
+  profilePath=$GUIX_EXTRA_PROFILES/$profileName
+
+  echo
+  echo -e "${GREEN}Updating profile:" $profilePath "${NC}"
+  echo
+
+  guix package --profile="$profilePath/$profileName" --manifest="$HOME/.config/guix/manifests/$profileName.scm"
+done

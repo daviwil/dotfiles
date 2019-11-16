@@ -1,0 +1,38 @@
+#!/bin/sh
+
+GREEN='\033[0;32m'
+RED='\033[0;30m'
+NC='\033[0m'
+GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles
+
+profiles=$*
+if [[ $# -eq 0 ]]; then
+    profiles="$HOME/.config/guix/manifests/*.scm";
+fi
+
+for profile in $profiles; do
+  # Remove the path and file extension, if any
+  profileName=$(basename $profile)
+  profileName="${profile%.*}"
+  profilePath="$GUIX_EXTRA_PROFILES/$profileName"
+  manifestPath=$HOME/.config/guix/manifests/$profile.scm
+
+  if [ -f $manifestPath ]; then
+    echo
+    echo -e "${GREEN}Activating profile:" $manifestPath "${NC}"
+    echo
+
+    mkdir -p $profilePath
+    guix package --manifest=$manifestPath --profile="$profilePath/$profileName"
+
+    # Source the new profile
+    GUIX_PROFILE="$profilePath/$profileName"
+    if [ -f $GUIX_PROFILE/etc/profile ]; then
+        . "$GUIX_PROFILE"/etc/profile
+    else
+        echo -e "${RED}Couldn't find profile:" $GUIX_PROFILE/etc/profile "${NC}"
+    fi
+  else
+    echo "No profile found at path" $profilePath
+  fi
+done

@@ -1,6 +1,17 @@
 # Augment PATH
 export PATH="$HOME/.bin:$HOME/.npm-global/bin:$PATH"
 
+# Load additional Guix profiles
+GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles
+for i in $GUIX_EXTRA_PROFILES/*; do
+  profile=$i/$(basename "$i")
+  if [ -f "$profile"/etc/profile ]; then
+    GUIX_PROFILE="$profile"
+    . "$GUIX_PROFILE"/etc/profile
+  fi
+  unset profile
+done
+
 # Export the path to IcedTea so that tools pick it up correctly
 export JAVA_HOME=$(dirname $(dirname $(readlink $(which java))))
 
