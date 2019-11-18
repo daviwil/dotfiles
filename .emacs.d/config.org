@@ -696,27 +696,6 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 ** Buffer Management
 
-*** Helpers
-
-Simplify new buffer creation:
-
-#+BEGIN_SRC emacs-lisp
-
-
-
-#+END_SRC
-
-This may not be needed for much longer now that I'm using =buffer-flip= but
-keeping it around for now.
-
-#+BEGIN_SRC emacs-lisp
-
-  (defun switch-to-previous-buffer ()
-    (interactive)
-    (switch-to-buffer (other-buffer)))
-
-#+END_SRC
-
 *** Bindings
 
 #+BEGIN_SRC emacs-lisp
