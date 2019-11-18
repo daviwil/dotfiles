@@ -223,6 +223,9 @@ Enable line numbers and customize their format.
   (dolist (mode '(term-mode-hook
                   eshell-mode-hook
                   neotree-mode-hook
+                  telega-chat-mode-hook
+                  telega-root-mode-hook
+                  telega-webpage-mode-hook
                   dashboard-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
@@ -1162,7 +1165,8 @@ credentials for mail, etc.
                '(file))
         (list (openwith-make-extension-regexp
                '("xbm" "pbm" "pgm" "ppm" "pnm"
-                 "png" "gif" "bmp" "tif" "jpeg" "jpg"))
+                 "png" "gif" "bmp" "tif" "jpeg")) ;; Removed jpg because Telega was
+                                                  ;; causing feh to be opened...
                "feh"
                '(file))))
     (openwith-mode 1))
@@ -2413,6 +2417,24 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
 #+END_SRC
 
 *** Chat
+
+**** Telegram
+
+#+begin_src emacs-lisp
+
+  (use-package telega
+    :commands telega
+    :config
+    (telega-notifications-mode 1)
+    (setq telega-user-use-avatars nil
+          telega-use-tracking nil ; Maybe?
+          telega-chat-use-markdown-formatting t
+          telega-emoji-use-images t
+          telega-completing-read-function #'ivy-completing-read
+          telega-msg-rainbow-title nil
+          telega-chat-fill-column 100))
+
+#+end_src
 
 **** ERC
 
