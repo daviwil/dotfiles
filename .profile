@@ -15,8 +15,10 @@ export VISUAL=emacsclient
 export EDITOR="$VISUAL"
 
 # Add Azure CLI to PATH if it exists
-export PATH=$PATH:$HOME/Tools/azure-cli/bin
-[ -f $HOME/Tools/azure-cli ] && source '$HOME/Tools/azure-cli/az.completion'
+if [ -f $HOME/Tools/azure-cli ]; then
+  export PATH=$PATH:$HOME/Tools/azure-cli/bin
+  source '$HOME/Tools/azure-cli/az.completion'
+fi
 
 # Load .bashrc to get login environment
 [ -f ~/.bashrc ] && . ~/.bashrc
