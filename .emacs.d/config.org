@@ -126,7 +126,7 @@ based on the prefix keys you entered.  Learned about this one from Spacemacs.
     :init (which-key-mode)
     :diminish which-key-mode
     :config
-    (setq which-key-idle-delay 0.1))
+    (setq which-key-idle-delay 1))
 
 #+END_SRC
 
