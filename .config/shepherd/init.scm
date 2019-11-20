@@ -7,6 +7,13 @@
     #:start (make-forkexec-constructor '("xfsettingsd" "--no-daemon" "--replace"))
     #:stop  (make-kill-destructor)))
 
+(define gpg-agent
+  (make <service>
+    #:provides '(gpg-agent)
+    #:respawn? #t
+    #:start (make-system-constructor "gpg-connect-agent /bye")
+    #:stop (make-system-destructor "gpgconf --kill gpg-agent")))
+
 (define syncthing
   (make <service>
     #:provides '(syncthing)
@@ -24,7 +31,7 @@
 ;; Services known to shepherd:
 ;; Add new services (defined using 'make <service>') to shepherd here by
 ;; providing them as arguments to 'register-services'.
-(register-services xfsettingsd syncthing pulseaudio)
+(register-services xfsettingsd gpg-agent syncthing pulseaudio)
 
 ;; Send shepherd into the background
 (action 'shepherd 'daemonize)
@@ -32,4 +39,4 @@
 ;; Services to start when shepherd starts:
 ;; Add the name of each service that should be started to the list
 ;; below passed to 'for-each'.
-(for-each start '(xfsettingsd syncthing pulseaudio))
+(for-each start '(xfsettingsd gpg-agent syncthing pulseaudio))

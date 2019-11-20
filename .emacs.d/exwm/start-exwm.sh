@@ -9,9 +9,6 @@ xhost +SI:localuser:$USER
 # Make Java applications aware this is a non-reparenting window manager
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-# Start authentication daemon
-gpg-connect-agent /bye
-
 # Start Shepherd to manage user daemons
 if [ -z "$(pgrep -u daviwil shepherd)" ]; then
   shepherd
