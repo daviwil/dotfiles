@@ -41,6 +41,7 @@
    "emacs-cider"
    "emacs-typescript-mode"
    "emacs-js2-mode"
+   "emacs-prettier"
    "emacs-desktop-environment"
    "emacs-rust-mode"
    "emacs-helpful"

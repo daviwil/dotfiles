@@ -1827,6 +1827,10 @@ Configure TypeScript and JavaScript language modes
       (setq evil-shift-width js-indent-level)
       (setq-default tab-width 2)))
 
+  (use-package prettier-js
+    :hook ((js2-mode . prettier-js-mode)
+           (typescript-mode . prettier-js-mode)))
+
 #+END_SRC
 
 **** Rust
