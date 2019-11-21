@@ -819,6 +819,10 @@ The keybindings for this are =C+M+-= and =C+M+==.
 #+BEGIN_SRC emacs-lisp
 
   (defun dw/exwm-init-hook ()
+    ;; Launch Telega in workspace 0 if we've logged in before
+    (when (file-exists-p "~/.telega/db.sqlite")
+      (telega nil))
+
     ;; Make workspace 1 be the one where we land at startup
     (exwm-workspace-switch-create 1)
 
@@ -2411,16 +2415,41 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
 
 *** Chat
 
+**** Tracking
+
+#+begin_src emacs-lisp
+
+  (use-package tracking
+    :defer t
+    :config
+    (setq tracking-faces-priorities '(all-the-icons-pink
+                                      all-the-icons-lgreen
+                                      all-the-icons-lblue))
+    (setq tracking-frame-behavior nil
+          global-mode-string (append '("" tracking-mode-line-buffers) global-mode-string)))
+
+#+end_src
+
 **** Telegram
 
 #+begin_src emacs-lisp
 
+  ;; Add faces for specific people in the modeline.  There must
+  ;; be a better way to do this.
+  (defun dw/around-tracking-add-buffer (original-func buffer &optional faces)
+    (let* ((name (buffer-name buffer))
+           (face (cond ((s-contains? "Maria" name) '(all-the-icons-pink))
+                       ((s-contains? "Alex " name) '(all-the-icons-lgreen))
+                       ((s-contains? "Steve" name) '(all-the-icons-lblue)))))
+      (apply original-func buffer (list face))))
+
+  (advice-add 'tracking-add-buffer :around #'dw/around-tracking-add-buffer)
+
   (use-package telega
     :commands telega
     :config
-    (telega-notifications-mode 1)
     (setq telega-user-use-avatars nil
-          telega-use-tracking nil ; Maybe?
+          telega-use-tracking t
           telega-chat-use-markdown-formatting t
           telega-emoji-use-images t
           telega-completing-read-function #'ivy-completing-read

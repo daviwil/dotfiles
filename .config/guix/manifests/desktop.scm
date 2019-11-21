@@ -84,6 +84,7 @@
    "emacs-exec-path-from-shell"
    "emacs-all-the-icons"
    "emacs-all-the-icons-dired"
+   "emacs-tracking"
 
    ;; Developer tools
    "node"
