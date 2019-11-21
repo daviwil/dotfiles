@@ -1013,10 +1013,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
                         (number-sequence 0 9))))
 
     (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
-    (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen)
-
-    (exwm-input-set-key (kbd "s-C-s") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Slack")))
-    (exwm-input-set-key (kbd "s-C-i") (lambda () (interactive) (exwm-workspace-switch-to-buffer "Pidgin<2>"))))
+    (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen))
 
 #+END_SRC
 
