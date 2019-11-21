@@ -53,6 +53,7 @@ nmap = zz
 
 # Shortcuts
 shortcut-add dot=https://github.com/daviwil/dotfiles
+shortcut-add mail=https://fastmail.com
 shortcut-add az=https://portal.azure.com
 shortcut-add ajs=https://github.com/Azure/azure-sdk-for-js
 shortcut-add dajs=https://github.com/daviwil/azure-sdk-for-js
