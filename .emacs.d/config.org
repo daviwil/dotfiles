@@ -759,28 +759,6 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+END_SRC
 
-*** Bindings
-
-#+BEGIN_SRC emacs-lisp
-
-  (dw/leader-key-def
-    "w"   '(:ignore t :which-key "windows")
-    "wc"  '(evil-window-delete :which-key "close")
-    "wC"  '(delete-other-windows :which-key "close others")
-    "ws"  '(evil-window-split  :which-key "split horiz")
-    "wv"  '(evil-window-vsplit :which-key "split vert")
-    "wo"  '(other-window :which-key "other window")
-
-    "wu"  '(winner-undo :which-key "undo window")
-    "wr"  '(winner-redo :which-key "redo window")
-
-    "wh"  '(evil-window-left  :which-key "window left")
-    "wl"  '(evil-window-right :which-key "window right")
-    "wk"  '(evil-window-up    :which-key "window up")
-    "wj"  '(evil-window-down  :which-key "window down"))
-
-#+END_SRC
-
 *** exwm
 
 **** Helper Functions
