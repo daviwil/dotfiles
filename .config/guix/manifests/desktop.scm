@@ -91,6 +91,7 @@
    "python2"
    "sbcl"
    "docker-cli"
+   "icedtea"
    "gcc-toolchain"
    ;; "glibc" ;; For ldd
    "curl"
