@@ -85,6 +85,7 @@
    "emacs-all-the-icons"
    "emacs-all-the-icons-dired"
    "emacs-tracking"
+   "emacs-telega"
 
    ;; Developer tools
    "node"
