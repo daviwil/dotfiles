@@ -86,6 +86,7 @@
    "emacs-all-the-icons-dired"
    "emacs-tracking"
    "emacs-telega"
+   "emacs-openwith"
    "emacs-doom-modeline"
 
    ;; Developer tools

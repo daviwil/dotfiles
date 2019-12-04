@@ -1121,7 +1121,6 @@ credentials for mail, etc.
 #+begin_src emacs-lisp
 
   (use-package openwith
-    :ensure t
     :config
     (setq openwith-associations
       (list
