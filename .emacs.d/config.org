@@ -2015,7 +2015,7 @@ to capture links to emails with org-mode too.
   (when (and (eq system-type 'gnu/linux) dw/mail-enabled)
     ;; After building/installing mu4e the .el files are here:
     ;;(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") ;; On Fedora
-    (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e") ;; On Manjaro / Arch
+    ;;(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e") ;; On Manjaro / Arch
 
     (require 'mu4e)
     (require 'org-mu4e)
@@ -2028,25 +2028,13 @@ to capture links to emails with org-mode too.
 
     ;; Set up contexts for email accounts
     (setq mu4e-contexts
-     `( ,(make-mu4e-context
-         :name "GitHub"
-         :match-func (lambda (msg) (when msg
-           (string-prefix-p "/GitHub" (mu4e-message-field msg :maildir))))
-         :vars '(
-           (user-full-name . "David Wilson")
-           (user-email-address . "daviwil@github.com")
-           (mu4e-sent-folder . "/GitHub/Sent Mail")
-           (mu4e-trash-folder . "/GitHub/Trash")
-           (mu4e-sent-messages-behavior . delete)
-           ;(mu4e-refile-folder . "/GitHub/[Gmail].Archive")
-           ))
-       ,(make-mu4e-context
+     `(,(make-mu4e-context
          :name "Fastmail"
          :match-func (lambda (msg) (when msg
            (string-prefix-p "/Fastmail" (mu4e-message-field msg :maildir))))
          :vars '(
            (user-full-name . "David Wilson")
-           (user-email-address . "david@daviwil.com")
+           (user-mail-address . "david@daviwil.com")
            (mu4e-sent-folder . "/Fastmail/Sent Items")
            (mu4e-trash-folder . "/Fastmail/Trash")
            (mu4e-drafts-folder . "/Fastmail/Drafts")
@@ -2110,14 +2098,14 @@ to capture links to emails with org-mode too.
     (add-to-list 'mu4e-bookmarks
            (make-mu4e-bookmark
             :name "All Inboxes"
-            :query "maildir:/GitHub/INBOX OR maildir:/Fastmail/INBOX OR maildir:/Personal/Inbox"
+            :query "maildir:/Fastmail/INBOX OR maildir:/Personal/Inbox"
             :key ?i))
 
     ;; don't keep message buffers around
     (setq message-kill-buffer-on-exit t)
 
     (setq dw/mu4e-inbox-query
-        "(maildir:/Personal/Inbox OR maildir:/Fastmail/INBOX OR maildir:/GitHub/INBOX) AND flag:unread")
+        "(maildir:/Personal/Inbox OR maildir:/Fastmail/INBOX) AND flag:unread")
 
     (defun dw/go-to-inbox ()
       (interactive)

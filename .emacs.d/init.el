@@ -87,7 +87,7 @@
   (setq exwm-randr-workspace-monitor-plist '(1 "DP-1-2" 4 "eDP-1")))
 
 ;; Re-enable this after I get per-system defines implemented
-(setq dw/mail-enabled nil) ;(eq system-name "zerocool")
+(setq dw/mail-enabled (string-equal system-name "zerocool"))
 
 ;; Load real configuration from config.org
 (when (file-readable-p "~/.emacs.d/config.org")

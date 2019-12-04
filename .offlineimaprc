@@ -1,35 +1,6 @@
 [general]
-accounts = GitHub, Fastmail
-pythonfile = ~/.dotfiles/mail/get_pass.py
-
-[Account GitHub]
-localrepository = GitHubLocal
-remoterepository = GitHubRemote
-
-[Repository GitHubLocal]
-type = Maildir
-localfolders = ~/Mail/GitHub
-nametrans = lambda f: '[Gmail]/' + f if f in ['Drafts', 'Starred', 'Important', 'Spam', 'Trash', 'All Mail', 'Sent Mail'] else f
-
-# Consult this file for Gmail auth: https://github.com/OfflineIMAP/offlineimap/blob/master/offlineimap.conf#L928
-
-[Repository GitHubRemote]
-type = Gmail
-remoteuser = daviwil@github.com
-auth_mechanisms = XOAUTH2
-oauth2_request_url = https://accounts.google.com/o/oauth2/token
-oauth2_client_id_eval = get_pass("API/Google/daviwil-emacs-id")
-oauth2_client_secret_eval = get_pass("API/Google/daviwil-emacs-secret")
-oauth2_refresh_token_eval = get_pass("API/Google/daviwil-emacs-refresh")
-ssl = yes
-ssl_version = tls1_2
-# sslcacertfile = /etc/ssl/certs/ca-bundle.crt  # On Fedora
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-realdelete = no
-nametrans = lambda f: f.replace('[Gmail]/', '') if f.startswith('[Gmail]/') else f
-
-# Don't need this for now because I disabled these labels in Gmail's IMAP
-#folderfilter = lambda f: f not in [ '[Gmail]/All Mail', '[Gmail]/Sent Mail' ]
+accounts = Fastmail
+pythonfile = ~/.dotfiles/.bin/get_pass.py
 
 [Account Outlook]
 localrepository = OutlookLocal
@@ -47,7 +18,6 @@ remotepasseval = get_pass("Mail/Outlook/david-at-daviwil")
 remoteport = 993
 auth_mechanisms = GSSAPI, CRAM-MD5, PLAIN, LOGIN
 ssl = yes
-# sslcacertfile = /etc/ssl/certs/ca-bundle.crt  # On Fedora
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 realdelete = no
 folderfilter = lambda folder: folder not in [
@@ -77,7 +47,6 @@ remoteport = 993
 auth_mechanisms = GSSAPI, CRAM-MD5, PLAIN, LOGIN
 ssl = yes
 expunge = no
-# sslcacertfile = /etc/ssl/certs/ca-bundle.crt  # On Fedora
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 folderfilter = lambda folder: folder not in [
     'Deleted Items',
