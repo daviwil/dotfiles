@@ -2761,6 +2761,10 @@ to set that up.
     (interactive)
     (start-process-shell-command "bluetoothctl" nil "bluetoothctl -- connect 04:52:C7:5E:5C:A8"))
 
+  (defun dw/bluetooth-disconnect ()
+    (interactive)
+    (start-process-shell-command "bluetoothctl" nil "bluetoothctl -- disconnect"))
+
 #+end_src
 
 *** Proced
