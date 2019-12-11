@@ -159,6 +159,9 @@
    "font-awesome"
    "gs-fonts"
 
+   ;; Document Readers
+   "evince"
+
    ;; Desktop
    "feh"
    "cups"
