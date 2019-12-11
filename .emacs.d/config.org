@@ -1579,6 +1579,10 @@ https://magit.vc/manual/magit/
   (use-package evil-magit
     :after magit)
 
+  ;; Add a super-convenient global binding for magit-status since
+  ;; I use it 8 million times a day
+  (global-set-key (kbd "C-M-;") 'magit-status)
+
   (dw/leader-key-def
     "g"   '(:ignore t :which-key "git")
     "gs"  'magit-status
