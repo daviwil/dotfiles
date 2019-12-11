@@ -10,6 +10,9 @@ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 # Make sure `ls` collates dotfiles first (for dired)
 export LC_COLLATE="C"
 
+# Many build scripts expect CC to contain the compiler command
+export CC="gcc"
+
 # Make Flatpak apps visible to launcher
 export XDG_DATA_DIRS="$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share"
 
