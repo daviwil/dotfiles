@@ -96,6 +96,7 @@
    "docker-cli"
    "icedtea"
    "gcc-toolchain"
+   "make"
    ;; "glibc" ;; For ldd
    "curl"
    "the-silver-searcher"
