@@ -2159,6 +2159,7 @@ Agenda items.
 #+BEGIN_SRC emacs-lisp
 
   (use-package calfw
+    :disabled
     :commands cfw:open-org-calendar
     :config
     (setq cfw:fchar-junction ?╋
