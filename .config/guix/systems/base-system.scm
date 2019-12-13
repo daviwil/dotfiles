@@ -125,7 +125,6 @@ EndSection
                         ntfs-3g
                         exfat-utils
                         fuse-exfat
-                        icecat
                         stow
                         vim
                         i3-wm
