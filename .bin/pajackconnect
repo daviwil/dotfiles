@@ -1,0 +1,184 @@
+#!/usr/bin/env bash
+# dw note: downloaded from https://github.com/brummer10/pajackconnect on 12/13/19
+#+
+# This script is intended to be invoked via QjackCtl to start up and
+# shut down JACK on a system running PulseAudio. It handles the
+# necessary setup to make the two work together, so PulseAudio clients
+# get transparently routed through JACK while the latter is running, or
+# if pulseaudio is suspend by pasuspender, do nothing
+#
+# Usage: in QjackCtl’s Settings window, in the “Options” tab, enter
+# the command
+#
+# pajackconnect start &
+#
+# in the field labelled “Execute script after Startup”, and put
+#
+# pajackconnect stop &
+#
+# in the field labelled “Execute script on Shutdown”.
+#
+# pajackconnect reset &
+#
+# in the field labelled “Execute script after Shutdown”.
+#
+# for use jack without pulseaudio, add in Qjackctl setting window
+# in the serverpath field 'pasuspender -- ' before 'jackd', save settings
+# as "No Pulse" for example. Remove 'pasuspender -- ',
+# and save settings as 'Pulse'. Now you can select from the
+# Qjackctl setting window, if you would start jack with or without pulse.
+#
+# References:
+# PulseAudio: <http://www.freedesktop.org/wiki/Software/PulseAudio/>
+# JACK: <http://jackaudio.org/>
+#
+# Copyright 2014 by Lawrence D'Oliveiro <ldo@geek-central.gen.nz>. This
+# script is licensed CC0
+# <https://creativecommons.org/publicdomain/zero/1.0/>; do with it
+# what you will.
+#
+# overall script formating by Hermann Meyer
+# added possibility to run jack with suspend pulse by Hermann Meyer
+# added save and restore previous used pulseaudio ports by Hermann Meyer
+# added reload pulse jack modules after resume from suspend
+# (needs to be called by a systemd.service file) by Hermann Meyer
+#-
+
+
+# variable to fetch pasuspender status
+p=`ps ax | grep pasuspender`
+
+function restart() {
+        # reload pulse jack module after resume from suspend.
+        # give the system time to reload pulse deamon before load the modules.
+        sleep 5
+        # if command-line option restart is given
+        # check if pasuspender waiting for jack, if so, exit here. Nothing more
+        # to do.
+        # echo "restart"
+        if [[ "$p"  =~ "jackd" ]]; then
+                #echo "pasuspender is active"
+                exit 0
+        else
+        # check if pulse jack modules are loaded
+        jc=`pacmd list | grep jack-sink`
+        # check if jack is running
+        ja=`pidof jackd | wc -w`
+        # check if pulseaudio is running
+        pa=`pidof pulseaudio | wc -w`
+        # write results to log file
+        `date +%H:%M:%S  >>/tmp/pajack.log`
+        `echo 'jack-sink =' $jc  >>/tmp/pajack.log`
+        `echo 'jack =' $ja >>/tmp/pajack.log`
+        `echo 'pulse =' $pa >>/tmp/pajack.log`
+                if [[ ! "$jc" =~ "jack" ]] && [[ "$ja" == "1" ]]; then
+                        # if pulseaudio didn't run, let's try start it
+                        if [[ ! "$pa" == "1" ]]; then
+                                sleep 5
+                                `pulseaudio -D`
+                                `echo reload pulseaudio >>/tmp/pajack.log`
+                                sleep 10
+                        fi
+                        # if jack is running and pulse jack modules aren't loaded,
+                        # let's load them and set them as default ports
+                        pacmd load-module module-jack-sink channels=2
+                        pacmd load-module module-jack-source channels=2
+                        pacmd unload-module module-suspend-on-idle
+                        pacmd set-default-sink jack_out
+                        # move around source port, seems to make pulseaudio work with jack
+                        # otherwise it seems that pulseaudio is connected, but it didn't work.
+                        pacmd set-default-source jack_in && sleep 1
+                        source=`cat /tmp/pasourcej`
+                        pacmd set-default-source $source && sleep 1
+                        pacmd set-default-source jack_in
+                        # echo "pa source switched"
+                        `echo reloaded jack modules >>/tmp/pajack.log`
+                else
+                        `echo already run >>/tmp/pajack.log`
+                fi
+        fi
+}
+
+function start() {
+        # if command-line option start is given
+        # check if pasuspender waiting for jack, if so, exit here. Nothing more
+        # to do.
+        if [[ "$p"  =~ "jackd" ]]; then
+                #echo "pasuspender is active"
+                exit 0
+        else
+                # if pasuspender isn't waiting for jack, let's fetch the current
+                # ports, pulseaudio use, save them to /tmp, for later use.
+                #echo "pasuspender is NOT active"
+                sink=`pacmd list short sinks |  sed -n "/Default sink name/p"| sed "s/Default sink name://"`
+                `echo $sink >/tmp/pasinkj`
+                source=`pacmd list short sinks |  sed -n "/Default source name/p"| sed "s/Default source name://"`
+                `echo $source >/tmp/pasourcej`
+                # load the pulseaudio jack module and set them as default ports
+                pacmd load-module module-jack-sink channels=2
+                pacmd load-module module-jack-source channels=2
+                pacmd unload-module module-suspend-on-idle
+                pacmd set-default-sink jack_out
+                # move around source port, seems to make pulseaudio work with jack
+                # otherwise it seems that pulseaudio is connected, but it didn't work.
+                pacmd set-default-source jack_in && sleep 1
+                pacmd set-default-source $source && sleep 1
+                pacmd set-default-source jack_in
+                #echo "pa source switched"
+        fi
+}
+
+function stop() {
+        # if command-line option stop is given
+        # again, check if pasuspender waiting for jack, if not, unload the pulse
+        # jack module and reload the module-suspend-on-idle.
+        if [[ ! "$p"  =~ "jackd" ]]; then
+                #echo "pasuspender is NOT active"
+                pacmd unload-module module-jack-sink
+                pacmd unload-module module-jack-source
+                pacmd load-module module-suspend-on-idle
+        else
+                # if pasuspender waiting for jack, add a timeout to pasuspender
+                # to allow a smooth reset action afterward.
+                #echo "pasuspender is active"
+                pasuspender -- sleep 5 &
+        fi
+}
+
+function reset() {
+        # if command-line option reset is given
+        # check if we have add a timeout to pasuspender, if so, exit here.
+        if [[ "$p"  =~ "sleep" ]]; then
+                #echo "pasuspender is active"
+                exit 0
+        else
+                # fetch the previous saved pulse audio ports and set them back
+                # as default ports for pulseaudio. Done.
+                sink=`cat /tmp/pasinkj`
+                source=`cat /tmp/pasourcej`
+                pacmd set-default-sink $sink
+                pacmd set-default-source $source
+                #echo "pasuspender is NOT active"
+        fi
+}
+
+# check for given command-line option
+case "$1" in
+        restart)
+                restart
+                ;;
+        start)
+                start
+                ;;
+        stop)
+                stop
+                ;;
+        reset)
+                reset
+                ;;
+        *)
+                echo $"Usage:\n\t $0 {restart|start|stop|reset}\n"
+                exit 1
+esac
+
+exit 0

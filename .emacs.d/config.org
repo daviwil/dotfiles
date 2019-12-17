@@ -832,6 +832,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
         ("teams-for-linux" (exwm-workspace-move-window 3))
         ("Spotify" (exwm-workspace-move-window 4))
         ("Vimb" (exwm-workspace-move-window 2))
+        ("qjackctl" (exwm-floating-toggle-floating))
         ("mpv" (exwm-floating-toggle-floating)
                (dw/exwm-floating-toggle-pinned))))
 

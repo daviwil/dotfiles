@@ -1,0 +1,5 @@
+https://github.com/jackaudio/jackaudio.github.com/wiki/WalkThrough_User_PulseOnJack
+https://lists.gnu.org/archive/html/guix-devel/2016-10/msg00479.html
+https://forum.manjaro.org/t/how-to-replace-pulseaudio-with-jack-jack-and-pulseaudio-together-as-friend/2086
+https://wiki.archlinux.org/index.php/JACK_Audio_Connection_Kit
+https://github.com/brummer10/pajackconnect/blob/master/pajackconnect
