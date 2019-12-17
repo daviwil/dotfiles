@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ardour>
+  <Config>
+    <Option name="auto-connect-standard-busses" value="1"/>
+    <Option name="output-auto-connect" value="AutoConnectMaster"/>
+    <Option name="input-auto-connect" value="AutoConnectPhysical"/>
+    <Option name="strict-io" value="1"/>
+    <Option name="tracks-auto-naming" value="UseDefaultNames"/>
+    <Option name="trace-midi-input" value="0"/>
+    <Option name="trace-midi-output" value="0"/>
+    <Option name="send-mtc" value="0"/>
+    <Option name="send-mmc" value="1"/>
+    <Option name="send-midi-clock" value="0"/>
+    <Option name="mmc-control" value="1"/>
+    <Option name="midi-feedback" value="0"/>
+    <Option name="mmc-receive-device-id" value="127"/>
+    <Option name="mmc-send-device-id" value="0"/>
+    <Option name="initial-program-change" value="-1"/>
+    <Option name="display-first-midi-bank-as-zero" value="0"/>
+    <Option name="inter-scene-gap-frames" value="1"/>
+    <Option name="midi-input-follows-selection" value="1"/>
+    <Option name="mtc-qf-speed-tolerance" value="5"/>
+    <Option name="timecode-sync-frame-rate" value="1"/>
+    <Option name="timecode-source-is-synced" value="0"/>
+    <Option name="timecode-source-2997" value="0"/>
+    <Option name="sync-source" value="JACK"/>
+    <Option name="ltc-source-port" value="system:capture_1"/>
+    <Option name="send-ltc" value="0"/>
+    <Option name="ltc-send-continuously" value="1"/>
+    <Option name="ltc-output-port" value=""/>
+    <Option name="ltc-output-volume" value="0.1258929967880249"/>
+    <Option name="feedback-interval-ms" value="100"/>
+    <Option name="use-tranzport" value="0"/>
+    <Option name="minimum-disk-read-bytes" value="262144"/>
+    <Option name="minimum-disk-write-bytes" value="262144"/>
+    <Option name="midi-readahead" value="1"/>
+    <Option name="buffering-preset" value="Medium"/>
+    <Option name="capture-buffer-seconds" value="10"/>
+    <Option name="playback-buffer-seconds" value="10"/>
+    <Option name="midi-track-buffer-seconds" value="1"/>
+    <Option name="disk-choice-space-threshold" value="57600000"/>
+    <Option name="auto-analyse-audio" value="0"/>
+    <Option name="transient-sensitivity" value="50"/>
+    <Option name="osc-port" value="3819"/>
+    <Option name="use-osc" value="0"/>
+    <Option name="layer-model" value="Manual"/>
+    <Option name="automation-follows-regions" value="1"/>
+    <Option name="region-boundaries-from-selected-tracks" value="1"/>
+    <Option name="region-boundaries-from-onscreen_tracks" value="1"/>
+    <Option name="default-fade-shape" value="FadeLinear"/>
+    <Option name="region-selection-after-split" value="None"/>
+    <Option name="mute-affects-pre-fader" value="0"/>
+    <Option name="mute-affects-post-fader" value="1"/>
+    <Option name="mute-affects-control-outs" value="1"/>
+    <Option name="mute-affects-main-outs" value="1"/>
+    <Option name="monitoring-model" value="SoftwareMonitoring"/>
+    <Option name="listen-position" value="AfterFaderListen"/>
+    <Option name="pfl-position" value="PFLFromAfterProcessors"/>
+    <Option name="afl-position" value="AFLFromAfterProcessors"/>
+    <Option name="use-monitor-bus" value="0"/>
+    <Option name="solo-control-is-listen-control" value="0"/>
+    <Option name="exclusive-solo" value="0"/>
+    <Option name="latched-record-enable" value="0"/>
+    <Option name="all-safe" value="0"/>
+    <Option name="show-solo-mutes" value="1"/>
+    <Option name="solo-mute-override" value="0"/>
+    <Option name="tape-machine-mode" value="0"/>
+    <Option name="solo-mute-gain" value="0"/>
+    <Option name="monitor-bus-preferred-bundle" value=""/>
+    <Option name="quieten-at-speed" value="1"/>
+    <Option name="link-send-and-route-panner" value="1"/>
+    <Option name="midi-audition-synth-uri" value="https://community.ardour.org/node/7596"/>
+    <Option name="clicking" value="0"/>
+    <Option name="click-record-only" value="0"/>
+    <Option name="click-sound" value=""/>
+    <Option name="click-emphasis-sound" value=""/>
+    <Option name="click-gain" value="1"/>
+    <Option name="use-click-emphasis" value="1"/>
+    <Option name="skip-playback" value="1"/>
+    <Option name="plugins-stop-with-transport" value="0"/>
+    <Option name="stop-recording-on-xrun" value="0"/>
+    <Option name="create-xrun-marker" value="1"/>
+    <Option name="stop-at-session-end" value="0"/>
+    <Option name="seamless-loop" value="0"/>
+    <Option name="preroll-seconds" value="1"/>
+    <Option name="loop-is-mode" value="0"/>
+    <Option name="preroll" value="0"/>
+    <Option name="postroll" value="0"/>
+    <Option name="rf-speed" value="2"/>
+    <Option name="shuttle-speed-factor" value="1"/>
+    <Option name="shuttle-speed-threshold" value="5"/>
+    <Option name="shuttle-behaviour" value="Sprung"/>
+    <Option name="shuttle-units" value="Percentage"/>
+    <Option name="shuttle-max-speed" value="8"/>
+    <Option name="locate-while-waiting-for-sync" value="0"/>
+    <Option name="disable-disarm-during-roll" value="0"/>
+    <Option name="auto-return-target-list" value="LastLocate,RangeSelectionStart,Loop,RegionSelectionStart"/>
+    <Option name="meter-falloff" value="13.300000190734863"/>
+    <Option name="meter-type-master" value="MeterK20"/>
+    <Option name="meter-type-track" value="MeterPeak"/>
+    <Option name="meter-type-bus" value="MeterPeak"/>
+    <Option name="try-autostart-engine" value="0"/>
+    <Option name="hide-dummy-backend" value="1"/>
+    <Option name="copy-demo-sessions" value="1"/>
+    <Option name="auditioner-output-left" value="default"/>
+    <Option name="auditioner-output-right" value="default"/>
+    <Option name="replicate-missing-region-channels" value="0"/>
+    <Option name="hiding-groups-deactivates-groups" value="1"/>
+    <Option name="verify-remove-last-capture" value="1"/>
+    <Option name="save-history" value="1"/>
+    <Option name="save-history-depth" value="20"/>
+    <Option name="history-depth" value="20"/>
+    <Option name="use-overlap-equivalency" value="0"/>
+    <Option name="periodic-safety-backups" value="1"/>
+    <Option name="periodic-safety-backup-interval" value="120"/>
+    <Option name="automation-interval-msecs" value="30"/>
+    <Option name="default-session-parent-dir" value="/home/daviwil/Projects/Music"/>
+    <Option name="allow-special-bus-removal" value="0"/>
+    <Option name="processor-usage" value="-1"/>
+    <Option name="max-gain" value="2"/>
+    <Option name="max-recent-sessions" value="10"/>
+    <Option name="max-recent-templates" value="10"/>
+    <Option name="automation-thinning-factor" value="20"/>
+    <Option name="freesound-download-dir" value="/home/daviwil/Freesound/snd"/>
+    <Option name="range-location-minimum" value="128"/>
+    <Option name="edit-mode" value="Slide"/>
+    <Option name="new-plugins-active" value="1"/>
+    <Option name="use-plugin-own-gui" value="1"/>
+    <Option name="use-windows-vst" value="1"/>
+    <Option name="use-lxvst" value="1"/>
+    <Option name="use-macvst" value="1"/>
+    <Option name="discover-vst-on-start" value="0"/>
+    <Option name="verbose-plugin-scan" value="0"/>
+    <Option name="vst-scan-timeout" value="1200"/>
+    <Option name="discover-audio-units" value="0"/>
+    <Option name="ask-replace-instrument" value="1"/>
+    <Option name="ask-setup-instrument" value="1"/>
+    <Option name="plugin-path-vst" value="/usr/local/lib/vst:/usr/lib/vst"/>
+    <Option name="plugin-path-lxvst" value="/usr/local/lib64/lxvst:/usr/local/lib/lxvst:/usr/lib64/lxvst:/usr/lib/lxvst:/usr/local/lib64/linux_vst:/usr/local/lib/linux_vst:/usr/lib64/linux_vst:/usr/lib/linux_vst:/usr/lib/vst:/usr/local/lib/vst"/>
+    <Option name="denormal-protection" value="0"/>
+    <Option name="denormal-model" value="DenormalFTZDAZ"/>
+    <Option name="osx-pingback-url" value="http://community.ardour.org/pingback/osx/"/>
+    <Option name="linux-pingback-url" value="http://community.ardour.org/pingback/linux/"/>
+    <Option name="windows-pingback-url" value="http://community.ardour.org/pingback/windows/"/>
+    <Option name="tutorial-manual-url" value="http://ardour.org/tutorial"/>
+    <Option name="reference-manual-url" value="http://manual.ardour.org/"/>
+    <Option name="updates-url" value="http://ardour.org/whatsnew.html"/>
+    <Option name="donate-url" value="http://ardour.org/donate"/>
+    <Option name="video-advanced-setup" value="0"/>
+    <Option name="video-server-url" value="http://127.0.0.1:1554"/>
+    <Option name="video-server-docroot" value="/"/>
+    <Option name="show-video-export-info" value="1"/>
+    <Option name="show-video-server-dialog" value="0"/>
+    <Option name="export-preroll" value="10"/>
+    <Option name="export-silence-threshold" value="-inf"/>
+  </Config>
+  <Metadata/>
+  <Extra>
+    <Keyboard copy-modifier="4" edit-button="3" edit-modifier="4" delete-button="3" delete-modifier="1" snap-modifier="8" snap-delta-modifier="67108936" insert-note-button="1" insert-note-modifier="4" constraint-modifier="1" trim-contents-modifier="4" trim-overlap-modifier="1" trim-anchored-modifier="5" fine-adjust-modifier="12" push-points-modifier="67108932" note-size-relative-modifier="1"/>
+    <UI status-bar="WallClock,Disk,DSP,Buffers,Audio,TCFormat,Format">
+      <Window name="key-editor" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="session-options-editor" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="speaker-config" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="about" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="add-routes" visible="0" x-off="-1" y-off="-1" x-size="1340" y-size="629"/>
+      <Window name="add-video" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="inspector" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="audio-midi-setup" visible="0" x-off="0" y-off="764" x-size="1207" y-size="591"/>
+      <Window name="video-export" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="script-manager" visible="0" x-off="0" y-off="957" x-size="752" y-size="640"/>
+      <Window name="bundle-manager" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="locations" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="big-clock" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="audio-connection-manager" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="midi-connection-manager" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="idle-o-meter" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="RPM-1014" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-1014-1045" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-1014-1044" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-1014-1046" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-1014-1047" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="PM-1045-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-1044-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-1046-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-1047-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="RPM-1220" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-1220-1250" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-1220-1252" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-1220-1253" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="PM-1250-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-1252-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-1253-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-1220-1546" visible="0" x-off="0" y-off="833" x-size="1156" y-size="453" custom-ui="1"/>
+      <Window name="PM-1546-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="RPM-1575" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-1575-1606" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-1575-1605" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-1575-1607" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-1575-1608" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="PM-1606-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-1605-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-1607-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-1608-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="RPM-1707" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-1707-1737" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-1707-1739" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-1707-1740" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="PM-1737-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-1739-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-1740-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-1707-1795" visible="0" x-off="0" y-off="821" x-size="829" y-size="477" custom-ui="1"/>
+      <Window name="PM-1795-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-1220-1801" visible="0" x-off="0" y-off="1021" x-size="1350" y-size="77" custom-ui="1"/>
+      <Window name="PM-1801-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-1575-2126" visible="1" x-off="224" y-off="1116" x-size="1460" y-size="253" custom-ui="1"/>
+      <Window name="PM-2126-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="RPM-2155" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-2155-2186" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-2155-2185" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-2155-2187" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="P-2155-2188" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" custom-ui="1"/>
+      <Window name="PM-2186-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-2185-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-2187-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="PM-2188-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-2155-2287" visible="0" x-off="0" y-off="784" x-size="1134" y-size="551" custom-ui="1"/>
+      <Window name="PM-2287-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-2155-2314" visible="0" x-off="0" y-off="784" x-size="1256" y-size="551" custom-ui="1"/>
+      <Window name="PM-2314-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-2155-2341" visible="0" x-off="0" y-off="833" x-size="1154" y-size="453" custom-ui="1"/>
+      <Window name="PM-2341-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-2155-2370" visible="0" x-off="0" y-off="657" x-size="1289" y-size="805" custom-ui="0"/>
+      <Window name="PM-2370-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-1575-2401" visible="1" x-off="2043" y-off="617" x-size="946" y-size="331" custom-ui="1"/>
+      <Window name="PM-2401-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-1575-2412" visible="1" x-off="1900" y-off="1018" x-size="944" y-size="361" custom-ui="1"/>
+      <Window name="PM-2412-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="P-1575-2419" visible="1" x-off="1531" y-off="824" x-size="944" y-size="292" custom-ui="1"/>
+      <Window name="PM-2419-" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Tearoffs/>
+    </UI>
+    <AudioMIDISetup/>
+  </Extra>
+  <ControlProtocols>
+    <Protocol name="Ableton Push 2" active="0"/>
+    <Protocol name="Steinberg CC121" active="0"/>
+    <Protocol name="PreSonus FaderPort8" active="0"/>
+    <Protocol name="Generic MIDI" active="0"/>
+    <Protocol name="PreSonus FaderPort" active="0"/>
+    <Protocol name="Mackie" active="0"/>
+    <Protocol name="Open Sound Control (OSC)" active="0"/>
+  </ControlProtocols>
+</Ardour>

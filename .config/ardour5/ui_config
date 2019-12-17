@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ardour>
+  <UI>
+    <Option name="icon-set" value="default"/>
+    <Option name="ui-rc-file" value="clearlooks.rc"/>
+    <Option name="color-file" value="unastudia"/>
+    <Option name="flat-buttons" value="1"/>
+    <Option name="blink-rec-arm" value="0"/>
+    <Option name="blink-alert-indicators" value="1"/>
+    <Option name="waveform-gradient-depth" value="0"/>
+    <Option name="timeline-item-gradient-depth" value="0.5"/>
+    <Option name="all-floating-windows-are-dialogs" value="0"/>
+    <Option name="floating-monitor-section" value="0"/>
+    <Option name="transients-follow-front" value="0"/>
+    <Option name="color-regions-using-track-color" value="1"/>
+    <Option name="show-waveform-clipping" value="1"/>
+    <Option name="lock-gui-after-seconds" value="0"/>
+    <Option name="draggable-playhead" value="1"/>
+    <Option name="draggable-playhead-speed" value="1"/>
+    <Option name="extra-ui-extents-time" value="1"/>
+    <Option name="new-automation-points-on-lane" value="0"/>
+    <Option name="keyboard-layout" value="ansi"/>
+    <Option name="keyboard-layout-name" value="ansi"/>
+    <Option name="default-bindings" value="ardour"/>
+    <Option name="only-copy-imported-files" value="0"/>
+    <Option name="autoplay-files" value="0"/>
+    <Option name="default-narrow_ms" value="0"/>
+    <Option name="name-new-markers" value="0"/>
+    <Option name="rubberbanding-snaps-to-grid" value="0"/>
+    <Option name="font-scale" value="256000"/>
+    <Option name="show-waveforms" value="1"/>
+    <Option name="show-waveforms-while-recording" value="1"/>
+    <Option name="waveform-scale" value="Linear"/>
+    <Option name="waveform-shape" value="Traditional"/>
+    <Option name="update-editor-during-summary-drag" value="1"/>
+    <Option name="never-display-periodic-midi" value="1"/>
+    <Option name="sound-midi-notes" value="1"/>
+    <Option name="show-plugin-scan-window" value="0"/>
+    <Option name="show-zoom-tools" value="1"/>
+    <Option name="use-mouse-position-as-zoom-focus-on-scroll" value="1"/>
+    <Option name="use-time-rulers-to-zoom-with-vertical-drag" value="0"/>
+    <Option name="use-double-click-to-zoom-to-selection" value="0"/>
+    <Option name="widget-prelight" value="1"/>
+    <Option name="use-tooltips" value="1"/>
+    <Option name="mixer-element-visibility" value="Input,PhaseInvert,RecMon,SoloIsoLock,Output,Comments"/>
+    <Option name="allow-non-quarter-pulse" value="0"/>
+    <Option name="show-region-gain" value="0"/>
+    <Option name="show-name-highlight" value="0"/>
+    <Option name="primary-clock-delta-edit-cursor" value="0"/>
+    <Option name="secondary-clock-delta-edit-cursor" value="0"/>
+    <Option name="clock-display-limit" value="2592000"/>
+    <Option name="show-track-meters" value="1"/>
+    <Option name="editor-stereo-only-meters" value="0"/>
+    <Option name="follow-edits" value="0"/>
+    <Option name="super-rapid-clock-update" value="0"/>
+    <Option name="autoscroll-editor" value="1"/>
+    <Option name="link-region-and-track-selection" value="0"/>
+    <Option name="meter-hold" value="100"/>
+    <Option name="meter-vu-standard" value="MeteringVUstandard"/>
+    <Option name="meter-line-up-level" value="MeteringLineUp18"/>
+    <Option name="meter-line-up-din" value="MeteringLineUp15"/>
+    <Option name="meter-peak" value="0"/>
+    <Option name="meter-style-led" value="0"/>
+    <Option name="show-editor-meter" value="1"/>
+    <Option name="show-toolbar-recpunch" value="1"/>
+    <Option name="show-toolbar-monitoring" value="0"/>
+    <Option name="show-toolbar-selclock" value="0"/>
+    <Option name="show-mini-timeline" value="1"/>
+    <Option name="show-secondary-clock" value="1"/>
+    <Option name="waveform-clip-level" value="-0.093396699999999999"/>
+    <Option name="hiding-groups-deactivates-groups" value="1"/>
+    <Option name="no-new-session-dialog" value="1"/>
+    <Option name="buggy-gradients" value="0"/>
+    <Option name="cairo-image-surface" value="0"/>
+    <Option name="waveform-cache-size" value="100"/>
+    <Option name="recent-session-sort" value="1"/>
+    <Option name="save-export-analysis-image" value="0"/>
+    <Option name="xjadeo-binary" value=""/>
+    <Option name="open-gui-after-adding-plugin" value="1"/>
+    <Option name="show-inline-display-by-default" value="1"/>
+    <Option name="prefer-inline-over-gui" value="1"/>
+    <Option name="action-table-columns" value="0"/>
+    <Option name="use-wm-visibility" value="1"/>
+    <Option name="stripable-color-palette" value="#AA3939:#FFAAAA:#D46A6A:#801515:#550000:#AA8E39:#FFEAAA:#D4BA6A:#806515:#554000:#343477:#8080B3:#565695:#1A1A59:#09093B:#2D882D:#88CC88:#55AA55:#116611:#004400"/>
+  </UI>
+  <Canvas>
+    <Option name="small font" value=" 7"/>
+    <Option name="smaller font" value=" 6"/>
+    <Option name="normal font" value=" 8"/>
+    <Option name="big font" value=" 11"/>
+    <Option name="large font" value=" 14.5"/>
+    <Option name="larger font" value=" 19"/>
+    <Option name="huger font" value=" 27"/>
+    <Option name="massive font" value=" 48"/>
+    <Option name="small bold font" value="bold  7"/>
+    <Option name="smaller bold font" value="bold  6"/>
+    <Option name="normal bold font" value="bold  8"/>
+    <Option name="big bold font" value="bold  11"/>
+    <Option name="large bold font" value="bold  14.5"/>
+    <Option name="larger bold font" value="bold  19"/>
+    <Option name="huger bold font" value="bold  27"/>
+    <Option name="massive bold font" value="bold  48"/>
+    <Option name="small italic font" value="italic  7"/>
+    <Option name="smaller italic font" value="italic  6"/>
+    <Option name="normal italic font" value="italic  8"/>
+    <Option name="big italic font" value="italic  11"/>
+    <Option name="large italic font" value="italic  14.5"/>
+    <Option name="larger italic font" value="italic  19"/>
+    <Option name="huger italic font" value="italic  27"/>
+    <Option name="massive italic font" value="italic  48"/>
+    <Option name="small monospace font" value="ArdourMono  7"/>
+    <Option name="smaller monospace font" value="ArdourMono  6"/>
+    <Option name="normal monospace font" value="ArdourMono  8"/>
+    <Option name="big monospace font" value="ArdourMono  11"/>
+    <Option name="large monospace font" value="ArdourMono  14.5"/>
+    <Option name="larger monospace font" value="ArdourMono  19"/>
+    <Option name="huger monospace font" value="ArdourMono  27"/>
+    <Option name="massive monospace font" value="ArdourMono  48"/>
+    <Option name="small bold monospace font" value="bold ArdourMono  7"/>
+    <Option name="smaller bold monospace font" value="bold ArdourMono  6"/>
+    <Option name="normal bold monospace font" value="bold ArdourMono  8"/>
+    <Option name="big bold monospace font" value="bold ArdourMono  11"/>
+    <Option name="large bold monospace font" value="bold ArdourMono  14.5"/>
+    <Option name="larger bold monospace font" value="bold ArdourMono  19"/>
+    <Option name="huger bold monospace font" value="bold ArdourMono  27"/>
+    <Option name="massive bold monospace font" value="bold ArdourMono  48"/>
+  </Canvas>
+</Ardour>
