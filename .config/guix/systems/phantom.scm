@@ -6,9 +6,14 @@
  (inherit base-operating-system)
  (host-name "phantom")
 
+ ;; The nouveau driver crashes the machine, need to investigate.
+ ;; Probably needs PCI-e power management turned off.
+ (kernel-arguments
+    '("modprobe.blacklist=nouveau"))
+
  (mapped-devices
   (list (mapped-device
-         (source (uuid "eaba53d9-d7e5-4129-82c8-df28bfe6527e"))
+         (source (uuid "091b8ad5-efb3-4c5b-8370-7db99c404a30"))
          (target "system-root")
          (type luks-device-mapping))))
 
@@ -19,7 +24,7 @@
                  (type "ext4")
                  (dependencies mapped-devices))
                 (file-system
-                 (device "/dev/nvme0n1p2")
+                 (device "/dev/nvme0n1p1")
                  (mount-point "/boot/efi")
                  (type "vfat"))
                 %base-file-systems)))

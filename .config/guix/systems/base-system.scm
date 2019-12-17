@@ -113,11 +113,16 @@ EndSection
                                           "tty"
                                           "input"
                                           "docker"
+                                          "realtime"  ;; Enable realtime scheduling
                                           "lp"        ;; control bluetooth devices
                                           "audio"     ;; control audio devices
                                           "video")))  ;; control video devices
 
                  %base-user-accounts))
+
+    ;; Add the 'realtime' group
+    (groups (cons (user-group (system? #t) (name "realtime"))
+                  %base-groups))
 
     ;; Install bare-minimum system packages
     (packages (append (list
@@ -150,6 +155,10 @@ EndSection
                              (tlp-configuration
                                 (cpu-boost-on-ac? #t)
                                 (wifi-pwr-on-bat? #t)))
+                    (pam-limits-service ;; This enables JACK to enter realtime mode
+                     (list
+                      (pam-limits-entry "@realtime" 'both 'rtprio 99)
+                      (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
                     (service thermald-service-type)
                     (service docker-service-type)
                     (bluetooth-service #:auto-enable? #t)
