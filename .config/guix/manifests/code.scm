@@ -4,7 +4,6 @@
 (specifications->manifest
  '("node"
    "python2"
-   "sbcl"
    "docker-cli"
    "gcc-toolchain"
    "curl"))
