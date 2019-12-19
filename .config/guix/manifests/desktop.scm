@@ -5,10 +5,6 @@
  '(;; Browsers
    "vimb"
 
-   ;; Communication
-   "pidgin"
-   "telegram-purple"
-
    ;; Syncthing
    "syncthing"
    "qsyncthingtray"
