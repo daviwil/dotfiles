@@ -84,4 +84,5 @@
    "emacs-all-the-icons-dired"
    "emacs-doom-modeline"
    "emacs-openwith"
+   "emacs-tracking"
    "emacs-telega"))
