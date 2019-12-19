@@ -2,7 +2,6 @@
 
 (specifications->manifest
  '("emacs"
-   "font-fira-code" ;; Needed temporarily due to Emacs font issues
    "emacs-use-package"
    "emacs-exwm"
    "emacs-evil"
