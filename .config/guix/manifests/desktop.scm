@@ -76,6 +76,7 @@
    "hicolor-icon-theme"
    "gnome-icon-theme"
    "gnome-backgrounds"
+   "papirus-icon-theme"
 
    ;; Authentication
    "password-store"
