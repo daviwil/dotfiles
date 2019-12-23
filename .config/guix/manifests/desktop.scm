@@ -80,7 +80,6 @@
 
    ;; Authentication
    "password-store"
-   "pinentry-emacs"
 
    ;; Containerized Applications
    "flatpak"  ;; For Teams and Spotify

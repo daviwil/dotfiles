@@ -23,6 +23,7 @@
    "the-silver-searcher" ;; For counsel-ag
    "emacs-counsel-projectile"
    "emacs-pinentry"
+   "pinentry-emacs"
    "emacs-parinfer-mode"
    "emacs-default-text-scale"
    "emacs-expand-region"
