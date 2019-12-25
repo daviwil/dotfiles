@@ -9,7 +9,7 @@ if [[ $# -eq 0 ]]; then
     profiles="$GUIX_EXTRA_PROFILES/*";
 fi
 
-for profile in "$GUIX_EXTRA_PROFILES"/*; do
+for profile in $profiles; do
   profileName=$(basename $profile)
   profilePath=$GUIX_EXTRA_PROFILES/$profileName
 
