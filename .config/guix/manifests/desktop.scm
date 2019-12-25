@@ -86,6 +86,7 @@
 
    ;; Media Players
    "mpv"
+   "mpv-mpris"
    "youtube-dl"
    "playerctl"
 
