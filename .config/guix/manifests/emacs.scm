@@ -83,6 +83,7 @@
    "emacs-all-the-icons"
    "emacs-all-the-icons-dired"
    "emacs-doom-modeline"
+   "emacs-smart-mode-line"
    "emacs-openwith"
    "emacs-tracking"
    "emacs-telega"))
