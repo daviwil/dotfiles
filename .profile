@@ -31,6 +31,9 @@ export CC="gcc"
 # Make Flatpak apps visible to launcher
 export XDG_DATA_DIRS="$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share"
 
+# Ensure that font folders are loaded correctly
+xset +fp $(dirname $(readlink -f ~/.guix-extra-profiles/desktop/desktop/share/fonts/truetype/fonts.dir))
+
 # We're in Emacs, yo
 export VISUAL=emacsclient
 export EDITOR="$VISUAL"
