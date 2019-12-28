@@ -5,6 +5,7 @@
  '("node"
    "python2"
    "docker-cli"
+   "icedtea"
    "gcc-toolchain"
    "curl"))
    ;; "glibc" ;; For ldd
