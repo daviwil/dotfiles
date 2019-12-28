@@ -1,6 +1,10 @@
 # Augment PATH
 export PATH="$HOME/.bin:$HOME/.npm-global/bin:$PATH"
 
+# Load the default Guix profile
+GUIX_PROFILE="$HOME/.guix-profile"
+. "$GUIX_PROFILE"/etc/profile
+
 # Load additional Guix profiles
 GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles
 for i in $GUIX_EXTRA_PROFILES/*; do
