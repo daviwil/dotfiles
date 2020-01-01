@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Route id="3724" name="Lead Guitar" default-type="audio" strict-io="1" active="1" denormal-protection="0" meter-point="MeterInput" meter-type="MeterPeak" saved-meter-point="MeterPostFader" mode="Normal">
+  <PresentationInfo order="4" flags="AudioTrack,OrderSet" color="1927644159" name="Lead Guitar"/>
+  <Controllable name="solo" id="3691" flags="Toggle,RealTime" value="0" self-solo="0" soloed-by-upstream="0" soloed-by-downstream="0"/>
+  <Controllable name="solo-iso" id="3842" flags="Toggle,RealTime" value="0" solo-isolated="0"/>
+  <Controllable name="solo-safe" id="3843" flags="Toggle" value="0" solo-safe="0"/>
+  <IO name="Metal Guitar 1" id="3725" direction="Input" default-type="audio" user-latency="0">
+    <Port type="audio" name="Metal Guitar 1/audio_in 1">
+      <Connection other="system:capture_2"/>
+    </Port>
+  </IO>
+  <IO name="Metal Guitar 1" id="3726" direction="Output" default-type="audio" user-latency="0">
+    <Port type="audio" name="Metal Guitar 1/audio_out 1">
+      <Connection other="Master/audio_in 1"/>
+    </Port>
+    <Port type="audio" name="Metal Guitar 1/audio_out 2">
+      <Connection other="Master/audio_in 2"/>
+    </Port>
+  </IO>
+  <MuteMaster mute-point="PostFader,Listen,Main" muted="0"/>
+  <Controllable name="mute" id="3844" flags="Toggle,RealTime" value="0"/>
+  <Controllable name="phase" id="3845" flags="Toggle" value="0" phase-invert="0"/>
+  <Pannable>
+    <Controllable name="pan-azimuth" id="3832" flags="" value="0.5"/>
+    <Controllable name="pan-width" id="3833" flags="" value="0"/>
+    <Controllable name="pan-elevation" id="3834" flags="" value="0"/>
+    <Controllable name="pan-frontback" id="3835" flags="" value="0"/>
+    <Controllable name="pan-lfe" id="3836" flags="" value="0"/>
+    <Automation>
+      <AutomationList automation-id="pan-azimuth" id="3837" interpolation-style="Linear" state="Off"/>
+      <AutomationList automation-id="pan-elevation" id="3838" interpolation-style="Linear" state="Off"/>
+      <AutomationList automation-id="pan-width" id="3839" interpolation-style="Linear" state="Off"/>
+      <AutomationList automation-id="pan-frontback" id="3840" interpolation-style="Linear" state="Off"/>
+      <AutomationList automation-id="pan-lfe" id="3841" interpolation-style="Linear" state="Off"/>
+    </Automation>
+  </Pannable>
+  <Processor id="3738" name="Amp" active="1" user-latency="0" type="trim">
+    <Controllable name="trimcontrol" id="3739" flags="GainLike" value="1"/>
+  </Processor>
+  <Processor id="3829" name="meter-Audio" active="1" user-latency="0" type="meter"/>
+  <Processor id="3776" name="Calf Gate" active="0" user-latency="0" type="lv2" unique-id="http://calf.sourceforge.net/plugins/Gate" count="1" custom="0">
+    <ConfiguredInput>
+      <Channels type="audio" count="1"/>
+    </ConfiguredInput>
+    <CustomSinks>
+      <Channels type="audio" count="2"/>
+      <Channels type="midi" count="1"/>
+    </CustomSinks>
+    <ConfiguredOutput>
+      <Channels type="audio" count="1"/>
+    </ConfiguredOutput>
+    <PresetOutput/>
+    <InputMap-0>
+      <Channelmap type="audio" from="0" to="0"/>
+    </InputMap-0>
+    <OutputMap-0>
+      <Channelmap type="audio" from="0" to="0"/>
+    </OutputMap-0>
+    <ThruMap/>
+    <lv2 last-preset-uri="" last-preset-label="" parameter-changed-since-last-preset="1" template-dir="/home/daviwil/.config/ardour5/route_templates/Lead Guitar">
+      <Port symbol="bypass" value="0"/>
+      <Port symbol="level_in" value="1"/>
+      <Port symbol="range" value="0.0064828940667212009"/>
+      <Port symbol="threshold" value="0.125"/>
+      <Port symbol="ratio" value="2"/>
+      <Port symbol="attack" value="20"/>
+      <Port symbol="release" value="449.14794921875"/>
+      <Port symbol="makeup" value="1.6748130321502686"/>
+      <Port symbol="knee" value="2.8284299373626709"/>
+      <Port symbol="detection" value="0"/>
+      <Port symbol="stereo_link" value="0"/>
+    </lv2>
+    <Controllable name="Bypass" id="3765" flags="Toggle" value="0" parameter="4" symbol="bypass"/>
+    <Controllable name="Input" id="3766" flags="" value="1" parameter="5" symbol="level_in"/>
+    <Controllable name="Max Gain Reduction" id="3767" flags="" value="0.0064828940667212009" parameter="10" symbol="range"/>
+    <Controllable name="Threshold" id="3768" flags="" value="0.125" parameter="11" symbol="threshold"/>
+    <Controllable name="Ratio" id="3769" flags="" value="2" parameter="12" symbol="ratio"/>
+    <Controllable name="Attack" id="3770" flags="" value="20" parameter="13" symbol="attack"/>
+    <Controllable name="Release" id="3771" flags="" value="449.14794921875" parameter="14" symbol="release"/>
+    <Controllable name="Makeup Gain" id="3772" flags="" value="1.6748130321502686" parameter="15" symbol="makeup"/>
+    <Controllable name="Knee" id="3773" flags="" value="2.8284299373626709" parameter="16" symbol="knee"/>
+    <Controllable name="Detection" id="3774" flags="" value="0" parameter="17" symbol="detection"/>
+    <Controllable name="Stereo Link" id="3775" flags="" value="0" parameter="18" symbol="stereo_link"/>
+  </Processor>
+  <Processor id="3786" name="GxMXR Distortion" active="1" user-latency="0" type="lv2" unique-id="http://guitarix.sourceforge.net/plugins/gx_mxrdist_#_mxrdist_" count="1" custom="0">
+    <ConfiguredInput>
+      <Channels type="audio" count="1"/>
+    </ConfiguredInput>
+    <CustomSinks>
+      <Channels type="audio" count="1"/>
+    </CustomSinks>
+    <ConfiguredOutput>
+      <Channels type="audio" count="1"/>
+    </ConfiguredOutput>
+    <PresetOutput/>
+    <InputMap-0>
+      <Channelmap type="audio" from="0" to="0"/>
+    </InputMap-0>
+    <OutputMap-0>
+      <Channelmap type="audio" from="0" to="0"/>
+    </OutputMap-0>
+    <ThruMap/>
+    <lv2 last-preset-uri="" last-preset-label="" parameter-changed-since-last-preset="1" template-dir="/home/daviwil/.config/ardour5/route_templates/Lead Guitar">
+      <Port symbol="VOLUME" value="0.7350001335144043"/>
+      <Port symbol="DRIVE" value="0.8400002121925354"/>
+    </lv2>
+    <Controllable name="VOLUME" id="3784" flags="" value="0.7350001335144043" parameter="2" symbol="VOLUME"/>
+    <Controllable name="DRIVE" id="3785" flags="" value="0.8400002121925354" parameter="3" symbol="DRIVE"/>
+  </Processor>
+  <Processor id="3876" name="GxCompressor" active="1" user-latency="0" type="lv2" unique-id="http://guitarix.sourceforge.net/plugins/gx_compressor#_compressor" count="1" custom="0">
+    <ConfiguredInput>
+      <Channels type="audio" count="1"/>
+    </ConfiguredInput>
+    <CustomSinks>
+      <Channels type="audio" count="1"/>
+    </CustomSinks>
+    <ConfiguredOutput>
+      <Channels type="audio" count="1"/>
+    </ConfiguredOutput>
+    <PresetOutput/>
+    <InputMap-0>
+      <Channelmap type="audio" from="0" to="0"/>
+    </InputMap-0>
+    <OutputMap-0>
+      <Channelmap type="audio" from="0" to="0"/>
+    </OutputMap-0>
+    <ThruMap/>
+    <lv2 last-preset-uri="" last-preset-label="" parameter-changed-since-last-preset="1" template-dir="/home/daviwil/.config/ardour5/route_templates/Lead Guitar">
+      <Port symbol="RATIO" value="19.099998474121094"/>
+      <Port symbol="KNEE" value="1.9999994039535522"/>
+      <Port symbol="THRESHOLD" value="-15.137155532836914"/>
+      <Port symbol="RELEASE" value="8.1500005722045898"/>
+      <Port symbol="ATTACK" value="0.0020000000949949026"/>
+    </lv2>
+    <Controllable name="RATIO" id="3878" flags="" value="19.099998474121094" parameter="0" symbol="RATIO"/>
+    <Controllable name="KNEE" id="3880" flags="" value="1.9999994039535522" parameter="1" symbol="KNEE"/>
+    <Controllable name="THRESHOLD" id="3882" flags="" value="-15.137155532836914" parameter="2" symbol="THRESHOLD"/>
+    <Controllable name="RELEASE" id="3884" flags="" value="8.1500005722045898" parameter="3" symbol="RELEASE"/>
+    <Controllable name="ATTACK" id="3886" flags="" value="0.0020000000949949026" parameter="4" symbol="ATTACK"/>
+  </Processor>
+  <Processor id="3826" name="GxAmplifier-X" active="1" user-latency="0" type="lv2" unique-id="http://guitarix.sourceforge.net/plugins/gx_amp#GUITARIX" count="1" custom="0">
+    <ConfiguredInput>
+      <Channels type="audio" count="1"/>
+    </ConfiguredInput>
+    <CustomSinks>
+      <Channels type="audio" count="1"/>
+    </CustomSinks>
+    <ConfiguredOutput>
+      <Channels type="audio" count="1"/>
+    </ConfiguredOutput>
+    <PresetOutput/>
+    <InputMap-0>
+      <Channelmap type="audio" from="0" to="0"/>
+    </InputMap-0>
+    <OutputMap-0>
+      <Channelmap type="audio" from="0" to="0"/>
+    </OutputMap-0>
+    <ThruMap/>
+    <lv2 last-preset-uri="" last-preset-label="" parameter-changed-since-last-preset="1" template-dir="/home/daviwil/.config/ardour5/route_templates/Lead Guitar">
+      <Port symbol="MasterGain" value="-12.599992752075195"/>
+      <Port symbol="PreGain" value="-1.9971623420715332"/>
+      <Port symbol="Distortion" value="55.449993133544922"/>
+      <Port symbol="Drive" value="1"/>
+      <Port symbol="Middle" value="0.3150000274181366"/>
+      <Port symbol="Bass" value="0.38000005483627319"/>
+      <Port symbol="Treble" value="0.56000030040740967"/>
+      <Port symbol="Cabinet" value="6.959996223449707"/>
+      <Port symbol="Presence" value="7.0256538391113281"/>
+      <Port symbol="model" value="3"/>
+      <Port symbol="t_model" value="9"/>
+      <Port symbol="c_model" value="15"/>
+    </lv2>
+    <Controllable name="MasterGain" id="3814" flags="" value="-12.599992752075195" parameter="0" symbol="MasterGain"/>
+    <Controllable name="PreGain" id="3815" flags="" value="-1.9971623420715332" parameter="1" symbol="PreGain"/>
+    <Controllable name="Distortion" id="3816" flags="" value="55.449993133544922" parameter="2" symbol="Distortion"/>
+    <Controllable name="Drive" id="3817" flags="" value="1" parameter="3" symbol="Drive"/>
+    <Controllable name="Middle" id="3818" flags="" value="0.3150000274181366" parameter="4" symbol="Middle"/>
+    <Controllable name="Bass" id="3819" flags="" value="0.38000005483627319" parameter="5" symbol="Bass"/>
+    <Controllable name="Treble" id="3820" flags="" value="0.56000030040740967" parameter="6" symbol="Treble"/>
+    <Controllable name="Cabinet" id="3821" flags="" value="6.959996223449707" parameter="7" symbol="Cabinet"/>
+    <Controllable name="Presence" id="3822" flags="" value="7.0256538391113281" parameter="8" symbol="Presence"/>
+    <Controllable name="Model" id="3823" flags="" value="3" parameter="9" symbol="model"/>
+    <Controllable name="Tonestack Model" id="3824" flags="" value="9" parameter="10" symbol="t_model"/>
+    <Controllable name="Cab Model" id="3825" flags="" value="15" parameter="11" symbol="c_model"/>
+  </Processor>
+  <Processor id="8440" name="GxReverb-Stereo" active="1" user-latency="0" type="lv2" unique-id="http://guitarix.sourceforge.net/plugins/gx_reverb_stereo#_reverb_stereo" count="1" custom="0">
+    <ConfiguredInput>
+      <Channels type="audio" count="1"/>
+    </ConfiguredInput>
+    <CustomSinks>
+      <Channels type="audio" count="2"/>
+    </CustomSinks>
+    <ConfiguredOutput>
+      <Channels type="audio" count="1"/>
+    </ConfiguredOutput>
+    <PresetOutput/>
+    <InputMap-0>
+      <Channelmap type="audio" from="0" to="0"/>
+    </InputMap-0>
+    <OutputMap-0>
+      <Channelmap type="audio" from="0" to="0"/>
+    </OutputMap-0>
+    <ThruMap/>
+    <lv2 last-preset-uri="" last-preset-label="" parameter-changed-since-last-preset="1" template-dir="/home/daviwil/.config/ardour5/route_templates/Lead Guitar">
+      <Port symbol="dry_wet" value="50"/>
+      <Port symbol="lfo" value="0.20000000298023224"/>
+      <Port symbol="roomsize" value="0.74500000476837158"/>
+      <Port symbol="damp" value="0.5350000262260437"/>
+      <Port symbol="mode" value="0"/>
+    </lv2>
+    <Controllable name="Dry/Wet" id="8442" flags="" value="50" parameter="0" symbol="dry_wet"/>
+    <Controllable name="LFO" id="8444" flags="" value="0.20000000298023224" parameter="1" symbol="lfo"/>
+    <Controllable name="Roomsize" id="8446" flags="" value="0.74500000476837158" parameter="2" symbol="roomsize"/>
+    <Controllable name="Damp" id="8448" flags="" value="0.5350000262260437" parameter="3" symbol="damp"/>
+    <Controllable name="Mode" id="8450" flags="" value="0" parameter="4" symbol="mode"/>
+  </Processor>
+  <Processor id="3827" name="Amp" active="1" user-latency="0" type="amp">
+    <Controllable name="gaincontrol" id="3828" flags="GainLike" value="1"/>
+  </Processor>
+  <Processor id="3830" name="Metal Guitar 1" active="1" user-latency="0" own-input="1" own-output="0" output="Metal Guitar 1" type="main-outs" role="Main">
+    <PannerShell bypassed="0" user-panner="" linked-to-route="1"/>
+    <Pannable>
+      <Controllable name="pan-azimuth" id="3832" flags="" value="0.5"/>
+      <Controllable name="pan-width" id="3833" flags="" value="0"/>
+      <Controllable name="pan-elevation" id="3834" flags="" value="0"/>
+      <Controllable name="pan-frontback" id="3835" flags="" value="0"/>
+      <Controllable name="pan-lfe" id="3836" flags="" value="0"/>
+      <Automation>
+        <AutomationList automation-id="pan-azimuth" id="3837" interpolation-style="Linear" state="Off"/>
+        <AutomationList automation-id="pan-elevation" id="3838" interpolation-style="Linear" state="Off"/>
+        <AutomationList automation-id="pan-width" id="3839" interpolation-style="Linear" state="Off"/>
+        <AutomationList automation-id="pan-frontback" id="3840" interpolation-style="Linear" state="Off"/>
+        <AutomationList automation-id="pan-lfe" id="3841" interpolation-style="Linear" state="Off"/>
+      </Automation>
+    </Pannable>
+  </Processor>
+  <Slavable/>
+  <Controllable name="monitor" id="3850" flags="RealTime" value="0" monitoring=""/>
+  <Controllable name="rec-safe" id="3851" flags="Toggle,RealTime" value="0"/>
+  <Controllable name="rec-enable" id="3852" flags="Toggle,RealTime" value="1"/>
+  <Diskstream flags="Recordable" playlist="Metal Guitar 1.1" name="Metal Guitar 1" id="3847" speed="1" capture-alignment="Automatic" record-safe="0" channels="1"/>
+</Route>
