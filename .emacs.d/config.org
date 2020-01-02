@@ -634,6 +634,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
     ;; Set minibuffer height for different commands
     (setf (alist-get 'counsel-projectile-ag ivy-height-alist) 15)
+    (setf (alist-get 'counsel-projectile-rg ivy-height-alist) 15)
     (setf (alist-get 'swiper ivy-height-alist) 15)
     (setf (alist-get 'counsel-switch-buffer ivy-height-alist) 7))
 
@@ -1685,7 +1686,7 @@ files contained within the repo.  More information at the [[https://github.com/a
   (dw/leader-key-def
     "pf"  'counsel-projectile-find-file
     "ps"  'counsel-projectile-switch-project
-    "pF"  'counsel-projectile-ag
+    "pF"  'counsel-projectile-rg
     "pp"  'counsel-projectile
     "pc"  'projectile-compile-project
     "pd"  'projectile-dired)

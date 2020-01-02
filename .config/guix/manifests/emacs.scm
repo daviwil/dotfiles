@@ -20,7 +20,8 @@
    "emacs-ivy-rich"
    "emacs-flx"
    "emacs-smex"
-   "the-silver-searcher" ;; For counsel-ag
+   "the-silver-searcher" ;; For counsel-projectile-ag
+   "ripgrep" ;; For counsel-projectile-rg
    "emacs-counsel-projectile"
    "emacs-pinentry"
    "pinentry-emacs"
