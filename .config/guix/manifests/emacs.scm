@@ -56,7 +56,7 @@
    "emacs-know-your-http-well"
    "emacs-darkroom"
    "emacs-mu4e-alert"
-   ;;"emacs-calfw"
+   "emacs-calfw"
    "emacs-eshell-z"
    "emacs-esh-autosuggest"
    "emacs-fish-completion"
