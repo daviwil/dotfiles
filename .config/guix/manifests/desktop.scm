@@ -42,7 +42,8 @@
    "gs-fonts"
 
    ;; Document Readers
-   "evince"
+   "zathura"
+   "zathura-pdf-mupdf"
 
    ;; Images and Screenshots
    "feh"
