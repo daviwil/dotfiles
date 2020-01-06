@@ -2089,6 +2089,9 @@ to capture links to emails with org-mode too.
           smtpmail-smtp-service 465
           smtpmail-stream-type  'ssl)
 
+    ;; Signing messages (use mml-secure-sign-pgpmime)
+    (setq mml-secure-openpgp-signers '("53C41E6E41AAFE55335ACA5E446A2ED4D940BF14"))
+
     ;; (See the documentation for `mu4e-sent-messages-behavior' if you have
     ;; additional non-Gmail addresses and want assign them different
     ;; behavior.)
@@ -2183,6 +2186,18 @@ Agenda items.
     "cc"  '(cfw:open-org-calendar :which-key "calendar"))
 
 #+END_SRC
+
+*** Finance
+
+#+begin_src emacs-lisp
+
+(use-package ledger-mode
+  :ensure t
+  :mode "\\.lgr\\'"
+  :bind (:map ledger-mode-map
+              ("TAB" . completion-at-point)))
+
+#+end_src
 
 *** eshell
 
