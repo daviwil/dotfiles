@@ -2,7 +2,8 @@
 set home-page=file:///home/daviwil/.config/vimb/home.html
 
 # Use home-row keys for hints
-#set hint-keys=asdfg;lkjh
+set hint-keys=asdfg;lkjh
+set hint-match-element=false
 set hint-keys-same-length=true
 set hint-timeout=0
 
@@ -17,6 +18,9 @@ set input-autohide=true
 
 # Set the default zoom
 set default-zoom=180
+
+# Hint sites to use dark themes
+set dark-mode=on
 
 # Use Emacs as the external editor
 set editor-command=emacsclient
