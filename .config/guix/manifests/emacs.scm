@@ -87,4 +87,6 @@
    "emacs-smart-mode-line"
    "emacs-openwith"
    "emacs-tracking"
-   "emacs-telega"))
+   "emacs-telega"
+   "ledger"
+   "emacs-ledger-mode"))
