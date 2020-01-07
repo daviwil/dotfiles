@@ -55,6 +55,7 @@ nmap = zz
 shortcut-add dot=https://github.com/daviwil/dotfiles
 shortcut-add mail=https://fastmail.com
 shortcut-add az=https://portal.azure.com
+shortcut-add azdo=https://dev.azure.com/azure-sdk/
 shortcut-add ajs=https://github.com/Azure/azure-sdk-for-js
 shortcut-add dajs=https://github.com/daviwil/azure-sdk-for-js
 shortcut-add anet=https://github.com/Azure/azure-sdk-for-net
@@ -62,6 +63,7 @@ shortcut-add aja=https://github.com/Azure/azure-sdk-for-java
 shortcut-add apy=https://github.com/Azure/azure-sdk-for-python
 shortcut-add ats=https://github.com/Azure/autorest.typescript
 shortcut-add ats3=https://github.com/Azure/autorest.typescript.v3
+shortcut-add ac=https://github.com/Azure/autorest.compare
 shortcut-add specs=https://github.com/Azure/azure-rest-api-specs
 shortcut-add npm=https://www.npmjs.com/search?q=$0
 shortcut-add oms=https://outlook.com/microsoft.com
