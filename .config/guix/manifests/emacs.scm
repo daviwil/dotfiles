@@ -40,6 +40,7 @@
    "emacs-lsp-ui"
    "emacs-cider"
    "emacs-typescript-mode"
+   "emacs-prettier"
    "emacs-js2-mode"
    "emacs-desktop-environment"
    "emacs-rust-mode"
