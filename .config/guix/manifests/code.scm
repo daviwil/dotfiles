@@ -7,5 +7,6 @@
    "docker-cli"
    "icedtea"
    "gcc-toolchain"
+   "make"
    "curl"))
    ;; "glibc" ;; For ldd
