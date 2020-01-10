@@ -389,6 +389,7 @@ anymore if I set up =diminish= correctly.
     (minions-mode-line-lighter ""))
 
   (use-package doom-modeline
+    :if (not dw/is-termux)
     :after eshell     ;; Make sure it gets hooked after eshell
     :hook (after-init . doom-modeline-init)
     :custom
