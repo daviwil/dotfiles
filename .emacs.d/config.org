@@ -1673,15 +1673,19 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 #+BEGIN_SRC emacs-lisp
 
+  (defun dw/path-if-exists (path)
+    (when (file-directory-p path)
+      path))
+
   (use-package projectile
     :diminish projectile-mode
     :config (projectile-global-mode)
     :bind-keymap
     ("C-c p" . projectile-command-map)
     :init
-    (if (string= (window-system) "ns")
-      (setq projectile-project-search-path '("~/Projects/Code" "~/Projects/Work"))
-      (setq projectile-project-search-path '("~/Projects/Code")))
+    (setq projectile-project-search-path
+          `(,(dw/path-if-exists "~/Projects/Code")
+            ,(dw/path-if-exists "~/Projects/Work")))
     (setq projectile-switch-project-action #'projectile-dired))
 
   (use-package counsel-projectile)
