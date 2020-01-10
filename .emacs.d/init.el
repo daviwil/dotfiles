@@ -81,6 +81,7 @@
 
 ;; Enable exwm-randr before exwm-init gets called
 (use-package exwm-randr
+  :if dw/exwm-enabled
   :after (exwm)
   :config
   (exwm-randr-enable)
