@@ -856,6 +856,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
                 (exwm-layout-hide-mode-line))))
 
   (use-package exwm-systemtray
+    :if dw/exwm-enabled
     :after (exwm)
     :config
     (exwm-systemtray-enable)
