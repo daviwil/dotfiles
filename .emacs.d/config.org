@@ -1015,6 +1015,7 @@ tweaking Org agenda views much less annoying.
 #+BEGIN_SRC emacs-lisp
 
   (use-package expand-region
+    :if (not dw/is-termux)
     :bind (("M-[" . er/expand-region)
            ("C-(" . er/mark-outside-pairs)))
 
