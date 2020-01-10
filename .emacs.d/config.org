@@ -1055,6 +1055,7 @@ credentials for mail, etc.
 #+BEGIN_SRC emacs-lisp
 
   (use-package dired
+    :ensure nil
     :defer 1
     :commands (dired dired-jump)
     :config
