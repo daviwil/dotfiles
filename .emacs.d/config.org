@@ -481,6 +481,15 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+end_src
 
+*** TRAMP
+
+#+begin_src emacs-lisp
+
+;; Set default connection mode to SSH
+(setq tramp-default-method "ssh")
+
+#+end_src
+
 ** Editing Configuration
 
 *** Tab Widths
