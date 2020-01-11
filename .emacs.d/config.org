@@ -2407,6 +2407,17 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
 
 #+END_SRC
 
+*** ediff
+
+#+begin_src emacs-lisp
+
+;; Don't let ediff break EXWM, keep it in one frame
+(setq ediff-diff-options "-w"
+      ediff-split-window-function 'split-window-horizontally
+      ediff-window-setup-function 'ediff-setup-windows-plain)
+
+#+end_src
+
 *** Chat
 
 **** Tracking
