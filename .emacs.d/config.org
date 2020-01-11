@@ -2842,6 +2842,16 @@ to set that up.
 
 ** Miscellaneous
 
+*** Debbugs (mainly for Guix)
+
+#+begin_src emacs-lisp
+
+;; TODO: Figure out how to query for 'done' bugs
+(defun dw/debbugs-guix-patches ()
+  (debbugs-gnu '("serious" "important" "normal") "guix-patches" nil t))
+
+#+end_src
+
 *** Emojification
 
 #+BEGIN_SRC emacs-lisp
