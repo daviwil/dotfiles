@@ -14,6 +14,7 @@
    "emacs-forge"
    "emacs-hydra"
    "emacs-avy"
+   "emacs-ace-window"
    "emacs-ivy"
    "emacs-ivy-xref"
    "emacs-ivy-pass"
