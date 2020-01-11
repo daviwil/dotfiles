@@ -335,7 +335,7 @@ anymore if I set up =diminish= correctly.
 #+BEGIN_SRC emacs-lisp
 
   (use-package smart-mode-line
-    :disabled
+    :if dw/is-termux
     :config
     (progn
       (sml/setup)
