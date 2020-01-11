@@ -340,6 +340,7 @@ anymore if I set up =diminish= correctly.
     :if dw/is-termux
     :config
     (progn
+      (setq sml/no-confirm-load-theme t)
       (sml/setup)
       (sml/apply-theme 'respectful)  ; Respect the theme colors
       (setq sml/mode-width 'right
