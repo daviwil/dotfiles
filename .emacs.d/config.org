@@ -1146,6 +1146,7 @@ credentials for mail, etc.
 #+begin_src emacs-lisp
 
   (use-package openwith
+    :if (not dw/is-termux)
     :config
     (setq openwith-associations
       (list
