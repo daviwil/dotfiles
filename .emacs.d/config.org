@@ -288,7 +288,6 @@ Themes to try:
 
 - https://github.com/jordonbiondo/ample-theme
 - https://github.com/gchp/flatland-emacs
-- https://github.com/hlissner/emacs-doom-themes/tree/screenshots
 
 *** Font
 
@@ -1161,10 +1160,6 @@ credentials for mail, etc.
 
 ** Org Mode
 
-[[http://orgmode.org/][Org Mode]] is the best life management system I've ever encountered.  Most of my
-configuration sculpting effort will be poured into making Org Mode handle
-everything in my life.
-
 *** Org Configuration
 
 #+BEGIN_SRC emacs-lisp
@@ -1571,19 +1566,7 @@ documentation page.
 
 *** Addons to Try
 
-- The excellent [[https://github.com/fniessen/org-html-themes][ReadTheOrg]] HTML export theme, great for [[http://ivanmalison.github.io/dotfiles/][Emacs configs]].
 - [[https://melpa.org/#/ox-reveal][Export to Reveal.js]]
-- [[https://melpa.org/#/ox-gfm][Export to GitHub Flavored Markdown]]
-- [[https://melpa.org/#/ox-twbs][Export to Twitter Bootstrap]]
-- [[https://melpa.org/#/org-sync][Org Sync for external issue trackers]]
-- [[https://github.com/magit/orgit][Org link to Magit buffers]]
-- [[https://melpa.org/#/ob-typescript][TypeScript source blocks]]
-- [[https://melpa.org/#/ob-rust][Rust source blocks]]
-- [[https://melpa.org/#/org-board][Archive/bookmark sites with Org]]
-- [[https://melpa.org/#/org-alert][org-alert]]
-- [[https://github.com/bard/org-dashboard][org-dashboard]]
-  - [[http://thehelpfulhacker.net/2014/07/19/a-dashboard-for-your-life-a-minimal-goal-tracker-using-org-mode-go-and-git/][Inspiration for this]]
-- [[https://github.com/myuhe/org-gcal.el/][org-gcal]]
 - [[https://github.com/org-mime/org-mime][org-mime]]
 
 ** Development
@@ -1628,14 +1611,6 @@ https://magit.vc/manual/magit/
 #+END_SRC
 
 **** Forge
-
-From the author of Magit, this is a rich GitHub integration that uses a local
-cache of issue and PR info to save your git status buffer's load time.  Magithub
-is another option but it tries to fetch repo data each time you load the status
-buffer, a bad thing for very popular repos.
-
-Still haven't pulled this into my regular workflow yet, but I'm curious to see
-how useful it will be.
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2642,11 +2617,6 @@ I like the position of the mode line tracking better than circe.
 - https://www.emacswiki.org/emacs/rcircAutoAuthentication
 - https://www.emacswiki.org/emacs/rcircSmiley
 
-**** TODO Try weechat
-
-https://github.com/the-kenny/weechat.el
-
-
 *** Mastodon
 
 #+BEGIN_SRC emacs-lisp
@@ -2891,7 +2861,3 @@ Other dotfiles repos and blog posts for inspiration:
 - [[https://github.com/dakrone/dakrone-dotfiles][dakrone's dotfiles]]
 - [[https://github.com/jinnovation/dotemacs][jinnovation dotemacs]]
 - [[https://writequit.org/org/][writequit's config]]
-
-** Packages to Try
-
-- https://github.com/takaxp/org-tree-slide
