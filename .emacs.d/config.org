@@ -755,13 +755,10 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+begin_src emacs-lisp
 
-  ;; Gimmie that M-o, fool
-  (global-unset-key "\M-o")
-
   (use-package ace-window
     :bind (("M-o" . ace-window))
     :config
-    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 #+end_src
 
