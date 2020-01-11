@@ -276,10 +276,11 @@ Close, but no cigar:
 
 #+BEGIN_SRC emacs-lisp
 
+  (use-package spacegray-theme :defer t)
+  (use-package twilight-anti-bright-theme :defer t)
+  (use-package color-theme-sanityinc-tomorrow :defer t)
+  (use-package doom-themes :defer t)
   (unless dw/is-termux
-    (use-package spacegray-theme :defer t)
-    (use-package twilight-anti-bright-theme :defer t)
-    (use-package color-theme-sanityinc-tomorrow :defer t)
     (load-theme 'spacegray t))
 
 #+END_SRC

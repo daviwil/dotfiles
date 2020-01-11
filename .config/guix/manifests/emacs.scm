@@ -86,6 +86,7 @@
    "emacs-all-the-icons"
    "emacs-all-the-icons-dired"
    "emacs-doom-modeline"
+   "emacs-doom-themes"
    "emacs-smart-mode-line"
    "emacs-openwith"
    "emacs-tracking"
