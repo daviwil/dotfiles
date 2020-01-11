@@ -1224,6 +1224,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 #+BEGIN_SRC emacs-lisp
 
   (use-package org-bullets
+    :if (not dw/is-termux)
     :hook (org-mode . org-bullets-mode)
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
