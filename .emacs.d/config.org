@@ -314,7 +314,8 @@ Different platforms need different default font sizes, and
 
 #+begin_src emacs-lisp
 
-  (setq display-time-format "%l:%M %p %b %y")
+  (setq display-time-format "%l:%M %p %b %y"
+        display-time-default-load-average nil)
 
 #+end_src
 
@@ -395,14 +396,17 @@ anymore if I set up =diminish= correctly.
     :after eshell     ;; Make sure it gets hooked after eshell
     :hook (after-init . doom-modeline-init)
     :custom
+    (doom-modeline-height 15)
+    (doom-modeline-bar-width 6)
     (doom-modeline-lsp t)
     (doom-modeline-github nil)
     (doom-modeline-minor-modes t)
     (doom-modeline-persp-name nil)
     (doom-modeline-buffer-file-name-style 'truncate-except-project)
-    (doom-modeline-major-mode-color-icon t)
-    :config
-    (display-battery-mode))
+    (doom-modeline-major-mode-icon nil))
+    ;; TODO: Turning off some things now that we have a panel
+    ;:config
+    ;(display-battery-mode))
 
 #+end_src
 
@@ -842,8 +846,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
   (use-package exwm
     :if dw/exwm-enabled
     :config
-    (setq display-time-default-load-average nil)
-    (display-time-mode 1)
+    ;(display-time-mode 1) ;; Not needed for now since we have a panel
 
     (add-hook 'exwm-mode-hook
               (lambda ()
@@ -871,10 +874,10 @@ The keybindings for this are =C+M+-= and =C+M+==.
     (add-hook 'exwm-manage-finish-hook
               (lambda ()
                 ;; Send the window where it belongs
-                (dw/setup-window-by-class)
+                (dw/setup-window-by-class)))
 
                 ;; Hide the modeline on all X windows
-                (exwm-layout-hide-mode-line)))
+                ;(exwm-layout-hide-mode-line)))
 
     ;; Hide the modeline on all X windows
     (add-hook 'exwm-floating-setup-hook
@@ -882,6 +885,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
                 (exwm-layout-hide-mode-line))))
 
   (use-package exwm-systemtray
+    :disabled
     :if dw/exwm-enabled
     :after (exwm)
     :config
@@ -902,6 +906,10 @@ The keybindings for this are =C+M+-= and =C+M+==.
     (interactive)
     (start-process-shell-command "feh" nil "feh --bg-scale ~/.dotfiles/backgrounds/mountains-1412683.jpg"))
 
+  (defun dw/start-panel ()
+    (interactive)
+    (start-process-shell-command "tint2" nil "tint2"))
+
   (defun dw/update-screen-layout ()
     (interactive)
     (let ((layout-script "~/.bin/update-screens.sh"))
@@ -915,10 +923,11 @@ The keybindings for this are =C+M+-= and =C+M+==.
       (dw/update-wallpapers))
 
   (when dw/exwm-enabled
-    ;; Configure the desktop for first load and then listen
-    ;; for any future screen changes (connecting to docks, etc)
-    (add-hook 'exwm-init-hook #'dw/configure-desktop))
-    ;;(add-hook 'exwm-randr-screen-change-hook #'dw/configure-desktop))
+    ;; Configure the desktop for first load
+    (add-hook 'exwm-init-hook #'dw/configure-desktop)
+
+    ;; Start the panel
+    (dw/start-panel))
 
 #+END_SRC
 
@@ -2829,6 +2838,7 @@ to set that up.
 #+BEGIN_SRC emacs-lisp
 
   (use-package symon
+    :disabled
     :if dw/exwm-enabled
     :after exwm
     :hook (exwm-init . symon-mode)

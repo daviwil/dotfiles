@@ -9,6 +9,9 @@
    "syncthing"
    "qsyncthingtray"
 
+   ;; Panel
+   "tint2"
+
    ;; Mail
    "mu"
    "offlineimap"
