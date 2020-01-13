@@ -74,7 +74,6 @@
    "gtk-xfce-engine"
 
    ;; GTK Themes
-   "arc-theme"
    "arc-icon-theme"
    "matcha-theme"
    "hicolor-icon-theme"
