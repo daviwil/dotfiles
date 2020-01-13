@@ -30,9 +30,9 @@
 (when dw/is-termux
   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
+(package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
-(package-initialize)
 
 ;; Add my elisp path to load-path
 (push "~/.emacs.d/elisp" load-path)
