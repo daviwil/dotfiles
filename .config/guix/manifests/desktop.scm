@@ -43,6 +43,7 @@
    "font-gnu-freefont-ttf"
    "font-liberation"
    "font-awesome"
+   "font-google-material-design-icons"
    "gs-fonts"
 
    ;; Document Readers
