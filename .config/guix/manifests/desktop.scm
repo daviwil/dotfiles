@@ -11,6 +11,7 @@
 
    ;; Panel
    "tint2"
+   "polybar"
 
    ;; Mail
    "mu"

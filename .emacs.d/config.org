@@ -905,9 +905,12 @@ The keybindings for this are =C+M+-= and =C+M+==.
     (interactive)
     (start-process-shell-command "feh" nil "feh --bg-scale ~/.dotfiles/backgrounds/mountains-1412683.jpg"))
 
+  (setq dw/panel-process nil)
   (defun dw/start-panel ()
     (interactive)
-    (start-process-shell-command "tint2" nil "tint2"))
+    (when dw/panel-process
+      (kill-process dw/panel-process))
+    (setq dw/panel-process (start-process-shell-command "polybar" nil "polybar panel")))
 
   (defun dw/update-screen-layout ()
     (interactive)
