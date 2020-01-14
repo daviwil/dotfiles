@@ -69,7 +69,7 @@ format-padding = 1
 
 [module/mu4e]
 type = custom/ipc
-hook-0 = emacsclient -e '(format " %s" mu4e-alert-mode-line)' | sed -e 's/^"//' -e 's/"$//'
+hook-0 = emacsclient -e '(dw/polybar-mail-count 500)' | sed -e 's/^"//' -e 's/"$//'
 initial = 1
 format-underline = ${colors.underline-1}
 click-left = emacsclient -e '(dw/go-to-inbox)'

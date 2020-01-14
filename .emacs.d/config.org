@@ -962,7 +962,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 **** Panel
 
-#+begin_example
+#+begin_src emacs-lisp
 
 (defun dw/send-polybar-hook (name number)
   (start-process-shell-command "polybar-msg" nil (format "polybar-msg hook %s %s" name number)))
@@ -981,6 +981,13 @@ The keybindings for this are =C+M+-= and =C+M+==.
     (3 "")
     (4 "")))
 
+(defun dw/polybar-mail-count (max-count)
+  (if dw/mail-enabled
+    (let* ((mail-count (shell-command-to-string
+                         (format "mu find --nocolor -n %s \"%s\" | wc -l" max-count dw/mu4e-inbox-query))))
+      (format " %s" (string-trim mail-count)))
+    ""))
+
 (defun dw/telega-normalize-name (chat-name)
   (let* ((trimmed-name (string-trim-left (string-trim-right chat-name "}") "◀{"))
          (first-name (nth 0 (split-string trimmed-name " "))))
@@ -998,9 +1005,8 @@ The keybindings for this are =C+M+-= and =C+M+==.
     ""))
 
 (add-hook 'exwm-workspace-switch-hook #'dw/update-polybar-exwm)
-(add-hook 'telega-chat-post-message-hook #'dw/update-polybar-telegram)
 
-#+end_example
+#+end_src
 
 **** Keybindings
 
@@ -2219,7 +2225,6 @@ Use [[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] to show notificati
       ;; Show unread emails from all inboxes
       (setq mu4e-alert-interesting-mail-query dw/mu4e-inbox-query)
 
-      (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
       (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)))
 
 #+END_SRC
