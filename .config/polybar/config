@@ -17,8 +17,6 @@ primary = #ffb52a
 secondary = #e60053
 alert = #bd2c40
 underline-1 = 89AAEB
-; Disable underlines for now
-;underline-1 =
 
 [bar/panel]
 width = 100%
@@ -50,7 +48,6 @@ font-3 = "Fira Mono:size=13;-3"
 
 modules-left = exwm
 modules-right = telegram mu4e cpu temperature battery date
-;modules-right = xkeyboard battery date
 
 tray-position = right
 tray-padding = 2
@@ -95,23 +92,6 @@ label-indicator-padding = 2
 label-indicator-margin = 1
 label-indicator-underline = ${colors.underline-1}
 
-[module/xbacklight]
-type = internal/xbacklight
-
-format = <label> <bar>
-label = BL
-
-bar-width = 10
-bar-indicator = |
-bar-indicator-foreground = #fff
-bar-indicator-font = 2
-bar-fill = ─
-bar-fill-font = 2
-bar-fill-foreground = #9f78e1
-bar-empty = ─
-bar-empty-font = 2
-bar-empty-foreground = ${colors.foreground-alt}
-
 [module/cpu]
 type = internal/cpu
 interval = 2
@@ -119,7 +99,7 @@ format = <label> <ramp-coreload>
 format-underline = ${colors.underline-1}
 click-left = emacsclient -e "(proced)"
 label = %percentage:2%%
-ramp-coreload-spacing = 0.5
+ramp-coreload-spacing = 0
 ramp-coreload-0 = ▁
 ramp-coreload-0-foreground = ${colors.foreground-alt}
 ramp-coreload-1 = ▂
@@ -151,33 +131,6 @@ format-prefix-foreground = ${colors.foreground-alt}
 format-underline = ${colors.underline-1}
 
 label = %date% %time%
-
-[module/pulseaudio]
-type = internal/pulseaudio
-
-format-volume = <label-volume> <bar-volume>
-label-volume = VOL %percentage%%
-label-volume-foreground = ${root.foreground}
-
-label-muted = 🔇 muted
-label-muted-foreground = #666
-
-bar-volume-width = 10
-bar-volume-foreground-0 = #55aa55
-bar-volume-foreground-1 = #55aa55
-bar-volume-foreground-2 = #55aa55
-bar-volume-foreground-3 = #55aa55
-bar-volume-foreground-4 = #55aa55
-bar-volume-foreground-5 = #f5a70a
-bar-volume-foreground-6 = #ff5555
-bar-volume-gradient = false
-bar-volume-indicator = |
-bar-volume-indicator-font = 2
-bar-volume-fill = ─
-bar-volume-fill-font = 2
-bar-volume-empty = ─
-bar-volume-empty-font = 2
-bar-volume-empty-foreground = ${colors.foreground-alt}
 
 [module/battery]
 type = internal/battery
@@ -217,11 +170,11 @@ warn-temperature = 60
 
 format = <label> <ramp>
 format-underline = ${colors.underline-1}
-format-warn = <ramp> <label-warn>
+format-warn = <label-warn> <ramp>
 format-warn-underline = ${self.format-underline}
 
 label = %temperature-c%
-label-warn = %temperature-c%
+label-warn = %temperature-c%!
 label-warn-foreground = ${colors.secondary}
 
 ramp-0 = ▁
