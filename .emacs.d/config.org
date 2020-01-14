@@ -399,6 +399,8 @@ anymore if I set up =diminish= correctly.
     (doom-modeline-bar-width 6)
     (doom-modeline-lsp t)
     (doom-modeline-github nil)
+    (doom-modeline-mu4e nil)
+    (doom-modeline-irc nil)
     (doom-modeline-minor-modes t)
     (doom-modeline-persp-name nil)
     (doom-modeline-buffer-file-name-style 'truncate-except-project)
@@ -909,7 +911,8 @@ The keybindings for this are =C+M+-= and =C+M+==.
   (defun dw/start-panel ()
     (interactive)
     (when dw/panel-process
-      (kill-process dw/panel-process))
+      (ignore-errors
+        (kill-process dw/panel-process)))
     (setq dw/panel-process (start-process-shell-command "polybar" nil "polybar panel")))
 
   (defun dw/update-screen-layout ()
@@ -956,6 +959,48 @@ The keybindings for this are =C+M+-= and =C+M+==.
   ;; )
 
 #+end_src
+
+**** Panel
+
+#+begin_example
+
+(defun dw/send-polybar-hook (name number)
+  (start-process-shell-command "polybar-msg" nil (format "polybar-msg hook %s %s" name number)))
+
+(defun dw/update-polybar-exwm ()
+  (dw/send-polybar-hook "exwm" 1))
+
+(defun dw/update-polybar-telegram ()
+  (dw/send-polybar-hook "telegram" 1))
+
+(defun dw/polybar-exwm-workspace ()
+  (pcase exwm-workspace-current-index
+    (0 "")
+    (1 "")
+    (2 "")
+    (3 "")
+    (4 "")))
+
+(defun dw/telega-normalize-name (chat-name)
+  (let* ((trimmed-name (string-trim-left (string-trim-right chat-name "}") "◀{"))
+         (first-name (nth 0 (split-string trimmed-name " "))))
+    first-name))
+
+(defun dw/propertized-to-polybar (buffer-name)
+  (let* ((text (substring-no-properties buffer-name))
+         (fg-face (get-text-property 0 'face buffer-name))
+         (fg-color (face-attribute fg-face :foreground)))
+    (format "%%{F%s}%s%%{F-}" fg-color (dw/telega-normalize-name text))))
+
+(defun dw/polybar-telegram-chats ()
+  (if (> (length tracking-buffers) 0)
+    (format " %s" (string-join (mapcar 'dw/propertized-to-polybar tracking-buffers) ", "))
+    ""))
+
+(add-hook 'exwm-workspace-switch-hook #'dw/update-polybar-exwm)
+(add-hook 'telega-chat-post-message-hook #'dw/update-polybar-telegram)
+
+#+end_example
 
 **** Keybindings
 
@@ -2452,8 +2497,7 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
     (setq tracking-faces-priorities '(all-the-icons-pink
                                       all-the-icons-lgreen
                                       all-the-icons-lblue))
-    (setq tracking-frame-behavior nil
-          global-mode-string (append '("" tracking-mode-line-buffers) global-mode-string)))
+    (setq tracking-frame-behavior nil))
 
 #+end_src
 
@@ -2467,10 +2511,17 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
     (let* ((name (buffer-name buffer))
            (face (cond ((s-contains? "Maria" name) '(all-the-icons-pink))
                        ((s-contains? "Alex " name) '(all-the-icons-lgreen))
-                       ((s-contains? "Steve" name) '(all-the-icons-lblue)))))
-      (apply original-func buffer (list face))))
+                       ((s-contains? "Steve" name) '(all-the-icons-lblue))))
+           (result (apply original-func buffer (list face))))
+      (dw/update-polybar-telegram)
+      result))
+
+  (defun dw/after-tracking-remove-buffer (buffer)
+    (dw/update-polybar-telegram))
 
   (advice-add 'tracking-add-buffer :around #'dw/around-tracking-add-buffer)
+  (advice-add 'tracking-remove-buffer :after #'dw/after-tracking-remove-buffer)
+  (advice-remove 'tracking-remove-buffer #'dw/around-tracking-remove-buffer)
 
   (use-package telega
     :commands telega

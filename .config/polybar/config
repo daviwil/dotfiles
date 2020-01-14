@@ -10,6 +10,7 @@ margin-bottom = 0
 
 [colors]
 background = #f01c1f26
+background-alt = #576075
 foreground = #dfdfdf
 foreground-alt = #555
 primary = #ffb52a
@@ -20,12 +21,12 @@ underline-1 = 89AAEB
 ;underline-1 =
 
 [bar/panel]
-;monitor = ${env:MONITOR:HDMI-1}
 width = 100%
-height = 30
+height = 35
 offset-x = 0
 offset-y = 0
 fixed-center = false
+enable-ipc = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -42,19 +43,42 @@ padding-right = 1
 
 module-margin = 1
 
-font-0 = "Fira Mono:size=13;1"
-font-1 = "Font Awesome:size=13;0"
-font-2 = "Noto Color Emoji:size=34;1"
+font-0 = "Cantarell:size=18:weight=bold;2"
+font-1 = "Font Awesome:size=14;2"
+font-2 = "Material Icons:size=20;5"
+font-3 = "Fira Mono:size=13;-3"
 
-modules-left = cpu memory temperature
-modules-right = battery date
+modules-left = exwm
+modules-right = telegram mu4e cpu temperature battery date
 ;modules-right = xkeyboard battery date
 
 tray-position = right
 tray-padding = 2
+tray-maxsize = 28
 
 cursor-click = pointer
 cursor-scroll = ns-resize
+
+[module/exwm]
+type = custom/ipc
+hook-0 = emacsclient -e "(dw/polybar-exwm-workspace)" | sed -e 's/^"//' -e 's/"$//'
+initial = 1
+format-underline = ${colors.underline-1}
+format-background = ${colors.background-alt}
+format-padding = 1
+
+[module/mu4e]
+type = custom/ipc
+hook-0 = emacsclient -e '(format " %s" mu4e-alert-mode-line)' | sed -e 's/^"//' -e 's/"$//'
+initial = 1
+format-underline = ${colors.underline-1}
+click-left = emacsclient -e '(dw/go-to-inbox)'
+
+[module/telegram]
+type = custom/ipc
+hook-0 = emacsclient -e '(dw/polybar-telegram-chats)' | sed -e 's/^"//' -e 's/"$//'
+format-padding = 3
+initial = 1
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -62,7 +86,7 @@ blacklist-0 = num lock
 
 format-prefix-font = 1
 format-prefix-foreground = ${colors.foreground-alt}
-fomrat-prefix-underline = ${colors.underline-1}
+format-prefix-underline = ${colors.underline-1}
 
 label-layout = %layout%
 label-layout-underline = ${colors.underline-1}
@@ -91,10 +115,9 @@ bar-empty-foreground = ${colors.foreground-alt}
 [module/cpu]
 type = internal/cpu
 interval = 2
-format = <label><ramp-coreload>
-format-prefix = "C:"
-format-prefix-foreground = ${colors.foreground-alt}
+format = <label> <ramp-coreload>
 format-underline = ${colors.underline-1}
+click-left = emacsclient -e "(proced)"
 label = %percentage:2%%
 ramp-coreload-spacing = 0.5
 ramp-coreload-0 = ▁
@@ -105,7 +128,6 @@ ramp-coreload-3 = ▄
 ramp-coreload-4 = ▅
 ramp-coreload-5 = ▆
 ramp-coreload-6 = ▇
-ramp-coreload-7 = █
 
 [module/memory]
 type = internal/memory
@@ -119,8 +141,8 @@ label = %percentage_used%%
 type = internal/date
 interval = 5
 
-date = "%a %b %d"
-date-alt = " %Y-%m-%d"
+date = "%a %b %e"
+date-alt = "%A %B %d %Y"
 
 time = %l:%M %p
 time-alt = %H:%M:%S
@@ -162,16 +184,15 @@ type = internal/battery
 battery = BAT0
 adapter = ADP1
 full-at = 98
+time-format = %-l:%M
 
+label-charging = %percentage%% / %time%
 format-charging = <animation-charging> <label-charging>
 format-charging-underline = ${colors.underline-1}
 
+label-discharging = %percentage%% / %time%
 format-discharging = <ramp-capacity> <label-discharging>
 format-discharging-underline = ${self.format-charging-underline}
-
-format-full-prefix = " "
-format-full-prefix-foreground = ${colors.foreground-alt}
-format-full-underline = ${self.format-charging-underline}
 
 ramp-capacity-0 = 
 ramp-capacity-1 = 
@@ -184,7 +205,6 @@ animation-charging-1 = 
 animation-charging-2 = 
 animation-charging-3 = 
 animation-charging-4 = 
-; Framerate in milliseconds
 animation-charging-framerate = 750
 
 [module/temperature]
@@ -192,7 +212,7 @@ type = internal/temperature
 thermal-zone = 0
 warn-temperature = 60
 
-format = <ramp> <label>
+format = <label> <ramp>
 format-underline = ${colors.underline-1}
 format-warn = <ramp> <label-warn>
 format-warn-underline = ${self.format-underline}
@@ -209,5 +229,4 @@ ramp-3 = ▄
 ramp-4 = ▅
 ramp-5 = ▆
 ramp-6 = ▇
-ramp-7 = █
 ramp-foreground = ${colors.foreground-alt}
