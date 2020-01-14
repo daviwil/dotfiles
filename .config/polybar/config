@@ -194,6 +194,9 @@ label-discharging = %percentage%% / %time%
 format-discharging = <ramp-capacity> <label-discharging>
 format-discharging-underline = ${self.format-charging-underline}
 
+format-full = <ramp-capacity> <label-full>
+format-full-underline = ${self.format-charging-underline}
+
 ramp-capacity-0 = 
 ramp-capacity-1 = 
 ramp-capacity-2 = 
