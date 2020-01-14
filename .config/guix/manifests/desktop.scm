@@ -40,6 +40,7 @@
    "font-fira-code"
    "font-abattis-cantarell"
    "font-dejavu"
+   "font-google-noto"
    "font-gnu-freefont-ttf"
    "font-liberation"
    "font-awesome"
