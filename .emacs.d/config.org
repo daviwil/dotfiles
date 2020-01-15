@@ -338,6 +338,7 @@ anymore if I set up =diminish= correctly.
 #+BEGIN_SRC emacs-lisp
 
   (use-package smart-mode-line
+    :disabled
     :if dw/is-termux
     :config
     (setq sml/no-confirm-load-theme t)
@@ -391,7 +392,7 @@ anymore if I set up =diminish= correctly.
     (minions-mode-line-lighter ""))
 
   (use-package doom-modeline
-    :if (not dw/is-termux)
+    ;:if (not dw/is-termux)
     :after eshell     ;; Make sure it gets hooked after eshell
     :hook (after-init . doom-modeline-init)
     :custom
