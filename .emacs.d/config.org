@@ -2527,6 +2527,14 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
   (advice-add 'tracking-remove-buffer :after #'dw/after-tracking-remove-buffer)
   (advice-remove 'tracking-remove-buffer #'dw/around-tracking-remove-buffer)
 
+  ;; Advise exwm-workspace-switch so that we can more reliably clear tracking buffers
+  ;; NOTE: This is a hack and I hate it.  It'd be great to find a better solution.
+  (defun dw/before-exwm-workspace-switch (frame-or-index &optional force)
+    (when (eq exwm-workspace-current-index 0)
+      (tracking-remove-visible-buffers)))
+
+  (advice-add 'exwm-workspace-switch :before #'dw/before-exwm-workspace-switch)
+
   (use-package telega
     :commands telega
     :config
