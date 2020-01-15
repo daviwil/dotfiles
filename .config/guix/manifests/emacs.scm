@@ -92,6 +92,5 @@
    "emacs-tracking"
    "emacs-telega"
    "ledger"
-   "emacs-ledger-mode"))
    "emacs-ledger-mode"
    "emacs-undo-tree"))
