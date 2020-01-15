@@ -2273,7 +2273,6 @@ Agenda items.
 #+begin_src emacs-lisp
 
 (use-package ledger-mode
-  :ensure t
   :mode "\\.lgr\\'"
   :bind (:map ledger-mode-map
               ("TAB" . completion-at-point)))
