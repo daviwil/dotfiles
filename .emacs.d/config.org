@@ -929,7 +929,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
     (interactive)
       (dw/run-xmodmap)
       (dw/update-screen-layout)
-      (dw/update-wallpapers))
+      (run-at-time "2 sec" nil (lambda () (dw/update-wallpapers))))
 
   (when dw/exwm-enabled
     ;; Configure the desktop for first load
