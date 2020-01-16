@@ -1902,7 +1902,6 @@ Configure TypeScript and JavaScript language modes
   (use-package typescript-mode
     :mode "\\.tsx?\\'"
     :config
-    (flycheck-mode)
     (setq typescript-indent-level 2))
 
   (use-package js2-mode
@@ -2029,7 +2028,8 @@ Configure TypeScript and JavaScript language modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package flycheck
-    :defer t)
+    :defer t
+    :hook (lsp-mode . flycheck-mode))
 
 #+END_SRC
 
