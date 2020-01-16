@@ -304,9 +304,41 @@ Different platforms need different default font sizes, and
   (on-platform-do
    ((windows cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
     (osx (set-face-attribute 'default nil :font "Fira Mono" :height 170))
-    (linux (set-face-attribute 'default nil :font "Fira Code" :height 120)))
+    ;(linux (set-face-attribute 'default nil :font "Fira Code" :height 120)))
+    (linux (set-face-attribute 'default nil :font "Fira Code Retina" :height 120)))
 
 #+END_SRC
+
+**** Enable proper Unicode glyph support
+
+#+begin_src emacs-lisp
+
+  (defun dw/replace-unicode-font-mapping (block-name old-font new-font)
+    (let* ((block-idx (cl-position-if
+                           (lambda (i) (string-equal (car i) block-name))
+                           unicode-fonts-block-font-mapping))
+           (block-fonts (cadr (nth block-idx unicode-fonts-block-font-mapping)))
+           (updated-block (cl-substitute new-font old-font block-fonts :test 'string-equal)))
+      (setf (cdr (nth block-idx unicode-fonts-block-font-mapping))
+            `(,updated-block))))
+
+  (use-package unicode-fonts
+    :ensure t
+    :if (not dw/is-termux)
+    :custom
+    (unicode-fonts-skip-font-groups '(low-quality-glyphs))
+    :config
+    ;; Fix the font mappings to use the right emoji font
+    (mapcar
+      (lambda (block-name)
+        (dw/replace-unicode-font-mapping block-name "Apple Color Emoji" "Noto Color Emoji"))
+      '("Dingbats"
+        "Emoticons"
+        "Miscellaneous Symbols and Pictographs"
+        "Transport and Map Symbols"))
+    (unicode-fonts-setup))
+
+#+end_src
 
 *** Mode Line
 
