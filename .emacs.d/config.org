@@ -458,6 +458,17 @@ files hanging around so I've moved them to a backups folder in my =~/.emacs.d/=.
 
 #+END_SRC
 
+*** Highlight Matching Braces
+
+#+begin_src emacs-lisp
+
+  (use-package paren
+    :config
+    (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
+    (show-paren-mode 1))
+
+#+end_src
+
 *** Displaying World Time
 
 =display-time-world= command provides a nice display of the time at a specified
