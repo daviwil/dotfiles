@@ -63,7 +63,7 @@
 (use-package exwm
   :if dw/exwm-enabled
   :init
-  (setq mouse-autoselect-window t
+  (setq mouse-autoselect-window nil
         focus-follows-mouse t
         exwm-workspace-warp-cursor t
         exwm-workspace-number 5
