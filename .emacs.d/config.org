@@ -2452,8 +2452,8 @@ Custom eshell commands will go here.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package eterm-256color
-    :hook (term-mode . eterm-256color-mode))
+  ;; (use-package eterm-256color
+  ;;   :hook (term-mode . eterm-256color-mode))
 
 #+END_SRC
 
