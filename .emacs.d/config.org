@@ -2118,6 +2118,22 @@ Configure TypeScript and JavaScript language modes
 
 #+END_SRC
 
+**** Rainbow Mode
+
+Sets the background of HTML color strings in buffers to be the color mentioned.
+
+#+begin_src emacs-lisp
+
+(use-package rainbow-mode
+  :defer t
+  :hook (org-mode
+         emacs-lisp-mode
+         web-mode
+         typescript-mode
+         js2-mode))
+
+#+end_src
+
 *** Reference
 
 **** HTTP

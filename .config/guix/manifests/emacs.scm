@@ -54,6 +54,7 @@
    "emacs-ivy-yasnippet"  ;; Not in config yet
    "emacs-yasnippet-snippets"
    "emacs-smartparens"
+   "emacs-rainbow-mode"
    "emacs-rainbow-delimiters"
    "emacs-know-your-http-well"
    "emacs-darkroom"
