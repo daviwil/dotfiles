@@ -23,7 +23,7 @@ width = 100%
 height = 35
 offset-x = 0
 offset-y = 0
-fixed-center = false
+fixed-center = true
 enable-ipc = true
 
 background = ${colors.background}
@@ -47,6 +47,7 @@ font-2 = "Material Icons:size=20;5"
 font-3 = "Fira Mono:size=13;-3"
 
 modules-left = exwm
+modules-center = spotify
 modules-right = telegram mu4e cpu temperature battery date
 
 tray-position = right
@@ -63,6 +64,11 @@ initial = 1
 format-underline = ${colors.underline-1}
 format-background = ${colors.background-alt}
 format-padding = 1
+
+[module/spotify]
+type = custom/script
+exec = echo " $(playerctl -p spotify metadata artist) - $(playerctl -p spotify metadata title)"
+interval = 3
 
 [module/mu4e]
 type = custom/ipc
