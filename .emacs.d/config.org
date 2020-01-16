@@ -409,9 +409,6 @@ anymore if I set up =diminish= correctly.
     (doom-modeline-persp-name nil)
     (doom-modeline-buffer-file-name-style 'truncate-except-project)
     (doom-modeline-major-mode-icon nil))
-    ;; TODO: Turning off some things now that we have a panel
-    ;:config
-    ;(display-battery-mode))
 
 #+end_src
 
