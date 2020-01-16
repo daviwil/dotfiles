@@ -1856,6 +1856,31 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
 #+END_SRC
 
+**** Debug Adapter Support
+
+Not so convinced about this yet.
+
+#+begin_src emacs-lisp
+
+  ;; (use-package dap-mode
+  ;;   :ensure t
+  ;;   :hook (lsp-mode . dap-mode)
+  ;;   :config
+  ;;   (dap-ui-mode 1)
+  ;;   (dap-tooltip-mode 1)
+  ;;   (require 'dap-node)
+  ;;   (dap-node-setup)
+
+  ;;   (dap-register-debug-template "Node: Attach"
+  ;;     (list :type "node"
+  ;;           :cwd nil
+  ;;           :request "attach"
+  ;;           :program nil
+  ;;           :port 9229
+  ;;           :name "Node::Run")))
+
+#+end_src
+
 **** Clojure
 
 #+BEGIN_SRC emacs-lisp
