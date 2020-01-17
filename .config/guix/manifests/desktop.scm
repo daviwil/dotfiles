@@ -103,6 +103,8 @@
    "gst-plugins-bad"
    "gst-plugins-ugly"
    "gst-libav"
+   "intel-vaapi-driver"
+   "libva-utils"
 
    ;; Audio Device Control
    "alsa-utils"
