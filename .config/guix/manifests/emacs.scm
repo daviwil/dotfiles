@@ -2,19 +2,59 @@
 
 (specifications->manifest
  '("emacs"
+
+   ;; Package Management
    "emacs-use-package"
+
+   ;; Desktop Environment
    "emacs-exwm"
+   "emacs-desktop-environment"
+   "emacs-default-text-scale"
+   "emacs-daemons"
+   "emacs-pulseaudio-control"
+   "emacs-symon"
+   "emacs-alert"
+   "emacs-guix"
+
+   ;; Mode Line
+   "emacs-doom-modeline"
+   "emacs-smart-mode-line"
+   "emacs-minions"
+
+   ;; Themes
+   "emacs-all-the-icons"
+   "emacs-doom-themes"
+   "emacs-spacegray-theme"
+
+   ;; Authentication
+   "emacs-pinentry"
+   "pinentry-emacs"
+
+   ;; Evil
    "emacs-evil"
    "emacs-evil-magit"
    "emacs-evil-collection"
    "emacs-evil-nerd-commenter"
+   "emacs-undo-tree"
+
+   ;; Key Bindings
+   "emacs-hydra"
    "emacs-general"
+   "emacs-which-key"
+
+   ;; Git
+   "emacs-forge"
    "emacs-magit"
    "emacs-magit-todos"
-   "emacs-forge"
-   "emacs-hydra"
+   "emacs-git-link"
+   "emacs-git-gutter"
+
+   ;; Quick Navigation
    "emacs-avy"
    "emacs-ace-window"
+   "emacs-multiple-cursors" ;; Not in config yet
+
+   ;; Completions and Search
    "emacs-ivy"
    "emacs-ivy-xref"
    "emacs-ivy-pass"
@@ -24,74 +64,82 @@
    "the-silver-searcher" ;; For counsel-projectile-ag
    "ripgrep" ;; For counsel-projectile-rg
    "emacs-counsel-projectile"
-   "emacs-pinentry"
-   "pinentry-emacs"
-   "emacs-parinfer-mode"
-   "emacs-default-text-scale"
-   "emacs-expand-region"
+
+   ;; Dired
    "emacs-dired-hacks"
+   "emacs-openwith"
+   "emacs-all-the-icons-dired"
+
+   ;; Org Mode
    "emacs-org"
    "emacs-org-contrib"
    "emacs-org-bullets"
    "emacs-org-pomodoro"
-   "emacs-git-link"
-   "emacs-git-gutter"
+   "emacs-calfw"
+
+   ;; IDE
+   "emacs-flycheck"
    "emacs-projectile"
    "emacs-lsp-mode"
    "emacs-lsp-ui"
-   "emacs-cider"
-   "emacs-typescript-mode"
-   "emacs-prettier"
-   "emacs-js2-mode"
-   "emacs-desktop-environment"
-   "emacs-rust-mode"
-   "emacs-helpful"
-   "emacs-markdown-mode"
-   "emacs-web-mode"
-   "emacs-yaml-mode"
-   "emacs-flycheck"
+   "emacs-lsp-ivy"
    "emacs-yasnippet"
    "emacs-ivy-yasnippet"  ;; Not in config yet
    "emacs-yasnippet-snippets"
+
+   ;; Lispy Languages
+   "emacs-expand-region"
+   "emacs-parinfer-mode"
    "emacs-smartparens"
-   "emacs-rainbow-mode"
+   "emacs-cider"
    "emacs-rainbow-delimiters"
+
+   ;; JavaScript / Typescript
+   "emacs-typescript-mode"
+   "emacs-prettier"
+   "emacs-js2-mode"
+   "emacs-web-mode"
+
+   ;; Misc Languages
+   "emacs-rust-mode"
+   "emacs-helpful"
+   "emacs-markdown-mode"
+   "emacs-yaml-mode"
+   "emacs-rainbow-mode"
    "emacs-know-your-http-well"
+
+   ;; Writing
    "emacs-darkroom"
-   "emacs-mu4e-alert"
-   "emacs-calfw"
+   ;;"emacs-writegood-mode"
+
+   ;; Shell
    "emacs-eshell-z"
    "emacs-esh-autosuggest"
    "emacs-fish-completion"
    "emacs-multi-term"
    "emacs-xterm-color"
-   "emacs-multiple-cursors" ;; Not in config yet
-   "emacs-erc-image"
-   "emacs-erc-hl-nicks"
+   "emacs-exec-path-from-shell"
+
+   ;; Mail
+   "emacs-mu4e-alert"
+
+   ;; Misc Apps
    "emacs-mastodon"
    "emacs-elfeed"
    "emacs-emms"
-   "emacs-alert"
-   "emacs-guix"
-   "emacs-daemons"
-   "emacs-pulseaudio-control"
-   "emacs-symon"
+
+   ;; Docker
    "emacs-docker"
    "emacs-docker-tramp"
    "emacs-dockerfile-mode"
+
+   ;; Chat
    "emacs-emojify"
-   "emacs-minions"
-   "emacs-spacegray-theme"
-   "emacs-which-key"
-   "emacs-exec-path-from-shell"
-   "emacs-all-the-icons"
-   "emacs-all-the-icons-dired"
-   "emacs-doom-modeline"
-   "emacs-doom-themes"
-   "emacs-smart-mode-line"
-   "emacs-openwith"
+   "emacs-erc-image"
+   "emacs-erc-hl-nicks"
    "emacs-tracking"
    "emacs-telega"
+
+   ;; Finance
    "ledger"
-   "emacs-ledger-mode"
-   "emacs-undo-tree"))
+   "emacs-ledger-mode"))
