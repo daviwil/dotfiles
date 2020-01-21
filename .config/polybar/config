@@ -67,7 +67,7 @@ format-padding = 1
 
 [module/spotify]
 type = custom/script
-exec = echo " $(playerctl -p spotify metadata artist) - $(playerctl -p spotify metadata title)"
+exec = ./player-status.sh
 interval = 3
 
 [module/mu4e]
