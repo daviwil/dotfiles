@@ -67,7 +67,7 @@ format-padding = 1
 
 [module/spotify]
 type = custom/script
-exec = ./player-status.sh
+exec = ~/.config/polybar/player-status.sh
 interval = 3
 
 [module/mu4e]
