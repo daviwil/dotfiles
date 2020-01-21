@@ -1554,6 +1554,11 @@ Information on template expansion can be found in the [[https://orgmode.org/manu
 
 #+BEGIN_SRC emacs-lisp
 
+  (defun dw/read-file-as-string (path)
+    (with-temp-buffer
+      (insert-file-contents path)
+      (buffer-string)))
+
   (setq org-capture-templates
     `(("t" "Tasks / Projects")
       ("tt" "Task" entry (file+olp ,(dw/org-path "Projects.org") "Projects" "Inbox")
@@ -1566,12 +1571,8 @@ Information on template expansion can be found in the [[https://orgmode.org/manu
       ("j" "Journal Entries")
       ("jj" "Journal" entry
            (file+olp+datetree ,(dw/get-todays-journal-file-name))
-           "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-           :clock-in :clock-resume
-           :empty-lines 1)
-      ("jk" "Morning Checklist" entry
-           (file+olp+datetree ,(dw/get-todays-journal-file-name))
-           "* %<%I:%M %p> - Morning Checklist :process:\n\n- [] Fill this in! %?\n\n"
+           ;"\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+           ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
            :clock-in :clock-resume
            :empty-lines 1)
       ("jm" "Meeting" entry
