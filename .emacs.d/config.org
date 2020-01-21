@@ -965,12 +965,13 @@ The keybindings for this are =C+M+-= and =C+M+==.
       (dw/update-screen-layout)
       (run-at-time "2 sec" nil (lambda () (dw/update-wallpapers))))
 
+  (defun dw/on-exwm-init ()
+    (dw/configure-desktop)
+    (dw/start-panel))
+
   (when dw/exwm-enabled
     ;; Configure the desktop for first load
-    (add-hook 'exwm-init-hook #'dw/configure-desktop)
-
-    ;; Start the panel
-    (dw/start-panel))
+    (add-hook 'exwm-init-hook #'dw/on-exwm-init))
 
 #+END_SRC
 
