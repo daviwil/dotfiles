@@ -39,6 +39,17 @@ there's probably a more appropriate way to do this built in to Emacs.
 
 #+END_SRC
 
+** Server Mode
+
+Start the Emacs server from this instance so that all =emacsclient= calls are
+routed here.
+
+#+begin_src emacs-lisp
+
+(server-start)
+
+#+end_src
+
 ** Keyboard Bindings
 
 *** ESC Cancels All
@@ -131,9 +142,6 @@ based on the prefix keys you entered.  Learned about this one from Spacemacs.
 in conjunction with Evil modes.
 
 #+BEGIN_SRC emacs-lisp
-
-  (setq c-spc-leader "C-SPC")
-  (setq spc-leader "C-SPC")
 
   (use-package general
     :config
@@ -424,7 +432,6 @@ anymore if I set up =diminish= correctly.
     (minions-mode-line-lighter ""))
 
   (use-package doom-modeline
-    ;:if (not dw/is-termux)
     :after eshell     ;; Make sure it gets hooked after eshell
     :hook (after-init . doom-modeline-init)
     :custom-face
@@ -551,17 +558,7 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+end_src>
 
-*** Bracket and quote pair completion
-
-Turn on =electric-pair-mode= for quote, paren, and bracket completion.
-
-#+BEGIN_SRC emacs-lisp
-
-  ;;(electric-pair-mode 1)
-
-#+END_SRC
-
-Use spaces instead of tabs for indentation.
+*** Use spaces instead of tabs for indentation.
 
 #+BEGIN_SRC emacs-lisp
 
@@ -617,10 +614,6 @@ Use spaces instead of tabs for indentation.
 *** Helpers
 
 #+BEGIN_SRC emacs-lisp
-
-  (defun reload-configuration ()
-    (interactive)
-    (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
 
   (defun edit-configuration ()
     (interactive)
@@ -1363,6 +1356,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
+  ;; TODO: This only needs to be invoked once, not on hook
   (defun dw/set-org-header-font-sizes ()
     (dolist (face '((org-level-1 . 1.2)
                     (org-level-2 . 1.1)
@@ -1646,9 +1640,11 @@ documentation page.
 
 *** Protocol
 
+This is probably not needed if I plan to use custom functions that are invoked
+through =emacsclient.=
+
 #+BEGIN_SRC emacs-lisp
 
-(server-start)
 (require 'org-protocol)
 
 #+END_SRC
