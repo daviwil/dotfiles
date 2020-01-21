@@ -1400,7 +1400,10 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
   (setq org-agenda-files
     (list
       (dw/org-path "Habits.org")
-      (dw/org-path "Calendar.org")
+      (dw/org-path "Work.org")
+      (dw/org-path "AutoRest.org")
+      (dw/org-path "Calendar/Personal.org")
+      (dw/org-path "Calendar/Work.org")
       (dw/org-path "Projects.org")))
       ;(dw/get-todays-journal-file-name)))
 
