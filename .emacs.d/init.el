@@ -66,8 +66,8 @@
   (setq mouse-autoselect-window nil
         focus-follows-mouse t
         exwm-workspace-warp-cursor t
-        exwm-workspace-number 5
-        exwm-workspace-minibuffer-position 'bottom)
+        exwm-workspace-number 5)
+        ;exwm-workspace-minibuffer-position 'bottom) ;; Annoying focus issues
   :config
   ;; Make class name the buffer name
   (add-hook 'exwm-update-class-hook
