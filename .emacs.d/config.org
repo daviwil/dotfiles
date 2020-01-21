@@ -658,6 +658,8 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 - To quickly jump to an item in the minibuffer, use =C-'= to get Avy line jump keys.
 - To see actions for the selected minibuffer item, use =M-o= and then press the
   action's key.
+- *Super useful*: Use =C-c C-o= to open =ivy-occur= to open the search results in a
+  separate buffer.  From there you can click any item to perform the ivy action.
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1375,6 +1377,10 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 #+END_SRC
 
+*** Font Configuration
+
+**** TODO Take inspiration from this blog post: https://zzamboni.org/post/beautifying-org-mode-in-emacs/
+
 *** Org File Paths
 
 #+BEGIN_SRC emacs-lisp
@@ -1659,6 +1665,16 @@ through =emacsclient.=
 
 #+END_SRC
 
+*** Searching
+
+#+begin_src emacs-lisp
+
+(defun dw/counsel-rg-org-files ()
+  (interactive)
+  (counsel-rg "" "~/Notes" nil "Search Notes: "))
+
+#+end_src
+
 *** Bindings
 
 #+BEGIN_SRC emacs-lisp
@@ -1670,6 +1686,8 @@ through =emacsclient.=
     "oil" '(org-insert-link :which-key "insert link")
 
     "on"  '(org-toggle-narrow-to-subtree :which-key "toggle narrow")
+
+    "os"  '(dw/counsel-rg-org-files :which-key "search notes")
 
     "oa"  '(org-agenda :which-key "status")
     "oc"  '(org-capture t :which-key "capture")
