@@ -1773,6 +1773,37 @@ through =emacsclient.=
 
 #+END_SRC
 
+*** Presentations
+
+#+begin_src emacs-lisp
+
+(defun dw/org-start-presentation ()
+  (interactive)
+  (org-tree-slide-mode 1)
+  (setq text-scale-mode-amount 3)
+  (text-scale-mode 1))
+
+(defun dw/org-end-presentation ()
+  (interactive)
+  (text-scale-mode 0)
+  (org-tree-slide-mode 0))
+
+(use-package org-tree-slide
+  :defer t
+  :commands org-tree-slide-mode
+  :config
+  (evil-define-key 'normal org-tree-slide-mode-map
+    (kbd "q") 'dw/org-end-presentation
+    (kbd "C-j") 'org-tree-slide-move-next-tree
+    (kbd "C-k") 'org-tree-slide-move-previous-tree)
+  (setq org-tree-slide-slide-in-effect nil
+        org-tree-slide-activate-message "Presentation started."
+        org-tree-slide-deactivate-message "Presentation ended."
+        org-tree-slide-header t))
+
+#+end_src
+
+
 *** Addons to Try
 
 - [[https://melpa.org/#/ox-reveal][Export to Reveal.js]]
