@@ -222,7 +222,8 @@ Enable line numbers and customize their format.
   (global-display-line-numbers-mode t)
 
   ;; Disable line numbers for some modes
-  (dolist (mode '(term-mode-hook
+  (dolist (mode '(org-mode-hook
+                  term-mode-hook
                   eshell-mode-hook
                   neotree-mode-hook
                   telega-chat-mode-hook
@@ -313,6 +314,12 @@ Different platforms need different default font sizes, and
     (osx (set-face-attribute 'default nil :font "Fira Mono" :height 170))
     ;(linux (set-face-attribute 'default nil :font "Fira Code" :height 120)))
     (linux (set-face-attribute 'default nil :font "Fira Code Retina" :height 120)))
+
+  ;; Set the fixed pitch face
+  (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
+
+  ;; Set the variable pitch face
+  (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 135 :weight 'regular)
 
 #+END_SRC
 
@@ -1303,8 +1310,7 @@ credentials for mail, etc.
 *** Org Configuration
 
 #+BEGIN_SRC emacs-lisp
-
-(setq org-ellipsis " »"
+(setq org-ellipsis " ▾"
       org-hide-emphasis-markers t
       org-src-fontify-natively t
       org-src-tab-acts-natively t
@@ -1319,7 +1325,8 @@ credentials for mail, etc.
 ;; Turn on indentation and auto-fill mode for Org files
 (defun dw/do-org-hooks ()
   (org-indent-mode)
-  (turn-on-auto-fill)
+  (auto-fill-mode 0)
+  (visual-line-mode 1)
   (setq evil-auto-indent nil)
   (diminish org-indent-mode))
 
@@ -1351,34 +1358,52 @@ credentials for mail, etc.
 
 #+END_SRC
 
-*** Header Styling
+*** Fonts and Bullets
 
-Use bullet characters instead of asterisks, plus set the header font sizes to something more palatable.
+Use bullet characters instead of asterisks, plus set the header font sizes to something more palatable.  A fair amount of inspiration has been taken from [[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][this blog post]].
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package org-bullets
-    :if (not dw/is-termux)
-    :hook (org-mode . org-bullets-mode)
-    :custom
-    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+(use-package org-bullets
+  :if (not dw/is-termux)
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
-  ;; TODO: This only needs to be invoked once, not on hook
-  (defun dw/set-org-header-font-sizes ()
-    (dolist (face '((org-level-1 . 1.2)
-                    (org-level-2 . 1.1)
-                    (org-level-3 . 1.0)
-                    (org-level-4 . 1.0)
-                    (org-level-5 . 1.0)))
-      (set-face-attribute (car face) nil :weight 'normal :height (cdr face))))
+;; Replace list hyphen with dot
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                          (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-  (add-hook 'org-mode-hook 'dw/set-org-header-font-sizes)
+(dolist (face '((org-level-1 . 1.4)
+                (org-level-2 . 1.3)
+                (org-level-3 . 1.2)
+                (org-level-4 . 1.15)
+                (org-level-5 . 1.1)
+                (org-level-6 . 1.1)
+                (org-level-7 . 1.1)
+                (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+
+;; Ensure that anything that should be fixed-pitch in Org files appears that way
+(set-face-attribute 'org-block nil  :inherit 'fixed-pitch)
+(set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+
+;; TODO: Others to consider
+;; '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+;; '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+;; '(org-property-value ((t (:inherit fixed-pitch))) t)
+;; '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+;; '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+;; '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+;; '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
 #+END_SRC
-
-*** Font Configuration
-
-**** TODO Take inspiration from this blog post: https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
 *** Org File Paths
 
