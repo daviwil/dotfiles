@@ -1325,6 +1325,7 @@ credentials for mail, etc.
 ;; Turn on indentation and auto-fill mode for Org files
 (defun dw/do-org-hooks ()
   (org-indent-mode)
+  (variable-pitch-mode 1)
   (auto-fill-mode 0)
   (visual-line-mode 1)
   (setq evil-auto-indent nil)
