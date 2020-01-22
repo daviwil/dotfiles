@@ -110,6 +110,7 @@
 
    ;; Writing
    "emacs-darkroom"
+   "emacs-olivetti"
    ;;"emacs-writegood-mode"
 
    ;; Shell

@@ -836,6 +836,22 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+END_SRC
 
+*** Set Margins for Modes
+
+#+begin_src emacs-lisp
+
+;; (defun dw/center-buffer-with-margins ()
+;;   (let ((margin-size (/ (- (frame-width) 80) 3)))
+;;     (set-window-margins nil margin-size margin-size)))
+
+(use-package olivetti
+  :defer t
+  :hook (org-mode . olivetti-mode)
+  :config
+  (setq olivetti-body-width 0.7))
+
+#+end_src
+
 *** exwm
 
 **** Helper Functions
