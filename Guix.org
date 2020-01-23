@@ -4,6 +4,8 @@
 
 Guix supports the concept of [[https://guix.gnu.org/manual/en/html_node/Channels.html#Channels][channels]] which basically amount to Git repositories which contain Guix package definitions that can be installed on your machine.  Aside from the =%default-channels= list, I also use the [[https://gitlab.com/nonguix/nonguix][Nonguix]] channel to install packages that aren't included with Guix by default like the non-free Linux kernel.
 
+*~/.config/guix/channels.scm:*
+
 #+begin_src scheme :tangle .config/guix/channels.scm
 
 ;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
@@ -43,7 +45,7 @@ sudo -E guix system -L ~/.dotfiles/.config/guix/systems reconfigure ~/.dotfiles/
 
 #+end_src
 
-Let's start with a bunch of imports:
+*~/.config/guix/systems/base-system.scm:*
 
 #+begin_src scheme :tangle .config/guix/systems/base-system.scm
 
@@ -251,6 +253,8 @@ Because I'm lame, all of my machines are named from characters, things, and plac
 
 =zerocool= is a 5th Generation ThinkPad X1 Carbon that I use for most of my writing and hacking at home.
 
+*~/.config/guix/systems/zerocool.scm:*
+
 #+begin_src scheme :tangle .config/guix/systems/zerocool.scm
 
 ;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
@@ -287,6 +291,8 @@ Because I'm lame, all of my machines are named from characters, things, and plac
 
 =davinci= is a ThinkPad T480s that I use at my day job.
 
+*~/.config/guix/systems/davinci.scm:*
+
 #+begin_src scheme :tangle .config/guix/systems/davinci.scm
 
 ;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
@@ -322,6 +328,8 @@ Because I'm lame, all of my machines are named from characters, things, and plac
 **** phantom
 
 =phantom= is a ThinkPad X1 Extreme that I use for music production and video editing.  For whatever reason, loading the =nouveau= driver crashes the machine upon booting so I've blacklisted it for now until I figure out how to get it working correctly.
+
+*~/.config/guix/systems/phantom.scm:*
 
 #+begin_src scheme :tangle .config/guix/systems/phantom.scm
 
@@ -376,6 +384,8 @@ activate-profiles desktop emacs music
 
 #+end_src
 
+*~/.bin/activate-profiles:*
+
 #+begin_src sh :tangle .bin/activate-profiles :shebang #!/bin/sh
 
 # NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
@@ -428,6 +438,8 @@ This script accepts a space-separated list of manifest file names (without exten
 update-profiles emacs
 
 #+end_src
+
+*~/.bin/update-profiles:*
 
 #+begin_src sh :tangle .bin/update-profiles :shebang #!/bin/sh
 
