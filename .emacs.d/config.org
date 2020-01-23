@@ -1,7 +1,8 @@
+#+PROPERTY: header-args:emacs-lisp :tangle ./config.el
+
 * daviwil's Emacs Configuration
 
-This is an ongoing evolution of my original Emacs configuration files, inspired
-by a bunch of resources I've found online.
+This is an ongoing evolution of my original Emacs configuration files, inspired by a bunch of resources I've found online.
 
 ** Helper Functions
 
@@ -1375,6 +1376,17 @@ credentials for mail, etc.
 
 #+END_SRC
 
+*** Automatically "Tangle" on Save
+
+Handy tip from [[https://leanpub.com/lit-config/read#leanpub-auto-configuring-emacs-and--org-mode-for-literate-programming][this book]] on literate programming.
+
+#+begin_src emacs-lisp
+
+(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook 'org-babel-tangle
+                                              'run-at-end 'only-in-org-mode)))
+
+#+end_src
+
 *** Fonts and Bullets
 
 Use bullet characters instead of asterisks, plus set the header font sizes to something more palatable.  A fair amount of inspiration has been taken from [[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][this blog post]].
@@ -1679,6 +1691,7 @@ documentation page.
 
   (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
 
 #+END_SRC
 
@@ -2129,6 +2142,16 @@ Configure TypeScript and JavaScript language modes
     "er" '(eval-region :which-key "eval region"))
 
 #+END_SRC
+
+**** Scheme
+
+This prevents =org-babel= from asking me which Scheme implementation Geiser should use every time I tangle a file containing Scheme blocks.
+
+#+begin_src emacs-lisp
+
+(setq geiser-default-implementation 'guile)
+
+#+end_src
 
 **** Markdown
 

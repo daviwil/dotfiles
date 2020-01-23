@@ -2,6 +2,5 @@
 archive
 backgrounds
 mail
-README.org
-Notes.org
+*.org
 LICENSE
