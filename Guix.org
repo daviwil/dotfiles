@@ -2,17 +2,22 @@
 
 ** Channels
 
+Guix supports the concept of [[https://guix.gnu.org/manual/en/html_node/Channels.html#Channels][channels]] which basically amount to Git repositories which contain Guix package definitions that can be installed on your machine.  Aside from the =%default-channels= list, I also use the [[https://gitlab.com/nonguix/nonguix][Nonguix]] channel to install packages that aren't included with Guix by default like the non-free Linux kernel.
+
 #+begin_src scheme :tangle .config/guix/channels.scm
+
+;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
 
 (cons* (channel
         (name 'nonguix)
         (url "https://gitlab.com/nonguix/nonguix"))
        %default-channels)
 
-;; The following channel list can be used when testing patches
-;; to services from a local clone of the Guix repo.  Just make
-;; sure to commit the changes to a branch and refer to that
-;; branch by name in the 'guix channel entry below:
+#+end_src
+
+The following channel list can be used when testing patches to packages and services from a local clone of the Guix repo.  You'll have to create a branch and commit changes to it before =guix pull= can pick them up, though.  You can change the target branch using the =branch= field of the =channel=.
+
+#+begin_src scheme :tangle .config/guix/channels.scm
 
 ;; (list (channel
 ;;         (name 'nonguix)
@@ -24,22 +29,428 @@
 
 #+end_src
 
-** Profiles
-
 ** Systems
 
 *** Base Configuration
 
-#+begin_src scheme
+This base configuration is shared between all of the machines I manage with Guix.  Since all of my machines are Lenovo ThinkPad laptops, the same basic configuration applies pretty cleanly across all of them.  This may change in the future.
+
+Any configuration that derives from =base-operating-system= must invoke =guix system= in a specific way to ensure it gets loaded correctly:
+
+#+begin_src sh
+
+sudo -E guix system -L ~/.dotfiles/.config/guix/systems reconfigure ~/.dotfiles/.config/guix/systems/davinci.scm
+
+#+end_src
+
+Let's start with a bunch of imports:
+
+#+begin_src scheme :tangle .config/guix/systems/base-system.scm
+
+;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+
+(define-module (base-system)
+  #:use-module (gnu)
+  #:use-module (srfi srfi-1)
+  #:use-module (gnu system nss)
+  #:use-module (gnu services pm)
+  #:use-module (gnu services desktop)
+  #:use-module (gnu services docker)
+  #:use-module (gnu services networking)
+  #:use-module (gnu packages wm)
+  #:use-module (gnu packages vim)
+  #:use-module (gnu packages gtk)
+  #:use-module (gnu packages xorg)
+  #:use-module (gnu packages gnome)
+  #:use-module (gnu packages mtools)
+  #:use-module (gnu packages linux)
+  #:use-module (gnu packages audio)
+  #:use-module (gnu packages gnuzilla)
+  #:use-module (gnu packages pulseaudio)
+  #:use-module (gnu packages web-browsers)
+  #:use-module (gnu packages version-control)
+  #:use-module (gnu packages package-management)
+  #:use-module (nongnu packages linux))
+
+(use-service-modules desktop xorg)
+(use-package-modules certs)
+(use-package-modules shells)
+
+#+end_src
+
+Add a =udev= rule to enable members of the =video= group to control screen brightness.
+
+#+begin_src scheme :tangle .config/guix/systems/base-system.scm
+
+;; Allow members of the "video" group to change the screen brightness.
+(define %backlight-udev-rule
+  (udev-rule
+   "90-backlight.rules"
+   (string-append "ACTION==\"add\", SUBSYSTEM==\"backlight\", "
+                  "RUN+=\"/run/current-system/profile/bin/chgrp video /sys/class/backlight/%k/brightness\""
+                  "\n"
+                  "ACTION==\"add\", SUBSYSTEM==\"backlight\", "
+                  "RUN+=\"/run/current-system/profile/bin/chmod g+w /sys/class/backlight/%k/brightness\"")))
+
+#+end_src
+
+Override the default =%desktop-services= to add the =udev= backlight configuration and include OpenVPN in the list of NetworkManager plugins.
+
+#+begin_src scheme :tangle .config/guix/systems/base-system.scm
+
+(define %my-desktop-services
+  (modify-services %desktop-services
+                   (udev-service-type config =>
+                                      (udev-configuration (inherit config)
+                                                          (rules (cons %backlight-udev-rule
+                                                                       (udev-configuration-rules config)))))
+                   (network-manager-service-type config =>
+                                                 (network-manager-configuration (inherit config)
+                                                                                (vpn-plugins (list network-manager-openvpn))))))
+
+#+end_src
+
+Use the =libinput= driver for all input devices since it's a bit more modern than the default.
+
+#+begin_src scheme :tangle .config/guix/systems/base-system.scm
+
+(define %xorg-libinput-config
+  "Section \"InputClass\"
+  Identifier \"Touchpads\"
+  Driver \"libinput\"
+  MatchDevicePath \"/dev/input/event*\"
+  MatchIsTouchpad \"on\"
+
+  Option \"Tapping\" \"on\"
+  Option \"TappingDrag\" \"on\"
+  Option \"DisableWhileTyping\" \"on\"
+  Option \"MiddleEmulation\" \"on\"
+  Option \"ScrollMethod\" \"twofinger\"
+EndSection
+Section \"InputClass\"
+  Identifier \"Keyboards\"
+  Driver \"libinput\"
+  MatchDevicePath \"/dev/input/event*\"
+  MatchIsKeyboard \"on\"
+EndSection
+")
+
+#+end_src
+
+Define the =base-operating-system= which will be inherited by all machine configurations.
+
+#+begin_src scheme :tangle .config/guix/systems/base-system.scm
+
+(define-public base-operating-system
+  (operating-system
+    (host-name "hackstock")
+    (timezone "America/Los_Angeles")
+    (locale "en_US.utf8")
+
+    ;; Use non-free Linux and firmware
+    (kernel linux)
+    (firmware (list linux-firmware))
+
+    ;; Choose US English keyboard layout.  The "altgr-intl"
+    ;; variant provides dead keys for accented characters.
+    (keyboard-layout (keyboard-layout "us" "altgr-intl" #:model "thinkpad"))
+
+    ;; Use the UEFI variant of GRUB with the EFI System
+    ;; Partition mounted on /boot/efi.
+    (bootloader (bootloader-configuration
+                 (bootloader grub-efi-bootloader)
+                 (target "/boot/efi")
+                 (keyboard-layout keyboard-layout)))
 
 
+    ;; Guix doesn't like it when there isn't a file-systems
+    ;; entry, so add one that is meant to be overridden
+    (file-systems (cons*
+                   (file-system
+                     (mount-point "/tmp")
+                     (device "none")
+                     (type "tmpfs")
+                     (check? #f))
+                   %base-file-systems))
+
+    (users (cons (user-account
+                  (name "daviwil")
+                  (comment "David Wilson")
+                  (group "users")
+                  (home-directory "/home/daviwil")
+                  (supplementary-groups '(
+                                          "wheel"     ;; sudo
+                                          "netdev"    ;; network devices
+                                          "kvm"
+                                          "tty"
+                                          "input"
+                                          "docker"
+                                          "realtime"  ;; Enable realtime scheduling
+                                          "lp"        ;; control bluetooth devices
+                                          "audio"     ;; control audio devices
+                                          "video")))  ;; control video devices
+
+                 %base-user-accounts))
+
+    ;; Add the 'realtime' group
+    (groups (cons (user-group (system? #t) (name "realtime"))
+                  %base-groups))
+
+    ;; Install bare-minimum system packages
+    (packages (append (list
+                        git
+                        ntfs-3g
+                        exfat-utils
+                        fuse-exfat
+                        stow
+                        vim
+                        i3-wm
+                        i3status
+                        bluez
+                        bluez-alsa
+                        pulseaudio
+                        tlp
+                        xf86-input-libinput
+                        nss-certs     ;; for HTTPS access
+                        gvfs)         ;; for user mounts
+                    %base-packages))
+
+    ;; Use the "desktop" services, which include the X11 log-in service,
+    ;; networking with NetworkManager, and more
+    (services (cons* (service slim-service-type
+                              (slim-configuration
+                                (xorg-configuration
+                                  (xorg-configuration
+                                    (keyboard-layout keyboard-layout)
+                                    (extra-config (list %xorg-libinput-config))))))
+                    (service tlp-service-type
+                             (tlp-configuration
+                                (cpu-boost-on-ac? #t)
+                                (wifi-pwr-on-bat? #t)))
+                    (pam-limits-service ;; This enables JACK to enter realtime mode
+                     (list
+                      (pam-limits-entry "@realtime" 'both 'rtprio 99)
+                      (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
+                    (service thermald-service-type)
+                    (service docker-service-type)
+                    (bluetooth-service #:auto-enable? #t)
+                    (remove (lambda (service)
+                                (eq? (service-kind service) gdm-service-type))
+                            %my-desktop-services)))
+
+    ;; Allow resolution of '.local' host names with mDNS
+    (name-service-switch %mdns-host-lookup-nss)))
 
 #+end_src
 
 *** Machines
 
+Because I'm lame, all of my machines are named from characters, things, and places from the movie Hackers.
+
 **** zerocool
+
+=zerocool= is a 5th Generation ThinkPad X1 Carbon that I use for most of my writing and hacking at home.
+
+#+begin_src scheme :tangle .config/guix/systems/zerocool.scm
+
+;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+
+(define-module (zerocool)
+  #:use-module (base-system)
+  #:use-module (gnu))
+
+(operating-system
+ (inherit base-operating-system)
+ (host-name "zerocool")
+
+ (mapped-devices
+  (list (mapped-device
+         (source (uuid "039d3ff8-0f90-40bf-89d2-4b2454ada6df"))
+         (target "system-root")
+         (type luks-device-mapping))))
+
+ (file-systems (cons*
+                (file-system
+                 (device (file-system-label "zerocool"))
+                 (mount-point "/")
+                 (type "ext4")
+                 (dependencies mapped-devices))
+                (file-system
+                 (device "/dev/nvme0n1p1")
+                 (mount-point "/boot/efi")
+                 (type "vfat"))
+                %base-file-systems)))
+
+#+end_src
 
 **** davinci
 
+=davinci= is a ThinkPad T480s that I use at my day job.
+
+#+begin_src scheme :tangle .config/guix/systems/davinci.scm
+
+;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+
+(define-module (davinci)
+  #:use-module (base-system)
+  #:use-module (gnu))
+
+(operating-system
+ (inherit base-operating-system)
+ (host-name "davinci")
+
+ (mapped-devices
+  (list (mapped-device
+         (source (uuid "eaba53d9-d7e5-4129-82c8-df28bfe6527e"))
+         (target "system-root")
+         (type luks-device-mapping))))
+
+ (file-systems (cons*
+                (file-system
+                 (device (file-system-label "system-root"))
+                 (mount-point "/")
+                 (type "ext4")
+                 (dependencies mapped-devices))
+                (file-system
+                 (device "/dev/nvme0n1p2")
+                 (mount-point "/boot/efi")
+                 (type "vfat"))
+                %base-file-systems)))
+
+#+end_src
+
 **** phantom
+
+=phantom= is a ThinkPad X1 Extreme that I use for music production and video editing.  For whatever reason, loading the =nouveau= driver crashes the machine upon booting so I've blacklisted it for now until I figure out how to get it working correctly.
+
+#+begin_src scheme :tangle .config/guix/systems/phantom.scm
+
+;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+
+(define-module (phantom)
+  #:use-module (base-system)
+  #:use-module (gnu))
+
+(operating-system
+ (inherit base-operating-system)
+ (host-name "phantom")
+
+ ;; The nouveau driver crashes the machine, need to investigate.
+ ;; Probably needs PCI-e power management turned off.
+ (kernel-arguments
+    '("modprobe.blacklist=nouveau"))
+
+ (mapped-devices
+  (list (mapped-device
+         (source (uuid "091b8ad5-efb3-4c5b-8370-7db99c404a30"))
+         (target "system-root")
+         (type luks-device-mapping))))
+
+ (file-systems (cons*
+                (file-system
+                 (device (file-system-label "system-root"))
+                 (mount-point "/")
+                 (type "ext4")
+                 (dependencies mapped-devices))
+                (file-system
+                 (device "/dev/nvme0n1p1")
+                 (mount-point "/boot/efi")
+                 (type "vfat"))
+                %base-file-systems)))
+
+#+end_src
+
+** Profile Management
+
+I like to separate my packages into separate manifests that get installed as profiles which can be updated independently.  These profiles get installed under the =~/.guix-extra-profiles= path and sourced by my =~/.profile= when I log in.
+
+To make the management of multiple profiles easier, I've created a couple of shell scripts:
+
+*** Activating Profiles
+
+This script accepts a space-separated list of manifest file names (without extension) under the =~/.config/guix/manifests= folder and then installs those profiles for the first time.  For example:
+
+#+begin_src sh
+
+activate-profiles desktop emacs music
+
+#+end_src
+
+#+begin_src sh :tangle .bin/activate-profiles :shebang #!/bin/sh
+
+# NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+
+GREEN='\033[1;32m'
+RED='\033[1;30m'
+NC='\033[0m'
+GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles
+
+profiles=$*
+if [[ $# -eq 0 ]]; then
+    profiles="$HOME/.config/guix/manifests/*.scm";
+fi
+
+for profile in $profiles; do
+  # Remove the path and file extension, if any
+  profileName=$(basename $profile)
+  profileName="${profile%.*}"
+  profilePath="$GUIX_EXTRA_PROFILES/$profileName"
+  manifestPath=$HOME/.config/guix/manifests/$profile.scm
+
+  if [ -f $manifestPath ]; then
+    echo
+    echo -e "${GREEN}Activating profile:" $manifestPath "${NC}"
+    echo
+
+    mkdir -p $profilePath
+    guix package --manifest=$manifestPath --profile="$profilePath/$profileName"
+
+    # Source the new profile
+    GUIX_PROFILE="$profilePath/$profileName"
+    if [ -f $GUIX_PROFILE/etc/profile ]; then
+        . "$GUIX_PROFILE"/etc/profile
+    else
+        echo -e "${RED}Couldn't find profile:" $GUIX_PROFILE/etc/profile "${NC}"
+    fi
+  else
+    echo "No profile found at path" $profilePath
+  fi
+done
+
+#+end_src
+
+*** Updating Profiles
+
+This script accepts a space-separated list of manifest file names (without extension) under the =~/.config/guix/manifests= folder and then installs any updates to the packages contained within them.  If no profile names are provided, it walks the list of profile directories under =~/.guix-extra-profiles= and updates each one of them.
+
+#+begin_src sh
+
+update-profiles emacs
+
+#+end_src
+
+#+begin_src sh :tangle .bin/update-profiles :shebang #!/bin/sh
+
+# NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+
+GREEN='\033[1;32m'
+NC='\033[0m'
+GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles
+
+profiles=$*
+if [[ $# -eq 0 ]]; then
+    profiles="$GUIX_EXTRA_PROFILES/*";
+fi
+
+for profile in $profiles; do
+  profileName=$(basename $profile)
+  profilePath=$GUIX_EXTRA_PROFILES/$profileName
+
+  echo
+  echo -e "${GREEN}Updating profile:" $profilePath "${NC}"
+  echo
+
+  guix package --profile="$profilePath/$profileName" --manifest="$HOME/.config/guix/manifests/$profileName.scm"
+done
+
+#+end_src

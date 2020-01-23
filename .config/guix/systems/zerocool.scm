@@ -1,3 +1,5 @@
+;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+
 (define-module (zerocool)
   #:use-module (base-system)
   #:use-module (gnu))

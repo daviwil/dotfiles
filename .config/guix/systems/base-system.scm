@@ -1,5 +1,4 @@
-;; NOTE: Any configuration that derives from this must invoke `guix system` like so:
-;; *sudo -E guix system -L ~/.dotfiles/.config/guix/systems reconfigure ~/.dotfiles/.config/guix/systems/davinci.scm
+;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
 
 (define-module (base-system)
   #:use-module (gnu)

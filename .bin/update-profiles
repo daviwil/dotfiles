@@ -1,4 +1,5 @@
 #!/bin/sh
+# NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
 
 GREEN='\033[1;32m'
 NC='\033[0m'

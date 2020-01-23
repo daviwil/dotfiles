@@ -1,12 +1,9 @@
+;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+
 (cons* (channel
         (name 'nonguix)
         (url "https://gitlab.com/nonguix/nonguix"))
        %default-channels)
-
-;; The following channel list can be used when testing patches
-;; to services from a local clone of the Guix repo.  Just make
-;; sure to commit the changes to a branch and refer to that
-;; branch by name in the 'guix channel entry below:
 
 ;; (list (channel
 ;;         (name 'nonguix)
