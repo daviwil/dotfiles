@@ -1,6 +1,6 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./config.el
 
-* daviwil's Emacs Configuration
+* Emacs Configuration
 
 This is an ongoing evolution of my original Emacs configuration files, inspired by a bunch of resources I've found online.
 
@@ -775,7 +775,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 ** Buffer Management
 
-*** Bindings
+**** Bindings
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1357,7 +1357,7 @@ credentials for mail, etc.
   (setq evil-auto-indent nil)
   (diminish org-indent-mode))
 
-(add-hook 'org-mode-hook 'dw/do-org-hooks)
+(add-hook 'org-mode-hook #'dw/do-org-hooks)
 
 (setq org-modules
   '(org-crypt
@@ -1427,7 +1427,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 (require 'org-indent)
 
 ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-(set-face-attribute 'org-block nil  :inherit 'fixed-pitch)
+(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
 (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
 (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
 (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
@@ -3216,6 +3216,7 @@ to set that up.
 
 ;; TODO: Figure out how to query for 'done' bugs
 (defun dw/debbugs-guix-patches ()
+  (interactive)
   (debbugs-gnu '("serious" "important" "normal") "guix-patches" nil t))
 
 #+end_src
