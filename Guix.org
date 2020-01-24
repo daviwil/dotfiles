@@ -1,4 +1,20 @@
 * System Configuration with Guix
+:PROPERTIES:
+:TOC:      2
+:END:
+
+** Table of Contents
+:PROPERTIES:
+:TOC:      this
+:END:
+  -  [[#system-configuration-with-guix][System Configuration with Guix]]
+    -  [[#channels][Channels]]
+    -  [[#systems][Systems]]
+      -  [[#base-configuration][Base Configuration]]
+      -  [[#machines][Machines]]
+    -  [[#profile-management][Profile Management]]
+      -  [[#activating-profiles][Activating Profiles]]
+      -  [[#updating-profiles][Updating Profiles]]
 
 ** Channels
 
