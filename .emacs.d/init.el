@@ -713,7 +713,6 @@
         org-habit
         org-bookmark
         org-eshell
-        org-notmuch
         org-irc))
 
   (setq org-refile-targets '((nil :maxlevel . 3)
