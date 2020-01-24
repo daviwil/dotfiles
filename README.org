@@ -14,7 +14,7 @@ I've started to migrate all of my important configuration files to a literate co
 
 - [[file:Emacs.org][Emacs]]
 - [[file:Desktop.org][Desktop Environment]]
-- System Configurations via Guix
+- [[file:Systems.org][System Configurations via Guix]]
 - Mail
 
 * Org Babel Tips
