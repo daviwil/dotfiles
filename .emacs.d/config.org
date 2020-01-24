@@ -1613,20 +1613,20 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 *** Journal
 
-I use my own custom journal file format based on Org datetrees.  In the future I
-might go back to [[https://github.com/bastibe/org-journal/][org-journal]], keeping that configuration around.
+In the past, I've used my own custom journal file format based on Org datetrees.  Lately I'm starting to try using daily journal files with [[https://github.com/bastibe/org-journal/][org-journal]] to see if I get any benefits from it.
 
 #+BEGIN_SRC emacs-lisp
 
-  ;; (use-package org-journal
-  ;;   :defer t
-  ;;   :load-path "~/Projects/Code/org-journal"
-  ;;   :custom
-  ;;   (org-journal-file-type 'monthly)
-  ;;   (org-journal-date-format "%A, %d %B %Y")
-  ;;   (org-journal-dir "~/Notes/Journal/")
-  ;;   (org-journal-file-format "%Y-%m.org")
-  ;;   (org-journal-enable-agenda-integration t))
+  (use-package org-journal
+    :defer t
+    :ensure t  ;; Not in Guix yet
+    :custom
+    (org-journal-file-type 'daily)
+    (org-journal-date-format "%B %d, %Y - %A")
+    (org-journal-dir "~/Notes/Journal/")
+    (org-journal-time-format "%-l:%M %p - ")
+    (org-journal-file-format "%Y-%m-%d.org")
+    (org-journal-enable-agenda-integration t))
 
 #+END_SRC
 
