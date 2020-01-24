@@ -40,6 +40,28 @@ Some parts of the configuration require knowledge of whether Emacs is running on
 
 #+end_src
 
+** Keep .emacs.d Clean
+
+I don't want a bunch of transient files showing up as untracked in the Git repo so I move them all to another location.
+
+#+begin_src emacs-lisp
+
+;; Keep transient cruft out of ~/.emacs.d/
+(setq user-emacs-directory "~/.cache/emacs/"
+      backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory)))
+      url-history-file (expand-file-name "url/history" user-emacs-directory)
+      projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-emacs-directory))
+
+
+;; Keep customization settings in a temporary file (thanks Ambrevar!)
+(setq custom-file
+      (if (boundp 'server-socket-dir)
+          (expand-file-name "custom.el" server-socket-dir)
+        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+(load custom-file t)
+
+#+end_src
+
 ** Package Management
 
 Set up ELPA, MELPA, and Org package repositories and load =use-package= to manage package configuration.
@@ -73,28 +95,6 @@ Set up ELPA, MELPA, and Org package repositories and load =use-package= to manag
 
 ;; On non-Guix systems, "ensure" packages by default
 (setq use-package-always-ensure (not dw/is-guix-system))
-
-#+end_src
-
-** Keep .emacs.d Clean
-
-I don't want a bunch of transient files showing up as untracked in the Git repo so I move them all to another location.
-
-#+begin_src emacs-lisp
-
-;; Keep transient cruft out of ~/.emacs.d/
-(setq user-emacs-directory "~/.cache/emacs/"
-      backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory)))
-      url-history-file (expand-file-name "url/history" user-emacs-directory)
-      projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-emacs-directory))
-
-
-;; Keep customization settings in a temporary file (thanks Ambrevar!)
-(setq custom-file
-      (if (boundp 'server-socket-dir)
-          (expand-file-name "custom.el" server-socket-dir)
-        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
-(load custom-file t)
 
 #+end_src
 
