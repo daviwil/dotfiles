@@ -1,5 +1,4 @@
 #!/bin/sh
-
 status="$(playerctl -p spotify status 2>&1)"
 if [ "$status" != "No players found" ]
 then

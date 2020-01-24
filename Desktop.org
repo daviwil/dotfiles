@@ -1,0 +1,379 @@
+* Desktop Environment
+
+This file contains configuration for my overall desktop environment.  My workflow is driven by Emacs but there are still a number of tools, themes, and fonts that I must install to have a complete desktop experience.
+
+** Desktop Profile
+
+Here are the packages I install via Guix for my custom desktop environment:
+
+*.config/guix/manifests/desktop.scm:*
+
+#+begin_src scheme :tangle .config/guix/manifests/desktop.scm
+
+(specifications->manifest
+ '(;; Browsers
+   "vimb"
+
+   ;; Syncthing
+   "syncthing"
+   "qsyncthingtray"
+
+   ;; Panel
+   "polybar"
+
+   ;; Mail
+   "mu"
+   "offlineimap"
+
+   ;; System Tools
+   "openssh"
+   "zip"
+   "unzip"
+
+   ;; Xorg Tools
+   "xev"
+   "xset"
+   "xrdb"
+   "xhost"
+   "xmodmap"
+   "setxkbmap"
+   "xrandr"
+   "arandr"
+   "xss-lock"
+   "libinput"
+   "xinput"
+
+   ;; Fonts
+   "font-fira-mono"
+   "font-fira-code"
+   "font-abattis-cantarell"
+   "font-dejavu"
+   "font-google-noto"
+   "font-gnu-freefont-ttf"
+   "font-liberation"
+   "font-awesome"
+   "font-google-material-design-icons"
+   "gs-fonts"
+
+   ;; Document Readers
+   "zathura"
+   "zathura-pdf-mupdf"
+
+   ;; Images and Screenshots
+   "feh"
+   "scrot"
+
+   ;; Printing
+   "cups"
+
+   ;; Desktop
+   "compton"
+   "redshift"
+   "gucharmap"
+   "brightnessctl"
+   "xdg-utils"     ;; For xdg-open, etc
+   "gtk+:bin"      ;; For gtk-launch
+   "glib:bin"      ;; For gio-launch-desktop
+   "shared-mime-info"
+
+   ;; Xfce Tools
+   "xfconf"
+   "xfce4-terminal"
+   "xfce4-settings"
+   "xfce4-notifyd"
+   "xfce4-screenshooter"
+   "gtk-xfce-engine"
+
+   ;; GTK Themes
+   "arc-icon-theme"
+   "matcha-theme"
+   "hicolor-icon-theme"
+   "gnome-icon-theme"
+   "gnome-backgrounds"
+   "papirus-icon-theme"
+
+   ;; Authentication
+   "password-store"
+
+   ;; Containerized Applications
+   "flatpak"  ;; For Teams, Spotify, Discord, and Steam
+
+   ;; Media Players
+   "mpv"
+   "mpv-mpris"
+   "youtube-dl"
+   "playerctl"
+
+   ;; Video Codecs
+   "gstreamer"
+   "gst-plugins-base"
+   "gst-plugins-good"
+   "gst-plugins-bad"
+   "gst-plugins-ugly"
+   "gst-libav"
+   "intel-vaapi-driver"
+   "libva-utils"
+
+   ;; Audio Device Control
+   "alsa-utils"
+   "pavucontrol"))
+
+#+end_src
+
+** Display Management
+
+I use a script to automatically configure multiple displays with =xrandr= when I dock my laptops.  This script invokes =xrandr= differently based on the hostname of the machine.
+
+#+begin_src sh :tangle .bin/update-screens :shebang #!/bin/sh
+
+case $(hostname) in
+
+    zerocool)
+        xrandr --output VIRTUAL1 --off --output eDP1 --mode 2560x1440 --pos 3840x416 --rotate normal --output DP1 --off --output HDMI1 --off --output DP1-3 --off --output DP1-2 --off --output DP1-1 --primary --mode 3840x2160 --pos 0x0 --rotate normal --output DP2 --off
+        ;;
+
+    davinci)
+        # Temporary: this is for docking my laptop at home with HDMI!
+        #xrandr --output HDMI-2 --mode 3840x2160 --pos 0x0 --scale 0.6x0.6 --primary --rotate normal --output HDMI-1 --off --output DP-1 --off --output eDP-1 --mode 1920x1080 --pos 2304x216 --rotate normal --output DP-2 --off
+        xrandr --output eDP-1 --mode 1920x1080 --pos 2560x360 --rotate normal --output DP-1-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output HDMI-2 --off --output HDMI-1 --off --output DP-1 --off --output DP-1-3 --off --output DP-2 --off --output DP-1-1 --off
+        ;;
+
+    phantom)
+        killall intel-virtual-o # Yeah, that's how killall sees the name
+        intel-virtual-output
+
+        xrandr --output VIRTUAL3 --off --output VIRTUAL2 --off --output VIRTUAL1 --primary --mode VIRTUAL1.447-3840x2160 --pos 0x0 --rotate normal --output eDP1 --mode 3840x2160 --pos 3840x0 --rotate normal --output VIRTUAL5 --off --output VIRTUAL4 --off --output VIRTUAL6 --off
+        ;;
+
+esac
+
+#+end_src
+
+** Panel via Polybar
+
+I use [[https://github.com/polybar/polybar][Polybar]] to display a panel at the top of the primary screen to display my current EXWM workspace, CPU usage and temperature, battery status, time, and system tray.  It uses some custom hooks back into Emacs via =emacsclient=.
+
+*.config/polybar/config:*
+
+#+begin_src conf :tangle .config/polybar/config
+
+; Docs: https://github.com/polybar/polybar
+;==========================================================
+
+[settings]
+screenchange-reload = true
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+[colors]
+background = #f01c1f26
+background-alt = #576075
+foreground = #dfdfdf
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+underline-1 = 89AAEB
+
+[bar/panel]
+width = 100%
+height = 35
+offset-x = 0
+offset-y = 0
+fixed-center = true
+enable-ipc = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 2
+line-color = #f00
+
+border-size = 0
+border-color = #00000000
+
+padding-top = 5
+padding-left = 1
+padding-right = 1
+
+module-margin = 1
+
+font-0 = "Cantarell:size=18:weight=bold;2"
+font-1 = "Font Awesome:size=14;2"
+font-2 = "Material Icons:size=20;5"
+font-3 = "Fira Mono:size=13;-3"
+
+modules-left = exwm
+modules-center = spotify
+modules-right = telegram mu4e cpu temperature battery date
+
+tray-position = right
+tray-padding = 2
+tray-maxsize = 28
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[module/exwm]
+type = custom/ipc
+hook-0 = emacsclient -e "(dw/polybar-exwm-workspace)" | sed -e 's/^"//' -e 's/"$//'
+initial = 1
+format-underline = ${colors.underline-1}
+format-background = ${colors.background-alt}
+format-padding = 1
+
+[module/spotify]
+type = custom/script
+exec = ~/.config/polybar/player-status.sh
+interval = 3
+
+[module/mu4e]
+type = custom/ipc
+hook-0 = emacsclient -e '(dw/polybar-mail-count 500)' | sed -e 's/^"//' -e 's/"$//'
+initial = 1
+format-underline = ${colors.underline-1}
+click-left = emacsclient -e '(dw/go-to-inbox)'
+
+[module/telegram]
+type = custom/ipc
+hook-0 = emacsclient -e '(dw/polybar-telegram-chats)' | sed -e 's/^"//' -e 's/"$//'
+format-padding = 3
+initial = 1
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix-font = 1
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-underline = ${colors.underline-1}
+
+label-layout = %layout%
+label-layout-underline = ${colors.underline-1}
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-underline = ${colors.underline-1}
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format = <label> <ramp-coreload>
+format-underline = ${colors.underline-1}
+click-left = emacsclient -e "(proced)"
+label = %percentage:2%%
+ramp-coreload-spacing = 0
+ramp-coreload-0 = ▁
+ramp-coreload-0-foreground = ${colors.foreground-alt}
+ramp-coreload-1 = ▂
+ramp-coreload-2 = ▃
+ramp-coreload-3 = ▄
+ramp-coreload-4 = ▅
+ramp-coreload-5 = ▆
+ramp-coreload-6 = ▇
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = "M:"
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = ${colors.underline-1}
+label = %percentage_used%%
+
+[module/date]
+type = internal/date
+interval = 5
+
+date = "%a %b %e"
+date-alt = "%A %B %d %Y"
+
+time = %l:%M %p
+time-alt = %H:%M:%S
+
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = ${colors.underline-1}
+
+label = %date% %time%
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 98
+time-format = %-l:%M
+
+label-charging = %percentage%% / %time%
+format-charging = <animation-charging> <label-charging>
+format-charging-underline = ${colors.underline-1}
+
+label-discharging = %percentage%% / %time%
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-underline = ${self.format-charging-underline}
+
+format-full = <ramp-capacity> <label-full>
+format-full-underline = ${self.format-charging-underline}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+
+format = <label> <ramp>
+format-underline = ${colors.underline-1}
+format-warn = <label-warn> <ramp>
+format-warn-underline = ${self.format-underline}
+
+label = %temperature-c%
+label-warn = %temperature-c%!
+label-warn-foreground = ${colors.secondary}
+
+ramp-0 = ▁
+ramp-0-foreground = ${colors.foreground-alt}
+ramp-1 = ▂
+ramp-2 = ▃
+ramp-3 = ▄
+ramp-4 = ▅
+ramp-5 = ▆
+ramp-6 = ▇
+ramp-foreground = ${colors.foreground-alt}
+
+#+end_src
+
+I created a simple script to grab Spotify player information using =playerctl=:
+
+*.config/polybar/player:*
+
+#+begin_src sh :tangle .config/polybar/player-status.sh :shebang #!/bin/sh
+
+status="$(playerctl -p spotify status 2>&1)"
+if [ "$status" != "No players found" ]
+then
+  artist="$(playerctl -p spotify metadata artist)"
+  if [ "$artist" != "" ]
+  then
+    echo " $(playerctl -p spotify metadata artist) - $(playerctl -p spotify metadata title)"
+  else
+    # Clear any string that was previously displayed
+    echo ""
+  fi
+else
+  # Clear any string that was previously displayed
+  echo ""
+fi
+
+#+end_src

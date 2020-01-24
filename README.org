@@ -1,15 +1,29 @@
 #+TITLE: =/home/daviwil/.dotfiles=
 
-This repo contains my personal system configuration which enables a consistent
-computing experience across multiple machines.  These days I primarily use
-GNU/Linux via the [[https://guix.gnu.org][Guix System Distribution]].
+This repo contains my personal system configuration which enables a consistent computing experience across multiple machines.  These days I primarily use GNU/Linux via the [[https://guix.gnu.org][Guix System Distribution]].
 
-I manage the various configuration files in this repo using [[https://www.gnu.org/software/stow/][GNU Stow]].  This
-allows me to set up symlinks for all of my dotfiles using a single command:
+I manage the various configuration files in this repo using [[https://www.gnu.org/software/stow/][GNU Stow]].  This allows me to set up symlinks for all of my dotfiles using a single command:
 
 #+BEGIN_SRC sh
 stow .
 #+END_SRC
+
+* Configuration Files
+
+I've started to migrate all of my important configuration files to a literate configuration strategy using Emacs' Org Mode.  This enables me to have a single annotated file
+for a particular configuration area which automatically writes out the actual configuration files involved when I save the .org file.
+
+- Emacs
+- [[file:Desktop.org::*Desktop Environment][Desktop Environment]]
+- Window Management
+- System Configurations via Guix
+- Mail
+
+* Org Babel Tips
+
+When inside of an Org source block, you can use =org-babel-demarcate-block= (=C-c C-v d= by default) to split the block you're currently in so that you can insert an annotation.
+
+* License
 
 Released under the [[./LICENSE][GPL v3]] unless otherwise specified by license files in
 subfolders.
