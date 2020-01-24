@@ -1,4 +1,4 @@
-#+PROPERTY: header-args:emacs-lisp :tangle ./config.el
+#+PROPERTY: header-args:emacs-lisp :tangle ./.emacs.d/config.el
 
 * Emacs Configuration
 

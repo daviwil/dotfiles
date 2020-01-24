@@ -92,8 +92,9 @@
 (setq dw/mail-enabled (string-equal system-name "zerocool"))
 
 ;; Load real configuration from config.org
-(when (file-readable-p "~/.emacs.d/config.org")
-  (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+(load-file "config.el")
+;; (when (file-readable-p "~/.dotfiles/Emacs.org")
+;;   (org-babel-load-file (expand-file-name "~/.dotfiles/Emacs.org")))
 
 ;; Keep transient cruft out of ~/.emacs.d/
 (setq user-emacs-directory "~/.cache/emacs/"
