@@ -10,12 +10,10 @@ stow .
 
 * Configuration Files
 
-I've started to migrate all of my important configuration files to a literate configuration strategy using Emacs' Org Mode.  This enables me to have a single annotated file
-for a particular configuration area which automatically writes out the actual configuration files involved when I save the .org file.
+I've started to migrate all of my important configuration files to a literate configuration strategy using Emacs' Org Mode.  This enables me to have a single annotated file for a particular configuration area which automatically writes out the actual configuration files involved when I save the .org file.
 
-- Emacs
-- [[file:Desktop.org::*Desktop Environment][Desktop Environment]]
-- Window Management
+- [[file:Emacs.org][Emacs]]
+- [[file:Desktop.org][Desktop Environment]]
 - System Configurations via Guix
 - Mail
 
