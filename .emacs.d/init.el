@@ -14,7 +14,6 @@
 (setq dw/is-termux
       (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
 
-;; Are we running in Guix System?
 ;; TODO: Need a more accurate check for this!
 (setq dw/is-guix-system (eq window-system 'x))
 
@@ -1023,6 +1022,9 @@
 
 ;; This ends the use-package org-mode block
 )
+
+(use-package org-make-toc
+  :hook (org-mode . org-make-toc-mode))
 
   ;; (use-package org-gcal
   ;;   :after org

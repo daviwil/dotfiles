@@ -1,8 +1,126 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./.emacs.d/init.el
 
 * Emacs Configuration
+:PROPERTIES:
+:TOC:     2
+:END:
 
 This is an ongoing evolution of my original Emacs configuration files, inspired by a bunch of resources I've found online.
+
+** Table of Contents
+:PROPERTIES:
+:TOC:      this
+:END:
+  -  [[#emacs-configuration][Emacs Configuration]]
+    -  [[#startup-performance][Startup Performance]]
+    -  [[#system-checks][System Checks]]
+    -  [[#keep-emacsd-clean][Keep .emacs.d Clean]]
+    -  [[#package-management][Package Management]]
+    -  [[#update-load-path][Update Load Path]]
+    -  [[#helper-functions][Helper Functions]]
+      -  [[#platform-helpers][Platform Helpers]]
+    -  [[#server-mode][Server Mode]]
+    -  [[#desktop-environment][Desktop Environment]]
+    -  [[#keyboard-bindings][Keyboard Bindings]]
+      -  [[#esc-cancels-all][ESC Cancels All]]
+      -  [[#lets-be-evil][Let's Be Evil]]
+      -  [[#keybinding-panel-which-key][Keybinding Panel (which-key)]]
+      -  [[#simplify-leader-bindings-generalel][Simplify Leader Bindings (general.el)]]
+      -  [[#enable-keychord-bind-with-use-package][Enable keychord bind with use-package]]
+    -  [[#general-configuration][General Configuration]]
+      -  [[#user-interface][User Interface]]
+      -  [[#theme][Theme]]
+      -  [[#font][Font]]
+      -  [[#mode-line][Mode Line]]
+      -  [[#auto-saving-changed-files][Auto-Saving Changed Files]]
+      -  [[#auto-reverting-changed-files][Auto-Reverting Changed Files]]
+      -  [[#ui-toggles][UI Toggles]]
+      -  [[#highlight-matching-braces][Highlight Matching Braces]]
+      -  [[#displaying-world-time][Displaying World Time]]
+      -  [[#pinentry][Pinentry]]
+      -  [[#tramp][TRAMP]]
+    -  [[#editing-configuration][Editing Configuration]]
+      -  [[#tab-widths][Tab Widths]]
+      -  [[#use-spaces-instead-of-tabs-for-indentation][Use spaces instead of tabs for indentation.]]
+      -  [[#commenting-lines][Commenting Lines]]
+      -  [[#automatically-clean-whitespace][Automatically clean whitespace]]
+      -  [[#use-parinfer-for-lispy-languages][Use Parinfer for Lispy languages]]
+    -  [[#configuration-file][Configuration File]]
+      -  [[#helpers][Helpers]]
+      -  [[#bindings][Bindings]]
+    -  [[#stateful-keymaps-with-hydra][Stateful Keymaps with Hydra]]
+    -  [[#better-completions-with-ivy][Better Completions with Ivy]]
+    -  [[#jumping-with-avy][Jumping with Avy]]
+    -  [[#buffer-management][Buffer Management]]
+        -  [[#bindings][Bindings]]
+    -  [[#window-management][Window Management]]
+      -  [[#frame-scaling--zooming][Frame Scaling / Zooming]]
+      -  [[#window-selection-with-ace-window][Window Selection with ace-window]]
+      -  [[#window-history-with-winner-mode][Window History with winner-mode]]
+      -  [[#set-margins-for-modes][Set Margins for Modes]]
+    -  [[#expand-region][Expand Region]]
+    -  [[#credential-management][Credential Management]]
+    -  [[#file-browsing][File Browsing]]
+      -  [[#dired][Dired]]
+      -  [[#opening-files-externally][Opening Files Externally]]
+    -  [[#org-mode][Org Mode]]
+      -  [[#org-configuration][Org Configuration]]
+      -  [[#automatically-tangle-on-save][Automatically "Tangle" on Save]]
+      -  [[#fonts-and-bullets][Fonts and Bullets]]
+      -  [[#org-file-paths][Org File Paths]]
+      -  [[#agenda][Agenda]]
+      -  [[#tags][Tags]]
+      -  [[#tasks][Tasks]]
+      -  [[#journal][Journal]]
+      -  [[#capture-templates][Capture Templates]]
+      -  [[#block-templates][Block Templates]]
+      -  [[#pomodoro][Pomodoro]]
+      -  [[#protocol][Protocol]]
+      -  [[#searching][Searching]]
+      -  [[#bindings][Bindings]]
+      -  [[#end-use-package-org-mode][End =use-package org-mode=]]
+      -  [[#update-table-of-contents-on-save][Update Table of Contents on Save]]
+      -  [[#calendar-sync][Calendar Sync]]
+      -  [[#reminders][Reminders]]
+      -  [[#presentations][Presentations]]
+      -  [[#addons-to-try][Addons to Try]]
+    -  [[#development][Development]]
+      -  [[#git][Git]]
+      -  [[#projectile][Projectile]]
+      -  [[#languages][Languages]]
+      -  [[#productivity][Productivity]]
+      -  [[#reference][Reference]]
+    -  [[#writing][Writing]]
+      -  [[#darkroom-for-distraction-free-writing][Darkroom for distraction-free writing]]
+    -  [[#applications][Applications]]
+      -  [[#binding-prefix][Binding Prefix]]
+      -  [[#mail][Mail]]
+      -  [[#calendar][Calendar]]
+      -  [[#finance][Finance]]
+      -  [[#eshell][eshell]]
+      -  [[#multi-term][multi-term]]
+      -  [[#ediff][ediff]]
+      -  [[#chat][Chat]]
+      -  [[#mastodon][Mastodon]]
+      -  [[#rss][RSS]]
+      -  [[#media][Media]]
+    -  [[#notifications][Notifications]]
+      -  [[#alert][Alert]]
+      -  [[#sauron][Sauron]]
+    -  [[#system-utilities][System Utilities]]
+      -  [[#guix][Guix]]
+      -  [[#daemons][Daemons]]
+      -  [[#pulseaudio][PulseAudio]]
+      -  [[#bluetooth][Bluetooth]]
+      -  [[#proced][Proced]]
+      -  [[#system-monitor][System Monitor]]
+      -  [[#docker][Docker]]
+    -  [[#miscellaneous][Miscellaneous]]
+      -  [[#debbugs-mainly-for-guix][Debbugs (mainly for Guix)]]
+      -  [[#emojification][Emojification]]
+      -  [[#dashboard][Dashboard]]
+    -  [[#runtime-performance][Runtime Performance]]
+    -  [[#inspiration][Inspiration]]
 
 ** Startup Performance
 
@@ -34,7 +152,6 @@ Some parts of the configuration require knowledge of whether Emacs is running on
 (setq dw/is-termux
       (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
 
-;; Are we running in Guix System?
 ;; TODO: Need a more accurate check for this!
 (setq dw/is-guix-system (eq window-system 'x))
 
@@ -1205,6 +1322,7 @@ Handy tip from [[https://leanpub.com/lit-config/read#leanpub-auto-configuring-em
 
 #+end_src
 
+
 *** Fonts and Bullets
 
 Use bullet characters instead of asterisks, plus set the header font sizes to something more palatable.  A fair amount of inspiration has been taken from [[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][this blog post]].
@@ -1579,6 +1697,17 @@ through =emacsclient.=
 
 ;; This ends the use-package org-mode block
 )
+
+#+end_src
+
+*** Update Table of Contents on Save
+
+It's nice to have a table of contents section for long literate configuration files (like this one!) so I use =org-make-toc= to automatically update the ToC in any header with a property named =TOC=.
+
+#+begin_src emacs-lisp
+
+(use-package org-make-toc
+  :hook (org-mode . org-make-toc-mode))
 
 #+end_src
 
@@ -2167,7 +2296,7 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 ** Writing
 
-*** =darkroom= for distraction-free writing
+*** Darkroom for distraction-free writing
 
 #+begin_src emacs-lisp
 

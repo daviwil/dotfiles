@@ -78,6 +78,7 @@
    "emacs-org-bullets"
    "emacs-org-pomodoro"
    "emacs-org-tree-slide"
+   "emacs-org-make-toc"
    "emacs-calfw"
 
    ;; IDE
