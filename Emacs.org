@@ -1151,6 +1151,9 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
 
 #+BEGIN_SRC emacs-lisp
 
+;; TODO: Mode this to another section
+(setq-default fill-column 80)
+
 ;; Turn on indentation and auto-fill mode for Org files
 (defun dw/org-mode-setup ()
   (org-indent-mode)
@@ -1161,7 +1164,7 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
   (diminish org-indent-mode))
 
 (use-package org
-  ;; :defer t
+  :defer t
   ;; :ensure org-plus-contrib
   :hook (org-mode . dw/org-mode-setup)
   :config
@@ -1199,9 +1202,9 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
     '((emacs-lisp . t)
       (ledger . t)))
 
-  (push '("conf-unix" . conf-unix) org-src-lang-modes))
+  (push '("conf-unix" . conf-unix) org-src-lang-modes)
 
-(setq-default fill-column 80)
+  ;; NOTE: Subsequent sections are still part of this use-package block!
 
 #+END_SRC
 
@@ -1224,6 +1227,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 (use-package org-bullets
   :if (not dw/is-termux)
+  :after org
   :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
@@ -1530,6 +1534,7 @@ documentation page.
 #+BEGIN_SRC emacs-lisp
 
   (use-package org-pomodoro
+    :after org
     :commands org-pomodoro
     :config
     (setq org-pomodoro-start-sound "~/.emacs.d/sounds/focus_bell.wav")
@@ -1582,11 +1587,21 @@ through =emacsclient.=
 
 #+END_SRC
 
-**** Calendar Sync
+*** End =use-package org-mode=
+
+#+begin_src emacs-lisp
+
+;; This ends the use-package org-mode block
+)
+
+#+end_src
+
+*** Calendar Sync
 
 #+BEGIN_SRC emacs-lisp
 
   ;; (use-package org-gcal
+  ;;   :after org
   ;;   :config
 
   ;;   (setq org-gcal-client-id (password-store-get "API/Google/daviwil-emacs-id")
@@ -1621,6 +1636,7 @@ through =emacsclient.=
 #+BEGIN_SRC emacs-lisp
 
   ;; (use-package org-wild-notifier
+  ;;   :after org
   ;;   :config
   ;;   ; Make sure we receive notifications for non-TODO events
   ;;   ; like those synced from Google Calendar
@@ -1648,6 +1664,7 @@ through =emacsclient.=
 
 (use-package org-tree-slide
   :defer t
+  :after org
   :commands org-tree-slide-mode
   :config
   (evil-define-key 'normal org-tree-slide-mode-map
