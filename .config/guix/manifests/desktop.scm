@@ -1,6 +1,3 @@
-;; This file contains the list of packages for use in my day-to-day desktop
-;; environment.
-
 (specifications->manifest
  '(;; Browsers
    "vimb"
@@ -10,7 +7,6 @@
    "qsyncthingtray"
 
    ;; Panel
-   "tint2"
    "polybar"
 
    ;; Mail
@@ -88,7 +84,7 @@
    "password-store"
 
    ;; Containerized Applications
-   "flatpak"  ;; For Teams and Spotify
+   "flatpak"  ;; For Teams, Spotify, Discord, and Steam
 
    ;; Media Players
    "mpv"
