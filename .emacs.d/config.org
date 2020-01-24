@@ -994,7 +994,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
   (defun dw/update-screen-layout ()
     (interactive)
-    (let ((layout-script "~/.bin/update-screens.sh"))
+    (let ((layout-script "~/.bin/update-screens"))
        (message "Running screen layout script: %s" layout-script)
        (start-process-shell-command "xrandr" nil layout-script)))
 
