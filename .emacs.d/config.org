@@ -1781,6 +1781,21 @@ through =emacsclient.=
   ;;   "ac"  '(:ignore t :which-key "calendar")
   ;;   "acs" '(org-gcal-fetch :which-key "sync"))
 
+(use-package org-caldav
+  :disabled
+  :defer t
+  :init
+  (setq org-caldav-url "https://caldav.fastmail.com/dav/calendars/user/daviwil@fastmail.fm/"
+        org-caldav-inbox nil
+        org-caldav-calendar-id nil
+        org-caldav-calendars
+         '((:calendar-id "fe098bfb-0726-4e10-bff2-55f8278c8a56"
+            :inbox "~/Notes/Calendar/Personal.org")
+           (:calendar-id "8f150437-cc57-4ba0-9200-d1d98389e2e4"
+            :inbox "~/Notes/Calendar/Work.org"))
+        org-caldav-delete-org-entries 'always
+        org-caldav-delete-calendar-entries 'never))
+
 #+END_SRC
 
 *** Reminders

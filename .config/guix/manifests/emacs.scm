@@ -73,6 +73,7 @@
 
    ;; Org Mode
    "emacs-org"
+   "emacs-org-caldav"
    "emacs-org-contrib"
    "emacs-org-bullets"
    "emacs-org-pomodoro"
