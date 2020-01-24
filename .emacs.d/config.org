@@ -1383,6 +1383,8 @@ credentials for mail, etc.
   '((emacs-lisp . t)
     (ledger . t)))
 
+(push '("conf-unix" . conf-unix) org-src-lang-modes)
+
 #+END_SRC
 
 *** Automatically "Tangle" on Save
