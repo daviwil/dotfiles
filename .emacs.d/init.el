@@ -22,8 +22,8 @@
 (setq user-emacs-directory "~/.cache/emacs/"
       backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory)))
       url-history-file (expand-file-name "url/history" user-emacs-directory)
+      auto-save-list-file-prefix (expand-file-name "auto-save-list/.saves-" user-emacs-directory)
       projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-emacs-directory))
-
 
 ;; Keep customization settings in a temporary file (thanks Ambrevar!)
 (setq custom-file
@@ -330,10 +330,6 @@
     (doom-modeline-persp-name nil)
     (doom-modeline-buffer-file-name-style 'truncate-except-project)
     (doom-modeline-major-mode-icon nil))
-
-  ;; Store file backups in a central location
-  (setq backup-directory-alist
-        `(("." . ,(concat user-emacs-directory "backups"))))
 
   (use-package super-save
     :ensure t
