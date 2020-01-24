@@ -48,6 +48,7 @@
    "emacs-magit-todos"
    "emacs-git-link"
    "emacs-git-gutter"
+   "emacs-git-gutter-fringe"
 
    ;; Quick Navigation
    "emacs-avy"

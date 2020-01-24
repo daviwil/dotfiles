@@ -1908,6 +1908,57 @@ files contained within the repo.  More information at the [[https://github.com/a
            (prog-mode . git-gutter-mode))
     :config
     (setq git-gutter:update-interval 2)
+    (unless dw/is-termux
+      (require 'git-gutter-fringe)
+      (set-face-foreground 'git-gutter-fr:added "green")
+      (fringe-helper-define 'git-gutter-fr:added nil
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        ".........."
+        ".........."
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        ".........."
+        ".........."
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        "XXXXXXXXXX")
+
+      (set-face-foreground 'git-gutter-fr:modified "yellow")
+      (fringe-helper-define 'git-gutter-fr:modified nil
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        ".........."
+        ".........."
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        ".........."
+        ".........."
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        "XXXXXXXXXX")
+
+      (set-face-foreground 'git-gutter-fr:deleted "red")
+      (fringe-helper-define 'git-gutter-fr:deleted nil
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        ".........."
+        ".........."
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        ".........."
+        ".........."
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"
+        "XXXXXXXXXX"))
+
+    ;; These characters are used in terminal mode
     (setq git-gutter:modified-sign "≡")
     (setq git-gutter:added-sign "≡")
     (setq git-gutter:deleted-sign "≡")
