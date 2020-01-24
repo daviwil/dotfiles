@@ -1,6 +1,26 @@
 * Desktop Environment
+:PROPERTIES:
+:TOC:     2
+:END:
 
 This file contains configuration for my overall desktop environment.  My workflow is driven by Emacs but there are still a number of tools, themes, and fonts that I must install to have a complete desktop experience.
+
+** Table of Contents
+:PROPERTIES:
+:TOC:      this
+:END:
+  -  [[#desktop-environment][Desktop Environment]]
+    -  [[#desktop-profile][Desktop Profile]]
+    -  [[#window-management][Window Management]]
+      -  [[#helper-functions][Helper Functions]]
+      -  [[#configuration][Configuration]]
+      -  [[#desktop-configuration][Desktop Configuration]]
+      -  [[#window-switcher][Window Switcher]]
+      -  [[#panel][Panel]]
+      -  [[#keybindings][Keybindings]]
+      -  [[#useful-links][Useful Links]]
+    -  [[#panel-via-polybar][Panel via Polybar]]
+    -  [[#display-management][Display Management]]
 
 ** Desktop Profile
 
