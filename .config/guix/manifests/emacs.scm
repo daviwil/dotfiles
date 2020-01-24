@@ -113,6 +113,7 @@
    ;; Writing
    "emacs-darkroom"
    "emacs-olivetti"
+   "emacs-visual-fill-column"
    ;;"emacs-writegood-mode"
 
    ;; Shell

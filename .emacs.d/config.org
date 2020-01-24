@@ -845,11 +845,20 @@ The keybindings for this are =C+M+-= and =C+M+==.
 ;;   (let ((margin-size (/ (- (frame-width) 80) 3)))
 ;;     (set-window-margins nil margin-size margin-size)))
 
-(use-package olivetti
+;; (use-package olivetti
+;;   :defer t
+;;   ;; :hook (org-mode . olivetti-mode)
+;;   :config
+;;   (setq-default olivetti-body-width 0.7))
+
+(defun dw/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-mode
   :defer t
-  :hook (org-mode . olivetti-mode)
-  :config
-  (setq olivetti-body-width 0.7))
+  :hook (org-mode . dw/org-mode-visual-fill))
 
 #+end_src
 
