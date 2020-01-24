@@ -4,6 +4,111 @@
 
 This is an ongoing evolution of my original Emacs configuration files, inspired by a bunch of resources I've found online.
 
+** Startup Performance
+
+Make startup faster by reducing the frequency of garbage collection and then use a hook to measure Emacs startup time.
+
+#+begin_src emacs-lisp
+
+;; The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 50 1000 1000))
+
+;; Profile emacs startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
+
+#+end_src
+
+** System Checks
+
+Some parts of the configuration require knowledge of whether Emacs is running on a Guix system or in Termux on Android.
+
+#+begin_src emacs-lisp
+
+(require 'subr-x)
+(setq dw/is-termux
+      (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
+
+;; Are we running in Guix System?
+;; TODO: Need a more accurate check for this!
+(setq dw/is-guix-system (eq window-system 'x))
+
+#+end_src
+
+** Package Management
+
+Set up ELPA, MELPA, and Org package repositories and load =use-package= to manage package configuration.
+
+#+begin_src emacs-lisp
+
+;; Initialize package sources
+(require 'package)
+
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
+
+;; Fix an issue accessing the ELPA archive in Termux
+(when dw/is-termux
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
+(package-initialize)
+;(unless package-archive-contents
+;  (package-refresh-contents))
+
+;; Initialize use-package on non-Linux platforms
+(unless (or (package-installed-p 'use-package)
+            dw/is-guix-system)
+   (package-install 'use-package))
+(require 'use-package)
+
+;; Uncomment this to get a reading on packages that get loaded at startup
+;;(setq use-package-verbose t)
+
+;; On non-Guix systems, "ensure" packages by default
+(setq use-package-always-ensure (not dw/is-guix-system))
+
+#+end_src
+
+** Keep .emacs.d Clean
+
+I don't want a bunch of transient files showing up as untracked in the Git repo so I move them all to another location.
+
+#+begin_src emacs-lisp
+
+;; Keep transient cruft out of ~/.emacs.d/
+(setq user-emacs-directory "~/.cache/emacs/"
+      backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory)))
+      url-history-file (expand-file-name "url/history" user-emacs-directory)
+      projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-emacs-directory))
+
+
+;; Keep customization settings in a temporary file (thanks Ambrevar!)
+(setq custom-file
+      (if (boundp 'server-socket-dir)
+          (expand-file-name "custom.el" server-socket-dir)
+        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+(load custom-file t)
+
+#+end_src
+
+** Update Load Path
+
+I've got a folder of custom elisp files which must be added to the load path.
+
+#+begin_src emacs-lisp
+
+;; Add my elisp path to load-path
+(push "~/.emacs.d/elisp" load-path)
+
+#+end_src
+
 ** Helper Functions
 
 *** Platform Helpers
@@ -48,6 +153,21 @@ routed here.
 #+begin_src emacs-lisp
 
 (server-start)
+
+#+end_src
+
+** Desktop Environment
+
+Load up the desktop environment if on a machine that supports it and the =--use-exwm= argument was passed to Emacs on startup.
+
+#+begin_src emacs-lisp
+
+(setq dw/exwm-enabled (and (not dw/is-termux)
+                           (eq window-system 'x)
+                           (seq-contains command-line-args "--use-exwm")))
+
+(when dw/exwm-enabled
+  (load-file "~/.dotfiles/.emacs.d/exwm.el"))
 
 #+end_src
 
@@ -624,7 +744,7 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
   (defun edit-configuration ()
     (interactive)
-    (find-file (expand-file-name "~/.emacs.d/config.org")))
+    (find-file (expand-file-name "~/.dotfiles/Emacs.org")))
 
 #+END_SRC
 
@@ -862,314 +982,6 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+end_src
 
-*** exwm
-
-**** Helper Functions
-
-#+BEGIN_SRC emacs-lisp
-
-  (defun exwm/run-in-background (command)
-     (start-process-shell-command command nil
-                                  command))
-
-  (defun exwm/bind-function (key invocation &rest bindings)
-    "Bind KEYs to FUNCTIONs globally"
-    (while key
-      (exwm-input-set-key (kbd key)
-                          `(lambda ()
-                             (interactive)
-                             ,invocation))
-      (setq key (pop bindings)
-            command
-            (pop bindings))))
-
-  (defun exwm/bind-command (key command &rest bindings)
-    "Bind KEYs to COMMANDs globally"
-    (while key
-      (exwm-input-set-key (kbd key)
-                          `(lambda ()
-                             (interactive)
-                             (exwm/run-in-background ,command)))
-      (setq key (pop bindings)
-            command
-            (pop bindings))))
-
-#+END_SRC
-
-**** Configuration
-
-#+BEGIN_SRC emacs-lisp
-
-  (defun dw/exwm-init-hook ()
-    ;; Launch Telega in workspace 0 if we've logged in before
-    (when (file-exists-p "~/.telega/db.sqlite")
-      (telega nil))
-
-    ;; Make workspace 1 be the one where we land at startup
-    (exwm-workspace-switch-create 1)
-
-    ;; Open eshell by default
-    (eshell)
-
-    ;; Launch apps that will run in the background
-    (exwm/run-in-background "nm-applet")
-    (exwm/run-in-background "QSyncthingTray")
-    (exwm/run-in-background "redshift -l 47.675510:-122.203362 -t 6500:3500"))
-
-  (use-package exwm
-    :if dw/exwm-enabled
-    :config
-    ;(display-time-mode 1) ;; Not needed for now since we have a panel
-
-    (add-hook 'exwm-mode-hook
-              (lambda ()
-                (evil-local-set-key 'motion (kbd "C-u") nil)))
-
-    (require 'dw-exwm)
-
-    (defun dw/setup-window-by-class ()
-      (interactive)
-      (pcase exwm-class-name
-        ("Pidgin" (exwm-workspace-move-window 0))
-        ("Pidgin<2>" (exwm-workspace-move-window 0))
-        ("teams-for-linux" (exwm-workspace-move-window 3))
-        ("Microsoft Teams - Preview" (exwm-workspace-move-window 3))
-        ("Spotify" (exwm-workspace-move-window 4))
-        ("Vimb" (exwm-workspace-move-window 2))
-        ("qjackctl" (exwm-floating-toggle-floating))
-        ("mpv" (exwm-floating-toggle-floating)
-               (dw/exwm-floating-toggle-pinned))))
-
-    ;; Do some post-init setup
-    (add-hook 'exwm-init-hook #'dw/exwm-init-hook)
-
-    ;; Manipulate windows as they're created
-    (add-hook 'exwm-manage-finish-hook
-              (lambda ()
-                ;; Send the window where it belongs
-                (dw/setup-window-by-class)))
-
-                ;; Hide the modeline on all X windows
-                ;(exwm-layout-hide-mode-line)))
-
-    ;; Hide the modeline on all X windows
-    (add-hook 'exwm-floating-setup-hook
-              (lambda ()
-                (exwm-layout-hide-mode-line))))
-
-  (use-package exwm-systemtray
-    :disabled
-    :if dw/exwm-enabled
-    :after (exwm)
-    :config
-    (exwm-systemtray-enable)
-    (setq exwm-systemtray-height 35))
-
-#+END_SRC
-
-**** Desktop Configuration
-
-#+BEGIN_SRC emacs-lisp
-
-  (defun dw/run-xmodmap ()
-    (interactive)
-    (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/.config/i3/Xmodmap"))
-
-  (defun dw/update-wallpapers ()
-    (interactive)
-    (start-process-shell-command "feh" nil "feh --bg-scale ~/.dotfiles/backgrounds/mountains-1412683.jpg"))
-
-  (setq dw/panel-process nil)
-  (defun dw/kill-panel ()
-    (interactive)
-    (when dw/panel-process
-      (ignore-errors
-        (kill-process dw/panel-process)))
-    (setq dw/panel-process nil))
-
-  (defun dw/start-panel ()
-    (interactive)
-    (dw/kill-panel)
-    (setq dw/panel-process (start-process-shell-command "polybar" nil "polybar panel")))
-
-  (defun dw/update-screen-layout ()
-    (interactive)
-    (let ((layout-script "~/.bin/update-screens"))
-       (message "Running screen layout script: %s" layout-script)
-       (start-process-shell-command "xrandr" nil layout-script)))
-
-  (defun dw/configure-desktop ()
-    (interactive)
-      (dw/run-xmodmap)
-      (dw/update-screen-layout)
-      (run-at-time "2 sec" nil (lambda () (dw/update-wallpapers))))
-
-  (defun dw/on-exwm-init ()
-    (dw/configure-desktop)
-    (dw/start-panel))
-
-  (when dw/exwm-enabled
-    ;; Configure the desktop for first load
-    (add-hook 'exwm-init-hook #'dw/on-exwm-init))
-
-#+END_SRC
-
-**** Window Switcher
-
-#+begin_src emacs-lisp
-
-  (defalias 'switch-to-buffer-original 'exwm-workspace-switch-to-buffer)
-  ;; (defalias 'switch-to-buffer 'exwm-workspace-switch-to-buffer)
-
-  ;; (defun dw/counsel-switch-buffer ()
-  ;;   "Switch to another buffer.
-  ;; Display a preview of the selected ivy completion candidate buffer
-  ;; in the current window."
-  ;;   (interactive)
-  ;;   (ivy-read "Switch to buffer: " 'internal-complete-buffer
-  ;;             :preselect (buffer-name (other-buffer (current-buffer)))
-  ;;             :keymap ivy-switch-buffer-map
-  ;;             :action #'ivy--switch-buffer-action
-  ;;             :matcher #'ivy--switch-buffer-matcher
-  ;;             :caller 'counsel-switch-buffer
-  ;;             :unwind #'counsel--switch-buffer-unwind
-  ;;             :update-fn 'counsel--switch-buffer-update-fn)
-  ;; )
-
-#+end_src
-
-**** Panel
-
-#+begin_src emacs-lisp
-
-(defun dw/send-polybar-hook (name number)
-  (start-process-shell-command "polybar-msg" nil (format "polybar-msg hook %s %s" name number)))
-
-(defun dw/update-polybar-exwm ()
-  (dw/send-polybar-hook "exwm" 1))
-
-(defun dw/update-polybar-telegram ()
-  (dw/send-polybar-hook "telegram" 1))
-
-(defun dw/polybar-exwm-workspace ()
-  (pcase exwm-workspace-current-index
-    (0 "")
-    (1 "")
-    (2 "")
-    (3 "")
-    (4 "")))
-
-(defun dw/polybar-mail-count (max-count)
-  (if dw/mail-enabled
-    (let* ((mail-count (shell-command-to-string
-                         (format "mu find --nocolor -n %s \"%s\" | wc -l" max-count dw/mu4e-inbox-query))))
-      (format " %s" (string-trim mail-count)))
-    ""))
-
-(defun dw/telega-normalize-name (chat-name)
-  (let* ((trimmed-name (string-trim-left (string-trim-right chat-name "}") "◀{"))
-         (first-name (nth 0 (split-string trimmed-name " "))))
-    first-name))
-
-(defun dw/propertized-to-polybar (buffer-name)
-  (let* ((text (substring-no-properties buffer-name))
-         (fg-face (get-text-property 0 'face buffer-name))
-         (fg-color (face-attribute fg-face :foreground)))
-    (format "%%{F%s}%s%%{F-}" fg-color (dw/telega-normalize-name text))))
-
-(defun dw/polybar-telegram-chats ()
-  (if (> (length tracking-buffers) 0)
-    (format " %s" (string-join (mapcar 'dw/propertized-to-polybar tracking-buffers) ", "))
-    ""))
-
-(add-hook 'exwm-workspace-switch-hook #'dw/update-polybar-exwm)
-
-#+end_src
-
-**** Keybindings
-
-#+BEGIN_SRC emacs-lisp
-
-  (when dw/exwm-enabled
-    ;; These keys should always pass through to Emacs
-    (setq exwm-input-prefix-keys
-      '(?\C-x
-        ?\C-h
-        ?\M-x
-        ?\M-`
-        ?\M-&
-        ?\M-:
-        ?\C-\M-j  ;; Buffer list
-        ?\C-\M-k  ;; Browser list
-        ?\C-\     ;; Ctrl+Space
-        ?\C-\;))
-
-    ;; Ctrl+Q will enable the next key to be sent directly
-    (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
-
-    (exwm/bind-command
-      "<s-return>" "xfce4-terminal"
-      "s-p" "playerctl play-pause"
-      "s-[" "playerctl previous"
-      "s-]" "playerctl next")
-
-    (use-package desktop-environment
-      :after exwm
-      :config (desktop-environment-mode)
-      :custom
-      (desktop-environment-brightness-small-increment "2%+")
-      (desktop-environment-brightness-small-decrement "2%-")
-      (desktop-environment-brightness-normal-increment "5%+")
-      (desktop-environment-brightness-normal-decrement "5%-"))
-
-    ;; This needs a more elegant ASCII banner
-    (defhydra hydra-exwm-move-resize (:timeout 4)
-      "Move/Resize Window (Shift is bigger steps, Ctrl moves window)"
-      ("j" (lambda () (interactive) (exwm-layout-enlarge-window 10)) "V 10")
-      ("J" (lambda () (interactive) (exwm-layout-enlarge-window 30)) "V 30")
-      ("k" (lambda () (interactive) (exwm-layout-shrink-window 10)) "^ 10")
-      ("K" (lambda () (interactive) (exwm-layout-shrink-window 30)) "^ 30")
-      ("h" (lambda () (interactive) (exwm-layout-shrink-window-horizontally 10)) "< 10")
-      ("H" (lambda () (interactive) (exwm-layout-shrink-window-horizontally 30)) "< 30")
-      ("l" (lambda () (interactive) (exwm-layout-enlarge-window-horizontally 10)) "> 10")
-      ("L" (lambda () (interactive) (exwm-layout-enlarge-window-horizontally 30)) "> 30")
-      ("C-j" (lambda () (interactive) (exwm-floating-move 0 10)) "V 10")
-      ("C-S-j" (lambda () (interactive) (exwm-floating-move 0 30)) "V 30")
-      ("C-k" (lambda () (interactive) (exwm-floating-move 0 -10)) "^ 10")
-      ("C-S-k" (lambda () (interactive) (exwm-floating-move 0 -30)) "^ 30")
-      ("C-h" (lambda () (interactive) (exwm-floating-move -10 0)) "< 10")
-      ("C-S-h" (lambda () (interactive) (exwm-floating-move -30 0)) "< 30")
-      ("C-l" (lambda () (interactive) (exwm-floating-move 10 0)) "> 10")
-      ("C-S-l" (lambda () (interactive) (exwm-floating-move 30 0)) "> 30")
-      ("f" nil "finished" :exit t))
-
-    ;; Workspace switching
-    (setq exwm-input-global-keys
-           `(([?\s-\C-r] . exwm-reset)
-             ([?\s-w] . exwm-workspace-switch)
-             ([?\s-r] . hydra-exwm-move-resize/body)
-             ([?\s-e] . dired-jump)
-             ([?\s-E] . (lambda () (interactive) (dired "~")))
-             ([?\s-Q] . (lambda () (interactive) (kill-buffer)))
-             ([?\s-`] . (lambda () (interactive) (exwm-workspace-switch-create 0)))
-             ,@(mapcar (lambda (i)
-                         `(,(kbd (format "s-%d" i)) .
-                            (lambda ()
-                             (interactive)
-                             (exwm-workspace-switch-create ,i))))
-                        (number-sequence 0 9))))
-
-    (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
-    (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen))
-
-#+END_SRC
-
-**** Useful Links
-
-- https://github.com/ch11ng/exwm/wiki
-- https://www.reddit.com/r/emacs/comments/6huok9/exwm_configs/
-- https://ambrevar.xyz/de/index.html
-
 ** Expand Region
 
 This module is absolutely necessary for working inside of Emacs Lisp files,
@@ -1335,21 +1147,12 @@ credentials for mail, etc.
 
 *** Org Configuration
 
-#+BEGIN_SRC emacs-lisp
-(setq org-ellipsis " ▾"
-      org-hide-emphasis-markers t
-      org-src-fontify-natively t
-      org-src-tab-acts-natively t
-      org-edit-src-content-indentation 0
-      org-hide-block-startup t
-      org-src-preserve-indentation t
-      org-startup-folded 'content
-      org-cycle-separator-lines 1)
+Set up Org Mode with a baseline configuration.  The following sections will add more things to it.
 
-(setq-default fill-column 80)
+#+BEGIN_SRC emacs-lisp
 
 ;; Turn on indentation and auto-fill mode for Org files
-(defun dw/do-org-hooks ()
+(defun dw/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
   (auto-fill-mode 0)
@@ -1357,33 +1160,48 @@ credentials for mail, etc.
   (setq evil-auto-indent nil)
   (diminish org-indent-mode))
 
-(add-hook 'org-mode-hook #'dw/do-org-hooks)
+(use-package org
+  ;; :defer t
+  ;; :ensure org-plus-contrib
+  :hook (org-mode . dw/org-mode-setup)
+  :config
+  (setq org-ellipsis " ▾"
+        org-hide-emphasis-markers t
+        org-src-fontify-natively t
+        org-src-tab-acts-natively t
+        org-edit-src-content-indentation 0
+        org-hide-block-startup t
+        org-src-preserve-indentation t
+        org-startup-folded 'content
+        org-cycle-separator-lines 1)
 
-(setq org-modules
-  '(org-crypt
-    org-habit
-    org-bookmark
-    org-eshell
-    org-notmuch
-    org-irc))
+  (setq org-modules
+    '(org-crypt
+        org-habit
+        org-bookmark
+        org-eshell
+        org-notmuch
+        org-irc))
 
-(setq org-refile-targets '((nil :maxlevel . 3)
-                           (org-agenda-files :maxlevel . 3)))
-(setq org-outline-path-complete-in-steps nil)
-(setq org-refile-use-outline-path t)
+  (setq org-refile-targets '((nil :maxlevel . 3)
+                            (org-agenda-files :maxlevel . 3)))
+  (setq org-outline-path-complete-in-steps nil)
+  (setq org-refile-use-outline-path t)
 
-(evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
-(evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
+  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
+  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
 
-(evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
-(evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup)
+  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
+  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup)
 
-(org-babel-do-load-languages
-  'org-babel-load-languages
-  '((emacs-lisp . t)
-    (ledger . t)))
+  (org-babel-do-load-languages
+    'org-babel-load-languages
+    '((emacs-lisp . t)
+      (ledger . t)))
 
-(push '("conf-unix" . conf-unix) org-src-lang-modes)
+  (push '("conf-unix" . conf-unix) org-src-lang-modes))
+
+(setq-default fill-column 80)
 
 #+END_SRC
 
@@ -1842,7 +1660,6 @@ through =emacsclient.=
         org-tree-slide-header t))
 
 #+end_src
-
 
 *** Addons to Try
 
@@ -2397,6 +2214,9 @@ makes it really easy to power through a huge e-mail backlog.  Love the ability
 to capture links to emails with org-mode too.
 
 #+BEGIN_SRC emacs-lisp
+
+  ;; TODO: Move this check elsewhere
+  (setq dw/mail-enabled (string-equal system-name "zerocool"))
 
   (when (and (eq system-type 'gnu/linux) dw/mail-enabled)
     ;; After building/installing mu4e the .el files are here:
@@ -3266,6 +3086,17 @@ Displays a nice list of recent files and projects on startup.
             dashboard-image-banner-max-height 500))
 
 #+END_SRC
+
+** Runtime Performance
+
+Dial the GC threshold back down so that garbage collection happens more frequently but in less time.
+
+#+begin_src emacs-lisp
+
+;; Make gc pauses faster by decreasing the threshold.
+(setq gc-cons-threshold (* 2 1000 1000))
+
+#+end_src
 
 ** Inspiration
 
