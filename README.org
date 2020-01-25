@@ -1,6 +1,6 @@
 #+TITLE: =/home/daviwil/.dotfiles=
 
-This repo contains my personal system configuration which enables a consistent computing experience across multiple machines.  These days I primarily use GNU/Linux via the [[https://guix.gnu.org][Guix System Distribution]].
+This repo is the home of my custom system configuration which enables a consistent computing experience across multiple machines.  These days I primarily use GNU/Linux via the [[https://guix.gnu.org][GNU Guix distribution]].
 
 I manage the various configuration files in this repo using [[https://www.gnu.org/software/stow/][GNU Stow]].  This allows me to set up symlinks for all of my dotfiles using a single command:
 
@@ -8,18 +8,48 @@ I manage the various configuration files in this repo using [[https://www.gnu.or
 stow .
 #+END_SRC
 
-* Configuration Files
+* Principles
 
-I've started to migrate all of my important configuration files to a literate configuration strategy using Emacs' Org Mode.  This enables me to have a single annotated file for a particular configuration area which automatically writes out the actual configuration files involved when I save the .org file.
+The configuration files in this repo crystallize a workflow that is increasingly effective and satisfying for daily use.  When choosing tools and putting them together, I generally follow these principles:
+
+** Keyboard Focused
+
+I prefer tools that enable me to control everything primarily with the keyboard.  When you work with words and code all day, reaching for the mouse switches your input modality and slows you down.  Using [[https://www.gnu.org/software/emacs/][GNU Emacs]] enables me to have consistent, convenient key bindings for just 80% of what I need to do on a daily basis.  Another 15% is covered by using web sites and apps; the [[https://fanglingsu.github.io/vimb/][Vimb]] browser makes that experience a lot more keyboard friendly and seamlessly integrates with my Emacs workflow.
+
+** Minimal Distractions
+
+I don't want things on the screen that are unrelated to what I'm doing.  My workflow focuses on a single main screen with an occasional secondary screen (my laptop) when docked.  I very rarely display more than one buffer or window on the main screen at a time.  Emacs makes it easy and fast to switch between open buffers (and workspaces in EXWM) so there's really no reason to have two unrelated things visible on the screen.
+
+I display minimal information in my Emacs mode line (using [[https://github.com/seagle0128/doom-modeline][doom-modeline]]) and I only display a small amount of computer status information in my panel (using [[https://polybar.github.io/][Polybar]]).
+
+** Text-based Configuration
+
+I *really* don't want to use a program that doesn't support text-based configuration files.  I also prefer tools that don't write out those configuration files on my behalf.  This enables me to commit program configuration to source control (this repository) so that I can keep configurations in sync on every machine that I use.
+
+Guix enables me to apply this principle to my /entire system configuration/, even sharing the same base configuration across multiple machines.  This has provided me with a stable, consistent computing experience across the three machines I use on a regular basis.
+
+** Highly Customizable
+
+To perfect my computing workflow, I choose tools that allow me to customize them to fit in smoothly with everything else.  Emacs is the most faithful adherent to this principle as it allows you to intercept or replace the code for just about anything it does.  For other programs, I like to use tools that are either scriptable by some means or enable to you call out to another process (or shell script) to gather information.  Vimb and Polybar both do this, so it's pretty easy to integrate them into the rest of my workflow.
+
+* Literate Configuration
+
+I've started to migrate all of my important configuration files to a [[https://leanpub.com/lit-config/read][literate configuration]] strategy using Emacs' Org Mode.  This enables me to have a single annotated file for a particular configuration area which automatically writes out the actual configuration files involved when I save the .org file.
 
 - [[file:Emacs.org][Emacs]]
 - [[file:Desktop.org][Desktop Environment]]
 - [[file:Systems.org][System Configurations via Guix]]
 - Mail
 
-* Org Babel Tips
+For now, I'm checking in the configuration files that are written out using =org-babel-tangle-file= so that I don't have to remember to regenerate all of them every time that I pull the repo.  This may change in the future; one downside of this approach is that I have to remember to stage the original =.org= file and all of the updated configuration files when I want to make a commit to the repo.  It hasn't been a headache yet, but time will tell.
+
+** Org Babel Tips
 
 When inside of an Org source block, you can use =org-babel-demarcate-block= (=C-c C-v d= by default) to split the block you're currently in so that you can insert an annotation.
+
+* System Installation
+
+Instructions for installing a system from a Guix configuration can be found in the [[file:Systems.org::*System Installation][System Installation]] section of [[file:Systems.org][Systems.org]].
 
 * License
 
