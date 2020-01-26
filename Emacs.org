@@ -1,128 +1,174 @@
+#+TITLE: Emacs Configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ./.emacs.d/init.el
-
-* Emacs Configuration
-:PROPERTIES:
-:TOC:     2
-:END:
 
 This is an ongoing evolution of my original Emacs configuration files, inspired by a bunch of resources I've found online.
 
-** Table of Contents
+* Table of Contents
 :PROPERTIES:
 :TOC:      this
 :END:
-  -  [[#emacs-configuration][Emacs Configuration]]
-    -  [[#startup-performance][Startup Performance]]
-    -  [[#system-checks][System Checks]]
-    -  [[#keep-emacsd-clean][Keep .emacs.d Clean]]
-    -  [[#package-management][Package Management]]
-    -  [[#update-load-path][Update Load Path]]
-    -  [[#helper-functions][Helper Functions]]
-      -  [[#platform-helpers][Platform Helpers]]
-    -  [[#server-mode][Server Mode]]
-    -  [[#desktop-environment][Desktop Environment]]
-    -  [[#keyboard-bindings][Keyboard Bindings]]
-      -  [[#esc-cancels-all][ESC Cancels All]]
-      -  [[#lets-be-evil][Let's Be Evil]]
-      -  [[#keybinding-panel-which-key][Keybinding Panel (which-key)]]
-      -  [[#simplify-leader-bindings-generalel][Simplify Leader Bindings (general.el)]]
-      -  [[#enable-keychord-bind-with-use-package][Enable keychord bind with use-package]]
-    -  [[#general-configuration][General Configuration]]
-      -  [[#user-interface][User Interface]]
-      -  [[#theme][Theme]]
-      -  [[#font][Font]]
-      -  [[#mode-line][Mode Line]]
-      -  [[#auto-saving-changed-files][Auto-Saving Changed Files]]
-      -  [[#auto-reverting-changed-files][Auto-Reverting Changed Files]]
-      -  [[#ui-toggles][UI Toggles]]
-      -  [[#highlight-matching-braces][Highlight Matching Braces]]
-      -  [[#displaying-world-time][Displaying World Time]]
-      -  [[#pinentry][Pinentry]]
-      -  [[#tramp][TRAMP]]
-    -  [[#editing-configuration][Editing Configuration]]
-      -  [[#tab-widths][Tab Widths]]
-      -  [[#use-spaces-instead-of-tabs-for-indentation][Use spaces instead of tabs for indentation.]]
-      -  [[#commenting-lines][Commenting Lines]]
-      -  [[#automatically-clean-whitespace][Automatically clean whitespace]]
-      -  [[#use-parinfer-for-lispy-languages][Use Parinfer for Lispy languages]]
-    -  [[#configuration-files][Configuration Files]]
-      -  [[#helpers][Helpers]]
+  -  [[#startup-performance][Startup Performance]]
+  -  [[#system-checks][System Checks]]
+  -  [[#keep-emacsd-clean][Keep .emacs.d Clean]]
+  -  [[#package-management][Package Management]]
+  -  [[#update-load-path][Update Load Path]]
+  -  [[#helper-functions][Helper Functions]]
+    -  [[#platform-helpers][Platform Helpers]]
+  -  [[#server-mode][Server Mode]]
+  -  [[#desktop-environment][Desktop Environment]]
+  -  [[#keyboard-bindings][Keyboard Bindings]]
+    -  [[#esc-cancels-all][ESC Cancels All]]
+    -  [[#lets-be-evil][Let's Be Evil]]
+    -  [[#keybinding-panel-which-key][Keybinding Panel (which-key)]]
+    -  [[#simplify-leader-bindings-generalel][Simplify Leader Bindings (general.el)]]
+    -  [[#enable-keychord-bind-with-use-package][Enable keychord bind with use-package]]
+  -  [[#general-configuration][General Configuration]]
+    -  [[#user-interface][User Interface]]
+    -  [[#theme][Theme]]
+      -  [[#theme-config][Theme Config]]
+    -  [[#font][Font]]
+      -  [[#set-the-font][Set the font]]
+      -  [[#enable-proper-unicode-glyph-support][Enable proper Unicode glyph support]]
+    -  [[#mode-line][Mode Line]]
+      -  [[#basic-customization][Basic Customization]]
+      -  [[#enable-mode-diminishing][Enable Mode Diminishing]]
+      -  [[#smart-mode-line][Smart Mode Line]]
+      -  [[#doom-modeline][Doom Modeline]]
+    -  [[#auto-saving-changed-files][Auto-Saving Changed Files]]
+    -  [[#auto-reverting-changed-files][Auto-Reverting Changed Files]]
+    -  [[#ui-toggles][UI Toggles]]
+    -  [[#highlight-matching-braces][Highlight Matching Braces]]
+    -  [[#displaying-world-time][Displaying World Time]]
+    -  [[#pinentry][Pinentry]]
+    -  [[#tramp][TRAMP]]
+  -  [[#editing-configuration][Editing Configuration]]
+    -  [[#tab-widths][Tab Widths]]
+    -  [[#use-spaces-instead-of-tabs-for-indentation][Use spaces instead of tabs for indentation.]]
+    -  [[#commenting-lines][Commenting Lines]]
+    -  [[#automatically-clean-whitespace][Automatically clean whitespace]]
+    -  [[#use-parinfer-for-lispy-languages][Use Parinfer for Lispy languages]]
+  -  [[#configuration-files][Configuration Files]]
+    -  [[#helpers][Helpers]]
+    -  [[#bindings][Bindings]]
+  -  [[#stateful-keymaps-with-hydra][Stateful Keymaps with Hydra]]
+  -  [[#better-completions-with-ivy][Better Completions with Ivy]]
+  -  [[#jumping-with-avy][Jumping with Avy]]
+  -  [[#buffer-management][Buffer Management]]
       -  [[#bindings][Bindings]]
-    -  [[#stateful-keymaps-with-hydra][Stateful Keymaps with Hydra]]
-    -  [[#better-completions-with-ivy][Better Completions with Ivy]]
-    -  [[#jumping-with-avy][Jumping with Avy]]
-    -  [[#buffer-management][Buffer Management]]
+  -  [[#window-management][Window Management]]
+    -  [[#frame-scaling--zooming][Frame Scaling / Zooming]]
+    -  [[#window-selection-with-ace-window][Window Selection with ace-window]]
+    -  [[#window-history-with-winner-mode][Window History with winner-mode]]
+    -  [[#set-margins-for-modes][Set Margins for Modes]]
+  -  [[#expand-region][Expand Region]]
+  -  [[#credential-management][Credential Management]]
+  -  [[#file-browsing][File Browsing]]
+    -  [[#dired][Dired]]
+    -  [[#opening-files-externally][Opening Files Externally]]
+  -  [[#org-mode][Org Mode]]
+    -  [[#org-configuration][Org Configuration]]
+    -  [[#automatically-tangle-on-save][Automatically "Tangle" on Save]]
+    -  [[#fonts-and-bullets][Fonts and Bullets]]
+    -  [[#org-file-paths][Org File Paths]]
+    -  [[#agenda][Agenda]]
+    -  [[#tags][Tags]]
+    -  [[#tasks][Tasks]]
+    -  [[#journal][Journal]]
+    -  [[#capture-templates][Capture Templates]]
+    -  [[#block-templates][Block Templates]]
+    -  [[#pomodoro][Pomodoro]]
+    -  [[#protocol][Protocol]]
+    -  [[#searching][Searching]]
+    -  [[#bindings][Bindings]]
+    -  [[#end-use-package-org-mode][End =use-package org-mode=]]
+    -  [[#update-table-of-contents-on-save][Update Table of Contents on Save]]
+    -  [[#calendar-sync][Calendar Sync]]
+    -  [[#reminders][Reminders]]
+    -  [[#presentations][Presentations]]
+    -  [[#addons-to-try][Addons to Try]]
+  -  [[#development][Development]]
+    -  [[#git][Git]]
+      -  [[#magit][Magit]]
+      -  [[#forge][Forge]]
+      -  [[#magit-todos][magit-todos]]
+      -  [[#git-link][git-link]]
+      -  [[#git-gutter][Git Gutter]]
+    -  [[#projectile][Projectile]]
+      -  [[#initial-setup][Initial Setup]]
+      -  [[#project-configurations][Project Configurations]]
+    -  [[#languages][Languages]]
+      -  [[#language-server-support][Language Server Support]]
+      -  [[#debug-adapter-support][Debug Adapter Support]]
+      -  [[#clojure][Clojure]]
+      -  [[#common-lisp][Common Lisp]]
+      -  [[#typescript-and-javascript][TypeScript and JavaScript]]
+      -  [[#rust][Rust]]
+      -  [[#f][F#]]
+      -  [[#emacs-lisp][Emacs Lisp]]
+      -  [[#scheme][Scheme]]
+      -  [[#markdown][Markdown]]
+      -  [[#html][HTML]]
+      -  [[#yaml][YAML]]
+    -  [[#productivity][Productivity]]
+      -  [[#syntax-checking-with-flycheck][Syntax checking with Flycheck]]
+      -  [[#snippets][Snippets]]
+      -  [[#smart-parens][Smart Parens]]
+      -  [[#rainbow-delimiters][Rainbow Delimiters]]
+      -  [[#rainbow-mode][Rainbow Mode]]
+    -  [[#reference][Reference]]
+      -  [[#http][HTTP]]
+  -  [[#writing][Writing]]
+    -  [[#darkroom-for-distraction-free-writing][Darkroom for distraction-free writing]]
+  -  [[#applications][Applications]]
+    -  [[#binding-prefix][Binding Prefix]]
+    -  [[#mail][Mail]]
+      -  [[#mu4e][mu4e]]
+    -  [[#calendar][Calendar]]
+    -  [[#finance][Finance]]
+    -  [[#eshell][eshell]]
+      -  [[#configuration][Configuration]]
+      -  [[#shell-commands][Shell Commands]]
+      -  [[#visual-commands][Visual Commands]]
+      -  [[#better-colors][Better Colors]]
+      -  [[#fish-completion][Fish Completion]]
+      -  [[#history-autocompletion][History Autocompletion]]
+    -  [[#multi-term][multi-term]]
+    -  [[#ediff][ediff]]
+    -  [[#chat][Chat]]
+      -  [[#tracking][Tracking]]
+      -  [[#telegram][Telegram]]
+      -  [[#erc][ERC]]
+        -  [[#configuration][Configuration]]
         -  [[#bindings][Bindings]]
-    -  [[#window-management][Window Management]]
-      -  [[#frame-scaling--zooming][Frame Scaling / Zooming]]
-      -  [[#window-selection-with-ace-window][Window Selection with ace-window]]
-      -  [[#window-history-with-winner-mode][Window History with winner-mode]]
-      -  [[#set-margins-for-modes][Set Margins for Modes]]
-    -  [[#expand-region][Expand Region]]
-    -  [[#credential-management][Credential Management]]
-    -  [[#file-browsing][File Browsing]]
-      -  [[#dired][Dired]]
-      -  [[#opening-files-externally][Opening Files Externally]]
-    -  [[#org-mode][Org Mode]]
-      -  [[#org-configuration][Org Configuration]]
-      -  [[#automatically-tangle-on-save][Automatically "Tangle" on Save]]
-      -  [[#fonts-and-bullets][Fonts and Bullets]]
-      -  [[#org-file-paths][Org File Paths]]
-      -  [[#agenda][Agenda]]
-      -  [[#tags][Tags]]
-      -  [[#tasks][Tasks]]
-      -  [[#journal][Journal]]
-      -  [[#capture-templates][Capture Templates]]
-      -  [[#block-templates][Block Templates]]
-      -  [[#pomodoro][Pomodoro]]
-      -  [[#protocol][Protocol]]
-      -  [[#searching][Searching]]
-      -  [[#bindings][Bindings]]
-      -  [[#end-use-package-org-mode][End =use-package org-mode=]]
-      -  [[#update-table-of-contents-on-save][Update Table of Contents on Save]]
-      -  [[#calendar-sync][Calendar Sync]]
-      -  [[#reminders][Reminders]]
-      -  [[#presentations][Presentations]]
-      -  [[#addons-to-try][Addons to Try]]
-    -  [[#development][Development]]
-      -  [[#git][Git]]
-      -  [[#projectile][Projectile]]
-      -  [[#languages][Languages]]
-      -  [[#productivity][Productivity]]
-      -  [[#reference][Reference]]
-    -  [[#writing][Writing]]
-      -  [[#darkroom-for-distraction-free-writing][Darkroom for distraction-free writing]]
-    -  [[#applications][Applications]]
-      -  [[#binding-prefix][Binding Prefix]]
-      -  [[#mail][Mail]]
-      -  [[#calendar][Calendar]]
-      -  [[#finance][Finance]]
-      -  [[#eshell][eshell]]
-      -  [[#multi-term][multi-term]]
-      -  [[#ediff][ediff]]
-      -  [[#chat][Chat]]
-      -  [[#mastodon][Mastodon]]
-      -  [[#rss][RSS]]
-      -  [[#media][Media]]
-    -  [[#notifications][Notifications]]
-      -  [[#alert][Alert]]
-      -  [[#sauron][Sauron]]
-    -  [[#system-utilities][System Utilities]]
-      -  [[#guix][Guix]]
-      -  [[#daemons][Daemons]]
-      -  [[#pulseaudio][PulseAudio]]
-      -  [[#bluetooth][Bluetooth]]
-      -  [[#proced][Proced]]
-      -  [[#system-monitor][System Monitor]]
-      -  [[#docker][Docker]]
-    -  [[#miscellaneous][Miscellaneous]]
-      -  [[#debbugs-mainly-for-guix][Debbugs (mainly for Guix)]]
-      -  [[#emojification][Emojification]]
-      -  [[#dashboard][Dashboard]]
-    -  [[#runtime-performance][Runtime Performance]]
-    -  [[#inspiration][Inspiration]]
+        -  [[#reference][Reference]]
+      -  [[#circe][circe]]
+      -  [[#rcirc][rcirc]]
+        -  [[#reference--things-to-try][Reference / Things to try]]
+    -  [[#mastodon][Mastodon]]
+    -  [[#rss][RSS]]
+      -  [[#elfeed][Elfeed]]
+    -  [[#media][Media]]
+      -  [[#emms][EMMS]]
+      -  [[#spotify][Spotify]]
+  -  [[#notifications][Notifications]]
+    -  [[#alert][Alert]]
+    -  [[#sauron][Sauron]]
+  -  [[#system-utilities][System Utilities]]
+    -  [[#guix][Guix]]
+    -  [[#daemons][Daemons]]
+    -  [[#pulseaudio][PulseAudio]]
+    -  [[#bluetooth][Bluetooth]]
+    -  [[#proced][Proced]]
+    -  [[#system-monitor][System Monitor]]
+    -  [[#docker][Docker]]
+  -  [[#miscellaneous][Miscellaneous]]
+    -  [[#debbugs-mainly-for-guix][Debbugs (mainly for Guix)]]
+    -  [[#emojification][Emojification]]
+    -  [[#dashboard][Dashboard]]
+  -  [[#runtime-performance][Runtime Performance]]
+  -  [[#inspiration][Inspiration]]
 
-** Startup Performance
+* Startup Performance
 
 Make startup faster by reducing the frequency of garbage collection and then use a hook to measure Emacs startup time.
 
@@ -142,7 +188,7 @@ Make startup faster by reducing the frequency of garbage collection and then use
 
 #+end_src
 
-** System Checks
+* System Checks
 
 Some parts of the configuration require knowledge of whether Emacs is running on a Guix system or in Termux on Android.
 
@@ -157,7 +203,7 @@ Some parts of the configuration require knowledge of whether Emacs is running on
 
 #+end_src
 
-** Keep .emacs.d Clean
+* Keep .emacs.d Clean
 
 I don't want a bunch of transient files showing up as untracked in the Git repo so I move them all to another location.
 
@@ -179,7 +225,7 @@ I don't want a bunch of transient files showing up as untracked in the Git repo 
 
 #+end_src
 
-** Package Management
+* Package Management
 
 Set up ELPA, MELPA, and Org package repositories and load =use-package= to manage package configuration.
 
@@ -215,7 +261,7 @@ Set up ELPA, MELPA, and Org package repositories and load =use-package= to manag
 
 #+end_src
 
-** Update Load Path
+* Update Load Path
 
 I've got a folder of custom elisp files which must be added to the load path.
 
@@ -226,9 +272,9 @@ I've got a folder of custom elisp files which must be added to the load path.
 
 #+end_src
 
-** Helper Functions
+* Helper Functions
 
-*** Platform Helpers
+** Platform Helpers
 
 Here are a couple helpful functions for doing things based on what platform
 Emacs is running on.  I wrote =on-platform-do= as a way to learn Emacs macros, but
@@ -262,7 +308,7 @@ there's probably a more appropriate way to do this built in to Emacs.
 
 #+END_SRC
 
-** Server Mode
+* Server Mode
 
 Start the Emacs server from this instance so that all =emacsclient= calls are
 routed here.
@@ -273,7 +319,7 @@ routed here.
 
 #+end_src
 
-** Desktop Environment
+* Desktop Environment
 
 Load up the desktop environment if on a machine that supports it and the =--use-exwm= argument was passed to Emacs on startup.
 
@@ -288,9 +334,9 @@ Load up the desktop environment if on a machine that supports it and the =--use-
 
 #+end_src
 
-** Keyboard Bindings
+* Keyboard Bindings
 
-*** ESC Cancels All
+** ESC Cancels All
 
 #+BEGIN_SRC emacs-lisp
 
@@ -298,7 +344,7 @@ Load up the desktop environment if on a machine that supports it and the =--use-
 
 #+END_SRC
 
-*** Let's Be Evil
+** Let's Be Evil
 
 Some tips can be found here:
 
@@ -358,7 +404,7 @@ Some tips can be found here:
 
 #+END_SRC
 
-*** Keybinding Panel (which-key)
+** Keybinding Panel (which-key)
 
 [[https://github.com/justbur/emacs-which-key][which-key]] is great for getting an overview of what keybindings are available
 based on the prefix keys you entered.  Learned about this one from Spacemacs.
@@ -373,7 +419,7 @@ based on the prefix keys you entered.  Learned about this one from Spacemacs.
 
 #+END_SRC
 
-*** Simplify Leader Bindings (general.el)
+** Simplify Leader Bindings (general.el)
 
 [[https://github.com/noctuid/general.el][general.el]] is a fantastic library for defining prefixed keybindings, especially
 in conjunction with Evil modes.
@@ -394,7 +440,7 @@ in conjunction with Evil modes.
 
 #+END_SRC
 
-*** Enable keychord bind with use-package
+** Enable keychord bind with use-package
 
 #+BEGIN_SRC emacs-lisp
 
@@ -404,9 +450,9 @@ in conjunction with Evil modes.
 
 #+END_SRC
 
-** General Configuration
+* General Configuration
 
-*** User Interface
+** User Interface
 
 Clean up Emacs' user interface, make it more minimal.
 
@@ -496,9 +542,9 @@ Don't warn when advice is added for functions
 
 #+end_src
 
-*** Theme
+** Theme
 
-**** Theme Config
+*** Theme Config
 
 A nice gallery of Emacs themes can be found at https://emacsthemes.com/.
 
@@ -537,9 +583,9 @@ Themes to try:
 - https://github.com/jordonbiondo/ample-theme
 - https://github.com/gchp/flatland-emacs
 
-*** Font
+** Font
 
-**** Set the font
+*** Set the font
 
 Different platforms need different default font sizes, and
 [[https://mozilla.github.io/Fira/][Fira Mono]] is currently my favorite face.
@@ -561,7 +607,7 @@ Different platforms need different default font sizes, and
 
 #+END_SRC
 
-**** Enable proper Unicode glyph support
+*** Enable proper Unicode glyph support
 
 #+begin_src emacs-lisp
 
@@ -592,9 +638,9 @@ Different platforms need different default font sizes, and
 
 #+end_src
 
-*** Mode Line
+** Mode Line
 
-**** Basic Customization
+*** Basic Customization
 
 #+begin_src emacs-lisp
 
@@ -603,7 +649,7 @@ Different platforms need different default font sizes, and
 
 #+end_src
 
-**** Enable Mode Diminishing
+*** Enable Mode Diminishing
 
 The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky minor modes from the modelines.
 
@@ -613,7 +659,7 @@ The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky min
 
 #+END_SRC
 
-**** Smart Mode Line
+*** Smart Mode Line
 
 Prettify the modeline with [[https://github.com/Malabarba/smart-mode-line/][smart-mode-line]].  Really need to re-evaluate the
 ordering of =mode-line-format=.  Also not sure if =rm-excluded-modes= is needed
@@ -663,7 +709,7 @@ anymore if I set up =diminish= correctly.
 
 #+END_SRC
 
-**** Doom Modeline
+*** Doom Modeline
 
 #+begin_src emacs-lisp
 
@@ -695,7 +741,7 @@ anymore if I set up =diminish= correctly.
 
 #+end_src
 
-*** Auto-Saving Changed Files
+** Auto-Saving Changed Files
 
 #+BEGIN_SRC emacs-lisp
 
@@ -709,7 +755,7 @@ anymore if I set up =diminish= correctly.
 
 #+END_SRC
 
-*** Auto-Reverting Changed Files
+** Auto-Reverting Changed Files
 
 #+BEGIN_SRC emacs-lisp
 
@@ -717,7 +763,7 @@ anymore if I set up =diminish= correctly.
 
 #+END_SRC
 
-*** UI Toggles
+** UI Toggles
 
 #+BEGIN_SRC emacs-lisp
 
@@ -728,7 +774,7 @@ anymore if I set up =diminish= correctly.
 
 #+END_SRC
 
-*** Highlight Matching Braces
+** Highlight Matching Braces
 
 #+begin_src emacs-lisp
 
@@ -739,7 +785,7 @@ anymore if I set up =diminish= correctly.
 
 #+end_src
 
-*** Displaying World Time
+** Displaying World Time
 
 =display-time-world= command provides a nice display of the time at a specified
 list of timezones.  Nice for working in a team with remote members.
@@ -756,7 +802,7 @@ list of timezones.  Nice for working in a team with remote members.
 
 #+end_src
 
-*** Pinentry
+** Pinentry
 
 Emacs can be prompted for the PIN of GPG private keys, we just need to set
 =epa-pinentry-mode= to accomplish that:
@@ -769,7 +815,7 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+end_src
 
-*** TRAMP
+** TRAMP
 
 #+begin_src emacs-lisp
 
@@ -778,9 +824,9 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+end_src
 
-** Editing Configuration
+* Editing Configuration
 
-*** Tab Widths
+** Tab Widths
 
 #+begin_src emacs-lisp
 
@@ -789,7 +835,7 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+end_src>
 
-*** Use spaces instead of tabs for indentation.
+** Use spaces instead of tabs for indentation.
 
 #+BEGIN_SRC emacs-lisp
 
@@ -797,7 +843,7 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+END_SRC
 
-*** Commenting Lines
+** Commenting Lines
 
 #+BEGIN_SRC emacs-lisp
 
@@ -806,7 +852,7 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+END_SRC
 
-*** Automatically clean whitespace
+** Automatically clean whitespace
 
 #+BEGIN_SRC emacs-lisp
 
@@ -817,7 +863,7 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+END_SRC
 
-*** Use Parinfer for Lispy languages
+** Use Parinfer for Lispy languages
 
 #+BEGIN_SRC emacs-lisp
 
@@ -840,9 +886,9 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+END_SRC
 
-** Configuration Files
+* Configuration Files
 
-*** Helpers
+** Helpers
 
 #+BEGIN_SRC emacs-lisp
 
@@ -867,7 +913,7 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+END_SRC
 
-*** Bindings
+** Bindings
 
 #+BEGIN_SRC emacs-lisp
 
@@ -885,7 +931,7 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+END_SRC
 
-** Stateful Keymaps with Hydra
+* Stateful Keymaps with Hydra
 
 #+begin_src emacs-lisp
 
@@ -894,7 +940,7 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+end_src
 
-** Better Completions with Ivy
+* Better Completions with Ivy
 
 I currently use Ivy, Counsel, and Swiper to navigate around files, buffers, and
 projects super quickly.  Here are some workflow notes on how to best use Ivy:
@@ -996,7 +1042,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 #+END_SRC
 
-** Jumping with Avy
+* Jumping with Avy
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1011,9 +1057,9 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 #+END_SRC
 
-** Buffer Management
+* Buffer Management
 
-**** Bindings
+*** Bindings
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1040,9 +1086,9 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 #+END_SRC
 
-** Window Management
+* Window Management
 
-*** Frame Scaling / Zooming
+** Frame Scaling / Zooming
 
 The keybindings for this are =C+M+-= and =C+M+==.
 
@@ -1055,7 +1101,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+END_SRC
 
-*** Window Selection with ace-window
+** Window Selection with ace-window
 
 #+begin_src emacs-lisp
 
@@ -1066,7 +1112,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+end_src
 
-*** Window History with winner-mode
+** Window History with winner-mode
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1075,7 +1121,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+END_SRC
 
-*** Set Margins for Modes
+** Set Margins for Modes
 
 #+begin_src emacs-lisp
 
@@ -1100,7 +1146,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+end_src
 
-** Expand Region
+* Expand Region
 
 This module is absolutely necessary for working inside of Emacs Lisp files,
 especially when trying to some parent of an expression (like a =setq=).  Makes
@@ -1115,7 +1161,7 @@ tweaking Org agenda views much less annoying.
 
 #+END_SRC
 
-** Credential Management
+* Credential Management
 
 I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords locally.  [[https://github.com/jabranham/helm-pass][helm-pass]] automatically pulls
 in [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store.el]] package which makes managing passwords much easier in
@@ -1146,9 +1192,9 @@ credentials for mail, etc.
 
 #+END_SRC
 
-** File Browsing
+* File Browsing
 
-*** Dired
+** Dired
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1236,7 +1282,7 @@ credentials for mail, etc.
 
 #+END_SRC
 
-*** Opening Files Externally
+** Opening Files Externally
 
 #+begin_src emacs-lisp
 
@@ -1261,9 +1307,9 @@ credentials for mail, etc.
 
 #+end_src
 
-** Org Mode
+* Org Mode
 
-*** Org Configuration
+** Org Configuration
 
 Set up Org Mode with a baseline configuration.  The following sections will add more things to it.
 
@@ -1325,7 +1371,7 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
 
 #+END_SRC
 
-*** Automatically "Tangle" on Save
+** Automatically "Tangle" on Save
 
 Handy tip from [[https://leanpub.com/lit-config/read#leanpub-auto-configuring-emacs-and--org-mode-for-literate-programming][this book]] on literate programming.
 
@@ -1337,7 +1383,7 @@ Handy tip from [[https://leanpub.com/lit-config/read#leanpub-auto-configuring-em
 #+end_src
 
 
-*** Fonts and Bullets
+** Fonts and Bullets
 
 Use bullet characters instead of asterisks, plus set the header font sizes to something more palatable.  A fair amount of inspiration has been taken from [[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][this blog post]].
 
@@ -1388,7 +1434,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 #+END_SRC
 
-*** Org File Paths
+** Org File Paths
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1428,7 +1474,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 #+END_SRC
 
-*** Agenda
+** Agenda
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1502,7 +1548,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 #+END_SRC
 
-*** Tags
+** Tags
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1534,7 +1580,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 #+END_SRC
 
-*** Tasks
+** Tasks
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1551,7 +1597,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 #+END_SRC
 
-*** Journal
+** Journal
 
 In the past, I've used my own custom journal file format based on Org datetrees.  Lately I'm starting to try using daily journal files with [[https://github.com/bastibe/org-journal/][org-journal]] to see if I get any benefits from it.
 
@@ -1570,7 +1616,7 @@ In the past, I've used my own custom journal file format based on Org datetrees.
 
 #+END_SRC
 
-*** Capture Templates
+** Capture Templates
 
 Information on template expansion can be found in the [[https://orgmode.org/manual/Template-expansion.html#Template-expansion][Org manual]].
 
@@ -1629,7 +1675,7 @@ Information on template expansion can be found in the [[https://orgmode.org/manu
 
 #+END_SRC
 
-*** Block Templates
+** Block Templates
 
 These templates enable you to type things like =<el= and then hit =Tab= to expand
 the template.  More documentation can be found at the Org Mode [[https://orgmode.org/manual/Easy-templates.html][Easy Templates]]
@@ -1647,7 +1693,7 @@ documentation page.
 
 #+END_SRC
 
-*** Pomodoro
+** Pomodoro
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1664,7 +1710,7 @@ documentation page.
 
 #+END_SRC
 
-*** Protocol
+** Protocol
 
 This is probably not needed if I plan to use custom functions that are invoked
 through =emacsclient.=
@@ -1675,7 +1721,7 @@ through =emacsclient.=
 
 #+END_SRC
 
-*** Searching
+** Searching
 
 #+begin_src emacs-lisp
 
@@ -1685,7 +1731,7 @@ through =emacsclient.=
 
 #+end_src
 
-*** Bindings
+** Bindings
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1705,7 +1751,7 @@ through =emacsclient.=
 
 #+END_SRC
 
-*** End =use-package org-mode=
+** End =use-package org-mode=
 
 #+begin_src emacs-lisp
 
@@ -1714,7 +1760,7 @@ through =emacsclient.=
 
 #+end_src
 
-*** Update Table of Contents on Save
+** Update Table of Contents on Save
 
 It's nice to have a table of contents section for long literate configuration files (like this one!) so I use =org-make-toc= to automatically update the ToC in any header with a property named =TOC=.
 
@@ -1725,7 +1771,7 @@ It's nice to have a table of contents section for long literate configuration fi
 
 #+end_src
 
-*** Calendar Sync
+** Calendar Sync
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1760,7 +1806,7 @@ It's nice to have a table of contents section for long literate configuration fi
 
 #+END_SRC
 
-*** Reminders
+** Reminders
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1776,7 +1822,7 @@ It's nice to have a table of contents section for long literate configuration fi
 
 #+END_SRC
 
-*** Presentations
+** Presentations
 
 #+begin_src emacs-lisp
 
@@ -1807,18 +1853,18 @@ It's nice to have a table of contents section for long literate configuration fi
 
 #+end_src
 
-*** Addons to Try
+** Addons to Try
 
 - [[https://melpa.org/#/ox-reveal][Export to Reveal.js]]
 - [[https://github.com/org-mime/org-mime][org-mime]]
 
-** Development
+* Development
 
 Configuration for various programming languages and dev tools that I use.
 
-*** Git
+** Git
 
-**** Magit
+*** Magit
 
 https://magit.vc/manual/magit/
 
@@ -1853,7 +1899,7 @@ https://magit.vc/manual/magit/
 
 #+END_SRC
 
-**** Forge
+*** Forge
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1862,7 +1908,7 @@ https://magit.vc/manual/magit/
 
 #+END_SRC
 
-**** magit-todos
+*** magit-todos
 
 This is an interesting extension to Magit that shows a TODOs section in your
 git status buffer containing all lines with TODO (or other similar words) in
@@ -1875,7 +1921,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 #+end_src
 
-**** git-link
+*** git-link
 
 #+begin_src emacs-lisp
 
@@ -1888,7 +1934,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 #+end_src
 
-**** Git Gutter
+*** Git Gutter
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1958,9 +2004,9 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 #+END_SRC
 
-*** Projectile
+** Projectile
 
-**** Initial Setup
+*** Initial Setup
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1986,7 +2032,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 #+END_SRC
 
-**** Project Configurations
+*** Project Configurations
 
 This section contains project configurations for specific projects that I can't
 drop a =.dir-locals.el= file into.  Documentation on this approach can be found in
@@ -2003,9 +2049,9 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
 #+END_SRC
 
-*** Languages
+** Languages
 
-**** Language Server Support
+*** Language Server Support
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2041,7 +2087,7 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
 #+END_SRC
 
-**** Debug Adapter Support
+*** Debug Adapter Support
 
 Not so convinced about this yet.
 
@@ -2066,7 +2112,7 @@ Not so convinced about this yet.
 
 #+end_src
 
-**** Clojure
+*** Clojure
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2082,7 +2128,7 @@ Not so convinced about this yet.
 
 #+END_SRC
 
-**** Common Lisp
+*** Common Lisp
 
 #+begin_src emacs-lisp
 
@@ -2094,7 +2140,7 @@ Not so convinced about this yet.
 
 #+end_src>
 
-**** TypeScript and JavaScript
+*** TypeScript and JavaScript
 
 Set up nvm so that we can manage Node versions
 
@@ -2137,7 +2183,7 @@ Configure TypeScript and JavaScript language modes
 
 #+END_SRC
 
-**** Rust
+*** Rust
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2151,7 +2197,7 @@ Configure TypeScript and JavaScript language modes
 
 #+END_SRC
 
-**** F#
+*** F#
 
 #+begin_src emacs-lisp
 
@@ -2160,7 +2206,7 @@ Configure TypeScript and JavaScript language modes
 
 #+end_src
 
-**** Emacs Lisp
+*** Emacs Lisp
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2184,7 +2230,7 @@ Configure TypeScript and JavaScript language modes
 
 #+END_SRC
 
-**** Scheme
+*** Scheme
 
 This prevents =org-babel= from asking me which Scheme implementation Geiser should use every time I tangle a file containing Scheme blocks.
 
@@ -2194,7 +2240,7 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+end_src
 
-**** Markdown
+*** Markdown
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2218,7 +2264,7 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
-**** HTML
+*** HTML
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2231,7 +2277,7 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
-**** YAML
+*** YAML
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2240,9 +2286,9 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
-*** Productivity
+** Productivity
 
-**** Syntax checking with Flycheck
+*** Syntax checking with Flycheck
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2252,7 +2298,7 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
-**** Snippets
+*** Snippets
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2263,7 +2309,7 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
-**** Smart Parens
+*** Smart Parens
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2272,7 +2318,7 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
-**** Rainbow Delimiters
+*** Rainbow Delimiters
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2281,7 +2327,7 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
-**** Rainbow Mode
+*** Rainbow Mode
 
 Sets the background of HTML color strings in buffers to be the color mentioned.
 
@@ -2297,9 +2343,9 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 #+end_src
 
-*** Reference
+** Reference
 
-**** HTTP
+*** HTTP
 
 #+begin_src emacs-lisp
 
@@ -2308,9 +2354,9 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 #+end_src
 
-** Writing
+* Writing
 
-*** Darkroom for distraction-free writing
+** Darkroom for distraction-free writing
 
 #+begin_src emacs-lisp
 
@@ -2340,9 +2386,9 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 #+end_src
 
-** Applications
+* Applications
 
-*** Binding Prefix
+** Binding Prefix
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2351,9 +2397,9 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 #+END_SRC
 
-*** Mail
+** Mail
 
-**** mu4e
+*** mu4e
 
 [[http://www.djcbsoftware.nl/code/mu/mu4e.html][mu4e]] is seriously the best mail interface I've ever used because it's fast and
 makes it really easy to power through a huge e-mail backlog.  Love the ability
@@ -2501,7 +2547,7 @@ Useful mu4e manual pages:
 
 Here's some info on using [[https://hobo.house/2017/07/17/using-offlineimap-with-the-gmail-imap-api/][offlineimap with Gmail]].
 
-*** Calendar
+** Calendar
 
 [[https://github.com/kiwanami/emacs-calfw][calfw]] is a gorgeous calendar UI that is able to show all of my scheduled Org
 Agenda items.
@@ -2530,7 +2576,7 @@ Agenda items.
 
 #+END_SRC
 
-*** Finance
+** Finance
 
 #+begin_src emacs-lisp
 
@@ -2541,9 +2587,9 @@ Agenda items.
 
 #+end_src
 
-*** eshell
+** eshell
 
-**** Configuration
+*** Configuration
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2672,11 +2718,11 @@ Agenda items.
 
 #+END_SRC
 
-**** Shell Commands
+*** Shell Commands
 
 Custom eshell commands will go here.
 
-**** Visual Commands
+*** Visual Commands
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2686,7 +2732,7 @@ Custom eshell commands will go here.
 
 #+END_SRC
 
-**** Better Colors
+*** Better Colors
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2695,7 +2741,7 @@ Custom eshell commands will go here.
 
 #+END_SRC
 
-**** Fish Completion
+*** Fish Completion
 
 This enhances eshell's completions with those that Fish is capable of and also
 falls back to any additional completions that are configured for Bash on the
@@ -2709,7 +2755,7 @@ branches in =git= commands.
 
 #+end_src
 
-**** History Autocompletion
+*** History Autocompletion
 
 #+begin_src emacs-lisp
 
@@ -2722,7 +2768,7 @@ branches in =git= commands.
 
 #+end_src
 
-*** multi-term
+** multi-term
 
 Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/][here]].
 
@@ -2743,7 +2789,7 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
 
 #+END_SRC
 
-*** ediff
+** ediff
 
 #+begin_src emacs-lisp
 
@@ -2754,9 +2800,9 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
 
 #+end_src
 
-*** Chat
+** Chat
 
-**** Tracking
+*** Tracking
 
 #+begin_src emacs-lisp
 
@@ -2770,7 +2816,7 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
 
 #+end_src
 
-**** Telegram
+*** Telegram
 
 #+begin_src emacs-lisp
 
@@ -2814,13 +2860,13 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
 
 #+end_src
 
-**** ERC
+*** ERC
 
 [[https://www.gnu.org/software/emacs/manual/html_node/erc/Modules.html][ERC]] is the big kahuna of Emacs IRC clients.  At first I thought it was too
 bulky, but after using =circe= and =rcirc= I started to appreciate some of the
 features it provides.  The "static center" fill mode is really awesome.
 
-***** Configuration
+**** Configuration
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2878,7 +2924,7 @@ features it provides.  The "static center" fill mode is really awesome.
 
 #+END_SRC
 
-***** Bindings
+**** Bindings
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2890,7 +2936,7 @@ features it provides.  The "static center" fill mode is really awesome.
 
 #+END_SRC
 
-***** Reference
+**** Reference
 - https://www.gnu.org/software/emacs/manual/html_mono/erc.html
 - https://www.emacswiki.org/emacs/ErcChannelTracking
 - [[https://www.emacswiki.org/emacs/ErcFilling][Automatic window-width filling]]
@@ -2899,7 +2945,7 @@ features it provides.  The "static center" fill mode is really awesome.
   - Settings: https://github.com/jwiegley/dot-emacs/blob/0f7d2c04ac38857d8e0fb036faedbf84193c8bd4/settings.el#L445
   - Commands: https://github.com/jwiegley/dot-emacs/blob/f23993cfcb9ca90c289b4214b9bafbf46883bdb4/lisp/erc-macros.el
 
-**** circe
+*** circe
 
 =circe= was the first IRC client I got working well enough to use for Bitlbee,
 though I never found a good UI configuration.  Didn't like the position of the
@@ -2928,7 +2974,7 @@ modeline indicators (though there's probably a way to fix that).
 
 #+END_SRC
 
-**** rcirc
+*** rcirc
 
 Trying [[https://www.gnu.org/software/emacs/manual/html_mono/rcirc.html][rcirc]] as well, lighter than ERC and seemingly cleaner than circe.  So far
 I like the position of the mode line tracking better than circe.
@@ -2976,7 +3022,7 @@ I like the position of the mode line tracking better than circe.
 
 #+END_SRC
 
-***** Reference / Things to try
+**** Reference / Things to try
 
 - https://www.emacswiki.org/emacs/rcirc
 - https://github.com/aaron-em/rcirc-styles.el
@@ -2987,7 +3033,7 @@ I like the position of the mode line tracking better than circe.
 - https://www.emacswiki.org/emacs/rcircAutoAuthentication
 - https://www.emacswiki.org/emacs/rcircSmiley
 
-*** Mastodon
+** Mastodon
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2998,9 +3044,9 @@ I like the position of the mode line tracking better than circe.
 
 #+END_SRC
 
-*** RSS
+** RSS
 
-**** Elfeed
+*** Elfeed
 
 [[https://github.com/skeeto/elfeed][Elfeed]] looks like a great RSS feed reader.  Not using it much yet, but
 definitely looking forward to using it to keep track of a few different blogs I
@@ -3021,9 +3067,9 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
 #+END_SRC
 
-*** Media
+** Media
 
-**** EMMS
+*** EMMS
 
 #+BEGIN_SRC emacs-lisp
 
@@ -3042,7 +3088,7 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
 #+END_SRC
 
-**** Spotify
+*** Spotify
 
 #+BEGIN_SRC emacs-lisp
 
@@ -3053,9 +3099,9 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
 #+END_SRC
 
-** Notifications
+* Notifications
 
-*** Alert
+** Alert
 
 [[https://github.com/jwiegley/alert][alert]] is a great library for showing notifications from other packages in a
 variety of ways.  I'd like to go deep in customization at some point soon, but
@@ -3070,7 +3116,7 @@ for now I just use the normal notification bubbles.
 
 #+END_SRC
 
-*** Sauron
+** Sauron
 
 Sauron provides a nice interactive event log that shows you notifications you
 might have missed in the past.  I'd like to have a way to be more aware of any
@@ -3093,9 +3139,9 @@ to set that up.
 
 #+END_SRC
 
-** System Utilities
+* System Utilities
 
-*** Guix
+** Guix
 
 #+BEGIN_SRC emacs-lisp
 
@@ -3112,7 +3158,7 @@ to set that up.
 
 #+END_SRC
 
-*** Daemons
+** Daemons
 
 #+begin_src emacs-lisp
 
@@ -3121,7 +3167,7 @@ to set that up.
 
 #+end_src
 
-*** PulseAudio
+** PulseAudio
 
 #+begin_src emacs-lisp
 
@@ -3132,7 +3178,7 @@ to set that up.
 
 #+end_src
 
-*** Bluetooth
+** Bluetooth
 
 #+begin_src emacs-lisp
 
@@ -3150,7 +3196,7 @@ to set that up.
 
 #+end_src
 
-*** Proced
+** Proced
 
 #+begin_src emacs-lisp
 
@@ -3164,7 +3210,7 @@ to set that up.
 
 #+end_src
 
-*** System Monitor
+** System Monitor
 
 #+BEGIN_SRC emacs-lisp
 
@@ -3179,7 +3225,7 @@ to set that up.
 
 #+END_SRC
 
-*** Docker
+** Docker
 
 #+begin_src emacs-lisp
 
@@ -3192,9 +3238,9 @@ to set that up.
 
 #+end_src>
 
-** Miscellaneous
+* Miscellaneous
 
-*** Debbugs (mainly for Guix)
+** Debbugs (mainly for Guix)
 
 #+begin_src emacs-lisp
 
@@ -3205,7 +3251,7 @@ to set that up.
 
 #+end_src
 
-*** Emojification
+** Emojification
 
 #+BEGIN_SRC emacs-lisp
 
@@ -3214,7 +3260,7 @@ to set that up.
 
 #+END_SRC
 
-*** Dashboard
+** Dashboard
 
 Displays a nice list of recent files and projects on startup.
 
@@ -3233,7 +3279,7 @@ Displays a nice list of recent files and projects on startup.
 
 #+END_SRC
 
-** Runtime Performance
+* Runtime Performance
 
 Dial the GC threshold back down so that garbage collection happens more frequently but in less time.
 
@@ -3244,7 +3290,7 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 
 #+end_src
 
-** Inspiration
+* Inspiration
 
 [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] has a good list of packages and themes to check out.
 
