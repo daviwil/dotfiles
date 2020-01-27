@@ -16,7 +16,7 @@ foreground-alt = #555
 primary = #ffb52a
 secondary = #e60053
 alert = #bd2c40
-underline-1 = 89AAEB
+underline-1 = #89AAEB
 
 [bar/panel]
 width = 100%

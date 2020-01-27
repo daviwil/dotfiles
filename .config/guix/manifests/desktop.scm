@@ -55,6 +55,7 @@
    "cups"
 
    ;; Desktop
+   "dunst"
    "compton"
    "redshift"
    "gucharmap"
