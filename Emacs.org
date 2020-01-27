@@ -1342,7 +1342,7 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
         org-src-tab-acts-natively t
         org-edit-src-content-indentation 0
         org-hide-block-startup nil
-        org-src-preserve-indentation t
+        org-src-preserve-indentation nil
         org-startup-folded 'content
         org-cycle-separator-lines 1)
 
