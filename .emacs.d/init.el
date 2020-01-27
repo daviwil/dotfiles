@@ -393,21 +393,35 @@
   (dw/leader-key-def
     "tp" 'parinfer-toggle-mode)
 
-  (defun edit-configuration ()
-    (interactive)
-    (find-file (expand-file-name "~/.dotfiles/Emacs.org")))
+(defun dw/org-file-jump-to-heading (org-file heading-title)
+  (interactive)
+  (find-file (expand-file-name org-file))
+  (goto-char (point-min))
+  (search-forward (concat "* " heading-title))
+  (org-overview)
+  (org-reveal)
+  (org-show-subtree)
+  (forward-line))
+
+(defun dw/org-file-show-headings (org-file)
+  (interactive)
+  (find-file (expand-file-name org-file))
+  (counsel-org-goto)
+  (org-overview)
+  (org-reveal)
+  (org-show-subtree)
+  (forward-line))
 
   (dw/leader-key-def
     "fn" '((lambda () (interactive) (counsel-find-file "~/Notes/")) :which-key "notes")
-    "fe"  '(:ignore t :which-key "emacs config")
-    "fed" '(edit-configuration :which-key "edit config") ; Thanks for the muscle memory, Spacemacs
-
     "fd"  '(:ignore t :which-key "dotfiles")
+    "fdd" '((lambda () (interactive) (find-file "~/.dotfiles/Desktop.org")) :which-key "desktop")
+    "fde" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/Emacs.org"))) :which-key "edit config")
+    "fdE" '((lambda () (interactive) (dw/org-file-show-headings "~/.dotfiles/Emacs.org")) :which-key "edit config")
     "fdm" '((lambda () (interactive) (counsel-find-file "~/.dotfiles/.config/guix/manifests/")) :which-key "manifests")
-    "fds" '((lambda () (interactive) (find-file (concat "~/.dotfiles/.config/guix/systems/base-system.scm"))) :which-key "base system")
-    "fdS" '((lambda () (interactive) (find-file (concat "~/.dotfiles/.config/guix/systems/" system-name ".scm"))) :which-key "this system")
-    "fdp" '((lambda () (interactive) (find-file "~/.dotfiles/.config/polybar/config")) :which-key "polybar")
-    "fdi" '((lambda () (interactive) (find-file "~/.dotfiles/.config/i3/config")) :which-key "i3")
+    "fds" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" "Base Configuration")) :which-key "base system")
+    "fdS" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" system-name)) :which-key "this system")
+    "fdp" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Desktop.org" "Panel via Polybar")) :which-key "polybar")
     "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/.config/vimb/config")) :which-key "vimb"))
 
   (use-package hydra
@@ -703,7 +717,7 @@
         org-src-fontify-natively t
         org-src-tab-acts-natively t
         org-edit-src-content-indentation 0
-        org-hide-block-startup t
+        org-hide-block-startup nil
         org-src-preserve-indentation t
         org-startup-folded 'content
         org-cycle-separator-lines 1)
