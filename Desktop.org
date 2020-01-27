@@ -13,6 +13,7 @@ This file contains configuration for my overall desktop environment.  My workflo
 :END:
 -  [[#desktop-environment][Desktop Environment]]
   -  [[#desktop-profile][Desktop Profile]]
+  -  [[#fonts-and-themes][Fonts and Themes]]
   -  [[#window-management][Window Management]]
     -  [[#helper-functions][Helper Functions]]
     -  [[#configuration][Configuration]]
@@ -142,6 +143,27 @@ Here are the packages I install via Guix for my custom desktop environment:
    ;; Audio Device Control
    "alsa-utils"
    "pavucontrol"))
+
+#+end_src
+
+** Fonts and Themes
+
+I use xsettingsd as a minimal settings daemon for Xorg applications.  It replaces similar daemons from desktop environments like GNOME and XFCE and enables me to use a simple configuration file like the following:
+
+*.config/xsettingsd/xsettingsd.conf:*
+
+#+begin_src conf :tangle .config/xsettingsd/xsettingsd.conf
+
+Net/ThemeName "Matcha-dark-azul"
+Net/IconThemeName "Papirus-Dark"
+Gtk/DecorationLayout "menu:minimize,maximize,close"
+Gtk/FontName "Cantarell 11"
+Gtk/MonospaceFontName "Fira Mono 10"
+Gtk/CursorThemeName "Adwaita"
+Xft/Antialias 1
+Xft/Hinting 0
+Xft/HintStyle "hintnone"
+Xft/DPI 184320 # 1024 * DPI (180 in this case)
 
 #+end_src
 
