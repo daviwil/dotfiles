@@ -148,7 +148,7 @@ Here are the packages I install via Guix for my custom desktop environment:
 
 ** Fonts and Themes
 
-I use xsettingsd as a minimal settings daemon for Xorg applications.  It replaces similar daemons from desktop environments like GNOME and XFCE and enables me to use a simple configuration file like the following:
+I use [[https://github.com/derat/xsettingsd][xsettingsd]] as a minimal settings daemon for Xorg applications.  It replaces similar daemons from desktop environments like GNOME and XFCE and enables me to use a simple configuration file like the following:
 
 *.config/xsettingsd/xsettingsd.conf:*
 
@@ -739,7 +739,7 @@ fi
 
 ** Desktop Notifications via Dunst
 
-Dunst is a minimal interface for displaying desktop notifications.  It is quite hackable but I'm not currently taking much advantage of its power.  One useful feature is the ability to recall notification history; the keybinding is =C-`= in my configuration (though I'd prefer if I could invoke it from an Emacs keybinding somehow).
+[[https://dunst-project.org/][Dunst]] is a minimal interface for displaying desktop notifications.  It is quite hackable but I'm not currently taking much advantage of its power.  One useful feature is the ability to recall notification history; the keybinding is =C-`= in my configuration (though I'd prefer if I could invoke it from an Emacs keybinding somehow).
 
 *.config/dunst/dunstrc:*
 
