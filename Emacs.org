@@ -7,7 +7,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 :PROPERTIES:
 :TOC:      this
 :END:
-:CONTENTS:
 -  [[#startup-performance][Startup Performance]]
 -  [[#system-checks][System Checks]]
 -  [[#keep-emacsd-clean][Keep .emacs.d Clean]]
@@ -55,7 +54,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 -  [[#better-completions-with-ivy][Better Completions with Ivy]]
 -  [[#jumping-with-avy][Jumping with Avy]]
 -  [[#buffer-management][Buffer Management]]
-    -  [[#bindings][Bindings]]
+  -  [[#bindings][Bindings]]
 -  [[#window-management][Window Management]]
   -  [[#frame-scaling--zooming][Frame Scaling / Zooming]]
   -  [[#window-selection-with-ace-window][Window Selection with ace-window]]
@@ -169,7 +168,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   -  [[#dashboard][Dashboard]]
 -  [[#runtime-performance][Runtime Performance]]
 -  [[#inspiration][Inspiration]]
-:END:
 
 * Startup Performance
 
@@ -2866,7 +2864,7 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
     :commands telega
     :config
     (setq telega-user-use-avatars nil
-          telega-use-tracking t
+          telega-use-tracking-for '(any pin unread)
           telega-chat-use-markdown-formatting t
           telega-emoji-use-images t
           telega-completing-read-function #'ivy-completing-read
