@@ -1784,7 +1784,7 @@
   :commands telega
   :config
   (setq telega-user-use-avatars nil
-        telega-use-tracking t
+        telega-use-tracking-for '(any pin unread)
         telega-chat-use-markdown-formatting t
         telega-emoji-use-images t
         telega-completing-read-function #'ivy-completing-read

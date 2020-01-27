@@ -63,6 +63,7 @@
   (eshell)
 
   ;; Launch apps that will run in the background
+  (exwm/run-in-background "dunst")
   (exwm/run-in-background "nm-applet")
   (exwm/run-in-background "QSyncthingTray")
   (exwm/run-in-background "redshift -l 47.675510:-122.203362 -t 6500:3500"))
