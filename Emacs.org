@@ -1063,7 +1063,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 * Buffer Management
 
-*** Bindings
+** Bindings
 
 #+BEGIN_SRC emacs-lisp
 
