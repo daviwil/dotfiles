@@ -83,6 +83,7 @@ Here are the packages I install via Guix for my custom desktop environment:
 
    ;; Images and Screenshots
    "feh"
+   "gimp"
    "scrot"
 
    ;; Printing
