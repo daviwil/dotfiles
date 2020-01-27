@@ -1,33 +1,30 @@
+#+TITLE: Desktop Environment
 #+PROPERTY: header-args :mkdirp yes
-
-* Desktop Environment
-:PROPERTIES:
-:TOC:     2
-:END:
 
 This file contains configuration for my overall desktop environment.  My workflow is driven by Emacs but there are still a number of tools, themes, and fonts that I must install to have a complete desktop experience.
 
-** Table of Contents
+* Table of Contents
 :PROPERTIES:
 :TOC:      this
 :END:
--  [[#desktop-environment][Desktop Environment]]
-  -  [[#desktop-profile][Desktop Profile]]
-  -  [[#fonts-and-themes][Fonts and Themes]]
-  -  [[#window-management][Window Management]]
-    -  [[#helper-functions][Helper Functions]]
-    -  [[#configuration][Configuration]]
-    -  [[#desktop-configuration][Desktop Configuration]]
-    -  [[#window-switcher][Window Switcher]]
-    -  [[#panel][Panel]]
-    -  [[#keybindings][Keybindings]]
-    -  [[#useful-links][Useful Links]]
-  -  [[#panel-via-polybar][Panel via Polybar]]
-  -  [[#desktop-notifications-via-dunst][Desktop Notifications via Dunst]]
-  -  [[#display-management][Display Management]]
-  -  [[#bluetooth][Bluetooth]]
+:CONTENTS:
+-  [[#desktop-profile][Desktop Profile]]
+-  [[#fonts-and-themes][Fonts and Themes]]
+-  [[#window-management][Window Management]]
+  -  [[#helper-functions][Helper Functions]]
+  -  [[#configuration][Configuration]]
+  -  [[#desktop-configuration][Desktop Configuration]]
+  -  [[#window-switcher][Window Switcher]]
+  -  [[#panel][Panel]]
+  -  [[#keybindings][Keybindings]]
+  -  [[#useful-links][Useful Links]]
+-  [[#panel-via-polybar][Panel via Polybar]]
+-  [[#desktop-notifications-via-dunst][Desktop Notifications via Dunst]]
+-  [[#display-management][Display Management]]
+-  [[#bluetooth][Bluetooth]]
+:END:
 
-** Desktop Profile
+* Desktop Profile
 
 Here are the packages I install via Guix for my custom desktop environment:
 
@@ -145,7 +142,7 @@ Here are the packages I install via Guix for my custom desktop environment:
 
 #+end_src
 
-** Fonts and Themes
+* Fonts and Themes
 
 I use [[https://github.com/derat/xsettingsd][xsettingsd]] as a minimal settings daemon for Xorg applications.  It replaces similar daemons from desktop environments like GNOME and XFCE and enables me to use a simple configuration file like the following:
 
@@ -166,7 +163,7 @@ Xft/DPI 184320 # 1024 * DPI (180 in this case)
 
 #+end_src
 
-** Window Management
+* Window Management
 
 I use Emacs as the desktop window manager thanks to the excellent EXWM.  This configuration gets loaded relatively early in Emacs startup if running on a Linux machine.
 
@@ -201,7 +198,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 #+end_src
 
-*** Helper Functions
+** Helper Functions
 
 #+begin_src emacs-lisp :tangle .emacs.d/exwm.el
 
@@ -233,7 +230,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 #+END_SRC
 
-*** Configuration
+** Configuration
 
 #+begin_src emacs-lisp :tangle .emacs.d/exwm.el
 
@@ -304,7 +301,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 #+END_SRC
 
-*** Desktop Configuration
+** Desktop Configuration
 
 #+begin_src emacs-lisp :tangle .emacs.d/exwm.el
 
@@ -351,7 +348,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 #+END_SRC
 
-*** Window Switcher
+** Window Switcher
 
 #+begin_src emacs-lisp :tangle .emacs.d/exwm.el
 
@@ -375,7 +372,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 #+end_src
 
-*** Panel
+** Panel
 
 #+begin_src emacs-lisp :tangle .emacs.d/exwm.el
 
@@ -423,7 +420,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 #+end_src
 
-*** Keybindings
+** Keybindings
 
 #+begin_src emacs-lisp :tangle .emacs.d/exwm.el
 
@@ -501,13 +498,13 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 #+END_SRC
 
-*** Useful Links
+** Useful Links
 
 - https://github.com/ch11ng/exwm/wiki
 - https://www.reddit.com/r/emacs/comments/6huok9/exwm_configs/
 - https://ambrevar.xyz/de/index.html
 
-** Panel via Polybar
+* Panel via Polybar
 
 I use [[https://github.com/polybar/polybar][Polybar]] to display a panel at the top of the primary screen to display my current EXWM workspace, CPU usage and temperature, battery status, time, and system tray.  It uses some custom hooks back into Emacs via =emacsclient=.
 
@@ -736,7 +733,7 @@ fi
 
 #+end_src
 
-** Desktop Notifications via Dunst
+* Desktop Notifications via Dunst
 
 [[https://dunst-project.org/][Dunst]] is a minimal interface for displaying desktop notifications.  It is quite hackable but I'm not currently taking much advantage of its power.  One useful feature is the ability to recall notification history; the keybinding is =C-`= in my configuration (though I'd prefer if I could invoke it from an Emacs keybinding somehow).
 
@@ -949,7 +946,7 @@ fi
 
 #+end_src
 
-** Display Management
+* Display Management
 
 I use a script to automatically configure multiple displays with =xrandr= when I dock my laptops.  This script invokes =xrandr= differently based on the hostname of the machine.
 
@@ -978,7 +975,7 @@ esac
 
 #+end_src
 
-** Bluetooth
+* Bluetooth
 
 If you need to manually connect to Bluetooth audio devices using =bluetoothctl=,
 as I currently do in Guix, you'll need to enter these commands at the
