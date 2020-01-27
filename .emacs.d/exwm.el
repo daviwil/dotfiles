@@ -235,7 +235,6 @@
     (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
 
     (exwm/bind-command
-      "<s-return>" "xfce4-terminal"
       "s-p" "playerctl play-pause"
       "s-[" "playerctl previous"
       "s-]" "playerctl next")
@@ -286,5 +285,6 @@
                              (exwm-workspace-switch-create ,i))))
                         (number-sequence 0 9))))
 
+    (exwm-input-set-key (kbd "<s-return>") 'vterm)
     (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
     (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen))

@@ -104,7 +104,6 @@ Here are the packages I install via Guix for my custom desktop environment:
 
    ;; Xfce Tools
    "xfconf"
-   "xfce4-terminal"
    "xfce4-settings"
    "xfce4-notifyd"
    "xfce4-screenshooter"
@@ -446,7 +445,6 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
 
     (exwm/bind-command
-      "<s-return>" "xfce4-terminal"
       "s-p" "playerctl play-pause"
       "s-[" "playerctl previous"
       "s-]" "playerctl next")
@@ -497,6 +495,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
                              (exwm-workspace-switch-create ,i))))
                         (number-sequence 0 9))))
 
+    (exwm-input-set-key (kbd "<s-return>") 'vterm)
     (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
     (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen))
 

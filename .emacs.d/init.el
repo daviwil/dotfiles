@@ -201,6 +201,7 @@
   (dolist (mode '(org-mode-hook
                   term-mode-hook
                   eshell-mode-hook
+                  vterm-mode-hook
                   neotree-mode-hook
                   telega-chat-mode-hook
                   telega-root-mode-hook
@@ -1708,6 +1709,9 @@
     (setq esh-autosuggest-delay 0.5)
     (set-face-foreground 'company-preview-common "#4b5668")
     (set-face-background 'company-preview nil))
+
+  (use-package vterm
+    :commands vterm)
 
   (use-package multi-term
     :commands multi-term-next

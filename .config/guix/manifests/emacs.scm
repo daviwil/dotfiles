@@ -119,6 +119,7 @@
    ;;"emacs-writegood-mode"
 
    ;; Shell
+   "emacs-vterm"
    "emacs-eshell-z"
    "emacs-esh-autosuggest"
    "emacs-fish-completion"

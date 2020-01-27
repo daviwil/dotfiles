@@ -133,6 +133,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     -  [[#better-colors][Better Colors]]
     -  [[#fish-completion][Fish Completion]]
     -  [[#history-autocompletion][History Autocompletion]]
+  -  [[#vterm][vterm]]
   -  [[#multi-term][multi-term]]
   -  [[#ediff][ediff]]
   -  [[#chat][Chat]]
@@ -511,6 +512,7 @@ Enable line numbers and customize their format.
   (dolist (mode '(org-mode-hook
                   term-mode-hook
                   eshell-mode-hook
+                  vterm-mode-hook
                   neotree-mode-hook
                   telega-chat-mode-hook
                   telega-root-mode-hook
@@ -2767,6 +2769,17 @@ branches in =git= commands.
     (setq esh-autosuggest-delay 0.5)
     (set-face-foreground 'company-preview-common "#4b5668")
     (set-face-background 'company-preview nil))
+
+#+end_src
+
+** vterm
+
+I'm trying out =vterm= as a way to use fully-fledged terminal applications within Emacs so that I don't need an external terminal emulator.
+
+#+begin_src emacs-lisp
+
+  (use-package vterm
+    :commands vterm)
 
 #+end_src
 

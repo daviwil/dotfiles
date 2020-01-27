@@ -67,7 +67,6 @@
 
    ;; Xfce Tools
    "xfconf"
-   "xfce4-terminal"
    "xfce4-settings"
    "xfce4-notifyd"
    "xfce4-screenshooter"
