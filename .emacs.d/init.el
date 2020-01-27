@@ -1655,7 +1655,6 @@
   (delq 'eshell-handle-ansi-color eshell-output-filter-functions)
 
   ;; Save command history when commands are entered
-  (setq eshell-directory-name "~/.emacs.d/eshell/")
   (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
 
   (add-hook 'eshell-before-prompt-hook
@@ -1692,7 +1691,9 @@
         eshell-prefer-lisp-functions nil))
 
 (use-package eshell
-  :hook (eshell-first-time-mode . dw/eshell-configure))
+  :hook (eshell-first-time-mode . dw/eshell-configure)
+  :init
+  (setq eshell-directory-name "~/.emacs.d/eshell/"))
 
 (use-package eshell-z
   :hook (eshell-mode . (lambda () (require 'eshell-z))))
