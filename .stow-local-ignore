@@ -1,6 +1,6 @@
-.git
+\.git
 archive
 backgrounds
 mail
-*.org
+^/.*\.org
 LICENSE
