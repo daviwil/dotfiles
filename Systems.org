@@ -285,8 +285,6 @@ Some settings need to be customized on a per-system basis without tweaking indiv
       (dunst/max-icon-size . 64))
     <<system-settings>>))
 
-;; (defun dw/system-settings-to-org ()
-
 #+end_src
 
 **** zerocool
