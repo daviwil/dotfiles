@@ -1626,30 +1626,30 @@
   (let ((current-branch (magit-get-current-branch))
         (package-version (dw/get-current-package-version)))
     (concat
-      "\n"
-      (propertize (system-name) 'face `(:foreground "#62aeed"))
-      (propertize " ॐ " 'face `(:foreground "white"))
-      (propertize (dw/get-prompt-path) 'face `(:foreground "#82cfd3"))
-      (when current-branch
-        (concat
-          (propertize " • " 'face `(:foreground "white"))
-          (propertize (concat " " current-branch) 'face `(:foreground "#c475f0"))))
-      (when package-version
-        (concat
-          (propertize " @ " 'face `(:foreground "white"))
-          (propertize package-version 'face `(:foreground "#e8a206"))))
-      (propertize " • " 'face `(:foreground "white"))
-      (propertize (format-time-string "%I:%M:%S %p") 'face `(:foreground "#5a5b7f"))
-      (if (= (user-uid) 0)
-          (propertize "\n#" 'face `(:foreground "red2"))
-          (propertize "\nλ" 'face `(:foreground "#aece4a")))
-      (propertize " " 'face `(:foreground "white")))))
+     "\n"
+     (propertize (system-name) 'face `(:foreground "#62aeed"))
+     (propertize " ॐ " 'face `(:foreground "white"))
+     (propertize (dw/get-prompt-path) 'face `(:foreground "#82cfd3"))
+     (when current-branch
+       (concat
+        (propertize " • " 'face `(:foreground "white"))
+        (propertize (concat " " current-branch) 'face `(:foreground "#c475f0"))))
+     (when package-version
+       (concat
+        (propertize " @ " 'face `(:foreground "white"))
+        (propertize package-version 'face `(:foreground "#e8a206"))))
+     (propertize " • " 'face `(:foreground "white"))
+     (propertize (format-time-string "%I:%M:%S %p") 'face `(:foreground "#5a5b7f"))
+     (if (= (user-uid) 0)
+         (propertize "\n#" 'face `(:foreground "red2"))
+       (propertize "\nλ" 'face `(:foreground "#aece4a")))
+     (propertize " " 'face `(:foreground "white")))))
 
 (unless dw/is-termux
   (add-hook 'eshell-banner-load-hook
-  '(lambda ()
-      (setq eshell-banner-message
-      (concat "\n" (propertize " " 'display (create-image "~/.dotfiles/.emacs.d/images/flux_banner.png" 'png nil :scale 0.2 :align-to "center")) "\n\n")))))
+            '(lambda ()
+               (setq eshell-banner-message
+                     (concat "\n" (make-string (/ (shr-buffer-width) 3) ?\ ) (propertize " " 'display (create-image "~/.dotfiles/.emacs.d/images/flux_banner.png" 'png nil :scale 0.2 :align-to "center")) "\n\n")))))
 
 (defun dw/eshell-configure ()
   (require 'evil-collection-eshell)
@@ -1665,8 +1665,8 @@
   (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
 
   (add-hook 'eshell-before-prompt-hook
-    (lambda ()
-      (setq xterm-color-preserve-properties t)))
+            (lambda ()
+              (setq xterm-color-preserve-properties t)))
 
   ;; Truncate buffer for performance
   (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
@@ -1675,9 +1675,9 @@
   ;; in eshell but not during other times when we might be launching
   ;; a shell command to gather its output.
   (add-hook 'eshell-pre-command-hook
-    '(lambda () (setenv "TERM" "xterm-256color")))
+            '(lambda () (setenv "TERM" "xterm-256color")))
   (add-hook 'eshell-post-command-hook
-    '(lambda () (setenv "TERM" "dumb")))
+            '(lambda () (setenv "TERM" "dumb")))
 
   ;; Use Ivy to provide completions in eshell
   (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)
