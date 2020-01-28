@@ -23,7 +23,7 @@
   :after (exwm)
   :config
   (exwm-randr-enable)
-  (setq exwm-randr-workspace-monitor-plist '(0 "HDMI-2" 1 "HDMI-2" 2 "HDMI-2" 3 "HDMI-2" 4 "eDP-1")))
+  (setq exwm-randr-workspace-monitor-plist '(4 "eDP-1")))
 
 (defun exwm/run-in-background (command)
    (start-process-shell-command command nil

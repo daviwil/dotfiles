@@ -7,16 +7,16 @@
 :PROPERTIES:
 :TOC:      this
 :END:
-  -  [[#system-configuration-with-guix][System Configuration with Guix]]
-    -  [[#channels][Channels]]
-    -  [[#systems][Systems]]
-      -  [[#base-configuration][Base Configuration]]
-      -  [[#machines][Machines]]
-      -  [[#usb-installation-image][USB Installation Image]]
-    -  [[#profile-management][Profile Management]]
-      -  [[#activating-profiles][Activating Profiles]]
-      -  [[#updating-profiles][Updating Profiles]]
-    -  [[#system-installation][System Installation]]
+-  [[#system-configuration-with-guix][System Configuration with Guix]]
+  -  [[#channels][Channels]]
+  -  [[#systems][Systems]]
+    -  [[#base-configuration][Base Configuration]]
+    -  [[#machines][Machines]]
+    -  [[#usb-installation-image][USB Installation Image]]
+  -  [[#profile-management][Profile Management]]
+    -  [[#activating-profiles][Activating Profiles]]
+    -  [[#updating-profiles][Updating Profiles]]
+  -  [[#system-installation][System Installation]]
 
 ** Channels
 
@@ -267,6 +267,28 @@ Define the =base-operating-system= which will be inherited by all machine config
 
 Because I'm lame, all of my machines are named from characters, things, and places from the movie Hackers.
 
+**** Per-System Settings
+
+Some settings need to be customized on a per-system basis without tweaking individual configuration files.  Thanks to org-mode's =noweb= functionality, I can define a set of variables that can be tweaked for each system and applied across these configuration files when they get generated.
+
+#+begin_src emacs-lisp :tangle .emacs.d/per-system-settings.el :noweb yes
+
+(setq dw/system-settings
+  (map-merge
+    'list
+    '((desktop/dpi . 180)
+      (polybar/height . 35)
+      (polybar/font-0-size . 18)
+      (polybar/font-1-size . 14)
+      (polybar/font-2-size . 20)
+      (dunst/font-size . 20)
+      (dunst/max-icon-size . 64))
+    <<system-settings>>))
+
+;; (defun dw/system-settings-to-org ()
+
+#+end_src
+
 **** zerocool
 
 =zerocool= is a 5th Generation ThinkPad X1 Carbon that I use for most of my writing and hacking at home.
@@ -305,6 +327,14 @@ Because I'm lame, all of my machines are named from characters, things, and plac
 
 #+end_src
 
+*System Settings*
+
+#+begin_src emacs-lisp :noweb-ref system-settings :noweb-sep ""
+
+(when (equal system-name "zerocool"))
+
+#+end_src
+
 **** davinci
 
 =davinci= is a ThinkPad T480s that I use at my day job.
@@ -340,6 +370,21 @@ Because I'm lame, all of my machines are named from characters, things, and plac
                  (mount-point "/boot/efi")
                  (type "vfat"))
                 %base-file-systems)))
+
+#+end_src
+
+*System Settings*
+
+#+begin_src emacs-lisp :noweb-ref system-settings :noweb-sep ""
+
+(when (equal system-name "davinci")
+  '((desktop/dpi . 130)
+    (polybar/height . 25)
+    (polybar/font-0-size . 12)
+    (polybar/font-1-size . 8)
+    (polybar/font-2-size . 14)
+    (dunst/font-size . 14)
+    (dunst/max-icon-size . 64)))
 
 #+end_src
 

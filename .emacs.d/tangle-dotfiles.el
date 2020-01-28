@@ -1,5 +1,8 @@
 (require 'org)
 
+;; Don't ask when evaluating code blocks
+(setq org-confirm-babel-evaluate nil)
+
 (let* ((dotfiles-path (expand-file-name "~/.dotfiles"))
        (org-files (directory-files dotfiles-path nil "\\.org$")))
   (dolist (org-file org-files)
