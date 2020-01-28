@@ -7,8 +7,6 @@ This file contains configuration for my overall desktop environment.  My workflo
 :PROPERTIES:
 :TOC:      this
 :END:
-:CONTENTS:
--  [[#desktop-profile][Desktop Profile]]
 -  [[#fonts-and-themes][Fonts and Themes]]
 -  [[#window-management][Window Management]]
   -  [[#helper-functions][Helper Functions]]
@@ -21,126 +19,25 @@ This file contains configuration for my overall desktop environment.  My workflo
 -  [[#panel-via-polybar][Panel via Polybar]]
 -  [[#desktop-notifications-via-dunst][Desktop Notifications via Dunst]]
 -  [[#display-management][Display Management]]
--  [[#bluetooth][Bluetooth]]
-:END:
-
-* Desktop Profile
-
-Here are the packages I install via Guix for my custom desktop environment:
-
-*.config/guix/manifests/desktop.scm:*
-
-#+begin_src scheme :tangle .config/guix/manifests/desktop.scm
-
-(specifications->manifest
- '(;; Browsers
-   "vimb"
-
-   ;; Syncthing
-   "syncthing"
-   "qsyncthingtray"
-
-   ;; Panel
-   "polybar"
-
-   ;; Mail
-   "mu"
-   "offlineimap"
-
-   ;; System Tools
-   "openssh"
-   "zip"
-   "unzip"
-
-   ;; Xorg Tools
-   "xev"
-   "xset"
-   "xrdb"
-   "xhost"
-   "xmodmap"
-   "setxkbmap"
-   "xrandr"
-   "arandr"
-   "xss-lock"
-   "libinput"
-   "xinput"
-
-   ;; Fonts
-   "font-fira-mono"
-   "font-fira-code"
-   "font-abattis-cantarell"
-   "font-dejavu"
-   "font-google-noto"
-   "font-gnu-freefont-ttf"
-   "font-liberation"
-   "font-awesome"
-   "font-google-material-design-icons"
-   "gs-fonts"
-
-   ;; Document Readers
-   "zathura"
-   "zathura-pdf-mupdf"
-
-   ;; Images and Screenshots
-   "feh"
-   "gimp"
-   "scrot"
-
-   ;; Printing
-   "cups"
-
-   ;; Desktop
-   "dunst"
-   "compton"
-   "redshift"
-   "gucharmap"
-   "brightnessctl"
-   "xdg-utils"     ;; For xdg-open, etc
-   "gtk+:bin"      ;; For gtk-launch
-   "glib:bin"      ;; For gio-launch-desktop
-   "shared-mime-info"
-
-   ;; Xfce Tools
-   "xfconf"
-   "xfce4-settings"
-   "xfce4-screenshooter"
-   "gtk-xfce-engine"
-
-   ;; GTK Themes
-   "arc-icon-theme"
-   "matcha-theme"
-   "hicolor-icon-theme"
-   "gnome-icon-theme"
-   "gnome-backgrounds"
-   "papirus-icon-theme"
-
-   ;; Authentication
-   "password-store"
-
-   ;; Containerized Applications
-   "flatpak"  ;; For Teams, Spotify, Discord, and Steam
-
-   ;; Media Players
-   "mpv"
-   "mpv-mpris"
-   "youtube-dl"
-   "playerctl"
-
-   ;; Video Codecs
-   "gstreamer"
-   "gst-plugins-base"
-   "gst-plugins-good"
-   "gst-plugins-bad"
-   "gst-plugins-ugly"
-   "gst-libav"
-   "intel-vaapi-driver"
-   "libva-utils"
-
-   ;; Audio Device Control
-   "alsa-utils"
-   "pavucontrol"))
-
-#+end_src
+-  [[#applications][Applications]]
+  -  [[#browsers][Browsers]]
+  -  [[#mail][Mail]]
+  -  [[#password-management][Password Management]]
+  -  [[#audio-device-control][Audio Device Control]]
+  -  [[#media-players][Media Players]]
+    -  [[#codecs-and-drivers][Codecs and Drivers]]
+  -  [[#image-viewers-and-editors][Image Viewers and Editors]]
+  -  [[#games][Games]]
+  -  [[#document-readers][Document Readers]]
+  -  [[#syncthing][Syncthing]]
+  -  [[#flatpak][Flatpak]]
+  -  [[#printing][Printing]]
+  -  [[#desktop-tools][Desktop Tools]]
+  -  [[#system-tools][System Tools]]
+  -  [[#xorg-tools][Xorg Tools]]
+-  [[#desktop-profile][Desktop Profile]]
+-  [[#notes][Notes]]
+  -  [[#bluetooth-setup][Bluetooth Setup]]
 
 * Fonts and Themes
 
@@ -160,6 +57,35 @@ Xft/Antialias 1
 Xft/Hinting 0
 Xft/HintStyle "hintnone"
 Xft/DPI 184320 # 1024 * DPI (180 in this case)
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+;; Settings Manager
+;;"xsettingsd"
+
+;; GTK Themes
+"arc-icon-theme"
+"matcha-theme"
+"hicolor-icon-theme"
+"gnome-icon-theme"
+"gnome-backgrounds"
+"papirus-icon-theme"
+
+;; Fonts
+"font-fira-mono"
+"font-fira-code"
+"font-abattis-cantarell"
+"font-dejavu"
+"font-google-noto"
+"font-gnu-freefont-ttf"
+"font-liberation"
+"font-awesome"
+"font-google-material-design-icons"
+"gs-fonts"
 
 #+end_src
 
@@ -734,6 +660,14 @@ fi
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"polybar"
+
+#+end_src
+
 * Desktop Notifications via Dunst
 
 [[https://dunst-project.org/][Dunst]] is a minimal interface for displaying desktop notifications.  It is quite hackable but I'm not currently taking much advantage of its power.  One useful feature is the ability to recall notification history; the keybinding is =C-`= in my configuration (though I'd prefer if I could invoke it from an Emacs keybinding somehow).
@@ -947,6 +881,14 @@ fi
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"dunst"
+
+#+end_src
+
 * Display Management
 
 I use a script to automatically configure multiple displays with =xrandr= when I dock my laptops.  This script invokes =xrandr= differently based on the hostname of the machine.
@@ -976,13 +918,231 @@ esac
 
 #+end_src
 
-* Bluetooth
+* Applications
+
+** Browsers
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"vimb"
+
+#+end_src
+
+** Mail
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"mu"
+"offlineimap"
+
+#+end_src
+
+** Password Management
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"password-store"
+
+#+end_src
+
+** Audio Device Control
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"alsa-utils"
+"pavucontrol"
+
+#+end_src
+
+** Media Players
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"mpv"
+"mpv-mpris"
+"youtube-dl"
+"playerctl"
+
+#+end_src
+
+*** Codecs and Drivers
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"gstreamer"
+"gst-plugins-base"
+"gst-plugins-good"
+"gst-plugins-bad"
+"gst-plugins-ugly"
+"gst-libav"
+"intel-vaapi-driver"
+"libva-utils"
+
+#+end_src
+
+** Image Viewers and Editors
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"feh"
+"gimp"
+"scrot"
+
+#+end_src
+
+** Games
+
+Glorious time wasters!  I keep these in a separate Guix profile so that I don't have them installed automatically on every machine.  To opt in, I have to run =activate-profiles games=.
+
+*.config/guix/manifests/desktop.scm:*
+
+#+begin_src scheme :tangle .config/guix/manifests/games.scm :noweb yes
+
+(specifications->manifest
+ '("aisleriot"
+   "gnome-mahjongg"))
+
+#+end_src
+
+** Document Readers
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"zathura"
+"zathura-pdf-mupdf"
+
+#+end_src
+
+** Syncthing
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"syncthing"
+"qsyncthingtray"
+
+#+end_src
+
+** Flatpak
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"flatpak"  ;; For Teams, Spotify, Discord, and Steam
+
+#+end_src
+
+** Printing
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"cups"
+
+#+end_src
+
+** Desktop Tools
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+;; Xfce Tools
+;; TODO: These will be removed as soon as 'xsettingsd' is merged
+"xfconf"
+"xfce4-settings"
+"xfce4-notifyd"
+"xfce4-screenshooter"
+"gtk-xfce-engine"
+
+"compton"
+"redshift"
+"gucharmap"
+"brightnessctl"
+"xdg-utils"     ;; For xdg-open, etc
+"gtk+:bin"      ;; For gtk-launch
+"glib:bin"      ;; For gio-launch-desktop
+"shared-mime-info"
+
+#+end_src
+
+** System Tools
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+;; System Tools
+"openssh"
+"zip"
+"unzip"
+
+#+end_src
+
+** Xorg Tools
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"xev"
+"xset"
+"xrdb"
+"xhost"
+"xmodmap"
+"setxkbmap"
+"xrandr"
+"arandr"
+"xss-lock"
+"libinput"
+"xinput"
+
+#+end_src
+
+* Desktop Profile
+
+The =desktop.scm= manifest holds the list of packages that I use to configure my desktop environment.  The package names are pulled from the relevant sections titled *Guix Packages* in this file (=Desktop.org=).
+
+*.config/guix/manifests/desktop.scm:*
+
+#+begin_src scheme :tangle .config/guix/manifests/desktop.scm :noweb yes
+
+(specifications->manifest
+ '(
+   <<packages>>
+))
+
+#+end_src
+
+* Notes
+
+** Bluetooth Setup
 
 If you need to manually connect to Bluetooth audio devices using =bluetoothctl=,
 as I currently do in Guix, you'll need to enter these commands at the
 =bluetoothctl= prompt:
 
 #+begin_src shell
+
   system-alias "my-hostname" # To configure your laptop's device name
   default-agent
   power on
@@ -991,4 +1151,5 @@ as I currently do in Guix, you'll need to enter these commands at the
   pair 04:52:C7:5E:5C:A8
   trust 04:52:C7:5E:5C:A8 # To enable auto-connect
   connect 04:52:C7:5E:5C:A8
+
 #+end_src
