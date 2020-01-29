@@ -2899,6 +2899,10 @@ features it provides.  The "static center" fill mode is really awesome.
 
 #+BEGIN_SRC emacs-lisp
 
+  (defun dw/on-erc-track-list-changed ()
+    (dolist (buffer erc-modified-channels-alist)
+      (tracking-add-buffer (car buffer))))
+
   (use-package erc-hl-nicks
     :after erc)
 
@@ -2907,6 +2911,7 @@ features it provides.  The "static center" fill mode is really awesome.
 
   (use-package erc
     :commands erc
+    :hook (erc-track-list-changed . dw/on-erc-track-list-changed)
     :config
     (setq erc-modules
         '(autoaway autojoin button completion fill irccontrols keep-place
@@ -2926,7 +2931,7 @@ features it provides.  The "static center" fill mode is really awesome.
         erc-fill-function 'erc-fill-static
         erc-fill-static-center 20
         erc-track-exclude '("#twitter_daviwil")
-        erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#guile" "#guix" "#next-browser"))
+        erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#guix"))
         erc-quit-reason (lambda (s) (or s "Fading out..."))
         erc-modules
         '(autoaway autojoin button completion fill irccontrols keep-place
