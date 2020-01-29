@@ -1137,11 +1137,25 @@ Glorious time wasters!  I keep these in a separate Guix profile so that I don't 
 
 ** Flatpak
 
+I use Flatpak and the [[https://flathub.org/home][Flathub]] repository to install applications that are otherwise difficult to install in Guix because of application frameworks, etc.
+
+*Applications to Install*
+
+#+begin_src sh
+
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install flathub com.spotify.Client
+flatpak install flathub com.valvesoftware.Steam
+flatpak install flathub com.microsoft.Teams
+flatpak install flathub com.discordapp.Discord
+
+#+end_src
+
 *Guix Packages*
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-"flatpak"  ;; For Teams, Spotify, Discord, and Steam
+"flatpak"
 
 #+end_src
 

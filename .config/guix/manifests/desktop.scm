@@ -62,7 +62,7 @@
    "syncthing"
    "qsyncthingtray"
    
-   "flatpak"  ;; For Teams, Spotify, Discord, and Steam
+   "flatpak"
    
    "cups"
    
