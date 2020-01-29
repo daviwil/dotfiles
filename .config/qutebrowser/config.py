@@ -28,6 +28,9 @@ c.fonts.web.family.sans_serif = "Bitstream Vera Sans"
 c.fonts.web.family.fixed = "Fira Mono"
 c.fonts.monospace = "Fira Mono"
 
+# Tabs should be separate windows
+#c.tabs.tabs_are_windows = True
+
 # Automatically turn on insert mode when a loaded page focuses a text field
 c.input.insert_mode.auto_load = True
 
