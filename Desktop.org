@@ -45,8 +45,8 @@ This file contains configuration for my overall desktop environment.  My workflo
 
 Load system-specific settings from =.emacs.d/per-system-settings.el= and unpack relevant values into blocks so that they can be used in configuration file blocks.  These settings are configured in [[file:Systems.org::*Per-System Settings][Systems.org]].
 
-#+NAME: system-settings :session system-settings
-#+BEGIN_SRC emacs-lisp
+#+NAME: system-settings
+#+BEGIN_SRC emacs-lisp :session system-settings
 (load-file ".emacs.d/per-system-settings.el")
 #+END_SRC
 
@@ -74,7 +74,7 @@ Xft/DPI <<dpi()>> # 1024 * DPI
 *DPI*
 
 #+NAME: dpi
-#+BEGIN_SRC emacs-lisp :session system-settings
+#+BEGIN_SRC emacs-lisp :session=system-settings :var settings=system-settings
 (* 1024 (alist-get 'desktop/dpi dw/system-settings))
 #+END_SRC
 

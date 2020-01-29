@@ -273,6 +273,8 @@ Some settings need to be customized on a per-system basis without tweaking indiv
 
 #+begin_src emacs-lisp :tangle .emacs.d/per-system-settings.el :noweb yes
 
+(require 'map) ;; Needed for map-merge
+
 (setq dw/system-settings
   (map-merge
     'list
