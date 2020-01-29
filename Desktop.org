@@ -51,6 +51,11 @@ Load system-specific settings from =.emacs.d/per-system-settings.el= and unpack 
 (load-file ".emacs.d/per-system-settings.el")
 #+END_SRC
 
+#+NAME: get-setting
+#+BEGIN_SRC emacs-lisp :var name="nil" :session system-settings
+(alist-get (intern name) dw/system-settings)
+#+END_SRC
+
 * Fonts and Themes
 
 I use [[https://github.com/derat/xsettingsd][xsettingsd]] as a minimal settings daemon for Xorg applications.  It replaces similar daemons from desktop environments like GNOME and XFCE and enables me to use a simple configuration file like the following:
@@ -454,33 +459,6 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 I use [[https://github.com/polybar/polybar][Polybar]] to display a panel at the top of the primary screen to display my current EXWM workspace, CPU usage and temperature, battery status, time, and system tray.  It uses some custom hooks back into Emacs via =emacsclient=.
 
-*Panel Height and Fonts*
-
-#+NAME: polybar-height
-#+BEGIN_SRC emacs-lisp :session system-settings
-(alist-get 'polybar/height dw/system-settings)
-#+END_SRC
-
-#+NAME: polybar-font-0-size
-#+BEGIN_SRC emacs-lisp :session system-settings
-(alist-get 'polybar/font-0-size dw/system-settings)
-#+END_SRC
-
-#+NAME: polybar-font-1-size
-#+BEGIN_SRC emacs-lisp :session system-settings
-(alist-get 'polybar/font-1-size dw/system-settings)
-#+END_SRC
-
-#+NAME: polybar-font-2-size
-#+BEGIN_SRC emacs-lisp :session system-settings
-(alist-get 'polybar/font-2-size dw/system-settings)
-#+END_SRC
-
-#+NAME: polybar-font-3-size
-#+BEGIN_SRC emacs-lisp :session system-settings
-(alist-get 'polybar/font-3-size dw/system-settings)
-#+END_SRC
-
 *.config/polybar/config:*
 
 #+begin_src conf :tangle .config/polybar/config :noweb yes
@@ -507,7 +485,7 @@ underline-1 = #89AAEB
 
 [bar/panel]
 width = 100%
-height = <<polybar-height()>>
+height = <<get-setting(name="polybar/height")>>
 offset-x = 0
 offset-y = 0
 fixed-center = true
@@ -528,10 +506,10 @@ padding-right = 1
 
 module-margin = 1
 
-font-0 = "Cantarell:size=<<polybar-font-0-size()>>:weight=bold;2"
-font-1 = "Font Awesome:size=<<polybar-font-1-size()>>;2"
-font-2 = "Material Icons:size=<<polybar-font-2-size()>>;5"
-font-3 = "Fira Mono:size=<<polybar-font-3-size()>>;-3"
+font-0 = "Cantarell:size=<<get-setting(name="polybar/font-0-size")>>:weight=bold;2"
+font-1 = "Font Awesome:size=<<get-setting(name="polybar/font-1-size")>>;2"
+font-2 = "Material Icons:size=<<get-setting(name="polybar/font-2-size")>>;5"
+font-3 = "Fira Mono:size=<<get-setting(name="polybar/font-3-size")>>;-3"
 
 modules-left = exwm
 modules-center = spotify
@@ -718,18 +696,6 @@ fi
 
 [[https://dunst-project.org/][Dunst]] is a minimal interface for displaying desktop notifications.  It is quite hackable but I'm not currently taking much advantage of its power.  One useful feature is the ability to recall notification history; the keybinding is =C-`= in my configuration (though I'd prefer if I could invoke it from an Emacs keybinding somehow).
 
-*Font and Icon Sizes*
-
-#+NAME: dunst-font-size
-#+BEGIN_SRC emacs-lisp :session system-settings
-(alist-get 'dunst/font-size dw/system-settings)
-#+END_SRC
-
-#+NAME: dunst-max-icon-size
-#+BEGIN_SRC emacs-lisp :session system-settings
-(alist-get 'dunst/max-icon-size dw/system-settings)
-#+END_SRC
-
 *.config/dunst/dunstrc:*
 
 #+begin_src conf :tangle .config/dunst/dunstrc :noweb yes
@@ -785,7 +751,7 @@ fi
 
     ### Text ###
 
-    font = Cantarell <<dunst-font-size()>>
+    font = Cantarell <<get-setting(name="dunst/font-size")>>
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -839,7 +805,7 @@ fi
     icon_position = left
 
     # Scale larger icons down to this size, set to 0 to disable
-    max_icon_size = <<dunst-max-icon-size()>>
+    max_icon_size = <<get-setting(name="dunst/max-icon-size")>>
 
     # Paths to default icons.
     icon_path = /home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/48x48/status/:/home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/48x48/devices/
