@@ -10,7 +10,8 @@
       (polybar/font-2-size . 20)
       (polybar/font-3-size . 13)
       (dunst/font-size . 20)
-      (dunst/max-icon-size . 64))
+      (dunst/max-icon-size . 64)
+      (vimb/default-zoom . 180))
     
     (when (equal system-name "zerocool"))
     
@@ -22,5 +23,6 @@
         (polybar/font-2-size . 14)
         (polybar/font-3-size . 9)
         (dunst/font-size . 14)
-        (dunst/max-icon-size . 64)))
+        (dunst/max-icon-size . 64)
+        (vimb/default-zoom . 150)))
     ))

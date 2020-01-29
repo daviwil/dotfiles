@@ -957,7 +957,7 @@ esac
 
 *** vimb
 
-#+begin_src conf :tangle .config/vimb/config
+#+begin_src conf :tangle .config/vimb/config :noweb yes
 
 # Set the home page to a local file
 set home-page=file:///home/daviwil/.config/vimb/home.html
@@ -979,7 +979,7 @@ set header=User-Agent='Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Fir
 set input-autohide=true
 
 # Set the default zoom
-set default-zoom=180
+set default-zoom=<<get-setting(name="vimb/default-zoom")>>
 
 # Hint sites to use dark themes
 set dark-mode=on
