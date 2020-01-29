@@ -26,6 +26,7 @@ This file contains configuration for my overall desktop environment.  My workflo
   -  [[#password-management][Password Management]]
   -  [[#audio-device-control][Audio Device Control]]
   -  [[#media-players][Media Players]]
+    -  [[#mpv][mpv]]
     -  [[#codecs-and-drivers][Codecs and Drivers]]
   -  [[#image-viewers-and-editors][Image Viewers and Editors]]
   -  [[#games][Games]]
@@ -1020,6 +1021,42 @@ esac
 
 ** Media Players
 
+*** mpv
+
+[[https://mpv.io/][mpv]] is a simple yet powerful video player.  Paired with [[http://ytdl-org.github.io/youtube-dl/][youtube-dl]] it can even stream YouTube videos.  [[https://github.com/hoyon/mpv-mpris][mpv-mpris]] allows playback control via [[https://github.com/altdesktop/playerctl][playerctl]].
+
+*.config/mpv/mpv.conf*
+
+#+begin_src conf :tangle .config/mpv/mpv.conf :noweb yes
+
+# Configure playback quality
+vo=gpu
+hwdec=vaapi
+profile=gpu-hq
+scale=ewa_lanczossharp
+cscale=ewa_lanczossharp
+
+# Start the window in the upper right screen corner
+geometry=22%-30+20
+
+# Save video position on quit
+save-position-on-quit
+
+# Enable control by MPRIS
+script=~/.guix-extra-profiles/desktop/desktop/lib/mpris.so
+
+# Limit the resolution of YouTube videos
+ytdl=yes
+ytdl-format=bestvideo[height<=?720]+bestaudio/best
+
+# When playing audio files, display the album art
+audio-display=attachment
+
+# Keep the player open after the file finishes
+keep-open
+
+#+end_src
+
 *Guix Packages*
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
@@ -1032,6 +1069,8 @@ esac
 #+end_src
 
 *** Codecs and Drivers
+
+These packages are needed to enable many video formats to be played in browsers and video players.  VAAPI drivers are also used to enable hardware-accelerated video decoding.
 
 *Guix Packages*
 
