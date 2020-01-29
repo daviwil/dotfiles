@@ -474,6 +474,11 @@ I use [[https://github.com/polybar/polybar][Polybar]] to display a panel at the 
 (alist-get 'polybar/font-2-size dw/system-settings)
 #+END_SRC
 
+#+NAME: polybar-font-3-size
+#+BEGIN_SRC emacs-lisp :session system-settings
+(alist-get 'polybar/font-3-size dw/system-settings)
+#+END_SRC
+
 *.config/polybar/config:*
 
 #+begin_src conf :tangle .config/polybar/config :noweb yes
@@ -524,6 +529,7 @@ module-margin = 1
 font-0 = "Cantarell:size=<<polybar-font-0-size()>>:weight=bold;2"
 font-1 = "Font Awesome:size=<<polybar-font-1-size()>>;2"
 font-2 = "Material Icons:size=<<polybar-font-2-size()>>;5"
+font-3 = "Fira Mono:size=<<polybar-font-3-size()>>;-3"
 
 modules-left = exwm
 modules-center = spotify
