@@ -2890,7 +2890,7 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
           telega-emoji-use-images t
           telega-completing-read-function #'ivy-completing-read
           telega-msg-rainbow-title nil
-          telega-chat-fill-column 100))
+          telega-chat-fill-column 75))
 
 #+end_src
 
