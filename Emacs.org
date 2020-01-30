@@ -2727,7 +2727,8 @@ Agenda items.
   (setq eshell-directory-name "~/.emacs.d/eshell/"))
 
 (use-package eshell-z
-  :hook (eshell-mode . (lambda () (require 'eshell-z))))
+  :hook ((eshell-mode . (lambda () (require 'eshell-z)))
+         (eshell-z-change-dir .  (lambda () (eshell/pushd (eshell/pwd))))))
 
 (use-package exec-path-from-shell
   :init
