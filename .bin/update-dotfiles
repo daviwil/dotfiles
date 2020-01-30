@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Navigate to the directory of this script (generally ~/.dotfiles/.bin)
+cd $(dirname $(readlink -f $0))
+cd ..
+
+# The heavy lifting is done by an Emacs script
+emacs -Q --script ./.emacs.d/tangle-dotfiles.el

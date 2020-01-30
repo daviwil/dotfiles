@@ -39,5 +39,5 @@ if [[ ! -z $unmerged_files ]]; then
    echo
    printf %"s\n" $unmerged_files  # Ensure newlines are printed
 else
-    emacs -Q --script ./.emacs.d/tangle-dotfiles.el
+    update-dotfiles
 fi
