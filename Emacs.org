@@ -143,9 +143,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
       -  [[#configuration][Configuration]]
       -  [[#bindings][Bindings]]
       -  [[#reference][Reference]]
-    -  [[#circe][circe]]
-    -  [[#rcirc][rcirc]]
-      -  [[#reference--things-to-try][Reference / Things to try]]
   -  [[#mastodon][Mastodon]]
   -  [[#rss][RSS]]
     -  [[#elfeed][Elfeed]]
@@ -520,6 +517,7 @@ Enable line numbers and customize their format.
 
   ;; Disable line numbers for some modes
   (dolist (mode '(org-mode-hook
+                  erc-mode-hook
                   term-mode-hook
                   eshell-mode-hook
                   vterm-mode-hook
@@ -2913,11 +2911,6 @@ features it provides.  The "static center" fill mode is really awesome.
     :commands erc
     :hook (erc-track-list-changed . dw/on-erc-track-list-changed)
     :config
-    (setq erc-modules
-        '(autoaway autojoin button completion fill irccontrols keep-place
-          list match menu move-to-prompt netsplit networks noncommands notify
-          notifications readonly ring smiley stamp track image hl-nicks))
-
     (setq
         erc-nick "daviwil"
         erc-prompt-for-nickserv-password nil
@@ -2927,7 +2920,9 @@ features it provides.  The "static center" fill mode is really awesome.
         erc-rename-buffers t
         erc-lurker-hide-list '("JOIN" "PART" "QUIT")
         erc-track-exclude-types '("JOIN" "NICK" "QUIT" "MODE")
-        erc-fill-column 105
+        erc-track-enable-keybindings nil
+        erc-track-visibility nil ; Only use the selected frame for visibility
+        erc-fill-column 80
         erc-fill-function 'erc-fill-static
         erc-fill-static-center 20
         erc-track-exclude '("#twitter_daviwil")
@@ -2935,8 +2930,8 @@ features it provides.  The "static center" fill mode is really awesome.
         erc-quit-reason (lambda (s) (or s "Fading out..."))
         erc-modules
         '(autoaway autojoin button completion fill irccontrols keep-place
-            list match menu move-to-prompt netsplit networks noncommands notify
-            notifications readonly ring smiley stamp track image hl-nicks))
+            list match menu move-to-prompt netsplit networks noncommands
+            readonly ring stamp track image hl-nicks))
 
     (add-hook 'erc-join-hook 'bitlbee-identify)
     (defun bitlbee-identify ()
@@ -2949,8 +2944,8 @@ features it provides.  The "static center" fill mode is really awesome.
 
   (defun dw/connect-irc ()
     (interactive)
-    (erc
-       :server "irc.freenode.net" :port 6667
+    (erc-tls
+       :server "chat.freenode.net" :port 7000
        :nick "daviwil" :password (password-store-get "IRC/Freenode")))
     ;; (erc
     ;;    :server "127.0.0.1" :port 6667
@@ -2978,94 +2973,6 @@ features it provides.  The "static center" fill mode is really awesome.
   - https://github.com/jwiegley/dot-emacs/blob/master/lisp/erc-alert.el
   - Settings: https://github.com/jwiegley/dot-emacs/blob/0f7d2c04ac38857d8e0fb036faedbf84193c8bd4/settings.el#L445
   - Commands: https://github.com/jwiegley/dot-emacs/blob/f23993cfcb9ca90c289b4214b9bafbf46883bdb4/lisp/erc-macros.el
-
-*** circe
-
-=circe= was the first IRC client I got working well enough to use for Bitlbee,
-though I never found a good UI configuration.  Didn't like the position of the
-modeline indicators (though there's probably a way to fix that).
-
-#+BEGIN_SRC emacs-lisp
-
-  (defun circe-bitlbee ()
-    (interactive)
-    (circe "Bitlbee" :host "127.0.0.1"))
-
-  (use-package circe
-    :commands circe
-    :config
-    (setq tracking-postition 'end)
-    (enable-circe-color-nicks)
-    (enable-circe-display-images)
-    (enable-lui-track-bar)
-    (enable-lui-irc-colors))
-
-  (use-package circe-notifications
-    :after circe
-    :commands circe
-    :config
-    (add-hook 'circe-server-connected-hook 'enable-circe-notifications))
-
-#+END_SRC
-
-*** rcirc
-
-Trying [[https://www.gnu.org/software/emacs/manual/html_mono/rcirc.html][rcirc]] as well, lighter than ERC and seemingly cleaner than circe.  So far
-I like the position of the mode line tracking better than circe.
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package rcirc
-    :defer t
-    :config
-    (setq rcirc-server-alist
-      '(("localhost")))
-    (setq rcirc-authinfo
-      `(("localhost" bitlbee "daviwil" ,(password-store-get "IRC/Bitlbee"))))
-    (set (make-local-variable 'scroll-conservatively) 8192)
-    (setq rcirc-prompt "» "
-          rcirc-time-format "%m/%d %H:%M "
-          rcirc-fill-column 100
-          rcirc-fill-flag t
-          rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
-          rcirc-track-minor-mode 1)
-    (defun-rcirc-command reconnect (arg)
-      "Reconnect the server process."
-      (interactive "i")
-      (if (buffer-live-p rcirc-server-buffer)
-        (with-current-buffer rcirc-server-buffer
-            (let ((reconnect-buffer (current-buffer))
-                  (server (or rcirc-server rcirc-default-server))
-                  (port (if (boundp 'rcirc-port) rcirc-port rcirc-default-port))
-                  (nick (or rcirc-nick rcirc-default-nick))
-                  channels)
-            (dolist (buf (buffer-list))
-                (with-current-buffer buf
-                  (when (equal reconnect-buffer rcirc-server-buffer)
-                      (remove-hook 'change-major-mode-hook
-                                   'rcirc-change-major-mode-hook)
-                      (let ((server-plist (cdr (assoc-string server rcirc-server-alist))))
-                        (when server-plist
-                            (setq channels (plist-get server-plist :channels))))
-                      )))
-            (if process (delete-process process))
-            (rcirc-connect server port nick
-                            nil
-                            nil
-        channels))))))
-
-#+END_SRC
-
-**** Reference / Things to try
-
-- https://www.emacswiki.org/emacs/rcirc
-- https://github.com/aaron-em/rcirc-styles.el
-- https://github.com/sinasamavati/rcirc-emote
-- https://www.emacswiki.org/emacs/rcircColoredNicks
-- https://www.emacswiki.org/emacs/rcircAutoAway
-- https://www.emacswiki.org/emacs/rcircAutoFillColumn
-- https://www.emacswiki.org/emacs/rcircAutoAuthentication
-- https://www.emacswiki.org/emacs/rcircSmiley
 
 ** Mastodon
 
@@ -3290,6 +3197,7 @@ to set that up.
 #+BEGIN_SRC emacs-lisp
 
   (use-package emojify
+    :hook (erc-mode . emojify-mode)
     :commands emojify-mode)
 
 #+END_SRC
