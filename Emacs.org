@@ -2495,6 +2495,9 @@ to capture links to emails with org-mode too.
     (setq mu4e-view-show-images t)
     (setq mu4e-view-show-addresses 't)
 
+    ;; Composing mail
+    (setq mu4e-compose-dont-reply-to-self t)
+
     ;; Sending mail
     (setq message-send-mail-function 'smtpmail-send-it
           smtpmail-smtp-server "smtp.fastmail.com"
