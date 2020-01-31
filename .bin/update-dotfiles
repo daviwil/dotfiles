@@ -1,5 +1,4 @@
 #!/bin/sh
-
 # Navigate to the directory of this script (generally ~/.dotfiles/.bin)
 cd $(dirname $(readlink -f $0))
 cd ..

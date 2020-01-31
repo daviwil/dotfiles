@@ -1,5 +1,4 @@
 #!/bin/sh
-
 # Sync dotfiles repo and ensure that dotfiles are tangled correctly afterward
 
 GREEN='\033[1;32m'

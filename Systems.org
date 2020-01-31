@@ -16,6 +16,9 @@
   -  [[#profile-management][Profile Management]]
     -  [[#activating-profiles][Activating Profiles]]
     -  [[#updating-profiles][Updating Profiles]]
+  -  [[#dotfiles-management][Dotfiles Management]]
+    -  [[#syncing][Syncing]]
+    -  [[#updating][Updating]]
   -  [[#system-installation][System Installation]]
 
 ** Channels
@@ -585,6 +588,97 @@ for profile in $profiles; do
 
   guix package --profile="$profilePath/$profileName" --manifest="$HOME/.config/guix/manifests/$profileName.scm"
 done
+
+#+end_src
+
+** Dotfiles Management
+
+Since I keep all of my important configuration files in Org Mode code blocks, I have to ensure that the real configuration files are kept up to date when I sync the latest changes to my [[https://github.com/daviwil/dotfiles][dotfiles]] repo.  I've written a couple of scripts to simplify that process:
+
+*** Syncing
+
+When I want to sync my dotfiles repo into my local clone which likely has uncommitted changes, I run =sync-dotfiles=.  This script first makes sure that all Org files are saved in a running Emacs instance and then stashes everything before pulling the latest changes from =origin=.  After pulling, the stash is popped and then the script verifies there are no merge conflicts from the stash before proceeding.  If there are no conflicts, =update-dotfiles= is run, otherwise I'll fix the merge conflicts manually and run =update-dotfiles= myself.
+
+*.bin/sync-dotfiles*
+
+#+begin_src sh :tangle .bin/sync-dotfiles :shebang #!/bin/sh
+
+# Sync dotfiles repo and ensure that dotfiles are tangled correctly afterward
+
+GREEN='\033[1;32m'
+BLUE='\033[1;34m'
+RED='\033[1;30m'
+NC='\033[0m'
+
+# Navigate to the directory of this script (generally ~/.dotfiles/.bin)
+cd $(dirname $(readlink -f $0))
+cd ..
+
+echo
+echo -e "${BLUE}Saving Org buffers if Emacs is running...${NC}"
+emacsclient -u -e "(org-save-all-org-buffers)" -a "echo 'Emacs is not currently running'"
+
+echo -e "${BLUE}Stashing existing changes...${NC}"
+stash_result=$(git stash push -m "sync-dotfiles: Before syncing dotfiles")
+needs_pop=1
+if [ "$stash_result" = "No local changes to save" ]; then
+    needs_pop=0
+fi
+
+echo -e "${BLUE}Pulling updates from dotfiles repo...${NC}"
+echo
+git pull origin master
+echo
+
+if [[ $needs_pop -eq 1 ]]; then
+    echo -e "${BLUE}Popping stashed changes...${NC}"
+    echo
+    git stash pop
+fi
+
+unmerged_files=$(git diff --name-only --diff-filter=U)
+if [[ ! -z $unmerged_files ]]; then
+   echo -e "${RED}The following files have merge conflicts after popping the stash:${NC}"
+   echo
+   printf %"s\n" $unmerged_files  # Ensure newlines are printed
+else
+    update-dotfiles
+fi
+
+#+end_src
+
+*** Updating
+
+Updating my dotfiles requires running a script in Emacs to loop over all of my literate configuration =.org= files and run =org-babel-tangle-file= to make sure all of my configuration files are up to date.
+
+*.bin/update-dotfiles*
+
+#+begin_src sh :tangle .bin/update-dotfiles :shebang #!/bin/sh
+
+# Navigate to the directory of this script (generally ~/.dotfiles/.bin)
+cd $(dirname $(readlink -f $0))
+cd ..
+
+# The heavy lifting is done by an Emacs script
+emacs -Q --script ./.emacs.d/tangle-dotfiles.el
+
+#+end_src
+
+*.emacs.d/tangle-dotfiles.el*
+
+#+begin_src emacs-lisp :tangle .emacs.d/tangle-dotfiles.el
+
+(require 'org)
+
+;; Don't ask when evaluating code blocks
+(setq org-confirm-babel-evaluate nil)
+
+(let* ((dotfiles-path (expand-file-name "~/.dotfiles"))
+       (org-files (directory-files dotfiles-path nil "\\.org$")))
+  (dolist (org-file org-files)
+    (unless (equal org-file "README.org")
+      (message "\n\033[1;32mUpdating %s\033[0m\n" org-file)
+      (org-babel-tangle-file (expand-file-name org-file dotfiles-path)))))
 
 #+end_src
 
