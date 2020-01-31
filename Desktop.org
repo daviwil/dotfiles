@@ -1026,6 +1026,7 @@ nmap = zz
 # Shortcuts
 shortcut-add dot=https://github.com/daviwil/dotfiles
 shortcut-add mail=https://fastmail.com
+shortcut-add cups=http://localhost:631
 shortcut-add az=https://portal.azure.com
 shortcut-add azdo=https://dev.azure.com/azure-sdk/
 shortcut-add ajs=https://github.com/Azure/azure-sdk-for-js
@@ -1224,7 +1225,7 @@ flatpak install flathub com.discordapp.Discord
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-"cups"
+"system-config-printer"
 
 #+end_src
 
