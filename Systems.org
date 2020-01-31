@@ -1,27 +1,27 @@
-* System Configuration with Guix
-:PROPERTIES:
-:TOC:      2
-:END:
+#+TITLE: System Configuration with Guix
 
-** Table of Contents
+* Table of Contents
 :PROPERTIES:
 :TOC:      this
 :END:
--  [[#system-configuration-with-guix][System Configuration with Guix]]
-  -  [[#channels][Channels]]
-  -  [[#systems][Systems]]
-    -  [[#base-configuration][Base Configuration]]
-    -  [[#machines][Machines]]
-    -  [[#usb-installation-image][USB Installation Image]]
-  -  [[#profile-management][Profile Management]]
-    -  [[#activating-profiles][Activating Profiles]]
-    -  [[#updating-profiles][Updating Profiles]]
-  -  [[#dotfiles-management][Dotfiles Management]]
-    -  [[#syncing][Syncing]]
-    -  [[#updating][Updating]]
-  -  [[#system-installation][System Installation]]
+-  [[#channels][Channels]]
+-  [[#systems][Systems]]
+  -  [[#base-configuration][Base Configuration]]
+  -  [[#machines][Machines]]
+    -  [[#per-system-settings][Per-System Settings]]
+    -  [[#zerocool][zerocool]]
+    -  [[#davinci][davinci]]
+    -  [[#phantom][phantom]]
+  -  [[#usb-installation-image][USB Installation Image]]
+-  [[#profile-management][Profile Management]]
+  -  [[#activating-profiles][Activating Profiles]]
+  -  [[#updating-profiles][Updating Profiles]]
+-  [[#dotfiles-management][Dotfiles Management]]
+  -  [[#syncing][Syncing]]
+  -  [[#updating][Updating]]
+-  [[#system-installation][System Installation]]
 
-** Channels
+* Channels
 
 Guix supports the concept of [[https://guix.gnu.org/manual/en/html_node/Channels.html#Channels][channels]] which basically amount to Git repositories which contain Guix package definitions that can be installed on your machine.  Aside from the =%default-channels= list, I also use the [[https://gitlab.com/nonguix/nonguix][Nonguix]] channel to install packages that aren't included with Guix by default like the non-free Linux kernel.
 
@@ -52,9 +52,9 @@ The following channel list can be used when testing patches to packages and serv
 
 #+end_src
 
-** Systems
+* Systems
 
-*** Base Configuration
+** Base Configuration
 
 This base configuration is shared between all of the machines I manage with Guix.  Since all of my machines are Lenovo ThinkPad laptops, the same basic configuration applies pretty cleanly across all of them.  This may change in the future.
 
@@ -273,11 +273,11 @@ Define the =base-operating-system= which will be inherited by all machine config
 
 #+end_src
 
-*** Machines
+** Machines
 
 Because I'm lame, all of my machines are named from characters, things, and places from the movie Hackers.
 
-**** Per-System Settings
+*** Per-System Settings
 
 Some settings need to be customized on a per-system basis without tweaking individual configuration files.  Thanks to org-mode's =noweb= functionality, I can define a set of variables that can be tweaked for each system and applied across these configuration files when they get generated.
 
@@ -301,7 +301,7 @@ Some settings need to be customized on a per-system basis without tweaking indiv
 
 #+end_src
 
-**** zerocool
+*** zerocool
 
 =zerocool= is a 5th Generation ThinkPad X1 Carbon that I use for most of my writing and hacking at home.
 
@@ -347,7 +347,7 @@ Some settings need to be customized on a per-system basis without tweaking indiv
 
 #+end_src
 
-**** davinci
+*** davinci
 
 =davinci= is a ThinkPad T480s that I use at my day job.
 
@@ -402,7 +402,7 @@ Some settings need to be customized on a per-system basis without tweaking indiv
 
 #+end_src
 
-**** phantom
+*** phantom
 
 =phantom= is a ThinkPad X1 Extreme that I use for music production and video editing.  For whatever reason, loading the =nouveau= driver crashes the machine upon booting so I've blacklisted it for now until I figure out how to get it working correctly.
 
@@ -445,7 +445,7 @@ Some settings need to be customized on a per-system basis without tweaking indiv
 
 #+end_src
 
-*** USB Installation Image
+** USB Installation Image
 
 To install Guix on another machine, you first to build need a USB image.  Since I use modern laptops that require non-free components, I have to build a custom installation image with the full Linux kernel.  I also include a few other programs that are useful for the installation process.  I adapted this image from [[https://gitlab.com/nonguix/nonguix/blob/master/nongnu/system/install.scm][one found on the Nonguix repository]], hence the copyright header.
 
@@ -499,13 +499,13 @@ installation-os-nonfree
 
 #+end_src
 
-** Profile Management
+* Profile Management
 
 I like to separate my packages into separate manifests that get installed as profiles which can be updated independently.  These profiles get installed under the =~/.guix-extra-profiles= path and sourced by my =~/.profile= when I log in.
 
 To make the management of multiple profiles easier, I've created a couple of shell scripts:
 
-*** Activating Profiles
+** Activating Profiles
 
 This script accepts a space-separated list of manifest file names (without extension) under the =~/.config/guix/manifests= folder and then installs those profiles for the first time.  For example:
 
@@ -560,7 +560,7 @@ done
 
 #+end_src
 
-*** Updating Profiles
+** Updating Profiles
 
 This script accepts a space-separated list of manifest file names (without extension) under the =~/.config/guix/manifests= folder and then installs any updates to the packages contained within them.  If no profile names are provided, it walks the list of profile directories under =~/.guix-extra-profiles= and updates each one of them.
 
@@ -598,11 +598,11 @@ done
 
 #+end_src
 
-** Dotfiles Management
+* Dotfiles Management
 
 Since I keep all of my important configuration files in Org Mode code blocks, I have to ensure that the real configuration files are kept up to date when I sync the latest changes to my [[https://github.com/daviwil/dotfiles][dotfiles]] repo.  I've written a couple of scripts to simplify that process:
 
-*** Syncing
+** Syncing
 
 When I want to sync my dotfiles repo into my local clone which likely has uncommitted changes, I run =sync-dotfiles=.  This script first makes sure that all Org files are saved in a running Emacs instance and then stashes everything before pulling the latest changes from =origin=.  After pulling, the stash is popped and then the script verifies there are no merge conflicts from the stash before proceeding.  If there are no conflicts, =update-dotfiles= is run, otherwise I'll fix the merge conflicts manually and run =update-dotfiles= myself.
 
@@ -654,7 +654,7 @@ fi
 
 #+end_src
 
-*** Updating
+** Updating
 
 Updating my dotfiles requires running a script in Emacs to loop over all of my literate configuration =.org= files and run =org-babel-tangle-file= to make sure all of my configuration files are up to date.
 
@@ -689,6 +689,6 @@ emacs -Q --script ./.emacs.d/tangle-dotfiles.el
 
 #+end_src
 
-** System Installation
+* System Installation
 
 Until I migrate its Markdown contents into Org syntax, consult [[file:.config/guix/systems/README.md][.config/guix/systems/README.md]] for installation instructions.
