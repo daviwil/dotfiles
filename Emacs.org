@@ -2676,7 +2676,7 @@ Agenda items.
   (add-hook 'eshell-banner-load-hook
             '(lambda ()
                (setq eshell-banner-message
-                     (concat "\n" (make-string (/ (shr-buffer-width) 3) ?\ ) (propertize " " 'display (create-image "~/.dotfiles/.emacs.d/images/flux_banner.png" 'png nil :scale 0.2 :align-to "center")) "\n\n")))))
+                     (concat "\n" (propertize " " 'display (create-image "~/.dotfiles/.emacs.d/images/flux_banner.png" 'png nil :scale 0.2 :align-to "center")) "\n\n")))))
 
 (defun dw/eshell-configure ()
   (require 'evil-collection-eshell)

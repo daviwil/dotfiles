@@ -34,9 +34,9 @@
 ;; Initialize package sources
 (require 'package)
 
-                         ;; ("org" . "https://orgmode.org/elpa/")  ;; orgmode.org is down right now!
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
 ;; Fix an issue accessing the ELPA archive in Termux
@@ -126,6 +126,10 @@
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
   ;; Disable arrow keys in normal and visual modes
   (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
   (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
@@ -199,6 +203,7 @@
 
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
+                erc-mode-hook
                 term-mode-hook
                 eshell-mode-hook
                 vterm-mode-hook
@@ -1308,6 +1313,11 @@
   :config
   (setq typescript-indent-level 2))
 
+(defun dw/set-js-indentation ()
+  (setq js-indent-level 2)
+  (setq evil-shift-width js-indent-level)
+  (setq-default tab-width 2))
+
 (use-package js2-mode
   :mode "\\.jsx?\\'"
   :config
@@ -1317,11 +1327,9 @@
   ;; Don't use built-in syntax checking
   (setq js2-mode-show-strict-warnings nil)
 
-  ;; Set up proper indentation in JavaScript files
-  (add-hook 'js2-mode-hook
-    (setq js-indent-level 2)
-    (setq evil-shift-width js-indent-level)
-    (setq-default tab-width 2)))
+  ;; Set up proper indentation in JavaScript and JSON files
+  (add-hook 'js2-mode-hook #'dw/set-js-indentation)
+  (add-hook 'json-mode-hook #'dw/set-js-indentation))
 
 (use-package prettier-js
   :hook ((js2-mode . prettier-js-mode)
@@ -1507,6 +1515,9 @@
   (setq mu4e-view-show-images t)
   (setq mu4e-view-show-addresses 't)
 
+  ;; Composing mail
+  (setq mu4e-compose-dont-reply-to-self t)
+
   ;; Sending mail
   (setq message-send-mail-function 'smtpmail-send-it
         smtpmail-smtp-server "smtp.fastmail.com"
@@ -1649,7 +1660,7 @@
   (add-hook 'eshell-banner-load-hook
             '(lambda ()
                (setq eshell-banner-message
-                     (concat "\n" (make-string (/ (shr-buffer-width) 3) ?\ ) (propertize " " 'display (create-image "~/.dotfiles/.emacs.d/images/flux_banner.png" 'png nil :scale 0.2 :align-to "center")) "\n\n")))))
+                     (concat "\n" (propertize " " 'display (create-image "~/.dotfiles/.emacs.d/images/flux_banner.png" 'png nil :scale 0.2 :align-to "center")) "\n\n")))))
 
 (defun dw/eshell-configure ()
   (require 'evil-collection-eshell)
@@ -1703,7 +1714,8 @@
   (setq eshell-directory-name "~/.emacs.d/eshell/"))
 
 (use-package eshell-z
-  :hook (eshell-mode . (lambda () (require 'eshell-z))))
+  :hook ((eshell-mode . (lambda () (require 'eshell-z)))
+         (eshell-z-change-dir .  (lambda () (eshell/pushd (eshell/pwd))))))
 
 (use-package exec-path-from-shell
   :init
@@ -1797,7 +1809,11 @@
         telega-emoji-use-images t
         telega-completing-read-function #'ivy-completing-read
         telega-msg-rainbow-title nil
-        telega-chat-fill-column 100))
+        telega-chat-fill-column 75))
+
+(defun dw/on-erc-track-list-changed ()
+  (dolist (buffer erc-modified-channels-alist)
+    (tracking-add-buffer (car buffer))))
 
 (use-package erc-hl-nicks
   :after erc)
@@ -1807,12 +1823,8 @@
 
 (use-package erc
   :commands erc
+  :hook (erc-track-list-changed . dw/on-erc-track-list-changed)
   :config
-  (setq erc-modules
-      '(autoaway autojoin button completion fill irccontrols keep-place
-        list match menu move-to-prompt netsplit networks noncommands notify
-        notifications readonly ring smiley stamp track image hl-nicks))
-
   (setq
       erc-nick "daviwil"
       erc-prompt-for-nickserv-password nil
@@ -1822,16 +1834,18 @@
       erc-rename-buffers t
       erc-lurker-hide-list '("JOIN" "PART" "QUIT")
       erc-track-exclude-types '("JOIN" "NICK" "QUIT" "MODE")
-      erc-fill-column 105
+      erc-track-enable-keybindings nil
+      erc-track-visibility nil ; Only use the selected frame for visibility
+      erc-fill-column 80
       erc-fill-function 'erc-fill-static
       erc-fill-static-center 20
       erc-track-exclude '("#twitter_daviwil")
-      erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#guile" "#guix" "#next-browser"))
+      erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#guix"))
       erc-quit-reason (lambda (s) (or s "Fading out..."))
       erc-modules
       '(autoaway autojoin button completion fill irccontrols keep-place
-          list match menu move-to-prompt netsplit networks noncommands notify
-          notifications readonly ring smiley stamp track image hl-nicks))
+          list match menu move-to-prompt netsplit networks noncommands
+          readonly ring stamp track image hl-nicks))
 
   (add-hook 'erc-join-hook 'bitlbee-identify)
   (defun bitlbee-identify ()
@@ -1844,8 +1858,8 @@
 
 (defun dw/connect-irc ()
   (interactive)
-  (erc
-     :server "irc.freenode.net" :port 6667
+  (erc-tls
+     :server "chat.freenode.net" :port 7000
      :nick "daviwil" :password (password-store-get "IRC/Freenode")))
   ;; (erc
   ;;    :server "127.0.0.1" :port 6667
@@ -1856,64 +1870,6 @@
   "cb" 'erc-switch-to-buffer
   "cc" 'dw/connect-irc
   "ca" 'erc-track-switch-buffer)
-
-(defun circe-bitlbee ()
-  (interactive)
-  (circe "Bitlbee" :host "127.0.0.1"))
-
-(use-package circe
-  :commands circe
-  :config
-  (setq tracking-postition 'end)
-  (enable-circe-color-nicks)
-  (enable-circe-display-images)
-  (enable-lui-track-bar)
-  (enable-lui-irc-colors))
-
-(use-package circe-notifications
-  :after circe
-  :commands circe
-  :config
-  (add-hook 'circe-server-connected-hook 'enable-circe-notifications))
-
-(use-package rcirc
-  :defer t
-  :config
-  (setq rcirc-server-alist
-    '(("localhost")))
-  (setq rcirc-authinfo
-    `(("localhost" bitlbee "daviwil" ,(password-store-get "IRC/Bitlbee"))))
-  (set (make-local-variable 'scroll-conservatively) 8192)
-  (setq rcirc-prompt "» "
-        rcirc-time-format "%m/%d %H:%M "
-        rcirc-fill-column 100
-        rcirc-fill-flag t
-        rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
-        rcirc-track-minor-mode 1)
-  (defun-rcirc-command reconnect (arg)
-    "Reconnect the server process."
-    (interactive "i")
-    (if (buffer-live-p rcirc-server-buffer)
-      (with-current-buffer rcirc-server-buffer
-          (let ((reconnect-buffer (current-buffer))
-                (server (or rcirc-server rcirc-default-server))
-                (port (if (boundp 'rcirc-port) rcirc-port rcirc-default-port))
-                (nick (or rcirc-nick rcirc-default-nick))
-                channels)
-          (dolist (buf (buffer-list))
-              (with-current-buffer buf
-                (when (equal reconnect-buffer rcirc-server-buffer)
-                    (remove-hook 'change-major-mode-hook
-                                 'rcirc-change-major-mode-hook)
-                    (let ((server-plist (cdr (assoc-string server rcirc-server-alist))))
-                      (when server-plist
-                          (setq channels (plist-get server-plist :channels))))
-                    )))
-          (if process (delete-process process))
-          (rcirc-connect server port nick
-                          nil
-                          nil
-      channels))))))
 
 (use-package mastodon
   :defer t
@@ -2019,6 +1975,7 @@
   (debbugs-gnu '("serious" "important" "normal") "guix-patches" nil t))
 
 (use-package emojify
+  :hook (erc-mode . emojify-mode)
   :commands emojify-mode)
 
 (use-package dashboard

@@ -206,10 +206,11 @@
     first-name))
 
 (defun dw/propertized-to-polybar (buffer-name)
-  (let* ((text (substring-no-properties buffer-name))
-         (fg-face (get-text-property 0 'face buffer-name))
-         (fg-color (face-attribute fg-face :foreground)))
-    (format "%%{F%s}%s%%{F-}" fg-color (dw/telega-normalize-name text))))
+  (if-let* ((text (substring-no-properties buffer-name))
+            (fg-face (get-text-property 0 'face buffer-name))
+            (fg-color (face-attribute fg-face :foreground)))
+    (format "%%{F%s}%s%%{F-}" fg-color (dw/telega-normalize-name text))
+    text))
 
 (defun dw/polybar-telegram-chats ()
   (if (> (length tracking-buffers) 0)
