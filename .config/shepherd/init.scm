@@ -1,12 +1,5 @@
 ;; init.scm -- default shepherd configuration file.
 
-(define xfsettingsd
-  (make <service>
-    #:provides '(xfsettingsd)
-    #:respawn? #t
-    #:start (make-forkexec-constructor '("xfsettingsd" "--no-daemon" "--replace"))
-    #:stop  (make-kill-destructor)))
-
 (define gpg-agent
   (make <service>
     #:provides '(gpg-agent)
@@ -31,7 +24,7 @@
 ;; Services known to shepherd:
 ;; Add new services (defined using 'make <service>') to shepherd here by
 ;; providing them as arguments to 'register-services'.
-(register-services xfsettingsd gpg-agent syncthing pulseaudio)
+(register-services gpg-agent syncthing pulseaudio)
 
 ;; Send shepherd into the background
 (action 'shepherd 'daemonize)
@@ -39,4 +32,4 @@
 ;; Services to start when shepherd starts:
 ;; Add the name of each service that should be started to the list
 ;; below passed to 'for-each'.
-(for-each start '(xfsettingsd gpg-agent syncthing pulseaudio))
+(for-each start '(gpg-agent syncthing pulseaudio))

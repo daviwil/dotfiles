@@ -2,7 +2,7 @@
  '(
    
    ;; Settings Manager
-   ;;"xsettingsd"
+   "xsettingsd"
    
    ;; GTK Themes
    "arc-icon-theme"
@@ -65,14 +65,6 @@
    "flatpak"
    
    "cups"
-   
-   ;; Xfce Tools
-   ;; TODO: These will be removed as soon as 'xsettingsd' is merged
-   "xfconf"
-   "xfce4-settings"
-   "xfce4-notifyd"
-   "xfce4-screenshooter"
-   "gtk-xfce-engine"
    
    "compton"
    "redshift"

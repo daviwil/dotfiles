@@ -14,6 +14,9 @@ if [ -z "$(pgrep -u daviwil shepherd)" ]; then
   shepherd
 fi
 
+# Run xsettingsd to progagate font and theme settings
+xsettingsd &
+
 # Enable screen compositing
 compton &
 

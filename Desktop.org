@@ -89,7 +89,7 @@ Xft/DPI <<dpi()>> # 1024 * DPI
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
 ;; Settings Manager
-;;"xsettingsd"
+"xsettingsd"
 
 ;; GTK Themes
 "arc-icon-theme"
@@ -1233,14 +1233,6 @@ flatpak install flathub com.discordapp.Discord
 *Guix Packages*
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-;; Xfce Tools
-;; TODO: These will be removed as soon as 'xsettingsd' is merged
-"xfconf"
-"xfce4-settings"
-"xfce4-notifyd"
-"xfce4-screenshooter"
-"gtk-xfce-engine"
 
 "compton"
 "redshift"
