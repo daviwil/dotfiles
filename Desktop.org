@@ -1041,6 +1041,7 @@ shortcut-add ac=https://github.com/Azure/autorest.compare
 shortcut-add specs=https://github.com/Azure/azure-rest-api-specs
 shortcut-add npm=https://www.npmjs.com/search?q=$0
 shortcut-add oms=https://outlook.com/microsoft.com
+shortcut-add msw=https://microsoft.sharepoint.com
 shortcut-add man=https://fanglingsu.github.io/vimb/man.html
 
 # A newline is needed at EOF because each line is executed like a command as if the user typed it and pressed Enter.
