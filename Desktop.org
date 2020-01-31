@@ -717,7 +717,7 @@ fi
     shrink = no
 
     # The transparency of the window.  Range: [0; 100].
-    transparency = 15
+    transparency = 10
 
     # The height of the entire notification.  If the height is smaller
     # than the font height and padding combined, it will be raised
