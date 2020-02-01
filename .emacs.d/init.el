@@ -371,6 +371,9 @@
 ;; Set default connection mode to SSH
 (setq tramp-default-method "ssh")
 
+(setq-default tab-width 2)
+(setq-default evil-shift-width tab-width)
+
 (setq-default indent-tabs-mode nil)
 
 (use-package evil-nerd-commenter
@@ -1294,6 +1297,14 @@
   :mode "\\.clj[sc]?\\'"
   :config
   (evil-collection-cider-setup))
+
+(use-package sly
+  :disabled
+  :mode "\\.lisp\\'")
+
+(use-package slime
+  :disabled
+  :mode "\\.lisp\\'")
 
 (use-package nvm
   :defer t)

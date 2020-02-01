@@ -43,7 +43,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   -  [[#tramp][TRAMP]]
 -  [[#editing-configuration][Editing Configuration]]
   -  [[#tab-widths][Tab Widths]]
-  -  [[#use-spaces-instead-of-tabs-for-indentation][Use spaces instead of tabs for indentation.]]
+  -  [[#use-spaces-instead-of-tabs-for-indentation][Use spaces instead of tabs for indentation]]
   -  [[#commenting-lines][Commenting Lines]]
   -  [[#automatically-clean-whitespace][Automatically clean whitespace]]
   -  [[#use-parinfer-for-lispy-languages][Use Parinfer for Lispy languages]]
@@ -919,14 +919,16 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 ** Tab Widths
 
+Default to an indentation size of 2 spaces since it's the norm for pretty much every language I use.
+
 #+begin_src emacs-lisp
 
-(setq tab-width 2)
-(setq evil-shift-width tab-width)
+(setq-default tab-width 2)
+(setq-default evil-shift-width tab-width)
 
-#+end_src>
+#+end_src
 
-** Use spaces instead of tabs for indentation.
+** Use spaces instead of tabs for indentation
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2448,7 +2450,7 @@ Not currently doing any Common Lisp development so these packages are disabled f
     :disabled
     :mode "\\.lisp\\'")
 
-#+end_src>
+#+end_src
 
 *** TypeScript and JavaScript
 
