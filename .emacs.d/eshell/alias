@@ -1,6 +1,10 @@
-alias e find-file $1
-alias edit find-file $1
-alias vim find-file $1
-alias d deer $1
+alias e find-file $*
+alias edit find-file $*
+alias vim find-file $*
+alias d dired $*
 alias gs magit-status-here
 alias gd magit-diff-unstaged
+alias sd sync-dotfiles
+alias ud update-dotfiles
+alias us update-system
+alias up update-profiles $*
