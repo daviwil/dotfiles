@@ -1325,7 +1325,7 @@ tweaking Org agenda views much less annoying.
 
 * Credential Management
 
-I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords locally.  [[https://github.com/jabranham/helm-pass][helm-pass]] automatically pulls in [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store.el]] package which makes managing passwords much easier in Emacs.
+I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords locally.  [[https://github.com/ecraven/ivy-pass][ivy-pass]] makes managing passwords much easier in Emacs.  I also use [[https://github.com/DamienCassou/auth-password-store][auth-source-pass]] as the primary =auth-source= provider so that all passwords are stored in a single place.
 
 #+begin_src emacs-lisp
 
@@ -1333,6 +1333,10 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
     :commands ivy-pass
     :config
     (setq password-store-password-length 12))
+
+  (use-package auth-source-pass
+    :config
+    (auth-source-pass-enable))
 
   (dw/leader-key-def
     "ap" '(:ignore t :which-key "pass")
@@ -1342,20 +1346,12 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 
 #+end_src
 
-Also, use a custom =auth-source= path so that it's easier to store encrypted credentials for mail, etc.
-
-#+begin_src emacs-lisp
-
-  (setq auth-sources
-    '((:source "~/.emacs.d/secrets/.authinfo.gpg")))
-
-#+end_src
-
 *Guix Packages*
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
 "emacs-ivy-pass"
+"emacs-auth-source-pass"
 
 #+end_src
 

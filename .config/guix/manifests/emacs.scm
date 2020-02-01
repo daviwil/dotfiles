@@ -48,6 +48,7 @@
    "emacs-expand-region"
    
    "emacs-ivy-pass"
+   "emacs-auth-source-pass"
    
    "emacs-dired-hacks"
    "emacs-all-the-icons-dired"

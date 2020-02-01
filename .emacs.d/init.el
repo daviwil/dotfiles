@@ -587,14 +587,15 @@
   :config
   (setq password-store-password-length 12))
 
+(use-package auth-source-pass
+  :config
+  (auth-source-pass-enable))
+
 (dw/leader-key-def
   "ap" '(:ignore t :which-key "pass")
   "app" 'ivy-pass
   "api" 'password-store-insert
   "apg" 'password-store-generate)
-
-(setq auth-sources
-  '((:source "~/.emacs.d/secrets/.authinfo.gpg")))
 
 (use-package dired
   :ensure nil
