@@ -26,7 +26,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 -  [[#general-configuration][General Configuration]]
   -  [[#user-interface][User Interface]]
   -  [[#theme][Theme]]
-    -  [[#theme-config][Theme Config]]
   -  [[#font][Font]]
     -  [[#set-the-font][Set the font]]
     -  [[#enable-proper-unicode-glyph-support][Enable proper Unicode glyph support]]
@@ -165,6 +164,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   -  [[#emojification][Emojification]]
   -  [[#dashboard][Dashboard]]
 -  [[#runtime-performance][Runtime Performance]]
+-  [[#emacs-profile][Emacs Profile]]
 -  [[#inspiration][Inspiration]]
 
 * Future Work
@@ -271,6 +271,14 @@ Set up ELPA, MELPA, and Org package repositories and load =use-package= to manag
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-use-package"
+
+#+end_src
+
 * Update Load Path
 
 I've got a folder of custom elisp files which must be added to the load path.
@@ -331,7 +339,7 @@ routed here.
 
 * Desktop Environment
 
-Load up the desktop environment if on a machine that supports it and the =--use-exwm= argument was passed to Emacs on startup.
+Load up the desktop environment if on a machine that supports it and the =--use-exwm= argument was passed to Emacs on startup.  Desktop environment and window management code can be found in Desktop.org.
 
 #+begin_src emacs-lisp
 
@@ -343,6 +351,18 @@ Load up the desktop environment if on a machine that supports it and the =--use-
   (load-file "~/.dotfiles/.emacs.d/exwm.el"))
 
 #+end_src
+
+*Guix Packages*
+
+Despite the code being in Desktop.org, include the emacs packages for the desktop environment in this file so that they can be included in the Emacs profile.
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-exwm"
+"emacs-desktop-environment"
+
+#+end_src
+
 
 * Keyboard Bindings
 
@@ -418,6 +438,16 @@ Some tips can be found here:
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-evil"
+"emacs-evil-collection"
+"emacs-undo-tree"
+
+#+end_src
+
 ** Keybinding Panel (which-key)
 
 [[https://github.com/justbur/emacs-which-key][which-key]] is great for getting an overview of what keybindings are available
@@ -432,6 +462,14 @@ based on the prefix keys you entered.  Learned about this one from Spacemacs.
     (setq which-key-idle-delay 0.3))
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-which-key"
+
+#+end_src
 
 ** Simplify Leader Bindings (general.el)
 
@@ -453,6 +491,14 @@ in conjunction with Evil modes.
       :prefix "C-c"))
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-general"
+
+#+end_src
 
 ** Enable keychord bind with use-package
 
@@ -560,8 +606,6 @@ Don't warn when advice is added for functions
 
 ** Theme
 
-*** Theme Config
-
 A nice gallery of Emacs themes can be found at https://emacsthemes.com/.
 
 So far my favorite theme is =twilight-anti-bright= but I also like the following:
@@ -594,10 +638,14 @@ Close, but no cigar:
 
 #+END_SRC
 
-Themes to try:
+*Guix Packages*
 
-- https://github.com/jordonbiondo/ample-theme
-- https://github.com/gchp/flatland-emacs
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-doom-themes"
+"emacs-spacegray-theme"
+
+#+end_src
 
 ** Font
 
@@ -725,6 +773,14 @@ anymore if I set up =diminish= correctly.
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-smart-mode-line"
+
+#+end_src
+
 *** Doom Modeline
 
 #+begin_src emacs-lisp
@@ -754,6 +810,16 @@ anymore if I set up =diminish= correctly.
     (doom-modeline-persp-name nil)
     (doom-modeline-buffer-file-name-style 'truncate-except-project)
     (doom-modeline-major-mode-icon nil))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-doom-modeline"
+"emacs-all-the-icons"
+"emacs-minions"
 
 #+end_src
 
@@ -831,6 +897,15 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-pinentry"
+"pinentry-emacs"
+
+#+end_src
+
 ** TRAMP
 
 #+begin_src emacs-lisp
@@ -868,6 +943,14 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-evil-nerd-commenter"
+
+#+end_src
+
 ** Automatically clean whitespace
 
 #+BEGIN_SRC emacs-lisp
@@ -901,6 +984,14 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
     "tp" 'parinfer-toggle-mode)
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-parinfer-mode"
+
+#+end_src
 
 * Configuration Files
 
@@ -953,6 +1044,14 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
   (use-package hydra
     :defer 1)
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-hydra"
 
 #+end_src
 
@@ -1058,6 +1157,17 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-ivy"
+"emacs-ivy-rich"
+"emacs-flx"
+"emacs-smex"
+
+#+end_src
+
 * Jumping with Avy
 
 #+BEGIN_SRC emacs-lisp
@@ -1072,6 +1182,14 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     "jl"  '(avy-goto-line :which-key "jump to line"))
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-avy"
+
+#+end_src
 
 * Buffer Management
 
@@ -1117,6 +1235,14 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-default-text-scale"
+
+#+end_src
+
 ** Window Selection with ace-window
 
 #+begin_src emacs-lisp
@@ -1125,6 +1251,14 @@ The keybindings for this are =C+M+-= and =C+M+==.
     :bind (("M-o" . ace-window))
     :config
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-ace-window"
 
 #+end_src
 
@@ -1145,12 +1279,6 @@ The keybindings for this are =C+M+-= and =C+M+==.
 ;;   (let ((margin-size (/ (- (frame-width) 80) 3)))
 ;;     (set-window-margins nil margin-size margin-size)))
 
-;; (use-package olivetti
-;;   :defer t
-;;   ;; :hook (org-mode . olivetti-mode)
-;;   :config
-;;   (setq-default olivetti-body-width 0.7))
-
 (defun dw/org-mode-visual-fill ()
   (setq visual-fill-column-width 100
         visual-fill-column-center-text t)
@@ -1159,6 +1287,14 @@ The keybindings for this are =C+M+-= and =C+M+==.
 (use-package visual-fill-mode
   :defer t
   :hook (org-mode . dw/org-mode-visual-fill))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-visual-fill-column"
 
 #+end_src
 
@@ -1176,6 +1312,14 @@ tweaking Org agenda views much less annoying.
            ("C-(" . er/mark-outside-pairs)))
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-expand-region"
+
+#+end_src
 
 * Credential Management
 
@@ -1204,6 +1348,14 @@ Also, use a custom =auth-source= path so that it's easier to store encrypted cre
     '((:source "~/.emacs.d/secrets/.authinfo.gpg")))
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-ivy-pass"
+
+#+end_src
 
 * File Browsing
 
@@ -1295,6 +1447,15 @@ Also, use a custom =auth-source= path so that it's easier to store encrypted cre
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-dired-hacks"
+"emacs-all-the-icons-dired"
+
+#+end_src
+
 ** Opening Files Externally
 
 #+begin_src emacs-lisp
@@ -1317,6 +1478,14 @@ Also, use a custom =auth-source= path so that it's easier to store encrypted cre
                "feh"
                '(file))))
     (openwith-mode 1))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-openwith"
 
 #+end_src
 
@@ -1383,6 +1552,15 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
   ;; NOTE: Subsequent sections are still part of this use-package block!
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-org"
+"emacs-org-contrib"
+
+#+end_src
 
 ** Automatically "Tangle" on Save
 
@@ -1452,6 +1630,14 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 ;; '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-org-bullets"
+
+#+end_src
 
 ** Org File Paths
 
@@ -1729,6 +1915,14 @@ documentation page.
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-org-pomodoro"
+
+#+end_src
+
 ** Protocol
 
 This is probably not needed if I plan to use custom functions that are invoked
@@ -1790,6 +1984,14 @@ It's nice to have a table of contents section for long literate configuration fi
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-org-make-toc"
+
+#+end_src
+
 ** Calendar Sync
 
 #+BEGIN_SRC emacs-lisp
@@ -1824,6 +2026,14 @@ It's nice to have a table of contents section for long literate configuration fi
         org-caldav-delete-calendar-entries 'never))
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-org-caldav"
+
+#+end_src
 
 ** Reminders
 
@@ -1869,6 +2079,14 @@ It's nice to have a table of contents section for long literate configuration fi
         org-tree-slide-activate-message "Presentation started."
         org-tree-slide-deactivate-message "Presentation ended."
         org-tree-slide-header t))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-org-tree-slide"
 
 #+end_src
 
@@ -1918,6 +2136,16 @@ https://magit.vc/manual/magit/
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-magit"
+"emacs-magit-todos"
+"emacs-evil-magit"
+
+#+end_src
+
 *** Forge
 
 #+BEGIN_SRC emacs-lisp
@@ -1926,6 +2154,14 @@ https://magit.vc/manual/magit/
     :disabled)
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-forge"
+
+#+end_src
 
 *** magit-todos
 
@@ -1940,6 +2176,14 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-magit-todos"
+
+#+end_src
+
 *** git-link
 
 #+begin_src emacs-lisp
@@ -1950,6 +2194,14 @@ files contained within the repo.  More information at the [[https://github.com/a
     (setq git-link-open-in-browser t)
     (dw/leader-key-def
       "gL"  'git-link))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-git-link"
 
 #+end_src
 
@@ -2023,6 +2275,15 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-git-gutter"
+"emacs-git-gutter-fringe"
+
+#+end_src
+
 ** Projectile
 
 *** Initial Setup
@@ -2039,7 +2300,8 @@ files contained within the repo.  More information at the [[https://github.com/a
       (setq projectile-project-search-path '("~/Projects/Code")))
     (setq projectile-switch-project-action #'projectile-dired))
 
-  (use-package counsel-projectile)
+  (use-package counsel-projectile
+    :after projectile)
 
   (dw/leader-key-def
     "pf"  'counsel-projectile-find-file
@@ -2050,6 +2312,17 @@ files contained within the repo.  More information at the [[https://github.com/a
     "pd"  'projectile-dired)
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-projectile"
+"emacs-counsel-projectile"
+"ripgrep" ;; For counsel-projectile-rg
+"the-silver-searcher" ;; For counsel-projectile-ag
+
+#+end_src
 
 *** Project Configurations
 
@@ -2106,6 +2379,17 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-lsp-mode"
+"emacs-lsp-ui"
+"emacs-ivy-xref"
+"emacs-lsp-ivy" ;; Not in config yet
+
+#+end_src
+
 *** Debug Adapter Support
 
 Not so convinced about this yet.
@@ -2140,21 +2424,28 @@ Not so convinced about this yet.
     :config
     (evil-collection-cider-setup))
 
-  (use-package helm-cider
-    :after cider
-    :config
-    (helm-cider-mode 1))
-
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-cider"
+
+#+end_src
+
 *** Common Lisp
+
+Not currently doing any Common Lisp development so these packages are disabled for now.
 
 #+begin_src emacs-lisp
 
   (use-package sly
+    :disabled
     :mode "\\.lisp\\'")
 
   (use-package slime
+    :disabled
     :mode "\\.lisp\\'")
 
 #+end_src>
@@ -2205,6 +2496,16 @@ Configure TypeScript and JavaScript language modes
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-js2-mode"
+"emacs-typescript-mode"
+"emacs-prettier"
+
+#+end_src
+
 *** Rust
 
 #+BEGIN_SRC emacs-lisp
@@ -2218,6 +2519,14 @@ Configure TypeScript and JavaScript language modes
     :defer t)
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-rust-mode"
+
+#+end_src
 
 *** F#
 
@@ -2251,6 +2560,14 @@ Configure TypeScript and JavaScript language modes
     "er" '(eval-region :which-key "eval region"))
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-helpful"
+
+#+end_src
 
 *** Scheme
 
@@ -2286,6 +2603,14 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-markdown-mode"
+
+#+end_src
+
 *** HTML
 
 #+BEGIN_SRC emacs-lisp
@@ -2299,6 +2624,14 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-web-mode"
+
+#+end_src
+
 *** YAML
 
 #+BEGIN_SRC emacs-lisp
@@ -2307,6 +2640,14 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
     :mode "\\.ya?ml\\'")
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-yaml-mode"
+
+#+end_src
 
 ** Productivity
 
@@ -2320,6 +2661,14 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-flycheck"
+
+#+end_src
+
 *** Snippets
 
 #+BEGIN_SRC emacs-lisp
@@ -2331,6 +2680,16 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-yasnippet"
+"emacs-yasnippet-snippets"
+"emacs-ivy-yasnippet"  ;; Not in config yet
+
+#+end_src
+
 *** Smart Parens
 
 #+BEGIN_SRC emacs-lisp
@@ -2340,6 +2699,14 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-smartparens"
+
+#+end_src
+
 *** Rainbow Delimiters
 
 #+BEGIN_SRC emacs-lisp
@@ -2348,6 +2715,14 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
     :hook (prog-mode . rainbow-delimiters-mode))
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-rainbow-delimiters"
+
+#+end_src
 
 *** Rainbow Mode
 
@@ -2365,6 +2740,14 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-rainbow-mode"
+
+#+end_src
+
 ** Reference
 
 *** HTTP
@@ -2373,6 +2756,14 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
   (use-package know-your-http-well
     :defer t)
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-know-your-http-well"
 
 #+end_src
 
@@ -2405,6 +2796,14 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
   (dw/leader-key-def
     "tf" '(dw/toggle-focus-mode :which-key "focus mode"))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-darkroom"
 
 #+end_src
 
@@ -2565,6 +2964,14 @@ Use [[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] to show notificati
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-mu4e-alert"
+
+#+end_src
+
 Useful mu4e manual pages:
 
 - [[https://www.djcbsoftware.nl/code/mu/mu4e/MSGV-Keybindings.html#MSGV-Keybindings][Key bindings]]
@@ -2601,6 +3008,14 @@ Agenda items.
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-calfw"
+
+#+end_src
+
 ** Finance
 
 #+begin_src emacs-lisp
@@ -2609,6 +3024,15 @@ Agenda items.
   :mode "\\.lgr\\'"
   :bind (:map ledger-mode-map
               ("TAB" . completion-at-point)))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"ledger"
+"emacs-ledger-mode"
 
 #+end_src
 
@@ -2745,6 +3169,17 @@ Agenda items.
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-eshell-z"
+"emacs-esh-autosuggest"
+"emacs-xterm-color"
+"emacs-exec-path-from-shell"
+
+#+end_src
+
 *** Shell Commands
 
 Custom eshell commands will go here.
@@ -2782,6 +3217,14 @@ branches in =git= commands.
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-fish-completion"
+
+#+end_src
+
 *** History Autocompletion
 
 #+begin_src emacs-lisp
@@ -2797,12 +3240,20 @@ branches in =git= commands.
 
 ** vterm
 
-I'm trying out =vterm= as a way to use fully-fledged terminal applications within Emacs so that I don't need an external terminal emulator.
+=vterm= enables the use of fully-fledged terminal applications within Emacs so that I don't need an external terminal emulator.
 
 #+begin_src emacs-lisp
 
   (use-package vterm
     :commands vterm)
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-vterm"
 
 #+end_src
 
@@ -2826,6 +3277,14 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
     "C-SPC" 'multi-term-next)
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-multi-term"
+
+#+end_src
 
 ** ediff
 
@@ -2851,6 +3310,14 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
                                       all-the-icons-lgreen
                                       all-the-icons-lblue))
     (setq tracking-frame-behavior nil))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-tracking"
 
 #+end_src
 
@@ -2895,6 +3362,14 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
           telega-completing-read-function #'ivy-completing-read
           telega-msg-rainbow-title nil
           telega-chat-fill-column 75))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-telega"
 
 #+end_src
 
@@ -2965,6 +3440,15 @@ features it provides.  The "static center" fill mode is really awesome.
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-erc-image"
+"emacs-erc-hl-nicks"
+
+#+end_src
+
 **** Bindings
 
 #+BEGIN_SRC emacs-lisp
@@ -2997,6 +3481,14 @@ features it provides.  The "static center" fill mode is really awesome.
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-mastodon"
+
+#+end_src
+
 ** RSS
 
 *** Elfeed
@@ -3020,6 +3512,14 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-elfeed"
+
+#+end_src
+
 ** Media
 
 *** EMMS
@@ -3040,6 +3540,14 @@ follow using Twitter.  Also seems to be great for following subreddits like
       "amf" '(emms-play-file :which-key "play file")))
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-emms"
+
+#+end_src
 
 *** Spotify
 
@@ -3068,6 +3576,14 @@ for now I just use the normal notification bubbles.
     (setq alert-default-style 'notifications))
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-alert"
+
+#+end_src
 
 ** Sauron
 
@@ -3111,12 +3627,28 @@ to set that up.
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-guix"
+
+#+end_src
+
 ** Daemons
 
 #+begin_src emacs-lisp
 
   (use-package daemons
     :commands daemons)
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-daemons"
 
 #+end_src
 
@@ -3128,6 +3660,14 @@ to set that up.
     :commands pulseaudio-control-select-sink-by-name
     :config
     (setq pulseaudio-control-pactl-path "/run/current-system/profile/bin/pactl"))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-pulseaudio-control"
 
 #+end_src
 
@@ -3178,6 +3718,13 @@ to set that up.
 
 #+END_SRC
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+
+#+end_src
+
 ** Docker
 
 #+begin_src emacs-lisp
@@ -3189,7 +3736,17 @@ to set that up.
     :defer t
     :after docker)
 
-#+end_src>
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-docker"
+"emacs-docker-tramp"
+"emacs-dockerfile-mode"
+
+#+end_src
 
 * Miscellaneous
 
@@ -3213,6 +3770,14 @@ to set that up.
     :commands emojify-mode)
 
 #+END_SRC
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-emojify"
+
+#+end_src
 
 ** Dashboard
 
@@ -3241,6 +3806,19 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
+
+#+end_src
+
+* Emacs Profile
+
+*.config/guix/manifests/emacs.scm:*
+
+#+begin_src scheme :tangle .config/guix/manifests/emacs.scm :noweb yes
+
+(specifications->manifest
+ '("emacs"
+   <<packages>>
+))
 
 #+end_src
 

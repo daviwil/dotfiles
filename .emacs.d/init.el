@@ -565,12 +565,6 @@
 ;;   (let ((margin-size (/ (- (frame-width) 80) 3)))
 ;;     (set-window-margins nil margin-size margin-size)))
 
-;; (use-package olivetti
-;;   :defer t
-;;   ;; :hook (org-mode . olivetti-mode)
-;;   :config
-;;   (setq-default olivetti-body-width 0.7))
-
 (defun dw/org-mode-visual-fill ()
   (setq visual-fill-column-width 100
         visual-fill-column-center-text t)
@@ -1231,7 +1225,8 @@
     (setq projectile-project-search-path '("~/Projects/Code")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-(use-package counsel-projectile)
+(use-package counsel-projectile
+  :after projectile)
 
 (dw/leader-key-def
   "pf"  'counsel-projectile-find-file
@@ -1299,11 +1294,6 @@
   :mode "\\.clj[sc]?\\'"
   :config
   (evil-collection-cider-setup))
-
-(use-package helm-cider
-  :after cider
-  :config
-  (helm-cider-mode 1))
 
 (use-package nvm
   :defer t)
@@ -1969,6 +1959,13 @@
   :config
   (setq symon-monitors '(symon-linux-cpu-monitor
                          symon-linux-memory-monitor)))
+
+(use-package docker
+  :commands docker)
+
+(use-package docker-tramp
+  :defer t
+  :after docker)
 
 ;; TODO: Figure out how to query for 'done' bugs
 (defun dw/debbugs-guix-patches ()
