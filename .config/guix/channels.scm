@@ -1,4 +1,4 @@
-;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
 (cons* (channel
         (name 'nonguix)

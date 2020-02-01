@@ -29,7 +29,7 @@ Guix supports the concept of [[https://guix.gnu.org/manual/en/html_node/Channels
 
 #+begin_src scheme :tangle .config/guix/channels.scm
 
-;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
 (cons* (channel
         (name 'nonguix)
@@ -70,7 +70,7 @@ sudo -E guix system -L ~/.dotfiles/.config/guix/systems reconfigure ~/.dotfiles/
 
 #+begin_src scheme :tangle .config/guix/systems/base-system.scm
 
-;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
 (define-module (base-system)
   #:use-module (gnu)
@@ -309,7 +309,7 @@ Some settings need to be customized on a per-system basis without tweaking indiv
 
 #+begin_src scheme :tangle .config/guix/systems/zerocool.scm
 
-;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
 (define-module (zerocool)
   #:use-module (base-system)
@@ -355,7 +355,7 @@ Some settings need to be customized on a per-system basis without tweaking indiv
 
 #+begin_src scheme :tangle .config/guix/systems/davinci.scm
 
-;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
 (define-module (davinci)
   #:use-module (base-system)
@@ -410,7 +410,7 @@ Some settings need to be customized on a per-system basis without tweaking indiv
 
 #+begin_src scheme :tangle .config/guix/systems/phantom.scm
 
-;; NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
 (define-module (phantom)
   #:use-module (base-system)
@@ -519,7 +519,7 @@ activate-profiles desktop emacs music
 
 #+begin_src sh :tangle .bin/activate-profiles :shebang #!/bin/sh
 
-# NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+# NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
 GREEN='\033[1;32m'
 RED='\033[1;30m'
@@ -574,7 +574,7 @@ update-profiles emacs
 
 #+begin_src sh :tangle .bin/update-profiles :shebang #!/bin/sh
 
-# NOTE: This file is generated from ~/.dotfiles/Guix.org.  Please see commentary there.
+# NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
 GREEN='\033[1;32m'
 NC='\033[0m'
