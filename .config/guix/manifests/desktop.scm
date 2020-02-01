@@ -64,7 +64,7 @@
    
    "flatpak"
    
-   "cups"
+   "system-config-printer"
    
    "compton"
    "redshift"

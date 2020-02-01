@@ -5,10 +5,12 @@
   #:use-module (srfi srfi-1)
   #:use-module (gnu system nss)
   #:use-module (gnu services pm)
+  #:use-module (gnu services cups)
   #:use-module (gnu services desktop)
   #:use-module (gnu services docker)
   #:use-module (gnu services networking)
   #:use-module (gnu packages wm)
+  #:use-module (gnu packages cups)
   #:use-module (gnu packages vim)
   #:use-module (gnu packages gtk)
   #:use-module (gnu packages xorg)
@@ -160,6 +162,11 @@ EndSection
                       (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
                     (service thermald-service-type)
                     (service docker-service-type)
+                    (service cups-service-type
+                             (cups-configuration
+                               (web-interface? #t)
+                               (extensions
+                                 (list cups-filters))))
                     (bluetooth-service #:auto-enable? #t)
                     (remove (lambda (service)
                                 (eq? (service-kind service) gdm-service-type))

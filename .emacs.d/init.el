@@ -1827,6 +1827,7 @@
   :config
   (setq
       erc-nick "daviwil"
+      erc-user-full-name "David Wilson"
       erc-prompt-for-nickserv-password nil
       erc-auto-query 'bury
       erc-join-buffer 'bury
