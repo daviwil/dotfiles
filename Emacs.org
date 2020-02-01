@@ -298,7 +298,7 @@ Here are a couple helpful functions for doing things based on what platform
 Emacs is running on.  I wrote =on-platform-do= as a way to learn Emacs macros, but
 there's probably a more appropriate way to do this built in to Emacs.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; Helper function for changing OS platform keywords to system-type strings
   (defun platform-keyword-to-string (platform-keyword)
@@ -324,7 +324,7 @@ there's probably a more appropriate way to do this built in to Emacs.
             ,expr)))
          platform-expressions)))
 
-#+END_SRC
+#+end_src
 
 * Server Mode
 
@@ -368,11 +368,11 @@ Despite the code being in Desktop.org, include the emacs packages for the deskto
 
 ** ESC Cancels All
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-#+END_SRC
+#+end_src
 
 ** Let's Be Evil
 
@@ -381,7 +381,7 @@ Some tips can be found here:
 - https://github.com/noctuid/evil-guide
 - https://nathantypanski.com/blog/2014-08-03-a-vim-like-emacs-config.html
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (defun dw/evil-hook ()
     (dolist (mode '(custom-mode
@@ -436,7 +436,7 @@ Some tips can be found here:
     :config
     (evil-collection-init))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -453,7 +453,7 @@ Some tips can be found here:
 [[https://github.com/justbur/emacs-which-key][which-key]] is great for getting an overview of what keybindings are available
 based on the prefix keys you entered.  Learned about this one from Spacemacs.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package which-key
     :init (which-key-mode)
@@ -461,7 +461,7 @@ based on the prefix keys you entered.  Learned about this one from Spacemacs.
     :config
     (setq which-key-idle-delay 0.3))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -476,7 +476,7 @@ based on the prefix keys you entered.  Learned about this one from Spacemacs.
 [[https://github.com/noctuid/general.el][general.el]] is a fantastic library for defining prefixed keybindings, especially
 in conjunction with Evil modes.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package general
     :config
@@ -490,7 +490,7 @@ in conjunction with Evil modes.
     (general-create-definer dw/ctrl-c-keys
       :prefix "C-c"))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -502,13 +502,13 @@ in conjunction with Evil modes.
 
 ** Enable keychord bind with use-package
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package use-package-chords
     :disabled
     :config (key-chord-mode 1))
 
-#+END_SRC
+#+end_src
 
 * General Configuration
 
@@ -516,7 +516,7 @@ in conjunction with Evil modes.
 
 Clean up Emacs' user interface, make it more minimal.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; Thanks, but no thanks
   (setq inhibit-startup-message t)
@@ -532,11 +532,11 @@ Clean up Emacs' user interface, make it more minimal.
   ;; Set up the visible bell
   (setq visible-bell t)
 
-#+END_SRC
+#+end_src
 
 Improve scrolling.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
 (unless dw/is-termux
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -544,11 +544,11 @@ Improve scrolling.
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
   (setq scroll-step 1)) ;; keyboard scroll one line at a timesetq use-dialog-box nil) ; Disable dialog boxes since they weren't working in Mac OSX
 
-#+END_SRC
+#+end_src
 
 Set frame transparency and maximize windows by default.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (unless dw/is-termux
     (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
@@ -556,11 +556,11 @@ Set frame transparency and maximize windows by default.
     (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
     (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 
-#+END_SRC
+#+end_src
 
 Enable line numbers and customize their format.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (column-number-mode)
   (global-display-line-numbers-mode t)
@@ -578,7 +578,7 @@ Enable line numbers and customize their format.
                   dashboard-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-#+END_SRC
+#+end_src
 
 Don't warn for large files (shows up when launching videos)
 
@@ -627,7 +627,7 @@ Close, but no cigar:
   my taste.
 - =dakrone=: Decent dark theme, but not crazy about the colors.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package spacegray-theme :defer t)
   (use-package twilight-anti-bright-theme :defer t)
@@ -636,7 +636,7 @@ Close, but no cigar:
   (unless dw/is-termux
     (load-theme 'spacegray t))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -654,7 +654,7 @@ Close, but no cigar:
 Different platforms need different default font sizes, and
 [[https://mozilla.github.io/Fira/][Fira Mono]] is currently my favorite face.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; Set the font face based on platform
   (on-platform-do
@@ -669,7 +669,7 @@ Different platforms need different default font sizes, and
   ;; Set the variable pitch face
   (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 135 :weight 'regular)
 
-#+END_SRC
+#+end_src
 
 *** Enable proper Unicode glyph support
 
@@ -717,11 +717,11 @@ Different platforms need different default font sizes, and
 
 The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky minor modes from the modelines.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package diminish)
 
-#+END_SRC
+#+end_src
 
 *** Smart Mode Line
 
@@ -729,7 +729,7 @@ Prettify the modeline with [[https://github.com/Malabarba/smart-mode-line/][smar
 ordering of =mode-line-format=.  Also not sure if =rm-excluded-modes= is needed
 anymore if I set up =diminish= correctly.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package smart-mode-line
     :disabled
@@ -771,7 +771,7 @@ anymore if I set up =diminish= correctly.
         " Org-Agenda.*" " ElDoc" " SP/s" " cider.*")
         "\\|")))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -825,7 +825,7 @@ anymore if I set up =diminish= correctly.
 
 ** Auto-Saving Changed Files
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package super-save
     :ensure t
@@ -835,26 +835,26 @@ anymore if I set up =diminish= correctly.
     (super-save-mode +1)
     (setq super-save-auto-save-when-idle t))
 
-#+END_SRC
+#+end_src
 
 ** Auto-Reverting Changed Files
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (global-auto-revert-mode 1)
 
-#+END_SRC
+#+end_src
 
 ** UI Toggles
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (dw/leader-key-def
     "t"  '(:ignore t :which-key "toggles")
     "tw" 'whitespace-mode
     "tt" '(counsel-load-theme :which-key "choose theme"))
 
-#+END_SRC
+#+end_src
 
 ** Highlight Matching Braces
 
@@ -930,20 +930,20 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 
 ** Use spaces instead of tabs for indentation
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (setq-default indent-tabs-mode nil)
 
-#+END_SRC
+#+end_src
 
 ** Commenting Lines
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package evil-nerd-commenter
     :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -955,18 +955,18 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 
 ** Automatically clean whitespace
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; This configuration seems to work but might need tweaking
   (setq whitespace-action '(auto-cleanup))
   (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))
   (global-whitespace-mode)
 
-#+END_SRC
+#+end_src
 
 ** Use Parinfer for Lispy languages
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package parinfer
     :hook ((clojure-mode . parinfer-mode)
@@ -985,7 +985,7 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
   (dw/leader-key-def
     "tp" 'parinfer-toggle-mode)
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -999,7 +999,7 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 
 ** Helpers
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
 (defun dw/org-file-jump-to-heading (org-file heading-title)
   (interactive)
@@ -1020,11 +1020,11 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
   (org-show-subtree)
   (forward-line))
 
-#+END_SRC
+#+end_src
 
 ** Bindings
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (dw/leader-key-def
     "fn" '((lambda () (interactive) (counsel-find-file "~/Notes/")) :which-key "notes")
@@ -1038,7 +1038,7 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
     "fdp" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Desktop.org" "Panel via Polybar")) :which-key "polybar")
     "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/.config/vimb/config")) :which-key "vimb"))
 
-#+END_SRC
+#+end_src
 
 * Stateful Keymaps with Hydra
 
@@ -1069,7 +1069,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 - *Super useful*: Use =C-c C-o= to open =ivy-occur= to open the search results in a
   separate buffer.  From there you can click any item to perform the ivy action.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package ivy
     :diminish
@@ -1157,7 +1157,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     "fR"  '(revert-buffer :which-key "revert file")
     "fj"  '(counsel-file-jump :which-key "jump to file"))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -1172,7 +1172,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 * Jumping with Avy
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package avy
     :commands (avy-goto-char avy-goto-word-0 avy-goto-line))
@@ -1183,7 +1183,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     "jw"  '(avy-goto-word-0 :which-key "jump to word")
     "jl"  '(avy-goto-line :which-key "jump to line"))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -1197,7 +1197,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 ** Bindings
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (defun dw/ignore-non-vimb-buffers (buffer-name)
     (if-let ((buf (get-buffer buffer-name)))
@@ -1220,7 +1220,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     "bb"  'counsel-switch-buffer
     "bd"  'evil-delete-buffer)
 
-#+END_SRC
+#+end_src
 
 * Window Management
 
@@ -1228,14 +1228,14 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 The keybindings for this are =C+M+-= and =C+M+==.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package default-text-scale
     :defer 1
     :config
     (default-text-scale-mode))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -1266,12 +1266,12 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 ** Window History with winner-mode
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (winner-mode)
   (define-key evil-window-map "u" 'winner-undo)
 
-#+END_SRC
+#+end_src
 
 ** Set Margins for Modes
 
@@ -1306,14 +1306,14 @@ This module is absolutely necessary for working inside of Emacs Lisp files,
 especially when trying to some parent of an expression (like a =setq=).  Makes
 tweaking Org agenda views much less annoying.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package expand-region
     :if (not dw/is-termux)
     :bind (("M-[" . er/expand-region)
            ("C-(" . er/mark-outside-pairs)))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -1327,7 +1327,7 @@ tweaking Org agenda views much less annoying.
 
 I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords locally.  [[https://github.com/jabranham/helm-pass][helm-pass]] automatically pulls in [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store.el]] package which makes managing passwords much easier in Emacs.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package ivy-pass
     :commands ivy-pass
@@ -1340,16 +1340,16 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
     "api" 'password-store-insert
     "apg" 'password-store-generate)
 
-#+END_SRC
+#+end_src
 
 Also, use a custom =auth-source= path so that it's easier to store encrypted credentials for mail, etc.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (setq auth-sources
     '((:source "~/.emacs.d/secrets/.authinfo.gpg")))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -1363,7 +1363,7 @@ Also, use a custom =auth-source= path so that it's easier to store encrypted cre
 
 ** Dired
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package dired
     :ensure nil
@@ -1447,7 +1447,7 @@ Also, use a custom =auth-source= path so that it's easier to store encrypted cre
     "d."  `(,(dw/dired-link "~/.dotfiles") :which-key "dotfiles")
     "de"  `(,(dw/dired-link "~/.emacs.d") :which-key ".emacs.d"))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -1497,7 +1497,7 @@ Also, use a custom =auth-source= path so that it's easier to store encrypted cre
 
 Set up Org Mode with a baseline configuration.  The following sections will add more things to it.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
 ;; TODO: Mode this to another section
 (setq-default fill-column 80)
@@ -1553,7 +1553,7 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
 
   ;; NOTE: Subsequent sections are still part of this use-package block!
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -1586,7 +1586,7 @@ Handy tip from [[https://leanpub.com/lit-config/read#leanpub-auto-configuring-em
 
 Use bullet characters instead of asterisks, plus set the header font sizes to something more palatable.  A fair amount of inspiration has been taken from [[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][this blog post]].
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
 (use-package org-bullets
   :if (not dw/is-termux)
@@ -1631,7 +1631,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 ;; '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
 ;; '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -1643,7 +1643,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 ** Org File Paths
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (setq org-directory
     (if dw/is-termux
@@ -1679,11 +1679,11 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
       (dw/org-path "Projects.org")))
       ;(dw/get-todays-journal-file-name)))
 
-#+END_SRC
+#+end_src
 
 ** Agenda
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (setq org-agenda-window-setup 'other-window)
   (setq org-agenda-span 'day)
@@ -1753,11 +1753,11 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
         (org-agenda-max-todos 20)
         (org-agenda-files org-agenda-files)))))
 
-#+END_SRC
+#+end_src
 
 ** Tags
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; Configure common tags
   (setq org-tag-alist
@@ -1785,11 +1785,11 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
   ;;           ("TODO" ("waiting") ("cancelled") ("onhold"))
   ;;           ("DONE" ("waiting") ("cancelled") ("onhold")))))
 
-#+END_SRC
+#+end_src
 
 ** Tasks
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; Configure TODO settings
   (setq org-log-done 'time)
@@ -1802,13 +1802,13 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
       (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")
       (sequence "GOAL(g)" "|" "ACHIEVED(v)" "MAINTAIN(m)")))
 
-#+END_SRC
+#+end_src
 
 ** Journal
 
 In the past, I've used my own custom journal file format based on Org datetrees.  Lately I'm starting to try using daily journal files with [[https://github.com/bastibe/org-journal/][org-journal]] to see if I get any benefits from it.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package org-journal
     :defer t
@@ -1821,13 +1821,13 @@ In the past, I've used my own custom journal file format based on Org datetrees.
     (org-journal-file-format "%Y-%m-%d.org")
     (org-journal-enable-agenda-integration t))
 
-#+END_SRC
+#+end_src
 
 ** Capture Templates
 
 Information on template expansion can be found in the [[https://orgmode.org/manual/Template-expansion.html#Template-expansion][Org manual]].
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (defun dw/read-file-as-string (path)
     (with-temp-buffer
@@ -1880,7 +1880,7 @@ Information on template expansion can be found in the [[https://orgmode.org/manu
       ("mp" "Blood Pressure" table-line (file+headline "~/Notes/Metrics.org" "Blood Pressure")
        "| %U | %^{Systolic} | %^{Diastolic} | %^{Notes}" :kill-buffer)))
 
-#+END_SRC
+#+end_src
 
 ** Block Templates
 
@@ -1888,7 +1888,7 @@ These templates enable you to type things like =<el= and then hit =Tab= to expan
 the template.  More documentation can be found at the Org Mode [[https://orgmode.org/manual/Easy-templates.html][Easy Templates]]
 documentation page.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; This is needed as of Org 9.2
   (require 'org-tempo)
@@ -1898,11 +1898,11 @@ documentation page.
   (add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
   (add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
 
-#+END_SRC
+#+end_src
 
 ** Pomodoro
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package org-pomodoro
     :after org
@@ -1915,7 +1915,7 @@ documentation page.
     (dw/leader-key-def
       "op"  '(org-pomodoro :which-key "pomodoro")))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -1930,11 +1930,11 @@ documentation page.
 This is probably not needed if I plan to use custom functions that are invoked
 through =emacsclient.=
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
 (require 'org-protocol)
 
-#+END_SRC
+#+end_src
 
 ** Searching
 
@@ -1948,7 +1948,7 @@ through =emacsclient.=
 
 ** Bindings
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (dw/leader-key-def
     "o"   '(:ignore t :which-key "org mode")
@@ -1964,7 +1964,7 @@ through =emacsclient.=
     "oc"  '(org-capture t :which-key "capture")
     "ox"  '(org-export-dispatch t :which-key "export"))
 
-#+END_SRC
+#+end_src
 
 ** End =use-package org-mode=
 
@@ -1996,7 +1996,7 @@ It's nice to have a table of contents section for long literate configuration fi
 
 ** Calendar Sync
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; (use-package org-gcal
   ;;   :after org
@@ -2027,7 +2027,7 @@ It's nice to have a table of contents section for long literate configuration fi
         org-caldav-delete-org-entries 'always
         org-caldav-delete-calendar-entries 'never))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2039,7 +2039,7 @@ It's nice to have a table of contents section for long literate configuration fi
 
 ** Reminders
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; (use-package org-wild-notifier
   ;;   :after org
@@ -2051,7 +2051,7 @@ It's nice to have a table of contents section for long literate configuration fi
   ;;   (setq org-wild-notifier-alert-time 15)
   ;;   (org-wild-notifier-mode))
 
-#+END_SRC
+#+end_src
 
 ** Presentations
 
@@ -2107,7 +2107,7 @@ Configuration for various programming languages and dev tools that I use.
 
 https://magit.vc/manual/magit/
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package magit
     :commands (magit-status magit-get-current-branch)
@@ -2136,7 +2136,7 @@ https://magit.vc/manual/magit/
     "gF"  'magit-fetch-all
     "gr"  'magit-rebase)
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2150,12 +2150,12 @@ https://magit.vc/manual/magit/
 
 *** Forge
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package forge
     :disabled)
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2209,7 +2209,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 *** Git Gutter
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package git-gutter
     :diminish
@@ -2275,7 +2275,7 @@ files contained within the repo.  More information at the [[https://github.com/a
     (set-face-foreground 'git-gutter:modified "LightGoldenrod")
     (set-face-foreground 'git-gutter:deleted "LightCoral"))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2290,7 +2290,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 *** Initial Setup
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package projectile
     :diminish projectile-mode
@@ -2313,7 +2313,7 @@ files contained within the repo.  More information at the [[https://github.com/a
     "pc"  'projectile-compile-project
     "pd"  'projectile-dired)
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2332,7 +2332,7 @@ This section contains project configurations for specific projects that I can't
 drop a =.dir-locals.el= file into.  Documentation on this approach can be found in
 the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-Variables.html][Emacs manual]].
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (dir-locals-set-class-variables 'Atom
     `((nil . ((projectile-project-name . "Atom")
@@ -2341,13 +2341,13 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
 
   (dir-locals-set-directory-class (expand-file-name "~/Projects/Code/atom") 'Atom)
 
-#+END_SRC
+#+end_src
 
 ** Languages
 
 *** Language Server Support
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package ivy-xref
     :init (if (< emacs-major-version 27)
@@ -2379,7 +2379,7 @@ the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-
     (setq lsp-ui-doc-position 'bottom)
     (lsp-ui-doc-show))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2419,14 +2419,14 @@ Not so convinced about this yet.
 
 *** Clojure
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package cider
     :mode "\\.clj[sc]?\\'"
     :config
     (evil-collection-cider-setup))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2456,16 +2456,16 @@ Not currently doing any Common Lisp development so these packages are disabled f
 
 Set up nvm so that we can manage Node versions
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package nvm
     :defer t)
 
-#+END_SRC
+#+end_src
 
 Configure TypeScript and JavaScript language modes
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package typescript-mode
     :mode "\\.ts\\'"
@@ -2496,7 +2496,7 @@ Configure TypeScript and JavaScript language modes
     :config
     (setq prettier-js-show-errors nil))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2510,7 +2510,7 @@ Configure TypeScript and JavaScript language modes
 
 *** Rust
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package rust-mode
     :mode "\\.rs\\'"
@@ -2520,7 +2520,7 @@ Configure TypeScript and JavaScript language modes
     :ensure t
     :defer t)
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2541,7 +2541,7 @@ Configure TypeScript and JavaScript language modes
 
 *** Emacs Lisp
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package helpful
     :custom
@@ -2561,7 +2561,7 @@ Configure TypeScript and JavaScript language modes
     :keymaps '(visual)
     "er" '(eval-region :which-key "eval region"))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2583,7 +2583,7 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 *** Markdown
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package markdown-mode
     :pin melpa-stable
@@ -2603,7 +2603,7 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
     (add-hook 'markdown-mode-hook 'dw/markdown-mode-hook))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2615,7 +2615,7 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 *** HTML
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package web-mode
     :mode "(\\.\\(html?\\|ejs\\|tsx\\|jsx\\)\\'"
@@ -2624,7 +2624,7 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
     (setq-default web-mode-markup-indent-offset 2)
     (setq-default web-mode-attribute-indent-offset 2))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2636,12 +2636,12 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 *** YAML
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package yaml-mode
     :mode "\\.ya?ml\\'")
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2655,13 +2655,13 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 *** Syntax checking with Flycheck
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package flycheck
     :defer t
     :hook (lsp-mode . flycheck-mode))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2673,14 +2673,14 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 *** Snippets
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package yasnippet
     :hook (prog-mode . yas-minor-mode)
     :config
     (yas-reload-all))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2694,12 +2694,12 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 *** Smart Parens
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package smartparens
     :hook (prog-mode . smartparens-mode))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2711,12 +2711,12 @@ This prevents =org-babel= from asking me which Scheme implementation Geiser shou
 
 *** Rainbow Delimiters
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2813,12 +2813,12 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 ** Binding Prefix
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (dw/leader-key-def
     "a"  '(:ignore t :which-key "apps"))
 
-#+END_SRC
+#+end_src
 
 ** Mail
 
@@ -2828,7 +2828,7 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 makes it really easy to power through a huge e-mail backlog.  Love the ability
 to capture links to emails with org-mode too.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; TODO: Move this check elsewhere
   (setq dw/mail-enabled (string-equal system-name "zerocool"))
@@ -2947,11 +2947,11 @@ to capture links to emails with org-mode too.
     ;; Start mu4e in the background so that it syncs mail periodically
     (let ((current-prefix-arg '(4))) (call-interactively 'mu4e)))
 
-#+END_SRC
+#+end_src
 
 Use [[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] to show notifications when e-mail comes in:
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (when (and (eq system-type 'gnu/linux) dw/mail-enabled)
     (use-package mu4e-alert
@@ -2964,7 +2964,7 @@ Use [[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] to show notificati
 
       (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -2986,7 +2986,7 @@ Here's some info on using [[https://hobo.house/2017/07/17/using-offlineimap-with
 [[https://github.com/kiwanami/emacs-calfw][calfw]] is a gorgeous calendar UI that is able to show all of my scheduled Org
 Agenda items.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package calfw
     :disabled
@@ -3008,7 +3008,7 @@ Agenda items.
   (dw/leader-key-def
     "cc"  '(cfw:open-org-calendar :which-key "calendar"))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -3042,7 +3042,7 @@ Agenda items.
 
 *** Configuration
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
 (defun read-file (file-path)
   (with-temp-buffer
@@ -3169,7 +3169,7 @@ Agenda items.
 (dw/leader-key-def
   "SPC" 'eshell)
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -3188,22 +3188,22 @@ Custom eshell commands will go here.
 
 *** Visual Commands
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (with-eval-after-load 'esh-opt
     (setq eshell-destroy-buffer-when-process-dies t)
     (setq eshell-visual-commands '("htop" "zsh" "vim")))
 
-#+END_SRC
+#+end_src
 
 *** Better Colors
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; (use-package eterm-256color
   ;;   :hook (term-mode . eterm-256color-mode))
 
-#+END_SRC
+#+end_src
 
 *** Fish Completion
 
@@ -3263,7 +3263,7 @@ branches in =git= commands.
 
 Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/][here]].
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package multi-term
     :commands multi-term-next
@@ -3278,7 +3278,7 @@ Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-e
   (dw/leader-key-def
     "C-SPC" 'multi-term-next)
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -3383,7 +3383,7 @@ features it provides.  The "static center" fill mode is really awesome.
 
 **** Configuration
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (defun dw/on-erc-track-list-changed ()
     (dolist (buffer erc-modified-channels-alist)
@@ -3440,7 +3440,7 @@ features it provides.  The "static center" fill mode is really awesome.
     ;;    :server "127.0.0.1" :port 6667
     ;;    :nick "daviwil" :password (password-store-get "IRC/Bitlbee")))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -3453,7 +3453,7 @@ features it provides.  The "static center" fill mode is really awesome.
 
 **** Bindings
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (dw/ctrl-c-keys
     "c"  '(:ignore t :which-key "chat")
@@ -3461,7 +3461,7 @@ features it provides.  The "static center" fill mode is really awesome.
     "cc" 'dw/connect-irc
     "ca" 'erc-track-switch-buffer)
 
-#+END_SRC
+#+end_src
 
 **** Reference
 - https://www.gnu.org/software/emacs/manual/html_mono/erc.html
@@ -3474,14 +3474,14 @@ features it provides.  The "static center" fill mode is really awesome.
 
 ** Mastodon
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package mastodon
     :defer t
     :config
     (setq mastodon-instance-url "https://mastodon.social"))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -3500,7 +3500,7 @@ definitely looking forward to using it to keep track of a few different blogs I
 follow using Twitter.  Also seems to be great for following subreddits like
 /r/Emacs.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package elfeed
     :commands elfeed
@@ -3512,7 +3512,7 @@ follow using Twitter.  Also seems to be great for following subreddits like
         "https://valdyas.org/fading/feed/"
         "https://www.reddit.com/r/emacs/.rss")))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -3526,7 +3526,7 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
 *** EMMS
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package emms
     :commands emms
@@ -3541,7 +3541,7 @@ follow using Twitter.  Also seems to be great for following subreddits like
       "amp" '(emms-pause :which-key "play / pause")
       "amf" '(emms-play-file :which-key "play file")))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -3553,14 +3553,14 @@ follow using Twitter.  Also seems to be great for following subreddits like
 
 *** Spotify
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   ;; (use-package counsel-spotify
   ;;   :init
   ;;   (setq counsel-spotify-client-id "9b50922412914b6cba8aa0c9d83b46f4")
   ;;   (setq counsel-spotify-client-secret (password-store-get "API/Spotify/daviwil-emacs-secret")))
 
-#+END_SRC
+#+end_src
 
 * Notifications
 
@@ -3570,14 +3570,14 @@ follow using Twitter.  Also seems to be great for following subreddits like
 variety of ways.  I'd like to go deep in customization at some point soon, but
 for now I just use the normal notification bubbles.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package alert
     :commands alert
     :config
     (setq alert-default-style 'notifications))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -3594,7 +3594,7 @@ might have missed in the past.  I'd like to have a way to be more aware of any
 notifications I haven't seen yet, like a modeline indicator.  Probably some way
 to set that up.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package sauron
     :disabled
@@ -3608,13 +3608,13 @@ to set that up.
     (dw/leader-key-def
       "an"  '(sauron-pop-to-buffer :which-key "notifications")))
 
-#+END_SRC
+#+end_src
 
 * System Utilities
 
 ** Guix
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package guix
     :defer t)
@@ -3627,7 +3627,7 @@ to set that up.
     "Gp" '(guix-packages-by-name :which-key "search packages")
     "GP" '(guix-pull :which-key "pull"))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -3707,7 +3707,7 @@ to set that up.
 
 ** System Monitor
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package symon
     :disabled
@@ -3718,7 +3718,7 @@ to set that up.
     (setq symon-monitors '(symon-linux-cpu-monitor
                            symon-linux-memory-monitor)))
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -3765,13 +3765,13 @@ to set that up.
 
 ** Emojification
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package emojify
     :hook (erc-mode . emojify-mode)
     :commands emojify-mode)
 
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -3785,7 +3785,7 @@ to set that up.
 
 Displays a nice list of recent files and projects on startup.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package dashboard
     :disabled
@@ -3798,7 +3798,7 @@ Displays a nice list of recent files and projects on startup.
             dashboard-startup-banner "~/.dotfiles/emacs/images/flux_banner.png"
             dashboard-image-banner-max-height 500))
 
-#+END_SRC
+#+end_src
 
 * Runtime Performance
 

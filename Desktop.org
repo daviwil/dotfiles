@@ -47,14 +47,14 @@ This file contains configuration for my overall desktop environment.  My workflo
 Load system-specific settings from =.emacs.d/per-system-settings.el= and unpack relevant values into blocks so that they can be used in configuration file blocks.  These settings are configured in [[file:Systems.org::*Per-System Settings][Systems.org]].
 
 #+NAME: system-settings
-#+BEGIN_SRC emacs-lisp :session system-settings
+#+begin_src emacs-lisp :session system-settings
 (load-file ".emacs.d/per-system-settings.el")
-#+END_SRC
+#+end_src
 
 #+NAME: get-setting
-#+BEGIN_SRC emacs-lisp :var name="nil" :session system-settings
+#+begin_src emacs-lisp :var name="nil" :session system-settings
 (alist-get (intern name) dw/system-settings)
-#+END_SRC
+#+end_src
 
 * Fonts and Themes
 
@@ -80,9 +80,9 @@ Xft/DPI <<dpi()>> # 1024 * DPI
 *DPI*
 
 #+NAME: dpi
-#+BEGIN_SRC emacs-lisp :session=system-settings :var settings=system-settings
+#+begin_src emacs-lisp :session=system-settings :var settings=system-settings
 (* 1024 (alist-get 'desktop/dpi dw/system-settings))
-#+END_SRC
+#+end_src
 
 *Guix Packages*
 
@@ -178,7 +178,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
             command
             (pop bindings))))
 
-#+END_SRC
+#+end_src
 
 ** Configuration
 
@@ -250,7 +250,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (exwm-systemtray-enable)
     (setq exwm-systemtray-height 35))
 
-#+END_SRC
+#+end_src
 
 ** Desktop Configuration
 
@@ -297,7 +297,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     ;; Configure the desktop for first load
     (add-hook 'exwm-init-hook #'dw/on-exwm-init))
 
-#+END_SRC
+#+end_src
 
 ** Window Switcher
 
@@ -448,7 +448,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
     (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen))
 
-#+END_SRC
+#+end_src
 
 ** Useful Links
 
