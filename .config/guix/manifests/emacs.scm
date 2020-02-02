@@ -162,7 +162,6 @@
    
    "emacs-pulseaudio-control"
    
-   
    "emacs-docker"
    "emacs-docker-tramp"
    "emacs-dockerfile-mode"

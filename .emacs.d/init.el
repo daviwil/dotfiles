@@ -1955,15 +1955,6 @@
             (lambda ()
               (proced-toggle-auto-update 1))))
 
-(use-package symon
-  :disabled
-  :if dw/exwm-enabled
-  :after exwm
-  :hook (exwm-init . symon-mode)
-  :config
-  (setq symon-monitors '(symon-linux-cpu-monitor
-                         symon-linux-memory-monitor)))
-
 (use-package docker
   :commands docker)
 

@@ -156,7 +156,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   -  [[#pulseaudio][PulseAudio]]
   -  [[#bluetooth][Bluetooth]]
   -  [[#proced][Proced]]
-  -  [[#system-monitor][System Monitor]]
   -  [[#docker][Docker]]
 -  [[#miscellaneous][Miscellaneous]]
   -  [[#debbugs-mainly-for-guix][Debbugs (mainly for Guix)]]
@@ -3677,28 +3676,6 @@ for now I just use the normal notification bubbles.
     (add-hook 'proced-mode-hook
               (lambda ()
                 (proced-toggle-auto-update 1))))
-
-#+end_src
-
-** System Monitor
-
-#+begin_src emacs-lisp
-
-  (use-package symon
-    :disabled
-    :if dw/exwm-enabled
-    :after exwm
-    :hook (exwm-init . symon-mode)
-    :config
-    (setq symon-monitors '(symon-linux-cpu-monitor
-                           symon-linux-memory-monitor)))
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
 
 #+end_src
 
