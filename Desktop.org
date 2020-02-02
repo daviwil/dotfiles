@@ -1232,6 +1232,29 @@ Glorious time wasters!  I keep these in a separate Guix profile so that I don't 
 
 ** Document Readers
 
+#+begin_src conf :tangle .config/zathura/zathurarc
+
+# Automatically adjust the document to full width
+set adjust-open width
+
+# Set the title to the filename
+set window-title-basename true
+
+# Larger scroll steps with j/k
+set scroll-step 150
+
+# Adjusting the document
+map [normal] E adjust_window best-fit
+map [fullscreen] E adjust_window best-fit
+map [normal] e adjust_window width
+map [fullscreen] e adjust_window width
+
+# Toggling the inverted colours
+map <C-i> recolor
+map <C-g> abort
+
+#+end_src
+
 *Guix Packages*
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
