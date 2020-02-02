@@ -78,6 +78,26 @@ Xft/DPI <<dpi()>> # 1024 * DPI
 
 #+end_src
 
+I also have to do an extra step to make sure Emacs can find the font path from the "desktop" profile.
+
+*.config/fontconfig/fonts.conf:*
+
+#+begin_src xml :tangle .config/fontconfig/fonts.conf
+
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <dir>~/.guix-extra-profiles/desktop/desktop/share/fonts</dir>
+  <alias>
+    <family>Apple Color Emoji</family>
+    <prefer>
+      <family>Noto Color Emoji</family>
+    </prefer>
+  </alias>
+</fontconfig>
+
+#+end_src
+
 *DPI*
 
 #+NAME: dpi
