@@ -265,6 +265,10 @@
       "Transport and Map Symbols"))
   (unicode-fonts-setup))
 
+(use-package emojify
+  :hook (erc-mode . emojify-mode)
+  :commands emojify-mode)
+
 (setq display-time-format "%l:%M %p %b %y"
       display-time-default-load-average nil)
 
@@ -1966,10 +1970,6 @@
 (defun dw/debbugs-guix-patches ()
   (interactive)
   (debbugs-gnu '("serious" "important" "normal") "guix-patches" nil t))
-
-(use-package emojify
-  :hook (erc-mode . emojify-mode)
-  :commands emojify-mode)
 
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))

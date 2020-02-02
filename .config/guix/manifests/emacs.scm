@@ -17,6 +17,8 @@
    "emacs-doom-themes"
    "emacs-spacegray-theme"
    
+   "emacs-emojify"
+   
    "emacs-smart-mode-line"
    
    "emacs-doom-modeline"
@@ -165,7 +167,5 @@
    "emacs-docker"
    "emacs-docker-tramp"
    "emacs-dockerfile-mode"
-   
-   "emacs-emojify"
    
 ))

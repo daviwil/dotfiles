@@ -29,6 +29,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   -  [[#font][Font]]
     -  [[#set-the-font][Set the font]]
     -  [[#enable-proper-unicode-glyph-support][Enable proper Unicode glyph support]]
+    -  [[#emojis-in-buffers][Emojis in buffers]]
   -  [[#mode-line][Mode Line]]
     -  [[#basic-customization][Basic Customization]]
     -  [[#enable-mode-diminishing][Enable Mode Diminishing]]
@@ -159,7 +160,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   -  [[#docker][Docker]]
 -  [[#miscellaneous][Miscellaneous]]
   -  [[#debbugs-mainly-for-guix][Debbugs (mainly for Guix)]]
-  -  [[#emojification][Emojification]]
 -  [[#runtime-performance][Runtime Performance]]
 -  [[#emacs-profile][Emacs Profile]]
 -  [[#inspiration][Inspiration]]
@@ -696,6 +696,24 @@ Different platforms need different default font sizes, and
         "Miscellaneous Symbols and Pictographs"
         "Transport and Map Symbols"))
     (unicode-fonts-setup))
+
+#+end_src
+
+*** Emojis in buffers
+
+#+begin_src emacs-lisp
+
+  (use-package emojify
+    :hook (erc-mode . emojify-mode)
+    :commands emojify-mode)
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-emojify"
 
 #+end_src
 
@@ -3712,24 +3730,6 @@ for now I just use the normal notification bubbles.
 (defun dw/debbugs-guix-patches ()
   (interactive)
   (debbugs-gnu '("serious" "important" "normal") "guix-patches" nil t))
-
-#+end_src
-
-** Emojification
-
-#+begin_src emacs-lisp
-
-  (use-package emojify
-    :hook (erc-mode . emojify-mode)
-    :commands emojify-mode)
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-"emacs-emojify"
 
 #+end_src
 
