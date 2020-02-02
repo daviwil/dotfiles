@@ -4,6 +4,7 @@
   (map-merge
     'list
     '((desktop/dpi . 180)
+      (desktop/background . "samuel-ferrara-uOi3lg8fGl4-unsplash.jpg")
       (polybar/height . 35)
       (polybar/font-0-size . 18)
       (polybar/font-1-size . 14)

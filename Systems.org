@@ -289,6 +289,7 @@ Some settings need to be customized on a per-system basis without tweaking indiv
   (map-merge
     'list
     '((desktop/dpi . 180)
+      (desktop/background . "samuel-ferrara-uOi3lg8fGl4-unsplash.jpg")
       (polybar/height . 35)
       (polybar/font-0-size . 18)
       (polybar/font-1-size . 14)
@@ -668,6 +669,9 @@ cd ..
 
 # The heavy lifting is done by an Emacs script
 emacs -Q --script ./.emacs.d/tangle-dotfiles.el
+
+# Make sure any running Emacs instance gets updated settings
+emacsclient -e '(load-file "~/.emacs.d/per-system-settings.el")' -a "echo 'Emacs is not currently running'"
 
 #+end_src
 
