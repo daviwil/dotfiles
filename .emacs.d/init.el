@@ -340,6 +340,11 @@
   (doom-modeline-buffer-file-name-style 'truncate-except-project)
   (doom-modeline-major-mode-icon nil))
 
+(use-package alert
+  :commands alert
+  :config
+  (setq alert-default-style 'notifications))
+
 (use-package super-save
   :ensure t
   :defer 1
@@ -1425,6 +1430,11 @@
          typescript-mode
          js2-mode))
 
+;; TODO: Figure out how to query for 'done' bugs
+(defun dw/debbugs-guix-patches ()
+  (interactive)
+  (debbugs-gnu '("serious" "important" "normal") "guix-patches" nil t))
+
 (use-package know-your-http-well
   :defer t)
 
@@ -1910,16 +1920,6 @@
     "amp" '(emms-pause :which-key "play / pause")
     "amf" '(emms-play-file :which-key "play file")))
 
-;; (use-package counsel-spotify
-;;   :init
-;;   (setq counsel-spotify-client-id "9b50922412914b6cba8aa0c9d83b46f4")
-;;   (setq counsel-spotify-client-secret (password-store-get "API/Spotify/daviwil-emacs-secret")))
-
-(use-package alert
-  :commands alert
-  :config
-  (setq alert-default-style 'notifications))
-
 (use-package guix
   :defer t)
 
@@ -1965,11 +1965,6 @@
 (use-package docker-tramp
   :defer t
   :after docker)
-
-;; TODO: Figure out how to query for 'done' bugs
-(defun dw/debbugs-guix-patches ()
-  (interactive)
-  (debbugs-gnu '("serious" "important" "normal") "guix-patches" nil t))
 
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))

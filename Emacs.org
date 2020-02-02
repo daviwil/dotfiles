@@ -35,6 +35,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     -  [[#enable-mode-diminishing][Enable Mode Diminishing]]
     -  [[#smart-mode-line][Smart Mode Line]]
     -  [[#doom-modeline][Doom Modeline]]
+  -  [[#notifications][Notifications]]
   -  [[#auto-saving-changed-files][Auto-Saving Changed Files]]
   -  [[#auto-reverting-changed-files][Auto-Reverting Changed Files]]
   -  [[#ui-toggles][UI Toggles]]
@@ -116,6 +117,8 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     -  [[#smart-parens][Smart Parens]]
     -  [[#rainbow-delimiters][Rainbow Delimiters]]
     -  [[#rainbow-mode][Rainbow Mode]]
+  -  [[#tools][Tools]]
+    -  [[#debbugs-mainly-for-guix][Debbugs (mainly for Guix)]]
   -  [[#reference][Reference]]
     -  [[#http][HTTP]]
 -  [[#writing][Writing]]
@@ -144,13 +147,9 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
       -  [[#bindings][Bindings]]
       -  [[#reference][Reference]]
   -  [[#mastodon][Mastodon]]
-  -  [[#rss][RSS]]
-    -  [[#elfeed][Elfeed]]
+  -  [[#rss-with-elfeed][RSS with Elfeed]]
   -  [[#media][Media]]
     -  [[#emms][EMMS]]
-    -  [[#spotify][Spotify]]
--  [[#notifications][Notifications]]
-  -  [[#alert][Alert]]
 -  [[#system-utilities][System Utilities]]
   -  [[#guix][Guix]]
   -  [[#daemons][Daemons]]
@@ -158,8 +157,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   -  [[#bluetooth][Bluetooth]]
   -  [[#proced][Proced]]
   -  [[#docker][Docker]]
--  [[#miscellaneous][Miscellaneous]]
-  -  [[#debbugs-mainly-for-guix][Debbugs (mainly for Guix)]]
 -  [[#runtime-performance][Runtime Performance]]
 -  [[#emacs-profile][Emacs Profile]]
 -  [[#inspiration][Inspiration]]
@@ -835,6 +832,27 @@ anymore if I set up =diminish= correctly.
 "emacs-doom-modeline"
 "emacs-all-the-icons"
 "emacs-minions"
+
+#+end_src
+
+** Notifications
+
+[[https://github.com/jwiegley/alert][alert]] is a great library for showing notifications from other packages in a variety of ways.  For now I just use it to surface desktop notifications from package code.
+
+#+begin_src emacs-lisp
+
+  (use-package alert
+    :commands alert
+    :config
+    (setq alert-default-style 'notifications))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-alert"
 
 #+end_src
 
@@ -2761,6 +2779,19 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 #+end_src
 
+** Tools
+
+*** Debbugs (mainly for Guix)
+
+#+begin_src emacs-lisp
+
+;; TODO: Figure out how to query for 'done' bugs
+(defun dw/debbugs-guix-patches ()
+  (interactive)
+  (debbugs-gnu '("serious" "important" "normal") "guix-patches" nil t))
+
+#+end_src
+
 ** Reference
 
 *** HTTP
@@ -2998,8 +3029,7 @@ Here's some info on using [[https://hobo.house/2017/07/17/using-offlineimap-with
 
 ** Calendar
 
-[[https://github.com/kiwanami/emacs-calfw][calfw]] is a gorgeous calendar UI that is able to show all of my scheduled Org
-Agenda items.
+[[https://github.com/kiwanami/emacs-calfw][calfw]] is a gorgeous calendar UI that is able to show all of my scheduled Org Agenda items.
 
 #+begin_src emacs-lisp
 
@@ -3222,10 +3252,7 @@ Custom eshell commands will go here.
 
 *** Fish Completion
 
-This enhances eshell's completions with those that Fish is capable of and also
-falls back to any additional completions that are configured for Bash on the
-system.  The primary benefit here (for me) is getting completion for commits and
-branches in =git= commands.
+This enhances eshell's completions with those that Fish is capable of and also falls back to any additional completions that are configured for Bash on the system.  The primary benefit here (for me) is getting completion for commits and branches in =git= commands.
 
 #+begin_src emacs-lisp
 
@@ -3276,7 +3303,7 @@ branches in =git= commands.
 
 ** multi-term
 
-Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/][here]].
+Since I switched over to =eshell= I don't use =multi-term= as much anymore.  Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/][here]].
 
 #+begin_src emacs-lisp
 
@@ -3506,14 +3533,9 @@ features it provides.  The "static center" fill mode is really awesome.
 
 #+end_src
 
-** RSS
+** RSS with Elfeed
 
-*** Elfeed
-
-[[https://github.com/skeeto/elfeed][Elfeed]] looks like a great RSS feed reader.  Not using it much yet, but
-definitely looking forward to using it to keep track of a few different blogs I
-follow using Twitter.  Also seems to be great for following subreddits like
-/r/Emacs.
+[[https://github.com/skeeto/elfeed][Elfeed]] looks like a great RSS feed reader.  Not using it much yet, but definitely looking forward to using it to keep track of a few different blogs I follow using Twitter.  Also seems to be great for following subreddits like /r/Emacs.
 
 #+begin_src emacs-lisp
 
@@ -3563,42 +3585,6 @@ follow using Twitter.  Also seems to be great for following subreddits like
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
 "emacs-emms"
-
-#+end_src
-
-*** Spotify
-
-#+begin_src emacs-lisp
-
-  ;; (use-package counsel-spotify
-  ;;   :init
-  ;;   (setq counsel-spotify-client-id "9b50922412914b6cba8aa0c9d83b46f4")
-  ;;   (setq counsel-spotify-client-secret (password-store-get "API/Spotify/daviwil-emacs-secret")))
-
-#+end_src
-
-* Notifications
-
-** Alert
-
-[[https://github.com/jwiegley/alert][alert]] is a great library for showing notifications from other packages in a
-variety of ways.  I'd like to go deep in customization at some point soon, but
-for now I just use the normal notification bubbles.
-
-#+begin_src emacs-lisp
-
-  (use-package alert
-    :commands alert
-    :config
-    (setq alert-default-style 'notifications))
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-"emacs-alert"
 
 #+end_src
 
@@ -3717,19 +3703,6 @@ for now I just use the normal notification bubbles.
 "emacs-docker"
 "emacs-docker-tramp"
 "emacs-dockerfile-mode"
-
-#+end_src
-
-* Miscellaneous
-
-** Debbugs (mainly for Guix)
-
-#+begin_src emacs-lisp
-
-;; TODO: Figure out how to query for 'done' bugs
-(defun dw/debbugs-guix-patches ()
-  (interactive)
-  (debbugs-gnu '("serious" "important" "normal") "guix-patches" nil t))
 
 #+end_src
 

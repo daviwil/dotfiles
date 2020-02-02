@@ -25,6 +25,8 @@
    "emacs-all-the-icons"
    "emacs-minions"
    
+   "emacs-alert"
+   
    "emacs-pinentry"
    "pinentry-emacs"
    
@@ -155,8 +157,6 @@
    "emacs-elfeed"
    
    "emacs-emms"
-   
-   "emacs-alert"
    
    "emacs-guix"
    
