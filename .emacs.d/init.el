@@ -1454,12 +1454,13 @@
 ;; TODO: Move this check elsewhere
 (setq dw/mail-enabled (string-equal system-name "zerocool"))
 
-(when (and (eq system-type 'gnu/linux) dw/mail-enabled)
+(use-package mu4e
+  :if (and (eq system-type 'gnu/linux) dw/mail-enabled)
+  :config
   ;; After building/installing mu4e the .el files are here:
   ;;(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") ;; On Fedora
   ;;(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e") ;; On Manjaro / Arch
 
-  (require 'mu4e)
   (require 'org-mu4e)
   (setq mail-user-agent 'mu4e-user-agent)
 
@@ -1470,29 +1471,29 @@
 
   ;; Set up contexts for email accounts
   (setq mu4e-contexts
-   `(,(make-mu4e-context
-       :name "Fastmail"
-       :match-func (lambda (msg) (when msg
-         (string-prefix-p "/Fastmail" (mu4e-message-field msg :maildir))))
-       :vars '(
-         (user-full-name . "David Wilson")
-         (user-mail-address . "david@daviwil.com")
-         (mu4e-sent-folder . "/Fastmail/Sent Items")
-         (mu4e-trash-folder . "/Fastmail/Trash")
-         (mu4e-drafts-folder . "/Fastmail/Drafts")
-         (mu4e-refile-folder . "/Fastmail/Archive")
-         (mu4e-sent-messages-behavior . sent)
-         ))
-     ,(make-mu4e-context
-       :name "Personal"
-       :match-func (lambda (msg) (when msg
-         (string-prefix-p "/Personal" (mu4e-message-field msg :maildir))))
-       :vars '(
-         (mu4e-sent-folder . "/Personal/Sent")
-         (mu4e-trash-folder . "/Personal/Deleted")
-         (mu4e-refile-folder . "/Personal/Archive")
-         ))
-     ))
+        `(,(make-mu4e-context
+            :name "Fastmail"
+            :match-func (lambda (msg) (when msg
+                                        (string-prefix-p "/Fastmail" (mu4e-message-field msg :maildir))))
+            :vars '(
+                    (user-full-name . "David Wilson")
+                    (user-mail-address . "david@daviwil.com")
+                    (mu4e-sent-folder . "/Fastmail/Sent Items")
+                    (mu4e-trash-folder . "/Fastmail/Trash")
+                    (mu4e-drafts-folder . "/Fastmail/Drafts")
+                    (mu4e-refile-folder . "/Fastmail/Archive")
+                    (mu4e-sent-messages-behavior . sent)
+                    ))
+          ,(make-mu4e-context
+            :name "Personal"
+            :match-func (lambda (msg) (when msg
+                                        (string-prefix-p "/Personal" (mu4e-message-field msg :maildir))))
+            :vars '(
+                    (mu4e-sent-folder . "/Personal/Sent")
+                    (mu4e-trash-folder . "/Personal/Deleted")
+                    (mu4e-refile-folder . "/Personal/Archive")
+                    ))
+          ))
   (setq mu4e-context-policy 'pick-first)
 
   ;; Prevent mu4e from permanently deleting trashed items
@@ -1505,13 +1506,13 @@
         list)))
   (setq mu4e-marks (remove-nth-element 5 mu4e-marks))
   (add-to-list 'mu4e-marks
-       '(trash
-         :char ("d" . "▼")
-         :prompt "dtrash"
-         :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
-         :action (lambda (docid msg target)
-                   (mu4e~proc-move docid
-                      (mu4e~mark-check-target target) "-N"))))
+               '(trash
+                 :char ("d" . "▼")
+                 :prompt "dtrash"
+                 :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
+                 :action (lambda (docid msg target)
+                           (mu4e~proc-move docid
+                                           (mu4e~mark-check-target target) "-N"))))
 
   ;; Display options
   (setq mu4e-view-show-images t)
@@ -1538,22 +1539,22 @@
   ;; then, when you want archive some messages, move them to
   ;; the 'All Mail' folder by pressing ``ma''.
   (setq mu4e-maildir-shortcuts
-      '( ("/INBOX"       . ?i)
-         ("/Sent Mail"   . ?s)
-         ("/Trash"       . ?t)
-         ("/All Mail"    . ?a)))
+        '( ("/INBOX"       . ?i)
+           ("/Sent Mail"   . ?s)
+           ("/Trash"       . ?t)
+           ("/All Mail"    . ?a)))
 
   (add-to-list 'mu4e-bookmarks
-         (make-mu4e-bookmark
-          :name "All Inboxes"
-          :query "maildir:/Fastmail/INBOX OR maildir:/Personal/Inbox"
-          :key ?i))
+               (make-mu4e-bookmark
+                :name "All Inboxes"
+                :query "maildir:/Fastmail/INBOX OR maildir:/Personal/Inbox"
+                :key ?i))
 
   ;; don't keep message buffers around
   (setq message-kill-buffer-on-exit t)
 
   (setq dw/mu4e-inbox-query
-      "(maildir:/Personal/Inbox OR maildir:/Fastmail/INBOX) AND flag:unread")
+        "(maildir:/Personal/Inbox OR maildir:/Fastmail/INBOX) AND flag:unread")
 
   (defun dw/go-to-inbox ()
     (interactive)
@@ -1566,18 +1567,21 @@
     "ms" 'mu4e-update-mail-and-index)
 
   ;; Start mu4e in the background so that it syncs mail periodically
-  (let ((current-prefix-arg '(4))) (call-interactively 'mu4e)))
+  (run-at-time "10 sec" nil
+               (lambda ()
+                 (let ((current-prefix-arg '(4)))
+                   (call-interactively 'mu4e)))))
 
-(when (and (eq system-type 'gnu/linux) dw/mail-enabled)
-  (use-package mu4e-alert
-    :config
-    ;; Use Emacs' built-in notifier
-    (mu4e-alert-set-default-style 'notifications)
+(use-package mu4e-alert
+  :after mu4e
+  :config
+  ;; Use Emacs' built-in notifier
+  (mu4e-alert-set-default-style 'notifications)
 
-    ;; Show unread emails from all inboxes
-    (setq mu4e-alert-interesting-mail-query dw/mu4e-inbox-query)
+  ;; Show unread emails from all inboxes
+  (setq mu4e-alert-interesting-mail-query dw/mu4e-inbox-query)
 
-    (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)))
+  (add-hook 'after-init-hook #'mu4e-alert-enable-notifications))
 
 (use-package calfw
   :disabled
