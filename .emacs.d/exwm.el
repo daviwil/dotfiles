@@ -123,7 +123,7 @@
 
 (defun dw/update-wallpapers ()
   (interactive)
-  (start-process-shell-command "feh" nil "feh --bg-scale ~/.dotfiles/backgrounds/mountains-1412683.jpg"))
+  (start-process-shell-command "feh" nil "feh --bg-scale ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg"))
 
 (setq dw/panel-process nil)
 (defun dw/kill-panel ()

@@ -277,46 +277,46 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 #+begin_src emacs-lisp :tangle .emacs.d/exwm.el
 
-  (defun dw/run-xmodmap ()
-    (interactive)
-    (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/.config/i3/Xmodmap"))
+(defun dw/run-xmodmap ()
+  (interactive)
+  (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/.config/i3/Xmodmap"))
 
-  (defun dw/update-wallpapers ()
-    (interactive)
-    (start-process-shell-command "feh" nil "feh --bg-scale ~/.dotfiles/backgrounds/mountains-1412683.jpg"))
+(defun dw/update-wallpapers ()
+  (interactive)
+  (start-process-shell-command "feh" nil "feh --bg-scale ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg"))
 
-  (setq dw/panel-process nil)
-  (defun dw/kill-panel ()
-    (interactive)
-    (when dw/panel-process
-      (ignore-errors
-        (kill-process dw/panel-process)))
-    (setq dw/panel-process nil))
+(setq dw/panel-process nil)
+(defun dw/kill-panel ()
+  (interactive)
+  (when dw/panel-process
+    (ignore-errors
+      (kill-process dw/panel-process)))
+  (setq dw/panel-process nil))
 
-  (defun dw/start-panel ()
-    (interactive)
-    (dw/kill-panel)
-    (setq dw/panel-process (start-process-shell-command "polybar" nil "polybar panel")))
+(defun dw/start-panel ()
+  (interactive)
+  (dw/kill-panel)
+  (setq dw/panel-process (start-process-shell-command "polybar" nil "polybar panel")))
 
-  (defun dw/update-screen-layout ()
-    (interactive)
-    (let ((layout-script "~/.bin/update-screens"))
-       (message "Running screen layout script: %s" layout-script)
-       (start-process-shell-command "xrandr" nil layout-script)))
+(defun dw/update-screen-layout ()
+  (interactive)
+  (let ((layout-script "~/.bin/update-screens"))
+     (message "Running screen layout script: %s" layout-script)
+     (start-process-shell-command "xrandr" nil layout-script)))
 
-  (defun dw/configure-desktop ()
-    (interactive)
-      (dw/run-xmodmap)
-      (dw/update-screen-layout)
-      (run-at-time "2 sec" nil (lambda () (dw/update-wallpapers))))
+(defun dw/configure-desktop ()
+  (interactive)
+    (dw/run-xmodmap)
+    (dw/update-screen-layout)
+    (run-at-time "2 sec" nil (lambda () (dw/update-wallpapers))))
 
-  (defun dw/on-exwm-init ()
-    (dw/configure-desktop)
-    (dw/start-panel))
+(defun dw/on-exwm-init ()
+  (dw/configure-desktop)
+  (dw/start-panel))
 
-  (when dw/exwm-enabled
-    ;; Configure the desktop for first load
-    (add-hook 'exwm-init-hook #'dw/on-exwm-init))
+(when dw/exwm-enabled
+  ;; Configure the desktop for first load
+  (add-hook 'exwm-init-hook #'dw/on-exwm-init))
 
 #+end_src
 
