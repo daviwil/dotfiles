@@ -20,6 +20,7 @@ This file contains configuration for my overall desktop environment.  My workflo
 -  [[#panel-via-polybar][Panel via Polybar]]
 -  [[#desktop-notifications-via-dunst][Desktop Notifications via Dunst]]
 -  [[#display-management][Display Management]]
+-  [[#user-services][User Services]]
 -  [[#applications][Applications]]
   -  [[#browsers][Browsers]]
     -  [[#vimb][vimb]]
@@ -943,6 +944,41 @@ esac
 
 #+end_src
 
+* User Services
+
+I use [[https://www.gnu.org/software/shepherd/][GNU Shepherd]] to manage services that run in the background when I log in.
+
+#+begin_src scheme :tangle .config/shepherd/init.scm
+
+(define gpg-agent
+  (make <service>
+    #:provides '(gpg-agent)
+    #:respawn? #t
+    #:start (make-system-constructor "gpg-connect-agent /bye")
+    #:stop (make-system-destructor "gpgconf --kill gpg-agent")))
+
+(define syncthing
+  (make <service>
+    #:provides '(syncthing)
+    #:respawn? #t
+    #:start (make-forkexec-constructor '("syncthing" "-no-browser"))
+    #:stop  (make-kill-destructor)))
+
+(define pulseaudio
+  (make <service>
+    #:provides '(pulseaudio)
+    #:respawn? #t
+    #:start (make-forkexec-constructor '("pulseaudio"))
+    #:stop  (make-kill-destructor)))
+
+(register-services gpg-agent syncthing pulseaudio)
+(action 'shepherd 'daemonize)
+
+;; Start user services
+(for-each start '(gpg-agent syncthing pulseaudio))
+
+#+end_src
+
 * Applications
 
 ** Browsers
@@ -1253,7 +1289,6 @@ flatpak install flathub com.discordapp.Discord
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-;; System Tools
 "openssh"
 "zip"
 "unzip"

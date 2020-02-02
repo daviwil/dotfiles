@@ -1,5 +1,3 @@
-;; init.scm -- default shepherd configuration file.
-
 (define gpg-agent
   (make <service>
     #:provides '(gpg-agent)
@@ -21,15 +19,8 @@
     #:start (make-forkexec-constructor '("pulseaudio"))
     #:stop  (make-kill-destructor)))
 
-;; Services known to shepherd:
-;; Add new services (defined using 'make <service>') to shepherd here by
-;; providing them as arguments to 'register-services'.
 (register-services gpg-agent syncthing pulseaudio)
-
-;; Send shepherd into the background
 (action 'shepherd 'daemonize)
 
-;; Services to start when shepherd starts:
-;; Add the name of each service that should be started to the list
-;; below passed to 'for-each'.
+;; Start user services
 (for-each start '(gpg-agent syncthing pulseaudio))

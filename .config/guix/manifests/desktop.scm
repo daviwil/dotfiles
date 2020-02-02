@@ -75,7 +75,6 @@
    "glib:bin"      ;; For gio-launch-desktop
    "shared-mime-info"
    
-   ;; System Tools
    "openssh"
    "zip"
    "unzip"
