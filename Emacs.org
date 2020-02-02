@@ -150,7 +150,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     -  [[#spotify][Spotify]]
 -  [[#notifications][Notifications]]
   -  [[#alert][Alert]]
-  -  [[#sauron][Sauron]]
 -  [[#system-utilities][System Utilities]]
   -  [[#guix][Guix]]
   -  [[#daemons][Daemons]]
@@ -162,7 +161,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 -  [[#miscellaneous][Miscellaneous]]
   -  [[#debbugs-mainly-for-guix][Debbugs (mainly for Guix)]]
   -  [[#emojification][Emojification]]
-  -  [[#dashboard][Dashboard]]
 -  [[#runtime-performance][Runtime Performance]]
 -  [[#emacs-profile][Emacs Profile]]
 -  [[#inspiration][Inspiration]]
@@ -3587,29 +3585,6 @@ for now I just use the normal notification bubbles.
 
 #+end_src
 
-** Sauron
-
-Sauron provides a nice interactive event log that shows you notifications you
-might have missed in the past.  I'd like to have a way to be more aware of any
-notifications I haven't seen yet, like a modeline indicator.  Probably some way
-to set that up.
-
-#+begin_src emacs-lisp
-
-  (use-package sauron
-    :disabled
-    :custom
-    (sauron-modules
-      '(sauron-erc sauron-org sauron-notifications
-        sauron-mu4e sauron-elfeed))
-    :config
-    (setq sauron-separate-frame nil)
-    (sauron-start-hidden)
-    (dw/leader-key-def
-      "an"  '(sauron-pop-to-buffer :which-key "notifications")))
-
-#+end_src
-
 * System Utilities
 
 ** Guix
@@ -3778,25 +3753,6 @@ to set that up.
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
 "emacs-emojify"
-
-#+end_src
-
-** Dashboard
-
-Displays a nice list of recent files and projects on startup.
-
-#+begin_src emacs-lisp
-
-  (use-package dashboard
-    :disabled
-    :config
-      (dashboard-setup-startup-hook)
-      (setq dashboard-items '((agenda   . 5)
-                              (recents  . 5)
-                              (projects . 3)))
-      (setq dashboard-banner-logo-title ""
-            dashboard-startup-banner "~/.dotfiles/emacs/images/flux_banner.png"
-            dashboard-image-banner-max-height 500))
 
 #+end_src
 

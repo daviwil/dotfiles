@@ -1916,18 +1916,6 @@
   :config
   (setq alert-default-style 'notifications))
 
-(use-package sauron
-  :disabled
-  :custom
-  (sauron-modules
-    '(sauron-erc sauron-org sauron-notifications
-      sauron-mu4e sauron-elfeed))
-  :config
-  (setq sauron-separate-frame nil)
-  (sauron-start-hidden)
-  (dw/leader-key-def
-    "an"  '(sauron-pop-to-buffer :which-key "notifications")))
-
 (use-package guix
   :defer t)
 
@@ -1991,17 +1979,6 @@
 (use-package emojify
   :hook (erc-mode . emojify-mode)
   :commands emojify-mode)
-
-(use-package dashboard
-  :disabled
-  :config
-    (dashboard-setup-startup-hook)
-    (setq dashboard-items '((agenda   . 5)
-                            (recents  . 5)
-                            (projects . 3)))
-    (setq dashboard-banner-logo-title ""
-          dashboard-startup-banner "~/.dotfiles/emacs/images/flux_banner.png"
-          dashboard-image-banner-max-height 500))
 
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
