@@ -7,7 +7,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 :PROPERTIES:
 :TOC:      this
 :END:
--  [[#future-work][Future Work]]
 -  [[#startup-performance][Startup Performance]]
 -  [[#system-checks][System Checks]]
 -  [[#keep-emacsd-clean][Keep .emacs.d Clean]]
@@ -160,17 +159,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 -  [[#runtime-performance][Runtime Performance]]
 -  [[#emacs-profile][Emacs Profile]]
 -  [[#inspiration][Inspiration]]
-
-* Future Work
-:PROPERTIES:
-:TOC: 0
-:END:
-
-Here is a list of things I want to investigate for future inclusion:
-
-** TODO Use variables and tables to write out values that can be consumed by other blocks
-
-For example, font size and DPI settings could be stored together in Systems.org and then referenced in other Org files so that configuration files can be updated on a per-machine basis.
 
 * Startup Performance
 
