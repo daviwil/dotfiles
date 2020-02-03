@@ -174,21 +174,11 @@ type = internal/temperature
 thermal-zone = 0
 warn-temperature = 60
 
-format = <label> <ramp>
+format = <label>
 format-underline = ${colors.underline-1}
-format-warn = <label-warn> <ramp>
+format-warn = <label-warn>
 format-warn-underline = ${self.format-underline}
 
 label = %temperature-c%
 label-warn = %temperature-c%!
 label-warn-foreground = ${colors.secondary}
-
-ramp-0 = ▁
-ramp-0-foreground = ${colors.foreground-alt}
-ramp-1 = ▂
-ramp-2 = ▃
-ramp-3 = ▄
-ramp-4 = ▅
-ramp-5 = ▆
-ramp-6 = ▇
-ramp-foreground = ${colors.foreground-alt}
