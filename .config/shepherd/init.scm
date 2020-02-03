@@ -5,6 +5,13 @@
     #:start (make-system-constructor "gpg-connect-agent /bye")
     #:stop (make-system-destructor "gpgconf --kill gpg-agent")))
 
+(define mcron
+  (make <service>
+    #:provides '(mcron)
+    #:respawn? #t
+    #:start (make-forkexec-constructor '("mcron"))
+    #:stop  (make-kill-destructor)))
+
 (define syncthing
   (make <service>
     #:provides '(syncthing)
@@ -19,8 +26,8 @@
     #:start (make-forkexec-constructor '("pulseaudio"))
     #:stop  (make-kill-destructor)))
 
-(register-services gpg-agent syncthing pulseaudio)
+(register-services gpg-agent mcron syncthing pulseaudio)
 (action 'shepherd 'daemonize)
 
 ;; Start user services
-(for-each start '(gpg-agent syncthing pulseaudio))
+(for-each start '(gpg-agent mcron syncthing pulseaudio))

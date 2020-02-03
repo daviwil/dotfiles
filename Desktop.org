@@ -21,11 +21,13 @@ This file contains configuration for my overall desktop environment.  My workflo
 -  [[#desktop-notifications-via-dunst][Desktop Notifications via Dunst]]
 -  [[#display-management][Display Management]]
 -  [[#user-services][User Services]]
+-  [[#scheduled-tasks][Scheduled Tasks]]
 -  [[#applications][Applications]]
   -  [[#browsers][Browsers]]
     -  [[#vimb][vimb]]
   -  [[#mail][Mail]]
   -  [[#password-management][Password Management]]
+    -  [[#syncing-passwords][Syncing Passwords]]
   -  [[#audio-device-control][Audio Device Control]]
   -  [[#media-players][Media Players]]
     -  [[#mpv][mpv]]
@@ -832,7 +834,7 @@ fi
     max_icon_size = <<get-setting(name="dunst/max-icon-size")>>
 
     # Paths to default icons.
-    icon_path = /home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/48x48/status/:/home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/48x48/devices/
+    icon_path = /home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/256x256/status/:/home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/256x256/devices/:/home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/256x256/emblems/
 
     ### History ###
 
@@ -979,6 +981,13 @@ I use [[https://www.gnu.org/software/shepherd/][GNU Shepherd]] to manage service
     #:start (make-system-constructor "gpg-connect-agent /bye")
     #:stop (make-system-destructor "gpgconf --kill gpg-agent")))
 
+(define mcron
+  (make <service>
+    #:provides '(mcron)
+    #:respawn? #t
+    #:start (make-forkexec-constructor '("mcron"))
+    #:stop  (make-kill-destructor)))
+
 (define syncthing
   (make <service>
     #:provides '(syncthing)
@@ -993,11 +1002,33 @@ I use [[https://www.gnu.org/software/shepherd/][GNU Shepherd]] to manage service
     #:start (make-forkexec-constructor '("pulseaudio"))
     #:stop  (make-kill-destructor)))
 
-(register-services gpg-agent syncthing pulseaudio)
+(register-services gpg-agent mcron syncthing pulseaudio)
 (action 'shepherd 'daemonize)
 
 ;; Start user services
-(for-each start '(gpg-agent syncthing pulseaudio))
+(for-each start '(gpg-agent mcron syncthing pulseaudio))
+
+#+end_src
+
+* Scheduled Tasks
+
+I use [[https://www.gnu.org/software/mcron/][GNU mcron]] for scheduling tasks to run periodically in the background.
+
+*Syncing Passwords*
+
+#+begin_src scheme :tangle .config/cron/pass-sync.guile
+
+(job
+   '(next-minute (range 0 60 15))
+   "~/.bin/sync-passwords")
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"mcron"
 
 #+end_src
 
@@ -1124,6 +1155,17 @@ shortcut-add man=https://fanglingsu.github.io/vimb/man.html
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
 "password-store"
+
+#+end_src
+
+*** Syncing Passwords
+
+#+begin_src sh :tangle .bin/sync-passwords :shebang #!/bin/sh
+
+pass git pull
+pass git push
+
+notify-send -i "emblem-synchronizing" "Passwords synced!"
 
 #+end_src
 

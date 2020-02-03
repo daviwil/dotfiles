@@ -11,7 +11,7 @@
       (polybar/font-2-size . 20)
       (polybar/font-3-size . 13)
       (dunst/font-size . 20)
-      (dunst/max-icon-size . 64)
+      (dunst/max-icon-size . 88)
       (vimb/default-zoom . 180))
     
     (when (equal system-name "zerocool"))

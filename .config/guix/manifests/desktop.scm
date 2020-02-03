@@ -28,6 +28,8 @@
    
    "dunst"
    
+   "mcron"
+   
    "vimb"
    
    "mu"

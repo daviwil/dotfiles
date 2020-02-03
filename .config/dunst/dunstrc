@@ -103,10 +103,10 @@
     icon_position = left
 
     # Scale larger icons down to this size, set to 0 to disable
-    max_icon_size = 64
+    max_icon_size = 88
 
     # Paths to default icons.
-    icon_path = /home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/48x48/status/:/home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/48x48/devices/
+    icon_path = /home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/256x256/status/:/home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/256x256/devices/:/home/daviwil/.guix-extra-profiles/desktop/desktop/share/icons/gnome/256x256/emblems/
 
     ### History ###
 

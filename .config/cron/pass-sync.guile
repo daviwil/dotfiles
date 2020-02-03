@@ -1,0 +1,3 @@
+(job
+   '(next-minute (range 0 60 15))
+   "~/.bin/sync-passwords")
