@@ -10,6 +10,8 @@
                               (time-subtract after-init-time before-init-time)))
                      gcs-done)))
 
+(load-file "~/.emacs.d/per-system-settings.el")
+
 (require 'subr-x)
 (setq dw/is-termux
       (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))

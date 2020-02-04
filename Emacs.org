@@ -8,7 +8,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 :TOC:      this
 :END:
 -  [[#startup-performance][Startup Performance]]
--  [[#system-checks][System Checks]]
+-  [[#system-settings][System Settings]]
 -  [[#keep-emacsd-clean][Keep .emacs.d Clean]]
 -  [[#package-management][Package Management]]
 -  [[#update-load-path][Update Load Path]]
@@ -180,11 +180,13 @@ Make startup faster by reducing the frequency of garbage collection and then use
 
 #+end_src
 
-* System Checks
+* System Settings
 
-Some parts of the configuration require knowledge of whether Emacs is running on a Guix system or in Termux on Android.
+Some parts of the configuration require knowledge of whether Emacs is running on a Guix system or in Termux on Android.  Also load system-specific settings from =per-system-settings.el=.
 
 #+begin_src emacs-lisp
+
+(load-file "~/.emacs.d/per-system-settings.el")
 
 (require 'subr-x)
 (setq dw/is-termux

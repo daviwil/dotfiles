@@ -64,6 +64,7 @@ nmap = zz
 
 # Shortcuts
 shortcut-add dot=https://github.com/daviwil/dotfiles
+shortcut-add ddg=https://duckduckgo.com/?q=$0
 shortcut-add mail=https://fastmail.com
 shortcut-add cups=http://localhost:631
 shortcut-add az=https://portal.azure.com
@@ -76,6 +77,7 @@ shortcut-add apy=https://github.com/Azure/azure-sdk-for-python
 shortcut-add ats=https://github.com/Azure/autorest.typescript
 shortcut-add ats3=https://github.com/Azure/autorest.typescript.v3
 shortcut-add amf=https://github.com/Azure/autorest.modelerfour
+shortcut-add ar=https://github.com/Azure/autorest
 shortcut-add ac=https://github.com/Azure/autorest.compare
 shortcut-add specs=https://github.com/Azure/azure-rest-api-specs
 shortcut-add npm=https://www.npmjs.com/search?q=$0
