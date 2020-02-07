@@ -1036,12 +1036,12 @@
 
 (use-package org-pomodoro
   :after org
-  :commands org-pomodoro
   :config
   (setq org-pomodoro-start-sound "~/.emacs.d/sounds/focus_bell.wav")
   (setq org-pomodoro-short-break-sound "~/.emacs.d/sounds/three_beeps.wav")
   (setq org-pomodoro-long-break-sound "~/.emacs.d/sounds/three_beeps.wav")
   (setq org-pomodoro-finished-sound "~/.emacs.d/sounds/meditation_bell.wav")
+
   (dw/leader-key-def
     "op"  '(org-pomodoro :which-key "pomodoro")))
 
