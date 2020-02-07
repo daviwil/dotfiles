@@ -1,7 +1,7 @@
-alias e find-file $*
-alias edit find-file $*
-alias vim find-file $*
-alias d dired $*
+alias e find-file $1
+alias edit find-file $1
+alias vim find-file $1
+alias d dired $1
 alias gs magit-status-here
 alias gd magit-diff-unstaged
 alias sd sync-dotfiles
