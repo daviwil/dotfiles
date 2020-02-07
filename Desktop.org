@@ -1055,6 +1055,9 @@ set smooth-scrolling=true
 #set user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36
 set header=User-Agent='Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Firefox/70.0'
 
+# Set download directory
+set download-path=~/Downloads
+
 # If enabled the inputbox will be hidden whenever it contains no text
 set input-autohide=true
 
@@ -1120,6 +1123,7 @@ shortcut-add ats3=https://github.com/Azure/autorest.typescript.v3
 shortcut-add amf=https://github.com/Azure/autorest.modelerfour
 shortcut-add ar=https://github.com/Azure/autorest
 shortcut-add ac=https://github.com/Azure/autorest.compare
+shortcut-add ap=https://github.com/Azure/perks
 shortcut-add specs=https://github.com/Azure/azure-rest-api-specs
 shortcut-add npm=https://www.npmjs.com/search?q=$0
 shortcut-add oms=https://outlook.com/microsoft.com
