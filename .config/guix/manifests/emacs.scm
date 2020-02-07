@@ -66,6 +66,8 @@
    
    "emacs-org-pomodoro"
    
+   "emacs-evil-org"
+   
    "emacs-org-make-toc"
    
    "emacs-org-caldav"

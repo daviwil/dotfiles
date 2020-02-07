@@ -1978,19 +1978,36 @@ through =emacsclient.=
 
 #+begin_src emacs-lisp
 
-  (dw/leader-key-def
-    "o"   '(:ignore t :which-key "org mode")
+(use-package evil-org
+  :after org
+  :hook ((org-mode . evil-org-mode)
+         (org-agenda-mode . evil-org-mode)
+         (evil-org-mode . (lambda () (evil-org-set-key-theme '(navigation todo insert textobjects additional)))))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
 
-    "oi"  '(:ignore t :which-key "insert")
-    "oil" '(org-insert-link :which-key "insert link")
+(dw/leader-key-def
+  "o"   '(:ignore t :which-key "org mode")
 
-    "on"  '(org-toggle-narrow-to-subtree :which-key "toggle narrow")
+  "oi"  '(:ignore t :which-key "insert")
+  "oil" '(org-insert-link :which-key "insert link")
 
-    "os"  '(dw/counsel-rg-org-files :which-key "search notes")
+  "on"  '(org-toggle-narrow-to-subtree :which-key "toggle narrow")
 
-    "oa"  '(org-agenda :which-key "status")
-    "oc"  '(org-capture t :which-key "capture")
-    "ox"  '(org-export-dispatch t :which-key "export"))
+  "os"  '(dw/counsel-rg-org-files :which-key "search notes")
+
+  "oa"  '(org-agenda :which-key "status")
+  "oc"  '(org-capture t :which-key "capture")
+  "ox"  '(org-export-dispatch t :which-key "export"))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-evil-org"
 
 #+end_src
 
