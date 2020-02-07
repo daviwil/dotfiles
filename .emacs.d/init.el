@@ -569,7 +569,7 @@
 (dw/leader-key-def
   "b"   '(:ignore t :which-key "buffers")
   "bb"  'counsel-switch-buffer
-  "bd"  'evil-delete-buffer)
+  "bd"  'bury-buffer)
 
 (use-package default-text-scale
   :defer 1

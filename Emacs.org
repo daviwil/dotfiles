@@ -1250,7 +1250,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
   (dw/leader-key-def
     "b"   '(:ignore t :which-key "buffers")
     "bb"  'counsel-switch-buffer
-    "bd"  'evil-delete-buffer)
+    "bd"  'bury-buffer)
 
 #+end_src
 
