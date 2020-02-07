@@ -8,5 +8,6 @@
    "icedtea"
    "gcc-toolchain"
    "make"
-   "curl"))
+   "curl"
+   "virt-manager"))
    ;; "glibc" ;; For ldd

@@ -9,6 +9,7 @@
   #:use-module (gnu services desktop)
   #:use-module (gnu services docker)
   #:use-module (gnu services networking)
+  #:use-module (gnu services virtualization)
   #:use-module (gnu packages wm)
   #:use-module (gnu packages cups)
   #:use-module (gnu packages vim)
@@ -162,6 +163,10 @@ EndSection
                       (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
                     (service thermald-service-type)
                     (service docker-service-type)
+                    (service libvirt-service-type
+                             (libvirt-configuration
+                              (unix-sock-group "libvirt")
+                              (tls-port "16555")))
                     (service cups-service-type
                              (cups-configuration
                                (web-interface? #t)
