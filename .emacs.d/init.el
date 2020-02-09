@@ -743,7 +743,7 @@
         org-hide-block-startup nil
         org-src-preserve-indentation nil
         org-startup-folded 'content
-        org-cycle-separator-lines 1)
+        org-cycle-separator-lines 2)
 
   (setq org-modules
     '(org-crypt
@@ -771,6 +771,8 @@
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
 
   ;; NOTE: Subsequent sections are still part of this use-package block!
+
+(require 'dw-org)
 
 ;; Since we don't want to disable org-confirm-babel-evaluate all
 ;; of the time, do it around the after-save-hook

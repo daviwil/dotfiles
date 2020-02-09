@@ -347,7 +347,6 @@ Despite the code being in Desktop.org, include the emacs packages for the deskto
 
 #+end_src
 
-
 * Keyboard Bindings
 
 ** ESC Cancels All
@@ -1552,7 +1551,7 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
         org-hide-block-startup nil
         org-src-preserve-indentation nil
         org-startup-folded 'content
-        org-cycle-separator-lines 1)
+        org-cycle-separator-lines 2)
 
   (setq org-modules
     '(org-crypt
@@ -1589,6 +1588,14 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
 
 "emacs-org"
 "emacs-org-contrib"
+
+#+end_src
+
+** Weekly Planning
+
+#+begin_src emacs-lisp
+
+(require 'dw-org)
 
 #+end_src
 

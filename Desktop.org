@@ -619,7 +619,7 @@ label = %percentage_used%%
 type = internal/date
 interval = 5
 
-date = "%a %b %e"
+date = "W%U: %a %b %e"
 date-alt = "%A %B %d %Y"
 
 time = %l:%M %p
