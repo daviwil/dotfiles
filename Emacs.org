@@ -68,6 +68,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   -  [[#opening-files-externally][Opening Files Externally]]
 -  [[#org-mode][Org Mode]]
   -  [[#org-configuration][Org Configuration]]
+  -  [[#weekly-planning][Weekly Planning]]
   -  [[#automatically-tangle-on-save][Automatically "Tangle" on Save]]
   -  [[#fonts-and-bullets][Fonts and Bullets]]
   -  [[#org-file-paths][Org File Paths]]
