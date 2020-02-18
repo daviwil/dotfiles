@@ -1049,7 +1049,7 @@
 
 (require 'org-protocol)
 
-(defun dw/counsel-rg-org-files ()
+(defun dw/search-org-files ()
   (interactive)
   (counsel-rg "" "~/Notes" nil "Search Notes: "))
 
