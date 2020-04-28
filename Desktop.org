@@ -1010,7 +1010,7 @@ I use [[https://www.gnu.org/software/mcron/][GNU mcron]] for scheduling tasks to
 #+begin_src scheme :tangle .config/cron/pass-sync.guile
 
 (job
-   '(next-minute (range 0 60 15))
+   '(next-hour (range 0 24 4))
    "~/.bin/sync-passwords")
 
 #+end_src
