@@ -11,6 +11,7 @@
    ;; DAWs
    "ardour"
    "qtractor"
+   "zrythm"
 
    ;; Guitar
    "guitarix"
@@ -19,9 +20,15 @@
    ;; Effects
    "calf"
    "g2reverb"
+   "dragonfly-reverb"
+   "wolf-shaper"
 
    ;; Synths
    "helm"
    "amsynth"
    "avldrums-lv2"
-   "zynaddsubfx"))
+   "geonkick"
+   "zynaddsubfx"
+
+   ;; Mixing Tools
+   "wolf-spectrum"))
