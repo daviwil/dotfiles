@@ -46,8 +46,8 @@
   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
 (package-initialize)
-;(unless package-archive-contents
-;  (package-refresh-contents))
+;; (unless package-archive-contents
+;;   (package-refresh-contents))
 
 ;; Initialize use-package on non-Linux platforms
 (unless (or (package-installed-p 'use-package)
@@ -501,9 +501,9 @@
                      :predicate
                      (lambda (cand)
                        (if-let ((buffer (get-buffer cand)))
-                         ;; Don't mess with EXWM buffers
-                         (with-current-buffer buffer
-                           (not (derived-mode-p 'exwm-mode)))))))))
+                           ;; Don't mess with EXWM buffers
+                           (with-current-buffer buffer
+                             (not (derived-mode-p 'exwm-mode)))))))))
 
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
@@ -523,14 +523,16 @@
   :defer 1
   :after counsel)
 
-(use-package ivy-posframe
-  :ensure t
-  :config
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
-  (setq ivy-posframe-parameters '((parent-frame . nil)
-                                  (left-fringe . 8)
-                                  (right-fringe . 8)))
-  (ivy-posframe-mode 1))
+(use-package wgrep)
+
+;; (use-package ivy-posframe
+;;   :ensure t
+;;   :config
+;;   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+;;   (setq ivy-posframe-parameters '((parent-frame . nil)
+;;                                   (left-fringe . 8)
+;;                                   (right-fringe . 8)))
+;;   (ivy-posframe-mode 1))
 
 (dw/leader-key-def
   "r"   '(ivy-resume :which-key "ivy resume")
@@ -1338,6 +1340,10 @@
   :disabled
   :mode "\\.lisp\\'")
 
+;; Include .sld library definition files
+(use-package scheme-mode
+  :mode "\\.sld\\'")
+
 (use-package nvm
   :defer t)
 
@@ -1399,7 +1405,23 @@
   :keymaps '(visual)
   "er" '(eval-region :which-key "eval region"))
 
-(setq geiser-default-implementation 'guile)
+(use-package geiser
+  :ensure t
+  :bind (:map geiser-mode-map
+         ("TAB" . completion-at-point))
+  :config
+  ;; (setq geiser-gambit-binary "/home/daviwil/Projects/Code/gambit/gsi/gsi")
+  (setq geiser-default-implementation 'gambit)
+  (setq geiser-active-implementations '(gambit guile)))
+  (setq geiser-repl-default-port 44555) ; For Gambit Scheme
+  (setq geiser-implementations-alist '(((regexp "\\.scm$") gambit)
+                                       ((regexp "\\.sld") gambit))
+
+;; (defun geiser-gambit--parameters ()
+;;   "Return a list with all parameters needed to start Gambit Scheme."
+;;   ;; if your version of gambit support modules we directly load geiser module
+;;   ;; else we go load the file in geiser
+;;   `("-:~~lib=/home/daviwil/Projects/Code/gambit/lib,~~bin=/home/daviwil/Projects/Code/gambit/bin,d-" ,(expand-file-name "gambit/geiser/gambit.scm" geiser-scheme-dir) "-"))
 
 (use-package markdown-mode
   :pin melpa-stable

@@ -40,6 +40,7 @@
    "emacs-ivy-rich"
    "emacs-flx"
    "emacs-smex"
+   "emacs-wgrep"
    
    "emacs-avy"
    
@@ -105,7 +106,11 @@
    
    "emacs-rust-mode"
    
+   "emacs-tuareg"
+   
    "emacs-helpful"
+   
+   "emacs-geiser"
    
    "emacs-markdown-mode"
    
