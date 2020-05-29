@@ -71,10 +71,12 @@
    "compton"
    "redshift"
    "gucharmap"
+   "fontmanager"
    "brightnessctl"
-   "xdg-utils"     ;; For xdg-open, etc
-   "gtk+:bin"      ;; For gtk-launch
-   "glib:bin"      ;; For gio-launch-desktop
+   "xdg-utils"      ;; For xdg-open, etc
+   "xdg-dbus-proxy" ;; For Flatpak
+   "gtk+:bin"       ;; For gtk-launch
+   "glib:bin"       ;; For gio-launch-desktop
    "shared-mime-info"
    
    "openssh"
