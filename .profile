@@ -16,6 +16,10 @@ for i in $GUIX_EXTRA_PROFILES/*; do
   unset profile
 done
 
+# Don't use the system-wide PulseAudio configuration
+unset PULSE_CONFIG
+unset PULSE_CLIENTCONFIG
+
 # Export the path to IcedTea so that tools pick it up correctly
 export JAVA_HOME=$(dirname $(dirname $(readlink $(which java))))
 
