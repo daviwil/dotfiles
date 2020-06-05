@@ -9,18 +9,18 @@ margin-top = 0
 margin-bottom = 0
 
 [colors]
-background = #f01c1f26
+background = #f0232635
 background-alt = #576075
-foreground = #dfdfdf
+foreground = #A6Accd
 foreground-alt = #555
 primary = #ffb52a
 secondary = #e60053
 alert = #bd2c40
-underline-1 = #89AAEB
+underline-1 = #c792ea
 
 [bar/panel]
 width = 100%
-height = 35
+height = 25
 offset-x = 0
 offset-y = 0
 fixed-center = true
@@ -127,7 +127,7 @@ label = %percentage_used%%
 type = internal/date
 interval = 5
 
-date = "%a %b %e"
+date = "W%U: %a %b %e"
 date-alt = "%A %B %d %Y"
 
 time = %l:%M %p

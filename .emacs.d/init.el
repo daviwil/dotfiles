@@ -223,11 +223,9 @@
 (setq ad-redefinition-action 'accept)
 
 (use-package spacegray-theme :defer t)
-(use-package twilight-anti-bright-theme :defer t)
-(use-package color-theme-sanityinc-tomorrow :defer t)
 (use-package doom-themes :defer t)
 (unless dw/is-termux
-  (load-theme 'spacegray t))
+  (load-theme 'doom-palenight t))
 
 ;; Set the font face based on platform
 (on-platform-do

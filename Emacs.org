@@ -592,35 +592,16 @@ Don't warn when advice is added for functions
 
 ** Theme
 
+These days I bounce around between themes included with [[https://github.com/hlissner/emacs-doom-themes][DOOM Themes]] since they're well-designed and integrate with a lot of Emacs packages.
+
 A nice gallery of Emacs themes can be found at https://emacsthemes.com/.
-
-So far my favorite theme is =twilight-anti-bright= but I also like the following:
-
-- =[[https://emacsthemes.com/themes/spacegray-theme.html][spacegray]]=: Perhaps my second favorite for now, trying it out for a bit to see
-  if it's "the one."
-- =[[https://github.com/cpaulik/emacs-material-theme/][material]]=: Good colors, especially for org-mode headers and the modeline.  Wish
-  it was more bluish, though.
-- =nord=: Beautiful bluish/greenish theme.  Not the perfect amount of contrast,
-  but still really nice.
-- =color-theme-sanityinc-tomorrow=: Nice calm themes with good colors.  I like
-  =dark= and =eighties=. Syntax hightlight leaves a little to be desired, though.
-- =badger=: Nice colors for a darker theme, but perhaps too dark?
-- =[[https://emacsthemes.com/themes/noctilux-theme.html][noctilux]]=: Nice colors but the use of red in some places is jarring.
-
-Close, but no cigar:
-
-- =arjen-grey-theme=: Looks really nice, but not enough contrast or saturation for
-  my taste.
-- =dakrone=: Decent dark theme, but not crazy about the colors.
 
 #+begin_src emacs-lisp
 
   (use-package spacegray-theme :defer t)
-  (use-package twilight-anti-bright-theme :defer t)
-  (use-package color-theme-sanityinc-tomorrow :defer t)
   (use-package doom-themes :defer t)
   (unless dw/is-termux
-    (load-theme 'spacegray t))
+    (load-theme 'doom-palenight t))
 
 #+end_src
 
