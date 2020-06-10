@@ -66,6 +66,7 @@ nmap - zO
 nmap = zz
 
 # Shortcuts
+shortcut-add gn=https://github.com/notifications
 shortcut-add dot=https://github.com/daviwil/dotfiles
 shortcut-add ddg=https://duckduckgo.com/?q=$0
 shortcut-add gm=https://www.iro.umontreal.ca/~gambit/doc/gambit.html
@@ -81,8 +82,10 @@ shortcut-add aja=https://github.com/Azure/azure-sdk-for-java
 shortcut-add apy=https://github.com/Azure/azure-sdk-for-python
 shortcut-add ats=https://github.com/Azure/autorest.typescript
 shortcut-add ats3=https://github.com/Azure/autorest.typescript.v3
+shortcut-add atest=https://github.com/Azure/autorest.testserver
 shortcut-add amf=https://github.com/Azure/autorest.modelerfour
 shortcut-add ar=https://github.com/Azure/autorest
+shortcut-add arp=https://github.com/orgs/Azure/projects/48
 shortcut-add ac=https://github.com/Azure/autorest.compare
 shortcut-add ap=https://github.com/Azure/perks
 shortcut-add specs=https://github.com/Azure/azure-rest-api-specs

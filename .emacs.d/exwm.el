@@ -240,6 +240,7 @@
   (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
 
   (exwm/bind-command
+    "s-o" "vimb"
     "s-p" "playerctl play-pause"
     "s-[" "playerctl previous"
     "s-]" "playerctl next")
