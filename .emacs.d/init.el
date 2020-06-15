@@ -714,6 +714,10 @@
                "png" "gif" "bmp" "tif" "jpeg")) ;; Removed jpg because Telega was
                                                 ;; causing feh to be opened...
              "feh"
+             '(file))
+      (list (openwith-make-extension-regexp
+             '("pdf"))
+             "zathura"
              '(file))))
   (openwith-mode 1))
 
