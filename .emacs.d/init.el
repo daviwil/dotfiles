@@ -1805,7 +1805,9 @@
   (set-face-background 'company-preview nil))
 
 (use-package vterm
-  :commands vterm)
+  :commands vterm
+  :config
+  (setq vterm-max-scrollback 10000))
 
 (use-package multi-term
   :commands multi-term-next

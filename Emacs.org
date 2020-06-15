@@ -3337,7 +3337,9 @@ This enhances eshell's completions with those that Fish is capable of and also f
 #+begin_src emacs-lisp
 
   (use-package vterm
-    :commands vterm)
+    :commands vterm
+    :config
+    (setq vterm-max-scrollback 10000))
 
 #+end_src
 
