@@ -231,7 +231,6 @@
 (on-platform-do
  ((windows cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
   (osx (set-face-attribute 'default nil :font "Fira Mono" :height 170))
-  ;(linux (set-face-attribute 'default nil :font "Fira Code" :height 120)))
   (linux (set-face-attribute 'default nil :font "Fira Code Retina" :height 120)))
 
 ;; Set the fixed pitch face
@@ -796,10 +795,10 @@
                         '(("^ *\\([-]\\) "
                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-(dolist (face '((org-level-1 . 1.4)
-                (org-level-2 . 1.3)
-                (org-level-3 . 1.2)
-                (org-level-4 . 1.15)
+(dolist (face '((org-level-1 . 1.2)
+                (org-level-2 . 1.1)
+                (org-level-3 . 1.05)
+                (org-level-4 . 1.0)
                 (org-level-5 . 1.1)
                 (org-level-6 . 1.1)
                 (org-level-7 . 1.1)
