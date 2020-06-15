@@ -2635,23 +2635,18 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
+  ;; TODO: This causes issues for some reason.
+  ;; :bind (:map geiser-mode-map
+  ;;        ("TAB" . completion-at-point))
+
 (use-package geiser
   :ensure t
-  :bind (:map geiser-mode-map
-         ("TAB" . completion-at-point))
   :config
-  ;; (setq geiser-gambit-binary "/home/daviwil/Projects/Code/gambit/gsi/gsi")
   (setq geiser-default-implementation 'gambit)
-  (setq geiser-active-implementations '(gambit guile)))
+  (setq geiser-active-implementations '(gambit guile))
   (setq geiser-repl-default-port 44555) ; For Gambit Scheme
   (setq geiser-implementations-alist '(((regexp "\\.scm$") gambit)
-                                       ((regexp "\\.sld") gambit))
-
-;; (defun geiser-gambit--parameters ()
-;;   "Return a list with all parameters needed to start Gambit Scheme."
-;;   ;; if your version of gambit support modules we directly load geiser module
-;;   ;; else we go load the file in geiser
-;;   `("-:~~lib=/home/daviwil/Projects/Code/gambit/lib,~~bin=/home/daviwil/Projects/Code/gambit/bin,d-" ,(expand-file-name "gambit/geiser/gambit.scm" geiser-scheme-dir) "-"))
+                                       ((regexp "\\.sld") gambit))))
 
 #+end_src
 
