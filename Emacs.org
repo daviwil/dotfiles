@@ -2459,6 +2459,33 @@ Not so convinced about this yet.
 
 #+end_src
 
+*** Meta Lisp
+
+Here are packages that are useful across different Lisp and Scheme implementations:
+
+#+begin_src emacs-lisp
+
+(use-package lispy
+  :hook ((emacs-lisp-mode . lispy-mode)
+         (scheme-mode . lispy-mode)))
+
+(use-package lispyville
+  :disabled
+  :hook ((lispy-mode . lispyville-mode))
+  :config
+  (lispyville-set-key-theme '(operators c-w additional)))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-lispy"
+"emacs-lispyville"
+
+#+end_src
+
 *** Clojure
 
 #+begin_src emacs-lisp

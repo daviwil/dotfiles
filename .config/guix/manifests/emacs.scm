@@ -98,6 +98,9 @@
    "emacs-ivy-xref"
    "emacs-lsp-ivy" ;; Not in config yet
    
+   "emacs-lispy"
+   "emacs-lispyville"
+   
    "emacs-cider"
    
    "emacs-js2-mode"
