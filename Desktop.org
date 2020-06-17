@@ -1111,7 +1111,13 @@ nmap = zz
 shortcut-add gn=https://github.com/notifications
 shortcut-add dot=https://github.com/daviwil/dotfiles
 shortcut-add ddg=https://duckduckgo.com/?q=$0
+shortcut-add gh=https://github.com/$0
 shortcut-add gm=https://www.iro.umontreal.ca/~gambit/doc/gambit.html
+shortcut-add gam=https://github.com/gambit/gambit
+shortcut-add sub=https://github.com/substratic/
+shortcut-add sube=https://github.com/substratic/engine
+shortcut-add subb=https://github.com/substratic/build
+shortcut-add subc=https://github.com/substratic/crash-the-stack
 shortcut-add tspl=https://scheme.com/tspl4/
 shortcut-add mail=https://fastmail.com
 shortcut-add cups=http://localhost:631
