@@ -8,6 +8,7 @@
    "gcc-toolchain"
    "make"
    "pkg-config"
+   "texinfo"
 
    ;; Python
    "python2"
