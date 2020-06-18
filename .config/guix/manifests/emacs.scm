@@ -31,7 +31,9 @@
    "pinentry-emacs"
    
    "emacs-evil-nerd-commenter"
-   
+
+   "emacs-ws-butler"
+
    "emacs-parinfer-mode"
    
    "emacs-hydra"
@@ -178,4 +180,4 @@
    "emacs-docker-tramp"
    "emacs-dockerfile-mode"
    
-))
+   ))

@@ -962,10 +962,17 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 
 #+begin_src emacs-lisp
 
-  ;; This configuration seems to work but might need tweaking
-  (setq whitespace-action '(auto-cleanup))
-  (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))
-  (global-whitespace-mode)
+(use-package ws-butler
+  :hook ((text-mode . ws-butler-mode)
+         (prog-mode . ws-butler-mode)))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-ws-butler"
 
 #+end_src
 
@@ -2139,6 +2146,20 @@ It's nice to have a table of contents section for long literate configuration fi
 - [[https://melpa.org/#/ox-reveal][Export to Reveal.js]]
 - [[https://github.com/org-mime/org-mime][org-mime]]
 
+* Website Management
+
+** daviwil.com
+
+I generate and publish my personal site [[daviwil.com][daviwil.com]] using =org-mode= using =dw/generate-site= and =dw/publish-site=:
+
+#+begin_src emacs-lisp
+
+(defun dw/generate-site ()
+  (interactive)
+  (start-process-shell-command "emacs" nil "emacs --batch -l ~/Projects/Writing/Blog/publish.el --funcall dw/publish"))
+
+#+end_src
+
 * Development
 
 Configuration for various programming languages and dev tools that I use.
@@ -2721,12 +2742,20 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
-  (use-package web-mode
-    :mode "(\\.\\(html?\\|ejs\\|tsx\\|jsx\\)\\'"
-    :config
-    (setq-default web-mode-code-indent-offset 2)
-    (setq-default web-mode-markup-indent-offset 2)
-    (setq-default web-mode-attribute-indent-offset 2))
+(use-package web-mode
+  :mode "(\\.\\(html?\\|ejs\\|tsx\\|jsx\\)\\'"
+  :config
+  (setq-default web-mode-code-indent-offset 2)
+  (setq-default web-mode-markup-indent-offset 2)
+  (setq-default web-mode-attribute-indent-offset 2))
+
+;; 1. Start the server with `httpd-start'
+;; 2. Use `impatient-mode' on any buffer
+(use-package impatient-mode
+  :ensure t)
+
+(use-package skewer-mode
+  :ensure t)
 
 #+end_src
 
