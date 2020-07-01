@@ -2357,7 +2357,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 
   (use-package projectile
     :diminish projectile-mode
-    :config (projectile-global-mode)
+    :config (projectile-mode)
     :bind-keymap
     ("C-c p" . projectile-command-map)
     :init
@@ -3383,6 +3383,29 @@ This enhances eshell's completions with those that Fish is capable of and also f
     (setq esh-autosuggest-delay 0.5)
     (set-face-foreground 'company-preview-common "#4b5668")
     (set-face-background 'company-preview nil))
+
+#+end_src
+
+*** Toggling Eshell
+
+=eshell-toggle= allows me to toggle an Eshell window below the current buffer for the path (or project path) of the buffer.
+
+#+begin_src emacs-lisp
+
+(use-package eshell-toggle
+  :bind ("C-M-'" . eshell-toggle)
+  :custom
+  (eshell-toggle-size-fraction 3)
+  (eshell-toggle-use-projectile-root t)
+  (eshell-toggle-run-command nil))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-eshell-toggle"
 
 #+end_src
 

@@ -1804,6 +1804,13 @@
   (set-face-foreground 'company-preview-common "#4b5668")
   (set-face-background 'company-preview nil))
 
+(use-package eshell-toggle
+  :bind ("C-M-'" . eshell-toggle)
+  :custom
+  (eshell-toggle-size-fraction 3)
+  (eshell-toggle-use-projectile-root t)
+  (eshell-toggle-run-command nil))
+
 (use-package vterm
   :commands vterm
   :config

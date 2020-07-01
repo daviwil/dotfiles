@@ -153,6 +153,8 @@
    
    "emacs-fish-completion"
    
+   "emacs-eshell-toggle"
+   
    "emacs-vterm"
    
    "emacs-multi-term"
