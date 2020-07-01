@@ -87,6 +87,7 @@ sudo -E guix system -L ~/.dotfiles/.config/guix/systems reconfigure ~/.dotfiles/
   #:use-module (gnu packages vim)
   #:use-module (gnu packages gtk)
   #:use-module (gnu packages xorg)
+  #:use-module (gnu packages emacs)
   #:use-module (gnu packages gnome)
   #:use-module (gnu packages mtools)
   #:use-module (gnu packages linux)
@@ -230,8 +231,7 @@ Define the =base-operating-system= which will be inherited by all machine config
                         fuse-exfat
                         stow
                         vim
-                        i3-wm
-                        i3status
+                        emacs
                         bluez
                         bluez-alsa
                         pulseaudio

@@ -15,6 +15,7 @@
   #:use-module (gnu packages vim)
   #:use-module (gnu packages gtk)
   #:use-module (gnu packages xorg)
+  #:use-module (gnu packages emacs)
   #:use-module (gnu packages gnome)
   #:use-module (gnu packages mtools)
   #:use-module (gnu packages linux)
@@ -134,8 +135,7 @@ EndSection
                         fuse-exfat
                         stow
                         vim
-                        i3-wm
-                        i3status
+                        emacs
                         bluez
                         bluez-alsa
                         pulseaudio
