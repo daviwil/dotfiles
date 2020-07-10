@@ -326,7 +326,7 @@
   :hook (after-init . doom-modeline-init)
   :custom-face
   (mode-line ((t (:height 0.85))))
-  (mode-line-inactive ((t (:height 1.00))))
+  (mode-line-inactive ((t (:height 0.85))))
   :custom
   (doom-modeline-height 15)
   (doom-modeline-bar-width 6)
