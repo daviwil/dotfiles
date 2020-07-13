@@ -63,7 +63,6 @@
    "emacs-openwith"
    
    "emacs-org"
-   "emacs-org-contrib"
    
    "emacs-org-bullets"
    

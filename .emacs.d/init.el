@@ -735,7 +735,6 @@
 
 (use-package org
   :defer t
-  ;; :ensure org-plus-contrib
   :hook (org-mode . dw/org-mode-setup)
   :config
   (setq org-ellipsis " ▾"

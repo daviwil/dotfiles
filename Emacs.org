@@ -1537,7 +1537,6 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
 
 (use-package org
   :defer t
-  ;; :ensure org-plus-contrib
   :hook (org-mode . dw/org-mode-setup)
   :config
   (setq org-ellipsis " ▾"
@@ -1584,7 +1583,6 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
 "emacs-org"
-"emacs-org-contrib"
 
 #+end_src
 
