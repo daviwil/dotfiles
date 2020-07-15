@@ -1137,6 +1137,8 @@ shortcut-add arp=https://github.com/orgs/Azure/projects/48
 shortcut-add ac=https://github.com/Azure/autorest.compare
 shortcut-add ap=https://github.com/Azure/perks
 shortcut-add specs=https://github.com/Azure/azure-rest-api-specs
+shortcut-add oai2=https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
+shortcut-add oai3=https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
 shortcut-add npm=https://www.npmjs.com/search?q=$0
 shortcut-add oms=https://outlook.com/microsoft.com
 shortcut-add msw=https://microsoft.sharepoint.com
