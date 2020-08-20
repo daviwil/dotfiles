@@ -1376,6 +1376,10 @@
   :config
   (setq prettier-js-show-errors nil))
 
+(use-package ccls
+  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+         (lambda () (require 'ccls) (lsp))))
+
 (use-package rust-mode
   :mode "\\.rs\\'"
   :init (setq rust-format-on-save t))
