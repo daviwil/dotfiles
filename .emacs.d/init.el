@@ -1540,6 +1540,33 @@
 (dw/leader-key-def
   "tf" '(dw/toggle-focus-mode :which-key "focus mode"))
 
+(use-package posframe)
+
+(use-package command-log-mode
+  :ensure t
+  :custom
+    (command-log-mode-window-font-size 1))
+
+(defun dw/show-command-log ()
+  (interactive)
+  (global-command-log-mode t)
+  (with-current-buffer
+      (setq clm/command-log-buffer
+            (get-buffer-create " *command-log*"))
+    (text-scale-set -1))
+  (posframe-show
+    clm/command-log-buffer
+    :position `(,(- (x-display-pixel-width) 650) . 50)
+    :width 35
+    :height 5
+    :min-width 35
+    :min-height 5
+    ;; :left-fringe 5
+    ;; :right-fringe 5
+    :internal-border-width 2
+    :internal-border-color "#c792ea"
+    :override-parameters '((parent-frame . nil))))
+
 (dw/leader-key-def
   "a"  '(:ignore t :which-key "apps"))
 

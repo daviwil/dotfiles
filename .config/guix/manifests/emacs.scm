@@ -141,6 +141,8 @@
    
    "emacs-darkroom"
    
+   "emacs-posframe"
+   
    "emacs-mu4e-alert"
    
    "emacs-calfw"
