@@ -27,8 +27,8 @@
   (setq exwm-randr-workspace-monitor-plist '(4 "eDP-1")))
 
 (defun exwm/run-in-background (command)
-   (start-process-shell-command command nil
-                                command))
+  (let ((command-parts (split-string command "[ ]+")))
+    (apply #'call-process `(,(car command-parts) nil 0 nil ,@(cdr command-parts)))))
 
 (defun exwm/bind-function (key invocation &rest bindings)
   "Bind KEYs to FUNCTIONs globally"
@@ -36,10 +36,9 @@
     (exwm-input-set-key (kbd key)
                         `(lambda ()
                            (interactive)
-                           ,invocation))
+                           (funcall ',invocation)))
     (setq key (pop bindings)
-          command
-          (pop bindings))))
+          invocation (pop bindings))))
 
 (defun exwm/bind-command (key command &rest bindings)
   "Bind KEYs to COMMANDs globally"
@@ -49,8 +48,7 @@
                            (interactive)
                            (exwm/run-in-background ,command)))
     (setq key (pop bindings)
-          command
-          (pop bindings))))
+          command (pop bindings))))
 
 (defun dw/exwm-init-hook ()
   ;; Launch Telega in workspace 0 if we've logged in before
@@ -239,8 +237,14 @@
   ;; Ctrl+Q will enable the next key to be sent directly
   (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
 
+  (defun exwm/run-vimb ()
+    (exwm/run-in-background "vimb")
+    (exwm-workspace-switch-create 2))
+
+  (exwm/bind-function
+    "s-o" 'exwm/run-vimb)
+
   (exwm/bind-command
-    "s-o" "vimb"
     "s-p" "playerctl play-pause"
     "s-[" "playerctl previous"
     "s-]" "playerctl next")

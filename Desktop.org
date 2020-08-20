@@ -177,8 +177,8 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 #+begin_src emacs-lisp :tangle .emacs.d/exwm.el
 
   (defun exwm/run-in-background (command)
-     (start-process-shell-command command nil
-                                  command))
+    (let ((command-parts (split-string command "[ ]+")))
+      (apply #'call-process `(,(car command-parts) nil 0 nil ,@(cdr command-parts)))))
 
   (defun exwm/bind-function (key invocation &rest bindings)
     "Bind KEYs to FUNCTIONs globally"
@@ -186,10 +186,9 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       (exwm-input-set-key (kbd key)
                           `(lambda ()
                              (interactive)
-                             ,invocation))
+                             (funcall ',invocation)))
       (setq key (pop bindings)
-            command
-            (pop bindings))))
+            invocation (pop bindings))))
 
   (defun exwm/bind-command (key command &rest bindings)
     "Bind KEYs to COMMANDs globally"
@@ -199,8 +198,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
                              (interactive)
                              (exwm/run-in-background ,command)))
       (setq key (pop bindings)
-            command
-            (pop bindings))))
+            command (pop bindings))))
 
 #+end_src
 
@@ -419,8 +417,14 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     ;; Ctrl+Q will enable the next key to be sent directly
     (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
 
+    (defun exwm/run-vimb ()
+      (exwm/run-in-background "vimb")
+      (exwm-workspace-switch-create 2))
+
+    (exwm/bind-function
+      "s-o" 'exwm/run-vimb)
+
     (exwm/bind-command
-      "s-o" "vimb"
       "s-p" "playerctl play-pause"
       "s-[" "playerctl previous"
       "s-]" "playerctl next")
