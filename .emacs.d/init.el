@@ -387,10 +387,9 @@
 (use-package evil-nerd-commenter
   :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
-;; This configuration seems to work but might need tweaking
-(setq whitespace-action '(auto-cleanup))
-(setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))
-(global-whitespace-mode)
+(use-package ws-butler
+  :hook ((text-mode . ws-butler-mode)
+         (prog-mode . ws-butler-mode)))
 
 (use-package parinfer
   :hook ((clojure-mode . parinfer-mode)
@@ -1148,6 +1147,10 @@
         org-tree-slide-deactivate-message "Presentation ended."
         org-tree-slide-header t))
 
+(defun dw/generate-site ()
+  (interactive)
+  (start-process-shell-command "emacs" nil "emacs --batch -l ~/Projects/Writing/Blog/publish.el --funcall dw/publish"))
+
 (use-package magit
   :commands (magit-status magit-get-current-branch)
   :custom
@@ -1254,7 +1257,7 @@
 
 (use-package projectile
   :diminish projectile-mode
-  :config (projectile-global-mode)
+  :config (projectile-mode)
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
@@ -1326,6 +1329,16 @@
 ;;           :program nil
 ;;           :port 9229
 ;;           :name "Node::Run")))
+
+(use-package lispy
+  :hook ((emacs-lisp-mode . lispy-mode)
+         (scheme-mode . lispy-mode)))
+
+(use-package lispyville
+  :disabled
+  :hook ((lispy-mode . lispyville-mode))
+  :config
+  (lispyville-set-key-theme '(operators c-w additional)))
 
 (use-package cider
   :mode "\\.clj[sc]?\\'"
@@ -1460,6 +1473,14 @@
   (setq-default web-mode-code-indent-offset 2)
   (setq-default web-mode-markup-indent-offset 2)
   (setq-default web-mode-attribute-indent-offset 2))
+
+;; 1. Start the server with `httpd-start'
+;; 2. Use `impatient-mode' on any buffer
+(use-package impatient-mode
+  :ensure t)
+
+(use-package skewer-mode
+  :ensure t)
 
 (use-package yaml-mode
   :mode "\\.ya?ml\\'")
