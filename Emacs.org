@@ -2668,6 +2668,8 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
+  (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
+
   (use-package helpful
     :custom
     (counsel-describe-function-function #'helpful-callable)

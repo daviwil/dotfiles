@@ -1391,6 +1391,8 @@
 (use-package fsharp-mode
   :mode ".fs[iylx]?\\'")
 
+(add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
+
 (use-package helpful
   :custom
   (counsel-describe-function-function #'helpful-callable)
