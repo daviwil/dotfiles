@@ -1118,9 +1118,13 @@ shortcut-add ddg=https://duckduckgo.com/?q=$0
 shortcut-add gh=https://github.com/$0
 shortcut-add gm=https://www.iro.umontreal.ca/~gambit/doc/gambit.html
 shortcut-add gam=https://github.com/gambit/gambit
+shortcut-add zig=https://github.com/ziglang/zig
+shortcut-add zigd=https://ziglang.org/documentation/master/
+shortcut-add zigl=https://ziglang.org/documentation/master/std
 shortcut-add sub=https://github.com/substratic/
 shortcut-add sube=https://github.com/substratic/engine
 shortcut-add subb=https://github.com/substratic/build
+shortcut-add subf=https://github.com/substratic/forge
 shortcut-add subc=https://github.com/substratic/crash-the-stack
 shortcut-add tspl=https://scheme.com/tspl4/
 shortcut-add mail=https://fastmail.com
