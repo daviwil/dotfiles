@@ -1424,6 +1424,18 @@
   (setq geiser-implementations-alist '(((regexp "\\.scm$") gambit)
                                        ((regexp "\\.sld") gambit))))
 
+(use-package zig-mode
+  :after lsp-mode
+  :ensure t
+  :config
+  (require 'lsp)
+  (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
+  (lsp-register-client
+    (make-lsp-client
+      :new-connection (lsp-stdio-connection "~/Projects/Code/zls/zig-cache/bin/zls")
+      :major-modes '(zig-mode)
+      :server-id 'zls)))
+
 (use-package markdown-mode
   :pin melpa-stable
   :mode "\\.md\\'"
