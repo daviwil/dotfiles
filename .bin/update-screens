@@ -12,10 +12,9 @@ case $(hostname) in
         ;;
 
     phantom)
-        killall intel-virtual-o # Yeah, that's how killall sees the name
-        intel-virtual-output
-
-        xrandr --output VIRTUAL3 --off --output VIRTUAL2 --off --output VIRTUAL1 --primary --mode VIRTUAL1.447-3840x2160 --pos 0x0 --rotate normal --output eDP1 --mode 3840x2160 --pos 3840x0 --rotate normal --output VIRTUAL5 --off --output VIRTUAL4 --off --output VIRTUAL6 --off
+        # On a new install, run this command first to ensure HDMI works!
+        # xrandr --setprovideroutputsource nouveau modesetting
+        xrandr --output eDP-1 --primary --mode 3840x2160 --pos 0x0 --rotate normal --output eDP-1-2 --off --output HDMI-1-1 --mode 3840x2160 --pos 3840x0 --rotate normal --output DP-1-1 --off --output DP-1-2 --off
         ;;
 
 esac
