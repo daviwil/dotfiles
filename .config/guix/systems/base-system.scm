@@ -25,7 +25,8 @@
   #:use-module (gnu packages web-browsers)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages package-management)
-  #:use-module (nongnu packages linux))
+  #:use-module (nongnu packages linux)
+  #:use-module (nongnu system linux-initrd))
 
 (use-service-modules desktop xorg)
 (use-package-modules certs)
@@ -81,6 +82,7 @@ EndSection
     ;; Use non-free Linux and firmware
     (kernel linux)
     (firmware (list linux-firmware))
+    (initrd microcode-initrd)
 
     ;; Choose US English keyboard layout.  The "altgr-intl"
     ;; variant provides dead keys for accented characters.
