@@ -453,6 +453,17 @@ Some settings need to be customized on a per-system basis without tweaking indiv
 
 #+end_src
 
+*System Settings*
+
+#+begin_src emacs-lisp :noweb-ref system-settings :noweb-sep ""
+
+(when (equal system-name "phantom")
+  '((desktop/dpi . 240)
+    (polybar/height . 40)
+    (vimb/default-zoom . 200)))
+
+#+end_src
+
 ** USB Installation Image
 
 To install Guix on another machine, you first to build need a USB image.  Since I use modern laptops that require non-free components, I have to build a custom installation image with the full Linux kernel.  I also include a few other programs that are useful for the installation process.  I adapted this image from [[https://gitlab.com/nonguix/nonguix/blob/master/nongnu/system/install.scm][one found on the Nonguix repository]], hence the copyright header.

@@ -26,4 +26,9 @@
         (dunst/font-size . 14)
         (dunst/max-icon-size . 64)
         (vimb/default-zoom . 150)))
+    
+    (when (equal system-name "phantom")
+      '((desktop/dpi . 240)
+        (polybar/height . 40)
+        (vimb/default-zoom . 200)))
     ))
