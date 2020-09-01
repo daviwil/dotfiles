@@ -1345,11 +1345,13 @@ I use Flatpak and the [[https://flathub.org/home][Flathub]] repository to instal
 
 #+begin_src sh
 
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-flatpak install flathub com.spotify.Client
-flatpak install flathub com.valvesoftware.Steam
-flatpak install flathub com.microsoft.Teams
-flatpak install flathub com.discordapp.Discord
+flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak remote-add --user --if-not-exists flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
+flatpak install --user flathub com.spotify.Client
+flatpak install --user flathub com.valvesoftware.Steam
+flatpak install --user flathub com.microsoft.Teams
+flatpak install --user flathub com.discordapp.Discord
+flatpak install --user flathub-beta com.obsproject.Studio
 
 #+end_src
 
