@@ -627,13 +627,13 @@ Different platforms need different default font sizes, and
   (on-platform-do
    ((windows cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
     (osx (set-face-attribute 'default nil :font "Fira Mono" :height 170))
-    (linux (set-face-attribute 'default nil :font "Fira Code Retina" :height 120)))
+    (linux (set-face-attribute 'default nil :font "Fira Code Retina" :height 220)))
 
   ;; Set the fixed pitch face
-  (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
+  (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 200)
 
   ;; Set the variable pitch face
-  (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 135 :weight 'regular)
+  (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 225 :weight 'regular)
 
 #+end_src
 
