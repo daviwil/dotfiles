@@ -115,7 +115,7 @@
    
    "emacs-tuareg"
    
-   "emacs-helpful"
+   ;; "emacs-helpful"
    
    "emacs-geiser"
    
