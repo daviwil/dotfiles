@@ -633,7 +633,7 @@ Different platforms need different default font sizes, and
   (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 200)
 
   ;; Set the variable pitch face
-  (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 225 :weight 'regular)
+  (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 245 :weight 'regular)
 
 #+end_src
 
