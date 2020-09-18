@@ -3460,6 +3460,25 @@ This enhances eshell's completions with those that Fish is capable of and also f
 
 #+end_src
 
+*** Command Highlighting
+
+#+begin_src emacs-lisp
+
+(use-package eshell-syntax-highlighting
+  :after esh-mode
+  :config
+  (eshell-syntax-highlighting-global-mode +1))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-eshell-syntax-highlighting"
+
+#+end_src
+
 *** History Autocompletion
 
 #+begin_src emacs-lisp

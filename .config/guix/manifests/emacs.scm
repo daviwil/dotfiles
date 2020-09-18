@@ -157,6 +157,8 @@
    
    "emacs-fish-completion"
    
+   "emacs-eshell-syntax-highlighting"
+   
    "emacs-eshell-toggle"
    
    "emacs-vterm"

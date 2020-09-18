@@ -1870,6 +1870,11 @@
 (use-package fish-completion
   :hook (eshell-mode . fish-completion-mode))
 
+(use-package eshell-syntax-highlighting
+  :after esh-mode
+  :config
+  (eshell-syntax-highlighting-global-mode +1))
+
 (use-package esh-autosuggest
   :hook (eshell-mode . esh-autosuggest-mode)
   :config
