@@ -40,6 +40,7 @@
    
    "emacs-ivy"
    "emacs-ivy-rich"
+   "emacs-ivy-posframe"
    "emacs-flx"
    "emacs-smex"
    "emacs-wgrep"
