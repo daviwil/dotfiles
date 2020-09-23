@@ -522,6 +522,11 @@
 (use-package wgrep)
 
 (use-package ivy-posframe
+  :custom
+  (ivy-posframe-width      115)
+  (ivy-posframe-min-width  115)
+  (ivy-posframe-height     10)
+  (ivy-posframe-min-height 10)
   :config
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
   (setq ivy-posframe-parameters '((parent-frame . nil)
