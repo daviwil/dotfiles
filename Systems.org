@@ -2,24 +2,26 @@
 
 * Table of Contents
 :PROPERTIES:
-:TOC:      this
+:TOC:      :include all :ignore this
 :END:
--  [[#channels][Channels]]
--  [[#systems][Systems]]
-  -  [[#base-configuration][Base Configuration]]
-  -  [[#machines][Machines]]
-    -  [[#per-system-settings][Per-System Settings]]
-    -  [[#zerocool][zerocool]]
-    -  [[#davinci][davinci]]
-    -  [[#phantom][phantom]]
-  -  [[#usb-installation-image][USB Installation Image]]
--  [[#profile-management][Profile Management]]
-  -  [[#activating-profiles][Activating Profiles]]
-  -  [[#updating-profiles][Updating Profiles]]
--  [[#dotfiles-management][Dotfiles Management]]
-  -  [[#syncing][Syncing]]
-  -  [[#updating][Updating]]
--  [[#system-installation][System Installation]]
+:CONTENTS:
+- [[#channels][Channels]]
+- [[#systems][Systems]]
+  - [[#base-configuration][Base Configuration]]
+  - [[#machines][Machines]]
+    - [[#per-system-settings][Per-System Settings]]
+    - [[#zerocool][zerocool]]
+    - [[#davinci][davinci]]
+    - [[#phantom][phantom]]
+  - [[#usb-installation-image][USB Installation Image]]
+- [[#profile-management][Profile Management]]
+  - [[#activating-profiles][Activating Profiles]]
+  - [[#updating-profiles][Updating Profiles]]
+- [[#dotfiles-management][Dotfiles Management]]
+  - [[#syncing][Syncing]]
+  - [[#updating][Updating]]
+- [[#system-installation][System Installation]]
+:END:
 
 * Channels
 
