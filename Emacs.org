@@ -156,6 +156,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#chat][Chat]]
     - [[#tracking][Tracking]]
     - [[#telegram][Telegram]]
+    - [[#discord][Discord]]
     - [[#erc][ERC]]
       - [[#configuration][Configuration]]
       - [[#bindings][Bindings]]
@@ -3671,6 +3672,27 @@ Since I switched over to =eshell= I don't use =multi-term= as much anymore.  Som
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
 "emacs-telega"
+
+#+end_src
+
+*** Discord
+
+=elcord= makes it possible to notify Discord when Emacs is "playing" using the Game Activity feature.  Since I run the Discord Flatpak from Flathub, I have to [[https://github.com/flathub/com.discordapp.Discord/wiki/Rich-Precense-(discord-rpc)#regular-unsandboxed-apps][expose the socket]] file via symbolic link like so:
+
+#+begin_src shell :tangle no
+
+ln -sf {app/com.discordapp.Discord,$XDG_RUNTIME_DIR}/discord-ipc-0
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package elcord
+  :ensure t
+  :custom
+  (elcord-display-buffer-details nil)
+  :config
+  (elcord-mode))
 
 #+end_src
 

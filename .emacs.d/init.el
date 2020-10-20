@@ -1965,6 +1965,13 @@
         telega-msg-rainbow-title nil
         telega-chat-fill-column 75))
 
+(use-package elcord
+  :ensure t
+  :custom
+  (elcord-display-buffer-details nil)
+  :config
+  (elcord-mode))
+
 (defun dw/on-erc-track-list-changed ()
   (dolist (buffer erc-modified-channels-alist)
     (tracking-add-buffer (car buffer))))
