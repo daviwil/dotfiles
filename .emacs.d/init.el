@@ -132,15 +132,16 @@
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-  ;; Disable arrow keys in normal and visual modes
-  (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
-  (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
-  (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
-  (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
-  (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
-  (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
-  (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
-  (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro)
+  (unless dw/is-termux
+    ;; Disable arrow keys in normal and visual modes
+    (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
+    (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro))
 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
@@ -597,6 +598,7 @@
 
 (use-package visual-fill-mode
   :defer t
+  :disabled dw/is-termux
   :hook (org-mode . dw/org-mode-visual-fill))
 
 (use-package expand-region
@@ -1967,6 +1969,7 @@
 
 (use-package elcord
   :ensure t
+  :disabled dw/is-termux
   :custom
   (elcord-display-buffer-details nil)
   :config

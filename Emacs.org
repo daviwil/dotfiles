@@ -384,39 +384,40 @@ Some tips can be found here:
 
 #+begin_src emacs-lisp
 
-  (defun dw/evil-hook ()
-    (dolist (mode '(custom-mode
-                    eshell-mode
-                    git-rebase-mode
-                    erc-mode
-                    circe-server-mode
-                    circe-chat-mode
-                    circe-query-mode
-                    sauron-mode
-                    term-mode))
-    (add-to-list 'evil-emacs-state-modes mode)))
+(defun dw/evil-hook ()
+  (dolist (mode '(custom-mode
+                  eshell-mode
+                  git-rebase-mode
+                  erc-mode
+                  circe-server-mode
+                  circe-chat-mode
+                  circe-query-mode
+                  sauron-mode
+                  term-mode))
+  (add-to-list 'evil-emacs-state-modes mode)))
 
-  (defun dw/dont-arrow-me-bro ()
-    (interactive)
-    (message "Arrow keys are bad, you know?"))
+(defun dw/dont-arrow-me-bro ()
+  (interactive)
+  (message "Arrow keys are bad, you know?"))
 
-  (use-package evil
-    :init
-    (setq evil-want-integration t)
-    (setq evil-want-keybinding nil)
-    (setq evil-want-C-u-scroll t)
-    (setq evil-want-C-i-jump nil)
-    (setq evil-respect-visual-line-mode t)
-    :config
-    (add-hook 'evil-mode-hook 'dw/evil-hook)
-    (evil-mode 1)
-    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  (setq evil-respect-visual-line-mode t)
+  :config
+  (add-hook 'evil-mode-hook 'dw/evil-hook)
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
-    ;; Use visual line motions even outside of visual-line-mode buffers
-    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
+  (unless dw/is-termux
     ;; Disable arrow keys in normal and visual modes
     (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
     (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
@@ -425,17 +426,17 @@ Some tips can be found here:
     (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
     (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
     (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro)
+    (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro))
 
-    (evil-set-initial-state 'messages-buffer-mode 'normal)
-    (evil-set-initial-state 'dashboard-mode 'normal))
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))
 
-  (use-package evil-collection
-    :after evil
-    :custom
-    (evil-collection-outline-bind-tab-p nil)
-    :config
-    (evil-collection-init))
+(use-package evil-collection
+  :after evil
+  :custom
+  (evil-collection-outline-bind-tab-p nil)
+  :config
+  (evil-collection-init))
 
 #+end_src
 
@@ -1332,6 +1333,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 (use-package visual-fill-mode
   :defer t
+  :disabled dw/is-termux
   :hook (org-mode . dw/org-mode-visual-fill))
 
 #+end_src
@@ -3689,6 +3691,7 @@ ln -sf {app/com.discordapp.Discord,$XDG_RUNTIME_DIR}/discord-ipc-0
 
 (use-package elcord
   :ensure t
+  :disabled dw/is-termux
   :custom
   (elcord-display-buffer-details nil)
   :config
