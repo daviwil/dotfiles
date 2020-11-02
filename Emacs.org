@@ -614,10 +614,11 @@ A nice gallery of Emacs themes can be found at https://emacsthemes.com/.
 
 #+begin_src emacs-lisp
 
-  (use-package spacegray-theme :defer t)
-  (use-package doom-themes :defer t)
-  (unless dw/is-termux
-    (load-theme 'doom-palenight t))
+(use-package spacegray-theme :defer t)
+(use-package doom-themes :defer t)
+(unless dw/is-termux
+  (load-theme 'doom-palenight t)
+  (doom-themes-visual-bell-config))
 
 #+end_src
 

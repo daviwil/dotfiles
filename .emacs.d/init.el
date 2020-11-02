@@ -226,7 +226,8 @@
 (use-package spacegray-theme :defer t)
 (use-package doom-themes :defer t)
 (unless dw/is-termux
-  (load-theme 'doom-palenight t))
+  (load-theme 'doom-palenight t)
+  (doom-themes-visual-bell-config))
 
 ;; Set the font face based on platform
 (on-platform-do
