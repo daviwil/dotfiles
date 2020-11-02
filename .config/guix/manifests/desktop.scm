@@ -62,7 +62,7 @@
    "zathura-pdf-mupdf"
    
    "syncthing"
-   "qsyncthingtray"
+   "syncthing-gtk"
    
    "flatpak"
    
