@@ -624,7 +624,6 @@
 
 (use-package visual-fill-column
   :defer t
-  :disabled dw/is-termux
   :hook (org-mode . dw/org-mode-visual-fill))
 
 (use-package expand-region

@@ -1368,7 +1368,6 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 (use-package visual-fill-column
   :defer t
-  :disabled dw/is-termux
   :hook (org-mode . dw/org-mode-visual-fill))
 
 #+end_src
