@@ -205,11 +205,15 @@
 
 (column-number-mode)
 
-;; Disable line numbers for some modes
+;; Enable line numbers for some modes
 (dolist (mode '(text-mode-hook
                 prog-mode-hook
                 conf-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 1))))
+
+;; Override some modes which derive from the above
+(dolist (mode '(org-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 (setq large-file-warning-threshold nil)
 
