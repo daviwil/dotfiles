@@ -66,6 +66,7 @@
    "emacs-org"
    
    "emacs-org-bullets"
+   "emacs-org-superstar"
    
    "emacs-org-pomodoro"
    

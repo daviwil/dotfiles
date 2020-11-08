@@ -1674,17 +1674,18 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 
 #+begin_src emacs-lisp
 
-(use-package org-bullets
+(use-package org-superstar
   :if (not dw/is-termux)
   :after org
-  :hook (org-mode . org-bullets-mode)
+  :hook (org-mode . org-superstar-mode)
   :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  (org-superstar-remove-leading-stars t)
+  (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
 
 ;; Replace list hyphen with dot
-(font-lock-add-keywords 'org-mode
-                        '(("^ *\\([-]\\) "
-                          (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+;; (font-lock-add-keywords 'org-mode
+;;                         '(("^ *\\([-]\\) "
+;;                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
 (dolist (face '((org-level-1 . 1.2)
                 (org-level-2 . 1.1)
@@ -1724,6 +1725,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
 "emacs-org-bullets"
+"emacs-org-superstar"
 
 #+end_src
 
