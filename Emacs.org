@@ -20,6 +20,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 - [[#desktop-environment][Desktop Environment]]
 - [[#keyboard-bindings][Keyboard Bindings]]
   - [[#esc-cancels-all][ESC Cancels All]]
+  - [[#rebind-c-u][Rebind C-u]]
   - [[#lets-be-evil][Let's Be Evil]]
   - [[#keybinding-panel-which-key][Keybinding Panel (which-key)]]
   - [[#simplify-leader-bindings-generalel][Simplify Leader Bindings (general.el)]]
@@ -56,8 +57,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 - [[#stateful-keymaps-with-hydra][Stateful Keymaps with Hydra]]
 - [[#better-completions-with-ivy][Better Completions with Ivy]]
 - [[#jumping-with-avy][Jumping with Avy]]
-- [[#buffer-management][Buffer Management]]
-  - [[#bindings][Bindings]]
+- [[#buffer-management-with-bufler][Buffer Management with Bufler]]
 - [[#window-management][Window Management]]
   - [[#frame-scaling--zooming][Frame Scaling / Zooming]]
   - [[#window-selection-with-ace-window][Window Selection with ace-window]]
@@ -176,7 +176,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 - [[#emacs-profile][Emacs Profile]]
 - [[#inspiration][Inspiration]]
 :END:
-:
 
 * Startup Performance
 
@@ -372,6 +371,16 @@ Despite the code being in Desktop.org, include the emacs packages for the deskto
 #+begin_src emacs-lisp
 
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+#+end_src
+
+** Rebind C-u
+
+Since I let =evil-mode= take over =C-u= for buffer scrolling, I need to re-bind the =universal-argument= command to another key sequence.  I'm choosing =C-M-u= for this purpose.
+
+#+begin_src emacs-lisp
+
+(global-set-key (kbd "C-M-u") 'universal-argument)
 
 #+end_src
 
@@ -1239,32 +1248,60 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 #+end_src
 
-* Buffer Management
+* Buffer Management with Bufler
 
-** Bindings
+[[https://github.com/alphapapa/bufler.el][Bufler]] is an excellent package by [[https://github.com/alphapapa][alphapapa]] which enables you to automatically group all of your Emacs buffers into workspaces by defining a series of grouping rules.  Once you have your groups defined (or use the default configuration which is quite good already), you can use the =bufler-workspace-frame-set= command to focus your current Emacs frame on a particular workspace so that =bufler-switch-buffer= will only show buffers from that workspace.  In my case, this allows me to dedicate an EXWM workspace to a specific Bufler workspace so that only see the buffers I care about in that EXWM workspace.
+
+I'm trying to figure out how to integrate Bufler with Ivy more effectively (buffer previewing, alternate actions, etc), will update this config once I've done that.
 
 #+begin_src emacs-lisp
 
-  (defun dw/ignore-non-vimb-buffers (buffer-name)
-    (if-let ((buf (get-buffer buffer-name)))
-      (when buf
-        (with-current-buffer buf
-          (not (and (derived-mode-p 'exwm-mode)
-                    (string-equal exwm-class-name "Vimb")))))))
+(use-package bufler
+  :ensure t
+  :bind (("C-M-j" . bufler-switch-buffer)
+         ("C-M-k" . bufler-workspace-frame-set))
+  :config
+  (evil-collection-define-key 'normal 'bufler-list-mode-map
+    (kbd "RET")   'bufler-list-buffer-switch
+    (kbd "M-RET") 'bufler-list-buffer-peek
+    "D"           'bufler-list-buffer-kill)
 
-  (defun dw/switch-to-browser-buffer ()
-    (interactive)
-    (let ((ivy-use-virtual-buffers nil)
-          (ivy-ignore-buffers (append ivy-ignore-buffers '(dw/ignore-non-vimb-buffers))))
-      (counsel-switch-buffer)))
-
-  (global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
-  (global-set-key (kbd "C-M-k") 'dw/switch-to-browser-buffer)
-
-  (dw/leader-key-def
-    "b"   '(:ignore t :which-key "buffers")
-    "bb"  'counsel-switch-buffer
-    "bd"  'bury-buffer)
+  (setf bufler-groups
+        (bufler-defgroups
+          ;; Subgroup collecting all named workspaces.
+          (group (auto-workspace))
+          ;; Subgroup collecting buffers in a projectile project.
+          (group (auto-projectile))
+          ;; Grouping browser windows
+          (group
+           (group-or "Browsers"
+                     (name-match "Vimb" (rx bos "vimb"))
+                     (name-match "Chromium" (rx bos "Chromium"))))
+          (group
+           (group-or "Chat"
+                     (mode-match "Telega" (rx bos "telega-"))))
+          (group
+           ;; Subgroup collecting all `help-mode' and `info-mode' buffers.
+           (group-or "Help/Info"
+                     (mode-match "*Help*" (rx bos (or "help-" "helpful-")))
+                     ;; (mode-match "*Helpful*" (rx bos "helpful-"))
+                     (mode-match "*Info*" (rx bos "info-"))))
+          (group
+           ;; Subgroup collecting all special buffers (i.e. ones that are not
+           ;; file-backed), except `magit-status-mode' buffers (which are allowed to fall
+           ;; through to other groups, so they end up grouped with their project buffers).
+           (group-and "*Special*"
+                      (name-match "**Special**"
+                                  (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace" "Pinentry") "*"))
+                      (lambda (buffer)
+                        (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
+                                             buffer)
+                                    (funcall (mode-match "Dired" (rx bos "dired"))
+                                             buffer)
+                                    (funcall (auto-file) buffer))
+                          "*Special*"))))
+          ;; Group remaining buffers by major mode.
+          (auto-mode))))
 
 #+end_src
 

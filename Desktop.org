@@ -356,8 +356,9 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 (defun dw/send-polybar-hook (name number)
   (start-process-shell-command "polybar-msg" nil (format "polybar-msg hook %s %s" name number)))
 
-(defun dw/update-polybar-exwm ()
-  (dw/send-polybar-hook "exwm" 1))
+(defun dw/update-polybar-exwm (&optional path)
+  (dw/send-polybar-hook "exwm" 1)
+  (dw/send-polybar-hook "exwm-path" 1))
 
 (defun dw/update-polybar-telegram ()
   (dw/send-polybar-hook "telegram" 1))
@@ -369,6 +370,12 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (2 "")
     (3 "")
     (4 "")))
+
+(defun dw/polybar-exwm-workspace-path ()
+  (let ((workspace-path (frame-parameter nil 'bufler-workspace-path-formatted)))
+    (if workspace-path
+        (substring-no-properties workspace-path)
+      "")))
 
 (defun dw/polybar-mail-count (max-count)
   (if dw/mail-enabled
@@ -395,6 +402,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     ""))
 
 (add-hook 'exwm-workspace-switch-hook #'dw/update-polybar-exwm)
+(add-hook 'bufler-workspace-set-hook #'dw/update-polybar-exwm)
 
 #+end_src
 
@@ -545,7 +553,7 @@ font-1 = "Font Awesome:size=<<get-setting(name="polybar/font-1-size")>>;2"
 font-2 = "Material Icons:size=<<get-setting(name="polybar/font-2-size")>>;5"
 font-3 = "Fira Mono:size=<<get-setting(name="polybar/font-3-size")>>;-3"
 
-modules-left = exwm
+modules-left = exwm exwm-path
 modules-center = spotify
 modules-right = telegram mu4e cpu temperature battery date
 
@@ -563,6 +571,12 @@ initial = 1
 format-underline = ${colors.underline-1}
 format-background = ${colors.background-alt}
 format-padding = 1
+
+[module/exwm-path]
+type = custom/ipc
+hook-0 = emacsclient -e "(dw/polybar-exwm-workspace-path)" | sed -e 's/^"//' -e 's/"$//'
+format-foreground = #f78c6c
+initial = 1
 
 [module/spotify]
 type = custom/script

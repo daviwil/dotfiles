@@ -99,6 +99,8 @@
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+(global-set-key (kbd "C-M-u") 'universal-argument)
+
 (defun dw/evil-hook ()
   (dolist (mode '(custom-mode
                   eshell-mode
@@ -554,26 +556,52 @@
   "jw"  '(avy-goto-word-0 :which-key "jump to word")
   "jl"  '(avy-goto-line :which-key "jump to line"))
 
-(defun dw/ignore-non-vimb-buffers (buffer-name)
-  (if-let ((buf (get-buffer buffer-name)))
-    (when buf
-      (with-current-buffer buf
-        (not (and (derived-mode-p 'exwm-mode)
-                  (string-equal exwm-class-name "Vimb")))))))
+(use-package bufler
+  :ensure t
+  :bind (("C-M-j" . bufler-switch-buffer)
+         ("C-M-k" . bufler-workspace-frame-set))
+  :config
+  (evil-collection-define-key 'normal 'bufler-list-mode-map
+    (kbd "RET")   'bufler-list-buffer-switch
+    (kbd "M-RET") 'bufler-list-buffer-peek
+    "D"           'bufler-list-buffer-kill)
 
-(defun dw/switch-to-browser-buffer ()
-  (interactive)
-  (let ((ivy-use-virtual-buffers nil)
-        (ivy-ignore-buffers (append ivy-ignore-buffers '(dw/ignore-non-vimb-buffers))))
-    (counsel-switch-buffer)))
-
-(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
-(global-set-key (kbd "C-M-k") 'dw/switch-to-browser-buffer)
-
-(dw/leader-key-def
-  "b"   '(:ignore t :which-key "buffers")
-  "bb"  'counsel-switch-buffer
-  "bd"  'bury-buffer)
+  (setf bufler-groups
+        (bufler-defgroups
+          ;; Subgroup collecting all named workspaces.
+          (group (auto-workspace))
+          ;; Subgroup collecting buffers in a projectile project.
+          (group (auto-projectile))
+          ;; Grouping browser windows
+          (group
+           (group-or "Browsers"
+                     (name-match "Vimb" (rx bos "vimb"))
+                     (name-match "Chromium" (rx bos "Chromium"))))
+          (group
+           (group-or "Chat"
+                     (mode-match "Telega" (rx bos "telega-"))))
+          (group
+           ;; Subgroup collecting all `help-mode' and `info-mode' buffers.
+           (group-or "Help/Info"
+                     (mode-match "*Help*" (rx bos (or "help-" "helpful-")))
+                     ;; (mode-match "*Helpful*" (rx bos "helpful-"))
+                     (mode-match "*Info*" (rx bos "info-"))))
+          (group
+           ;; Subgroup collecting all special buffers (i.e. ones that are not
+           ;; file-backed), except `magit-status-mode' buffers (which are allowed to fall
+           ;; through to other groups, so they end up grouped with their project buffers).
+           (group-and "*Special*"
+                      (name-match "**Special**"
+                                  (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace" "Pinentry") "*"))
+                      (lambda (buffer)
+                        (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
+                                             buffer)
+                                    (funcall (mode-match "Dired" (rx bos "dired"))
+                                             buffer)
+                                    (funcall (auto-file) buffer))
+                          "*Special*"))))
+          ;; Group remaining buffers by major mode.
+          (auto-mode))))
 
 (use-package default-text-scale
   :defer 1

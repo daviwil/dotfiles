@@ -46,7 +46,7 @@ font-1 = "Font Awesome:size=14;2"
 font-2 = "Material Icons:size=20;5"
 font-3 = "Fira Mono:size=13;-3"
 
-modules-left = exwm
+modules-left = exwm exwm-path
 modules-center = spotify
 modules-right = telegram mu4e cpu temperature battery date
 
@@ -64,6 +64,12 @@ initial = 1
 format-underline = ${colors.underline-1}
 format-background = ${colors.background-alt}
 format-padding = 1
+
+[module/exwm-path]
+type = custom/ipc
+hook-0 = emacsclient -e "(dw/polybar-exwm-workspace-path)" | sed -e 's/^"//' -e 's/"$//'
+format-foreground = #f78c6c
+initial = 1
 
 [module/spotify]
 type = custom/script

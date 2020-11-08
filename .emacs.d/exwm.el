@@ -180,8 +180,9 @@
 (defun dw/send-polybar-hook (name number)
   (start-process-shell-command "polybar-msg" nil (format "polybar-msg hook %s %s" name number)))
 
-(defun dw/update-polybar-exwm ()
-  (dw/send-polybar-hook "exwm" 1))
+(defun dw/update-polybar-exwm (&optional path)
+  (dw/send-polybar-hook "exwm" 1)
+  (dw/send-polybar-hook "exwm-path" 1))
 
 (defun dw/update-polybar-telegram ()
   (dw/send-polybar-hook "telegram" 1))
@@ -193,6 +194,12 @@
     (2 "")
     (3 "")
     (4 "")))
+
+(defun dw/polybar-exwm-workspace-path ()
+  (let ((workspace-path (frame-parameter nil 'bufler-workspace-path-formatted)))
+    (if workspace-path
+        (substring-no-properties workspace-path)
+      "")))
 
 (defun dw/polybar-mail-count (max-count)
   (if dw/mail-enabled
@@ -219,6 +226,7 @@
     ""))
 
 (add-hook 'exwm-workspace-switch-hook #'dw/update-polybar-exwm)
+(add-hook 'bufler-workspace-set-hook #'dw/update-polybar-exwm)
 
 (when dw/exwm-enabled
   ;; These keys should always pass through to Emacs
