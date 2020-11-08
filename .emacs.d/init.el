@@ -204,20 +204,12 @@
   (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 
 (column-number-mode)
-(global-display-line-numbers-mode t)
 
 ;; Disable line numbers for some modes
-(dolist (mode '(org-mode-hook
-                erc-mode-hook
-                term-mode-hook
-                eshell-mode-hook
-                vterm-mode-hook
-                neotree-mode-hook
-                telega-chat-mode-hook
-                telega-root-mode-hook
-                telega-webpage-mode-hook
-                dashboard-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+(dolist (mode '(text-mode-hook
+                prog-mode-hook
+                conf-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 1))))
 
 (setq large-file-warning-threshold nil)
 
