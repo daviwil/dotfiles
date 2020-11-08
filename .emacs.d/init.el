@@ -617,7 +617,7 @@
         visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
-(use-package visual-fill-mode
+(use-package visual-fill-column
   :defer t
   :disabled dw/is-termux
   :hook (org-mode . dw/org-mode-visual-fill))
