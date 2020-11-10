@@ -573,6 +573,7 @@
           (group
            (group-or "Browsers"
                      (name-match "Vimb" (rx bos "vimb"))
+                     (name-match "Qutebrowser" (rx bos "Qutebrowser"))
                      (name-match "Chromium" (rx bos "Chromium"))))
           (group
            (group-or "Chat"

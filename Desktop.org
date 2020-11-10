@@ -25,6 +25,7 @@ This file contains configuration for my overall desktop environment.  My workflo
 - [[#scheduled-tasks][Scheduled Tasks]]
 - [[#applications][Applications]]
   - [[#browsers][Browsers]]
+    - [[#qutebrowser][Qutebrowser]]
     - [[#vimb][vimb]]
   - [[#mail][Mail]]
   - [[#password-management][Password Management]]
@@ -159,8 +160,9 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
               (exwm-workspace-rename-buffer exwm-class-name)))
   (add-hook 'exwm-update-title-hook
             (lambda ()
-              (when (string-equal exwm-class-name "Vimb")
-                (exwm-workspace-rename-buffer (format "vimb: %s" exwm-title)))))
+              (pcase exwm-class-name
+                ("Vimb" (exwm-workspace-rename-buffer (format "vimb: %s" exwm-title)))
+                ("qutebrowser" (exwm-workspace-rename-buffer (format "Qutebrowser: %s" exwm-title))))))
 
   (exwm-enable))
 
@@ -245,6 +247,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
         ("Microsoft Teams - Preview" (exwm-workspace-move-window 3))
         ("Spotify" (exwm-workspace-move-window 4))
         ("Vimb" (exwm-workspace-move-window 2))
+        ("qutebrowser" (exwm-workspace-move-window 2))
         ("qjackctl" (exwm-floating-toggle-floating))
         ("mpv" (exwm-floating-toggle-floating)
                (dw/exwm-floating-toggle-pinned))))
@@ -431,8 +434,12 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       (exwm/run-in-background "vimb")
       (exwm-workspace-switch-create 2))
 
+    (defun exwm/run-qute ()
+      (exwm/run-in-background "qutebrowser")
+      (exwm-workspace-switch-create 2))
+
     (exwm/bind-function
-      "s-o" 'exwm/run-vimb)
+      "s-o" 'exwm/run-qute)
 
     (exwm/bind-command
       "s-p" "playerctl play-pause"
@@ -860,7 +867,7 @@ fi
     ### Misc/Advanced ###
 
     # Browser for opening urls in context menu.
-    browser = vimb
+    browser = qutebrowser
 
     # Always run rule-defined scripts, even if the notification is suppressed
     always_run_script = true
@@ -1052,10 +1059,119 @@ I use [[https://www.gnu.org/software/mcron/][GNU mcron]] for scheduling tasks to
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
 "vimb"
+"qutebrowser"
+
+#+end_src
+
+*** Qutebrowser
+
+[[https://github.com/qutebrowser/qutebrowser][Qutebrowser]] is a great keyboard-centric browser which uses the Chromium rendering engine via QT 5's WebEngine component.  I've configured it to act more like Vimb for window-per-tab behavior that integrates well into Emacs.  One thing I like about this browser is that it does a much better job of remembering what windows you had open when it exits so that you can maintain your session more easily.  I also like that when you reopen a tab/window, the history of that window is still present.
+
+#+begin_src python :tangle .config/qutebrowser/config.py
+
+# Open every tab as a new window, Vimb style
+c.tabs.tabs_are_windows = True
+c.tabs.show = "multiple"
+c.tabs.last_close = "close"
+
+c.auto_save.session = True
+c.scrolling.smooth = True
+c.session.lazy_restore = True
+c.content.autoplay = False
+
+# Scale pages and UI better for hidpi
+c.zoom.default = "200%"
+c.fonts.hints = "bold 20pt monospace"
+
+# Better default fonts
+c.fonts.web.family.standard = "Bitstream Vera Sans"
+c.fonts.web.family.serif = "Bitstream Vera Serif"
+c.fonts.web.family.sans_serif = "Bitstream Vera Sans"
+c.fonts.web.family.fixed = "Fira Mono"
+c.fonts.statusbar = "18pt Cantarell"
+
+# Use dark mode where possible
+c.colors.webpage.darkmode.enabled = True
+c.colors.webpage.bg = "black"
+
+# Automatically turn on insert mode when a loaded page focuses a text field
+c.input.insert_mode.auto_load = True
+
+# Edit fields in Emacs with Ctrl+E
+c.editor.command = ["emacsclient", "+{line}:{column}", "{file}"]
+
+# Make Ctrl+g quit everything like in Emacs
+config.bind('<Ctrl-g>', 'leave-mode', mode='insert')
+config.bind('<Ctrl-g>', 'leave-mode', mode='command')
+config.bind('<Ctrl-g>', 'leave-mode', mode='prompt')
+config.bind('<Ctrl-g>', 'leave-mode', mode='hint')
+config.bind('v', 'spawn ~/.dotfiles/bin/umpv {url}')
+config.bind('V', 'hint links spawn ~/.dotfiles/bin/umpv {hint-url}')
+
+# Tweak some keybindings
+config.unbind('d') # Don't close window on lower-case 'd'
+config.bind('yy', 'yank')
+
+# Vim-style movement keys in command mode
+config.bind('<Ctrl-j>', 'completion-item-focus --history next', mode='command')
+config.bind('<Ctrl-k>', 'completion-item-focus --history prev', mode='command')
+
+# More binding hints here: https://gitlab.com/Kaligule/qutebrowser-emacs-config/blob/master/config.py
+#+end_src
+
+#+begin_src conf :tangle .config/qutebrowser/quickmarks
+
+1p https://my.1password.com/vaults/kyxq62du37adb3lpjh2sphdq4i/allitems/tkr5tuo4gqyuco4x25upt6iaia
+gn https://github.com/notifications
+dot https://github.com/daviwil/dotfiles
+efs https://github.com/daviwil/emacs-from-scratch
+sc https://github.com/SystemCrafters
+scv https://github.com/SystemCrafters/video-planning
+ddg https://duckduckgo.com/?q $0
+gh https://github.com/$0
+gm https://www.iro.umontreal.ca/~gambit/doc/gambit.html
+gam https://github.com/gambit/gambit
+zig https://github.com/ziglang/zig
+zigd https://ziglang.org/documentation/master/
+zigl https://ziglang.org/documentation/master/std
+sub https://github.com/substratic/
+sube https://github.com/substratic/engine
+subb https://github.com/substratic/build
+subf https://github.com/substratic/forge
+subc https://github.com/substratic/crash-the-stack
+tspl https://scheme.com/tspl4/
+mail https://fastmail.com
+cups http://localhost:631
+az https://portal.azure.com
+azdo https://dev.azure.com/azure-sdk/
+ajs https://github.com/Azure/azure-sdk-for-js
+dajs https://github.com/daviwil/azure-sdk-for-js
+anet https://github.com/Azure/azure-sdk-for-net
+aja https://github.com/Azure/azure-sdk-for-java
+apy https://github.com/Azure/azure-sdk-for-python
+ats https://github.com/Azure/autorest.typescript
+ats3 https://github.com/Azure/autorest.typescript.v3
+atest https://github.com/Azure/autorest.testserver
+amf https://github.com/Azure/autorest.modelerfour
+ar https://github.com/Azure/autorest
+arpy https://github.com/Azure/autorest.python
+arc https://github.com/Azure/autorest.csharp
+are https://github.com/Azure/autorest/tree/master/docs/extensions
+arp https://github.com/orgs/Azure/projects/48
+ac https://github.com/Azure/autorest.compare
+ap https://github.com/Azure/perks
+specs https://github.com/Azure/azure-rest-api-specs
+oai2 https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
+oai3 https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
+npm https://www.npmjs.com/search?q $0
+oms https://outlook.com/microsoft.com
+msw https://microsoft.sharepoint.com
 
 #+end_src
 
 *** vimb
+
+I used [[https://fanglingsu.github.io/vimb/][Vimb]] for a while because the latest Qutebrowser wasn't available in Guix's package repository, but since that problem has since been solved I've switched back to Qutebrowser as primary.  Keeping this configuration around in case I need it again.
 
 #+begin_src conf :tangle .config/vimb/config :noweb yes
 

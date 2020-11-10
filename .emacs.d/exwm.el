@@ -13,8 +13,9 @@
               (exwm-workspace-rename-buffer exwm-class-name)))
   (add-hook 'exwm-update-title-hook
             (lambda ()
-              (when (string-equal exwm-class-name "Vimb")
-                (exwm-workspace-rename-buffer (format "vimb: %s" exwm-title)))))
+              (pcase exwm-class-name
+                ("Vimb" (exwm-workspace-rename-buffer (format "vimb: %s" exwm-title)))
+                ("qutebrowser" (exwm-workspace-rename-buffer (format "Qutebrowser: %s" exwm-title))))))
 
   (exwm-enable))
 
@@ -87,6 +88,7 @@
       ("Microsoft Teams - Preview" (exwm-workspace-move-window 3))
       ("Spotify" (exwm-workspace-move-window 4))
       ("Vimb" (exwm-workspace-move-window 2))
+      ("qutebrowser" (exwm-workspace-move-window 2))
       ("qjackctl" (exwm-floating-toggle-floating))
       ("mpv" (exwm-floating-toggle-floating)
              (dw/exwm-floating-toggle-pinned))))
@@ -249,8 +251,12 @@
     (exwm/run-in-background "vimb")
     (exwm-workspace-switch-create 2))
 
+  (defun exwm/run-qute ()
+    (exwm/run-in-background "qutebrowser")
+    (exwm-workspace-switch-create 2))
+
   (exwm/bind-function
-    "s-o" 'exwm/run-vimb)
+    "s-o" 'exwm/run-qute)
 
   (exwm/bind-command
     "s-p" "playerctl play-pause"

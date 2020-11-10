@@ -1,17 +1,3 @@
-# import dracula.draw
-
-# # Use the Dracula theme: https://github.com/evannagle/qutebrowser-dracula-theme/
-# dracula.draw.blood(c, {
-#     'spacing': {
-#         'vertical': 6,
-#         'horizontal': 8
-#     },
-#     'font': {
-#         'family': 'Menlo, Terminus, Monaco, Monospace',
-#         'size': 10
-#     }
-# })
-
 # Open every tab as a new window, Vimb style
 c.tabs.tabs_are_windows = True
 c.tabs.show = "multiple"
@@ -40,6 +26,9 @@ c.colors.webpage.bg = "black"
 # Automatically turn on insert mode when a loaded page focuses a text field
 c.input.insert_mode.auto_load = True
 
+# Edit fields in Emacs with Ctrl+E
+c.editor.command = ["emacsclient", "+{line}:{column}", "{file}"]
+
 # Make Ctrl+g quit everything like in Emacs
 config.bind('<Ctrl-g>', 'leave-mode', mode='insert')
 config.bind('<Ctrl-g>', 'leave-mode', mode='command')
@@ -47,6 +36,10 @@ config.bind('<Ctrl-g>', 'leave-mode', mode='prompt')
 config.bind('<Ctrl-g>', 'leave-mode', mode='hint')
 config.bind('v', 'spawn ~/.dotfiles/bin/umpv {url}')
 config.bind('V', 'hint links spawn ~/.dotfiles/bin/umpv {hint-url}')
+
+# Tweak some keybindings
+config.unbind('d') # Don't close window on lower-case 'd'
+config.bind('yy', 'yank')
 
 # Vim-style movement keys in command mode
 config.bind('<Ctrl-j>', 'completion-item-focus --history next', mode='command')
