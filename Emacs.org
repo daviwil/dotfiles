@@ -7,7 +7,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 :PROPERTIES:
 :TOC:      :include all :ignore this
 :END:
-
 :CONTENTS:
 - [[#startup-performance][Startup Performance]]
 - [[#system-settings][System Settings]]
@@ -1171,6 +1170,8 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
          ("C-M-l" . counsel-imenu)
          :map minibuffer-local-map
          ("C-r" . 'counsel-minibuffer-history))
+  :custom
+  (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
   :config
   (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
 
