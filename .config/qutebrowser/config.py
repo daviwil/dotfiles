@@ -12,24 +12,30 @@
 #     }
 # })
 
+# Open every tab as a new window, Vimb style
+c.tabs.tabs_are_windows = True
+c.tabs.show = "multiple"
+c.tabs.last_close = "close"
+
 c.auto_save.session = True
 c.scrolling.smooth = True
 c.session.lazy_restore = True
 c.content.autoplay = False
 
 # Scale pages and UI better for hidpi
-c.zoom.default = "225%"
-c.fonts.hints = "bold 12pt monospace"
+c.zoom.default = "200%"
+c.fonts.hints = "bold 20pt monospace"
 
 # Better default fonts
 c.fonts.web.family.standard = "Bitstream Vera Sans"
 c.fonts.web.family.serif = "Bitstream Vera Serif"
 c.fonts.web.family.sans_serif = "Bitstream Vera Sans"
 c.fonts.web.family.fixed = "Fira Mono"
-c.fonts.monospace = "Fira Mono"
+c.fonts.statusbar = "18pt Cantarell"
 
-# Tabs should be separate windows
-#c.tabs.tabs_are_windows = True
+# Use dark mode where possible
+c.colors.webpage.darkmode.enabled = True
+c.colors.webpage.bg = "black"
 
 # Automatically turn on insert mode when a loaded page focuses a text field
 c.input.insert_mode.auto_load = True
