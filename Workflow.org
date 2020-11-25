@@ -1,0 +1,335 @@
+#+TITLE: Productivity Workflow
+#+PROPERTY: header-args:emacs-lisp :tangle ./.emacs.d/elisp/dw-workflow.el
+
+This file contains the description and configuration of the productivity workflow I use with Org Mode.
+
+* Table of Contents
+:PROPERTIES:
+:TOC:      :include all :ignore this
+:END:
+:CONTENTS:
+- [[#principles][Principles]]
+  - [[#dont-look-at-org-files-to-find-the-next-task-use-the-agenda-view][Don't look at Org files to find the next task, use the agenda view]]
+  - [[#ensure-sufficient-metadata-on-tasks-for-effective-filtering][Ensure sufficient metadata on tasks for effective filtering]]
+  - [[#keep-a-daily-log-of-work-being-done][Keep a daily log of work being done]]
+- [[#tags][Tags]]
+- [[#agendas][Agendas]]
+- [[#old-configuration][Old Configuration]]
+  - [[#org-file-paths][Org File Paths]]
+  - [[#agenda][Agenda]]
+  - [[#tags][Tags]]
+  - [[#tasks][Tasks]]
+  - [[#capture-templates][Capture Templates]]
+- [[#module-setup][Module Setup]]
+:END:
+
+* Principles
+
+** Don't look at Org files to find the next task, use the agenda view
+** Ensure sufficient metadata on tasks for effective filtering
+** Keep a daily log of work being done
+
+* Tags
+
+Tags are used to filter all tasks to find anything actionable in a particular context.  I use the =@home= and =@work= tags for explicit contexts and then the rest are used for filtering tasks for agenda views.
+
+- =next= - This task should be done next (in the Getting Things Done sense)
+- =followup= - Someone is waiting on me to follow up on this task, it should be prioritized above others
+- =batch= - The task can be batched with others (low effort)
+
+#+begin_src emacs-lisp
+
+  ;; Configure common tags
+  (setq org-tag-alist
+    '((:startgroup)
+       ; Put mutually exclusive tags here
+       (:endgroup)
+       ("@home" . ?H)
+       ("@work" . ?W)
+       ("batch" . ?b)
+       ("next" . ?n)
+       ("followup" . ?f)))
+
+#+end_src
+
+* Agendas
+
+#+begin_src emacs-lisp
+
+  (setq org-agenda-window-setup 'current-window)
+  (setq org-agenda-span 'day)
+  (setq org-agenda-start-with-log-mode t)
+
+  (setq org-agenda-custom-commands
+        `(("d" "Dashboard"
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (tags-todo "+PRIORITY=\"A\""
+                       ((org-agenda-overriding-header "High Priority")))
+            (tags-todo "+followup" ((org-agenda-overriding-header "Needs Follow Up")))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Actions")))
+            (todo "TODO"
+                  ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
+                   (org-agenda-files '(,(dw/org-path "Inbox.org")))
+                   (org-agenda-text-search-extra-files nil)))))
+
+          ("n" "Next Tasks"
+           ((tags-togo "NEXT"
+                  ((org-agenda-overriding-header "Next Actions")))))
+
+          ;; Low-effort next actions
+          ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+           ((org-agenda-overriding-header "Low Effort Tasks")
+            (org-agenda-max-todos 20)
+            (org-agenda-files org-agenda-files)))))
+
+#+end_src
+
+* Old Configuration
+
+The following blocks are being migrated over from my Org Mode configuration in [[file:Emacs.org][Emacs.org]].  I've disabled tangling for them so that they don't get written out to =workflow.el= in favor of my new configuration above.
+
+** Org File Paths
+
+#+begin_src emacs-lisp :tangle no
+
+  (setq org-directory
+    (if dw/is-termux
+        "~/storage/shared/Notes"
+        "~/Notes"))
+
+  (defun dw/org-path (path)
+    (expand-file-name path org-directory))
+
+  (setq org-journal-dir (dw/org-path "Journal/"))
+
+  (defun dw/get-todays-journal-file-name ()
+    "Gets the journal file name for today's date"
+    (interactive)
+    (let* ((journal-file-name
+             (expand-file-name
+               (format-time-string "%Y/%Y-%2m-%B.org")
+               org-journal-dir))
+           (journal-year-dir (file-name-directory journal-file-name)))
+      (if (not (file-directory-p journal-year-dir))
+        (make-directory journal-year-dir))
+      journal-file-name))
+
+  (setq org-default-notes-file (dw/org-path "Inbox.org"))
+
+  (setq org-agenda-files
+    (list
+      (dw/org-path "Inbox.org")
+      (dw/org-path "Personal.org")
+      (dw/org-path "Work.org")
+      (dw/org-path "Business.org")
+      (dw/org-path "Meta.org")
+      (dw/org-path "Hacking.org")
+      (dw/org-path "Calendar/Personal.org")
+      (dw/org-path "Calendar/Work.org")))
+
+#+end_src
+
+** Agenda
+
+#+begin_src emacs-lisp :tangle no
+
+  ;; Configure custom agenda views
+  (setq org-agenda-custom-commands
+        `(("d" "Dashboard"
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (todo "FLOW" ((org-agenda-overriding-header "Workflow Tasks")))
+            (tags-todo "+PRIORITY=\"A\""
+                       ((org-agenda-overriding-header "High Priority")))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))
+            (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))
+            (todo "TODO"
+                  ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
+                   (org-agenda-files '(,(dw/org-path "Inbox.org")))
+                   (org-agenda-text-search-extra-files nil)))))
+
+          ("n" "Next Tasks"
+           ((todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))))
+
+          ("p" "Active Projects"
+           ((agenda "")
+            (todo "ACTIVE"
+                  ((org-agenda-overriding-header "Active Projects")
+                   (org-agenda-max-todos 5)
+                   (org-agenda-files org-agenda-files)))))
+
+          ("w" "Workflow Status"
+           ((todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting on External")
+                   (org-agenda-files org-agenda-files)))
+            (todo "REVIEW"
+                  ((org-agenda-overriding-header "In Review")
+                   (org-agenda-files org-agenda-files)))
+            (todo "PLAN"
+                  ((org-agenda-overriding-header "In Planning")
+                   (org-agenda-todo-list-sublevels nil)
+                   (org-agenda-files org-agenda-files)))
+            (todo "BACKLOG"
+                  ((org-agenda-overriding-header "Project Backlog")
+                   (org-agenda-todo-list-sublevels nil)
+                   (org-agenda-files org-agenda-files)))
+            (todo "READY"
+                  ((org-agenda-overriding-header "Ready for Work")
+                   (org-agenda-files org-agenda-files)))
+            (todo "ACTIVE"
+                  ((org-agenda-overriding-header "Active Projects")
+                   (org-agenda-files org-agenda-files)))
+            (todo "COMPLETED"
+                  ((org-agenda-overriding-header "Completed Projects")
+                   (org-agenda-files org-agenda-files)))
+            (todo "CANC"
+                  ((org-agenda-overriding-header "Cancelled Projects")
+                   (org-agenda-files org-agenda-files)))))
+
+          ;; Projects on hold
+          ("h" tags-todo "+LEVEL=2/+HOLD"
+           ((org-agenda-overriding-header "On-hold Projects")
+            (org-agenda-files org-agenda-files)))
+
+          ;; Low-effort next actions
+          ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+           ((org-agenda-overriding-header "Low Effort Tasks")
+            (org-agenda-max-todos 20)
+            (org-agenda-files org-agenda-files)))))
+
+  (use-package org-super-agenda
+    :after org
+    :config
+    (org-super-agenda-mode 1)
+    (setq org-super-agenda-groups
+          '(;; Each group has an implicit boolean OR operator between its selectors.
+            (:name "Today"  ; Optionally specify section name
+                   :time-grid t  ; Items that appear on the time grid
+                   :todo "NEXT")  ; Items that have this TODO keyword
+            (:name "Important"
+                   ;; Single arguments given alone
+                   :priority "A")
+            )))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-org-super-agenda"
+
+#+end_src
+
+** Tags
+
+#+begin_src emacs-lisp :tangle no
+
+  ;; Configure common tags
+  (setq org-tag-alist
+    '((:startgroup)
+       ; Put mutually exclusive tags here
+       (:endgroup)
+       ("@home" . ?H)
+       ("@work" . ?W)
+       ("batch" . ?b)
+       ("next" . ?n)
+       ("followup" . ?f)
+       ("recurring" . ?r)))
+
+  ;; Configure task state change tag triggers
+  ;; (setq org-todo-state-tags-triggers
+  ;;   (quote (("CANC" ("cancelled" . t))
+  ;;           ("WAIT" ("waiting" . t))
+  ;;           ("HOLD" ("waiting") ("onhold" . t))
+  ;;           (done ("waiting") ("onhold"))
+  ;;           ("TODO" ("waiting") ("cancelled") ("onhold"))
+  ;;           ("DONE" ("waiting") ("cancelled") ("onhold")))))
+
+#+end_src
+
+** Tasks
+
+#+begin_src emacs-lisp :tangle no
+
+  ;; Configure TODO settings
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+  (setq org-datetree-add-timestamp 'inactive)
+  (setq org-habit-graph-column 60)
+  (setq org-fontify-whole-heading-line t)
+  (setq org-todo-keywords
+    '((sequence "TODO(t)" "NEXT(n)" "PROC" "FLOW(f)" "|" "DONE(d!)")
+      (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")
+      (sequence "GOAL(g)" "|" "ACHIEVED(v)" "MAINTAIN(m)")))
+
+#+end_src
+
+** Capture Templates
+
+Information on template expansion can be found in the [[https://orgmode.org/manual/Template-expansion.html#Template-expansion][Org manual]].
+
+#+begin_src emacs-lisp :tangle no
+
+  (defun dw/read-file-as-string (path)
+    (with-temp-buffer
+      (insert-file-contents path)
+      (buffer-string)))
+
+  (setq org-capture-templates
+    `(("t" "Tasks / Projects")
+      ("tt" "Task" entry (file+olp ,(dw/org-path "Projects.org") "Projects" "Inbox")
+           "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+      ("ts" "Clocked Entry Subtask" entry (clock)
+           "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+      ("tp" "New Project" entry (file+olp ,(dw/org-path "Projects.org") "Projects" "Inbox")
+           "* PLAN %?\n  %U\n  %a\n  %i" :empty-lines 1)
+
+      ("j" "Journal Entries")
+      ("jj" "Journal" entry
+           (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           ;"\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+           ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
+           :clock-in :clock-resume
+           :empty-lines 1)
+      ("jm" "Meeting" entry
+           (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+           :clock-in :clock-resume
+           :empty-lines 1)
+      ("jt" "Thinking" entry
+           (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           "\n* %<%I:%M %p> - %^{Topic} :thoughts:\n\n%?\n\n"
+           :clock-in :clock-resume
+           :empty-lines 1)
+      ("jc" "Clocked Entry Notes" entry
+           (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           "* %<%I:%M %p> - %K :notes:\n\n%?"
+           :empty-lines 1)
+      ("jg" "Clocked General Task" entry
+           (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           "* %<%I:%M %p> - %^{Task description} %^g\n\n%?"
+           :clock-in :clock-resume
+           :empty-lines 1)
+
+      ("w" "Workflows")
+      ("we" "Checking Email" entry (file+olp+datetree ,(dw/get-todays-journal-file-name))
+           "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+
+      ("m" "Metrics Capture")
+      ("mw" "Weight" table-line (file+headline "~/Notes/Metrics.org" "Weight")
+       "| %U | %^{Weight} | %^{Notes} |" :kill-buffer)
+      ("mp" "Blood Pressure" table-line (file+headline "~/Notes/Metrics.org" "Blood Pressure")
+       "| %U | %^{Systolic} | %^{Diastolic} | %^{Notes}" :kill-buffer)))
+
+#+end_src
+
+* Module Setup
+
+#+begin_src emacs-lisp
+
+(provide 'dw-workflow)
+
+#+end_src

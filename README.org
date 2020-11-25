@@ -38,8 +38,8 @@ I've started to migrate all of my important configuration files to a [[https://l
 
 - [[file:Emacs.org][Emacs]]
 - [[file:Desktop.org][Desktop Environment]]
+- [[file:Workflow.org][Productivity Workflow]]
 - [[file:Systems.org][System Configurations via Guix]]
-- Mail
 
 For now, I'm checking in the configuration files that are written out using =org-babel-tangle-file= so that I don't have to remember to regenerate all of them every time that I pull the repo.  This may change in the future; one downside of this approach is that I have to remember to stage the original =.org= file and all of the updated configuration files when I want to make a commit to the repo.  It hasn't been a headache yet, but time will tell.
 
