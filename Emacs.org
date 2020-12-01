@@ -1639,11 +1639,14 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
 
 #+end_src
 
-** Weekly Planning
+** Workflow Configuration
+
+I document and configure my org-mode workflow in a separate document: [[file:Workflow.org][Workflow.org]]
 
 #+begin_src emacs-lisp
 
 (require 'dw-org)
+(require 'dw-workflow)
 
 #+end_src
 

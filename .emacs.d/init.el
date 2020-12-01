@@ -808,6 +808,7 @@
   ;; NOTE: Subsequent sections are still part of this use-package block!
 
 (require 'dw-org)
+(require 'dw-workflow)
 
 ;; Since we don't want to disable org-confirm-babel-evaluate all
 ;; of the time, do it around the after-save-hook
