@@ -1,4 +1,4 @@
-#+TITLE: Productivity Workflow
+#+TITLE: Org Mode Workflow
 #+PROPERTY: header-args:emacs-lisp :tangle ./.emacs.d/elisp/dw-workflow.el
 
 This file contains the description and configuration of the productivity workflow I use with Org Mode.
@@ -12,6 +12,8 @@ This file contains the description and configuration of the productivity workflo
   - [[#dont-look-at-org-files-to-find-the-next-task-use-the-agenda-view][Don't look at Org files to find the next task, use the agenda view]]
   - [[#ensure-sufficient-metadata-on-tasks-for-effective-filtering][Ensure sufficient metadata on tasks for effective filtering]]
   - [[#keep-a-daily-log-of-work-being-done][Keep a daily log of work being done]]
+- [[#file-paths][File Paths]]
+- [[#workflow-states][Workflow States]]
 - [[#tags][Tags]]
 - [[#agendas][Agendas]]
 - [[#old-configuration][Old Configuration]]
@@ -29,11 +31,56 @@ This file contains the description and configuration of the productivity workflo
 ** Ensure sufficient metadata on tasks for effective filtering
 ** Keep a daily log of work being done
 
+* File Paths
+
+The location where my =Notes= folder lives changes in some cases
+
+#+begin_src emacs-lisp
+
+  (setq org-directory
+    (if dw/is-termux
+        "~/storage/shared/Notes"
+        "~/Notes"))
+
+  (setq org-agenda-files `(,org-directory))
+
+  (defun dw/org-path (path)
+    (expand-file-name path org-directory))
+
+  (setq org-default-notes-file (dw/org-path "Inbox.org"))
+
+#+end_src
+
+* Workflow States
+
+I try to keep my set of workflow states simple so that I can filter on them easily:
+
+- =TODO= - A task that should be done at some point
+- =NEXT= - This task should be done next (in the Getting Things Done sense)
+- =BACK= - A task in the backlog to be done some day but not now
+- =WAIT= - Waiting for someone else to be actionable again
+- =DONE= - It's done!
+
+I also make sure to set them up in the order I want =org-sort-entries= to sort them in when I use the =o= option upon invoking that command.
+
+#+begin_src emacs-lisp
+
+  (setq org-todo-keywords
+    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+      (sequence "|" "WAIT(w)" "BACK(b)")))
+
+  ;; TODO: org-todo-keyword-faces
+  (setq org-todo-keyword-faces
+    '(("NEXT" . (:foreground "orange red" :weight bold))
+      ("WAIT" . (:foreground "HotPink2" :weight bold))
+      ("BACK" . (:foreground "MediumPurple3" :weight bold))))
+
+#+end_src
+
 * Tags
 
 Tags are used to filter all tasks to find anything actionable in a particular context.  I use the =@home= and =@work= tags for explicit contexts and then the rest are used for filtering tasks for agenda views.
 
-- =next= - This task should be done next (in the Getting Things Done sense)
 - =followup= - Someone is waiting on me to follow up on this task, it should be prioritized above others
 - =batch= - The task can be batched with others (low effort)
 
@@ -47,7 +94,6 @@ Tags are used to filter all tasks to find anything actionable in a particular co
        ("@home" . ?H)
        ("@work" . ?W)
        ("batch" . ?b)
-       ("next" . ?n)
        ("followup" . ?f)))
 
 #+end_src
@@ -74,8 +120,9 @@ Tags are used to filter all tasks to find anything actionable in a particular co
                    (org-agenda-text-search-extra-files nil)))))
 
           ("n" "Next Tasks"
-           ((tags-togo "NEXT"
-                  ((org-agenda-overriding-header "Next Actions")))))
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))))
 
           ;; Low-effort next actions
           ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
@@ -93,16 +140,6 @@ The following blocks are being migrated over from my Org Mode configuration in [
 
 #+begin_src emacs-lisp :tangle no
 
-  (setq org-directory
-    (if dw/is-termux
-        "~/storage/shared/Notes"
-        "~/Notes"))
-
-  (defun dw/org-path (path)
-    (expand-file-name path org-directory))
-
-  (setq org-journal-dir (dw/org-path "Journal/"))
-
   (defun dw/get-todays-journal-file-name ()
     "Gets the journal file name for today's date"
     (interactive)
@@ -114,19 +151,6 @@ The following blocks are being migrated over from my Org Mode configuration in [
       (if (not (file-directory-p journal-year-dir))
         (make-directory journal-year-dir))
       journal-file-name))
-
-  (setq org-default-notes-file (dw/org-path "Inbox.org"))
-
-  (setq org-agenda-files
-    (list
-      (dw/org-path "Inbox.org")
-      (dw/org-path "Personal.org")
-      (dw/org-path "Work.org")
-      (dw/org-path "Business.org")
-      (dw/org-path "Meta.org")
-      (dw/org-path "Hacking.org")
-      (dw/org-path "Calendar/Personal.org")
-      (dw/org-path "Calendar/Work.org")))
 
 #+end_src
 
@@ -212,14 +236,6 @@ The following blocks are being migrated over from my Org Mode configuration in [
                    ;; Single arguments given alone
                    :priority "A")
             )))
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-"emacs-org-super-agenda"
 
 #+end_src
 
@@ -327,6 +343,8 @@ Information on template expansion can be found in the [[https://orgmode.org/manu
 #+end_src
 
 * Module Setup
+
+This Org file produces a file called =dw-workflow.el= which gets loaded up in =init.el=; export it as a feature so that it can be loaded with =require=.
 
 #+begin_src emacs-lisp
 
