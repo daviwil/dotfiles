@@ -20,6 +20,7 @@
 - [[#dotfiles-management][Dotfiles Management]]
   - [[#syncing][Syncing]]
   - [[#updating][Updating]]
+- [[#nix-package-manager][Nix Package Manager]]
 - [[#system-installation][System Installation]]
 :END:
 
@@ -107,6 +108,7 @@ sudo -E guix system -L ~/.dotfiles/.config/guix/systems reconfigure ~/.dotfiles/
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd))
 
+(use-service-modules nix)
 (use-service-modules desktop xorg)
 (use-package-modules certs)
 (use-package-modules shells)
@@ -280,6 +282,7 @@ Define the =base-operating-system= which will be inherited by all machine config
                                (web-interface? #t)
                                (extensions
                                  (list cups-filters))))
+                    (service nix-service-type)
                     (bluetooth-service #:auto-enable? #t)
                     (remove (lambda (service)
                                 (eq? (service-kind service) gdm-service-type))
@@ -713,6 +716,32 @@ emacsclient -e '(load-file "~/.emacs.d/per-system-settings.el")' -a "echo 'Emacs
     (unless (equal org-file "README.org")
       (message "\n\033[1;32mUpdating %s\033[0m\n" org-file)
       (org-babel-tangle-file (expand-file-name org-file dotfiles-path)))))
+
+#+end_src
+
+* Nix Package Manager
+
+In an ironic twist of fate, I've found that certain tools I need to use are more easily available in the Nix package repository, so I use it to install them.
+
+#+begin_src conf :tangle .nix-channels
+
+https://nixos.org/channels/nixpkgs-unstable nixpkgs
+
+#+end_src
+
+The channel needs to be updated before any packages can be installed:
+
+#+begin_src sh
+
+nix-channel --update
+
+#+end_src
+
+Installing packages:
+
+#+begin_src sh
+
+nix-env -i nodejs dotnet-sdk
 
 #+end_src
 
