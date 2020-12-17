@@ -2,9 +2,7 @@
 ;; platform-specific manifests at some point.
 
 (specifications->manifest
- '("node"
-
-   ;; C/C++
+ '(;; C/C++
    "gcc-toolchain"
    "make"
    "pkg-config"
