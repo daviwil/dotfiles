@@ -13,8 +13,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 - [[#keep-emacsd-clean][Keep .emacs.d Clean]]
 - [[#package-management][Package Management]]
 - [[#update-load-path][Update Load Path]]
-- [[#helper-functions][Helper Functions]]
-  - [[#platform-helpers][Platform Helpers]]
 - [[#server-mode][Server Mode]]
 - [[#desktop-environment][Desktop Environment]]
 - [[#keyboard-bindings][Keyboard Bindings]]
@@ -281,42 +279,6 @@ I've got a folder of custom elisp files which must be added to the load path.
 
 ;; Add my elisp path to load-path
 (push "~/.emacs.d/elisp" load-path)
-
-#+end_src
-
-* Helper Functions
-
-** Platform Helpers
-
-Here are a couple helpful functions for doing things based on what platform
-Emacs is running on.  I wrote =on-platform-do= as a way to learn Emacs macros, but
-there's probably a more appropriate way to do this built in to Emacs.
-
-#+begin_src emacs-lisp
-
-  ;; Helper function for changing OS platform keywords to system-type strings
-  (defun platform-keyword-to-string (platform-keyword)
-    (cond
-     ((eq platform-keyword 'windows) "windows-nt")
-     ((eq platform-keyword 'cygwin) "cygwin")
-     ((eq platform-keyword 'osx) "darwin")
-     ((eq platform-keyword 'linux) "gnu/linux")))
-
-  ;; Define a macro that runs an elisp expression only on a particular platform
-  (defmacro on-platform-do (&rest platform-expressions)
-    `(cond
-      ,@(mapcar
-         (lambda (platform-expr)
-       (let ((keyword (nth 0 platform-expr))
-             (expr (nth 1 platform-expr)))
-         `(,(if (listp keyword)
-           `(or
-             ,@(mapcar
-                (lambda (kw) `(string-equal system-type ,(platform-keyword-to-string kw)))
-                keyword))
-            `(string-equal system-type ,(platform-keyword-to-string keyword)))
-            ,expr)))
-         platform-expressions)))
 
 #+end_src
 
@@ -639,10 +601,10 @@ Different platforms need different default font sizes, and
 #+begin_src emacs-lisp
 
   ;; Set the font face based on platform
-  (on-platform-do
-   ((windows cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
-    (osx (set-face-attribute 'default nil :font "Fira Mono" :height 170))
-    (linux (set-face-attribute 'default nil :font "Fira Code Retina" :height 220)))
+  (pcase system-type
+    ((or 'windows-nt 'cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
+    ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170))
+    ('gnu/linux (set-face-attribute 'default nil :font "Fira Code Retina" :height 120)))
 
   ;; Set the fixed pitch face
   (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 200)

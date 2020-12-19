@@ -64,30 +64,6 @@
 ;; Add my elisp path to load-path
 (push "~/.emacs.d/elisp" load-path)
 
-;; Helper function for changing OS platform keywords to system-type strings
-(defun platform-keyword-to-string (platform-keyword)
-  (cond
-   ((eq platform-keyword 'windows) "windows-nt")
-   ((eq platform-keyword 'cygwin) "cygwin")
-   ((eq platform-keyword 'osx) "darwin")
-   ((eq platform-keyword 'linux) "gnu/linux")))
-
-;; Define a macro that runs an elisp expression only on a particular platform
-(defmacro on-platform-do (&rest platform-expressions)
-  `(cond
-    ,@(mapcar
-       (lambda (platform-expr)
-     (let ((keyword (nth 0 platform-expr))
-           (expr (nth 1 platform-expr)))
-       `(,(if (listp keyword)
-         `(or
-           ,@(mapcar
-              (lambda (kw) `(string-equal system-type ,(platform-keyword-to-string kw)))
-              keyword))
-          `(string-equal system-type ,(platform-keyword-to-string keyword)))
-          ,expr)))
-       platform-expressions)))
-
 (server-start)
 
 (setq dw/exwm-enabled (and (not dw/is-termux)
@@ -228,10 +204,10 @@
   (doom-themes-visual-bell-config))
 
 ;; Set the font face based on platform
-(on-platform-do
- ((windows cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
-  (osx (set-face-attribute 'default nil :font "Fira Mono" :height 170))
-  (linux (set-face-attribute 'default nil :font "Fira Code Retina" :height 120)))
+(pcase system-type
+  ((or 'windows-nt 'cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
+  ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170))
+  ('gnu/linux (set-face-attribute 'default nil :font "Fira Code Retina" :height 120)))
 
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
