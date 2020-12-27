@@ -118,7 +118,7 @@ luksUUID /dev/<root partition>`.
 Once your system configuration is correct, start up `herd`:
 
 ```
-herd start cow-store /mnt`
+herd start cow-store /mnt
 ```
 
 Now you can initialize your system using the following command:
