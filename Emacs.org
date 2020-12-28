@@ -3535,7 +3535,7 @@ Since I switched over to =eshell= I don't use =multi-term= as much anymore.  Som
         erc-modules
         '(autoaway autojoin button completion fill irccontrols keep-place
             list match menu move-to-prompt netsplit networks noncommands
-            readonly ring stamp track image hl-nicks))
+            readonly ring stamp track hl-nicks))
 
     (add-hook 'erc-join-hook 'bitlbee-identify)
     (defun bitlbee-identify ()
