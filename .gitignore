@@ -5,5 +5,9 @@
 .emacs.d/elisp/dw-desktop.el
 .emacs.d/elisp/dw-workflow.el
 
+; Desktop Environment
+.config/polybar/config
+.config/dunst/dunstrc
+
 ; Browsers
 .config/vimb/config
