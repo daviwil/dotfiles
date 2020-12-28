@@ -71,7 +71,6 @@
 (use-package exwm
   :if dw/exwm-enabled
   :config
-  ;(display-time-mode 1) ;; Not needed for now since we have a panel
 
   (add-hook 'exwm-mode-hook
             (lambda ()

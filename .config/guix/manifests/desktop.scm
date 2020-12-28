@@ -27,6 +27,7 @@
    "polybar"
    
    "dunst"
+   "libnotify"  ; For notify-send
    
    "mcron"
    

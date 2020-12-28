@@ -230,7 +230,6 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
   (use-package exwm
     :if dw/exwm-enabled
     :config
-    ;(display-time-mode 1) ;; Not needed for now since we have a panel
 
     (add-hook 'exwm-mode-hook
               (lambda ()
@@ -955,6 +954,7 @@ fi
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
 "dunst"
+"libnotify"  ; For notify-send
 
 #+end_src
 
