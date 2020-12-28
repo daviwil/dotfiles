@@ -1316,6 +1316,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
   (winner-mode)
   (define-key evil-window-map "u" 'winner-undo)
+  (define-key evil-window-map "U" 'winner-redo)
 
 #+end_src
 
