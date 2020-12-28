@@ -4,3 +4,6 @@
 .emacs.d/init.el
 .emacs.d/elisp/dw-desktop.el
 .emacs.d/elisp/dw-workflow.el
+
+; Browsers
+.config/vimb/config
