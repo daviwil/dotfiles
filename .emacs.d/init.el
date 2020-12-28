@@ -16,8 +16,10 @@
 (setq dw/is-termux
       (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
 
-;; TODO: Need a more accurate check for this!
-(setq dw/is-guix-system (eq window-system 'x))
+(require 'f)
+(setq dw/is-guix-system (and (eq system-type 'gnu/linux)
+                             (string-equal (f-read "/etc/issue")
+                                           "\nThis is the GNU system.  Welcome.\n")))
 
 ;; Keep transient cruft out of ~/.emacs.d/
 (setq user-emacs-directory "~/.cache/emacs/"
