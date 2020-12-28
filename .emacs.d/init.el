@@ -772,8 +772,6 @@
   (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-use-outline-path t)
 
-  (require 'dw-workflow)
-
   (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
   (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
 
