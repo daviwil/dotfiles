@@ -249,7 +249,8 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
         ("qutebrowser" (exwm-workspace-move-window 2))
         ("qjackctl" (exwm-floating-toggle-floating))
         ("mpv" (exwm-floating-toggle-floating)
-               (dw/exwm-floating-toggle-pinned))))
+               (dw/exwm-floating-toggle-pinned))
+        ("gsi" (exwm-input-toggle-keyboard))))
 
     ;; Do some post-init setup
     (add-hook 'exwm-init-hook #'dw/exwm-init-hook)
