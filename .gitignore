@@ -11,3 +11,11 @@
 
 ; Browsers
 .config/vimb/config
+
+; Guix Configuration
+.config/guix/systems/davinci.scm
+.config/guix/systems/phantom.scm
+.config/guix/systems/zerocool.scm
+.config/guix/systems/base-system.scm
+.config/guix/manifests/emacs.scm
+.config/guix/manifests/desktop.scm
