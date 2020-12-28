@@ -1,9 +1,5 @@
 # -*- mode: gitignore; -*-
 
-; Generated files
-init.el
-elisp/dw-desktop.el
-
 elpa/
 eshell/history
 eshell/lastdir
