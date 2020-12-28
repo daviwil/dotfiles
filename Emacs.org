@@ -305,7 +305,7 @@ Load up the desktop environment if on a machine that supports it and the =--use-
                              (seq-contains command-line-args "--use-exwm")))
 
   (when dw/exwm-enabled
-    (load-file "~/.dotfiles/.emacs.d/exwm.el"))
+    (require 'dw-desktop))
 
 #+end_src
 

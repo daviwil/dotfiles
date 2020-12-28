@@ -235,8 +235,6 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
               (lambda ()
                 (evil-local-set-key 'motion (kbd "C-u") nil)))
 
-    (require 'dw-desktop)
-
     (defun dw/setup-window-by-class ()
       (interactive)
       (pcase exwm-class-name
@@ -476,7 +474,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 ** Provide the dw-desktop package
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle .emacs.d/elisp/dw-desktop.el
 
   (provide 'dw-desktop)
 
