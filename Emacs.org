@@ -2753,6 +2753,16 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 #+end_src
 
+* Game Development
+** Substratic Forge
+
+#+begin_src emacs-lisp
+
+  (use-package substratic-forge
+    :if (file-exists-p "~/Projects/Code/crash-the-stack/lib/github.com/substratic/forge/@/")
+    :load-path "~/Projects/Code/crash-the-stack/lib/github.com/substratic/forge/@/"
+    :bind (:map substratic-forge-mode-map
+           ("C-c C-m" . substratic-reload-module)))
 
 #+end_src
 
