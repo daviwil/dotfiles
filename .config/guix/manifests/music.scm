@@ -10,12 +10,11 @@
 
    ;; DAWs
    "ardour"
-   "qtractor"
    "zrythm"
 
    ;; Guitar
-   "guitarix"
-   "guitarix-lv2"
+   ;; "guitarix"
+   ;; "guitarix-lv2"
 
    ;; Effects
    "calf"
@@ -28,6 +27,7 @@
    "amsynth"
    "avldrums-lv2"
    "geonkick"
+   "fluidsynth"
    "zynaddsubfx"
 
    ;; Mixing Tools
