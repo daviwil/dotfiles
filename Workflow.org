@@ -12,12 +12,14 @@ This file contains the description and configuration of the productivity workflo
   - [[#dont-look-at-org-files-to-find-the-next-task-use-the-agenda-view][Don't look at Org files to find the next task, use the agenda view]]
   - [[#ensure-sufficient-metadata-on-tasks-for-effective-filtering][Ensure sufficient metadata on tasks for effective filtering]]
   - [[#keep-a-daily-log-of-work-being-done][Keep a daily log of work being done]]
+- [[#tasks][Tasks]]
+  - [[#figure-out-how-to-refile-tasks-to-an-org-capture-target][Figure out how to refile tasks to an org-capture target]]
 - [[#file-paths][File Paths]]
 - [[#workflow-states][Workflow States]]
 - [[#tags][Tags]]
 - [[#agendas][Agendas]]
+- [[#capture-templates][Capture Templates]]
 - [[#old-configuration][Old Configuration]]
-  - [[#org-file-paths][Org File Paths]]
   - [[#agenda][Agenda]]
   - [[#tags][Tags]]
   - [[#tasks][Tasks]]
@@ -30,6 +32,12 @@ This file contains the description and configuration of the productivity workflo
 ** Don't look at Org files to find the next task, use the agenda view
 ** Ensure sufficient metadata on tasks for effective filtering
 ** Keep a daily log of work being done
+* Tasks
+
+Here are some things I need to do to make this workflow even more effective:
+
+** TODO Figure out how to refile tasks to an org-capture target
+I want to put them in the "Completed Tasks" entry of that day
 
 * File Paths
 
@@ -132,13 +140,9 @@ Tags are used to filter all tasks to find anything actionable in a particular co
 
 #+end_src
 
-* Old Configuration
+* Capture Templates
 
-The following blocks are being migrated over from my Org Mode configuration in [[file:Emacs.org][Emacs.org]].  I've disabled tangling for them so that they don't get written out to =workflow.el= in favor of my new configuration above.
-
-** Org File Paths
-
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 
   (defun dw/get-todays-journal-file-name ()
     "Gets the journal file name for today's date"
@@ -146,13 +150,56 @@ The following blocks are being migrated over from my Org Mode configuration in [
     (let* ((journal-file-name
              (expand-file-name
                (format-time-string "%Y/%Y-%2m-%B.org")
-               org-journal-dir))
+               (dw/org-path "Journal/")))
            (journal-year-dir (file-name-directory journal-file-name)))
       (if (not (file-directory-p journal-year-dir))
         (make-directory journal-year-dir))
       journal-file-name))
 
+
+  (defun dw/on-org-capture ()
+    ;; Don't show the confirmation header text
+    (setq header-line-format nil)
+
+    ;; Control how some buffers are handled
+    (let ((template (org-capture-get :key t)))
+      (pcase template
+        ("jj" (delete-other-windows)))))
+
+  (add-hook 'org-capture-mode-hook 'dw/on-org-capture)
+
+  (setq org-capture-templates
+    `(("t" "Tasks")
+      ("tt" "Task" entry (file ,(dw/org-path "Inbox.org"))
+           "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+      ("ts" "Clocked Entry Subtask" entry (clock)
+           "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+
+      ("j" "Journal Entries")
+      ("je" "General Entry" entry
+           (file+olp+datetree ,(dw/org-path "Journal.org"))
+           "\n* %<%I:%M %p> - %^{Title} \n\n%?\n\n"
+           :tree-type week
+           :clock-in :clock-resume
+           :empty-lines 1)
+      ("jt" "Task Entry" entry
+           (file+olp+datetree ,(dw/org-path "Journal.org"))
+           "\n* %<%I:%M %p> - Task Notes: %a\n\n%?\n\n"
+           :tree-type week
+           :clock-in :clock-resume
+           :empty-lines 1)
+      ("jj" "Journal" entry
+           (file+olp+datetree ,(dw/org-path "Journal.org"))
+           "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+           :tree-type week
+           :clock-in :clock-resume
+           :empty-lines 1)))
+
 #+end_src
+
+* Old Configuration
+
+The following blocks are being migrated over from my Org Mode configuration in [[file:Emacs.org][Emacs.org]].  I've disabled tangling for them so that they don't get written out to =workflow.el= in favor of my new configuration above.
 
 ** Agenda
 

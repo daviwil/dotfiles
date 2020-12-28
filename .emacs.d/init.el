@@ -437,6 +437,7 @@
   "fds" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" "Base Configuration")) :which-key "base system")
   "fdS" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" system-name)) :which-key "this system")
   "fdp" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Desktop.org" "Panel via Polybar")) :which-key "polybar")
+  "fdw" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/Workflow.org"))) :which-key "workflow")
   "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/.config/vimb/config")) :which-key "vimb"))
 
 (use-package hydra
@@ -774,7 +775,7 @@
         org-hide-emphasis-markers t
         org-src-fontify-natively t
         org-src-tab-acts-natively t
-        org-edit-src-content-indentation 0
+        org-edit-src-content-indentation 2
         org-hide-block-startup nil
         org-src-preserve-indentation nil
         org-startup-folded 'content
@@ -787,10 +788,13 @@
         org-eshell
         org-irc))
 
-  (setq org-refile-targets '((nil :maxlevel . 3)
-                            (org-agenda-files :maxlevel . 3)))
+  (setq org-refile-targets '((nil :maxlevel . 2)
+                             (org-agenda-files :maxlevel . 2)))
+
   (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-use-outline-path t)
+
+  (require 'dw-workflow)
 
   (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
   (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
@@ -863,207 +867,6 @@
 ;; '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
 ;; '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
 ;; '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
-
-(setq org-directory
-  (if dw/is-termux
-      "~/storage/shared/Notes"
-      "~/Notes"))
-
-(defun dw/org-path (path)
-  (expand-file-name path org-directory))
-
-(setq org-journal-dir (dw/org-path "Journal/"))
-
-(defun dw/get-todays-journal-file-name ()
-  "Gets the journal file name for today's date"
-  (interactive)
-  (let* ((journal-file-name
-           (expand-file-name
-             (format-time-string "%Y/%Y-%2m-%B.org")
-             org-journal-dir))
-         (journal-year-dir (file-name-directory journal-file-name)))
-    (if (not (file-directory-p journal-year-dir))
-      (make-directory journal-year-dir))
-    journal-file-name))
-
-(setq org-default-notes-file (dw/org-path "Projects.org"))
-
-(setq org-agenda-files
-  (list
-    (dw/org-path "Habits.org")
-    (dw/org-path "Work.org")
-    (dw/org-path "AutoRest.org")
-    (dw/org-path "Calendar/Personal.org")
-    (dw/org-path "Calendar/Work.org")
-    (dw/org-path "Projects.org")))
-    ;(dw/get-todays-journal-file-name)))
-
-(setq org-agenda-window-setup 'other-window)
-(setq org-agenda-span 'day)
-(setq org-stuck-projects '("+LEVEL=2/TODO" ("NEXT") nil ""))
-(setq org-agenda-start-with-log-mode t)
-
-;; Configure custom agenda views
-(setq org-agenda-custom-commands
-  '(("d" "Dashboard"
-     ((agenda "" ((org-deadline-warning-days 7)))
-      (todo "PROC" ((org-agenda-overriding-header "Process Tasks")))
-      (todo "NEXT"
-        ((org-agenda-overriding-header "Next Tasks")))
-      (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
-      ;; (todo "TODO"
-      ;;   ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
-      ;;    (org-agenda-files `(,dw/org-inbox-path))
-      ;;    (org-agenda-text-search-extra-files nil)))))
-
-    ("n" "Next Tasks"
-     ((todo "NEXT"
-        ((org-agenda-overriding-header "Next Tasks")))))
-
-    ("p" "Active Projects"
-     ((agenda "")
-      (todo "ACTIVE"
-        ((org-agenda-overriding-header "Active Projects")
-         (org-agenda-max-todos 5)
-         (org-agenda-files org-agenda-files)))))
-
-    ("w" "Workflow Status"
-     ((todo "WAIT"
-            ((org-agenda-overriding-header "Waiting on External")
-             (org-agenda-files org-agenda-files)))
-      (todo "REVIEW"
-            ((org-agenda-overriding-header "In Review")
-             (org-agenda-files org-agenda-files)))
-      (todo "PLAN"
-            ((org-agenda-overriding-header "In Planning")
-             (org-agenda-todo-list-sublevels nil)
-             (org-agenda-files org-agenda-files)))
-      (todo "BACKLOG"
-            ((org-agenda-overriding-header "Project Backlog")
-             (org-agenda-todo-list-sublevels nil)
-             (org-agenda-files org-agenda-files)))
-      (todo "READY"
-            ((org-agenda-overriding-header "Ready for Work")
-             (org-agenda-files org-agenda-files)))
-      (todo "ACTIVE"
-            ((org-agenda-overriding-header "Active Projects")
-             (org-agenda-files org-agenda-files)))
-      (todo "COMPLETED"
-            ((org-agenda-overriding-header "Completed Projects")
-             (org-agenda-files org-agenda-files)))
-      (todo "CANC"
-            ((org-agenda-overriding-header "Cancelled Projects")
-             (org-agenda-files org-agenda-files)))))
-
-    ;; Projects on hold
-    ("h" tags-todo "+LEVEL=2/+HOLD"
-     ((org-agenda-overriding-header "On-hold Projects")
-      (org-agenda-files org-agenda-files)))
-
-    ;; Low-effort next actions
-    ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-     ((org-agenda-overriding-header "Low Effort Tasks")
-      (org-agenda-max-todos 20)
-      (org-agenda-files org-agenda-files)))))
-
-;; Configure common tags
-(setq org-tag-alist
-  '((:startgroup)
-     ; Put mutually exclusive tags here
-     (:endgroup)
-     ("@errand" . ?E)
-     ("@home" . ?H)
-     ("@work" . ?W)
-     ("agenda" . ?a)
-     ("planning" . ?p)
-     ("publish" . ?P)
-     ("batch" . ?b)
-     ("note" . ?n)
-     ("idea" . ?i)
-     ("thinking" . ?t)
-     ("recurring" . ?r)))
-
-;; Configure task state change tag triggers
-;; (setq org-todo-state-tags-triggers
-;;   (quote (("CANC" ("cancelled" . t))
-;;           ("WAIT" ("waiting" . t))
-;;           ("HOLD" ("waiting") ("onhold" . t))
-;;           (done ("waiting") ("onhold"))
-;;           ("TODO" ("waiting") ("cancelled") ("onhold"))
-;;           ("DONE" ("waiting") ("cancelled") ("onhold")))))
-
-;; Configure TODO settings
-(setq org-log-done 'time)
-(setq org-log-into-drawer t)
-(setq org-datetree-add-timestamp 'inactive)
-(setq org-habit-graph-column 60)
-(setq org-fontify-whole-heading-line t)
-(setq org-todo-keywords
-  '((sequence "TODO(t)" "NEXT(n)" "PROC" "|" "DONE(d!)")
-    (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")
-    (sequence "GOAL(g)" "|" "ACHIEVED(v)" "MAINTAIN(m)")))
-
-(use-package org-journal
-  :defer t
-  :ensure t  ;; Not in Guix yet
-  :custom
-  (org-journal-file-type 'daily)
-  (org-journal-date-format "%B %d, %Y - %A")
-  (org-journal-dir "~/Notes/Journal/")
-  (org-journal-time-format "%-l:%M %p - ")
-  (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-enable-agenda-integration t))
-
-(defun dw/read-file-as-string (path)
-  (with-temp-buffer
-    (insert-file-contents path)
-    (buffer-string)))
-
-(setq org-capture-templates
-  `(("t" "Tasks / Projects")
-    ("tt" "Task" entry (file+olp ,(dw/org-path "Projects.org") "Projects" "Inbox")
-         "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
-    ("ts" "Clocked Entry Subtask" entry (clock)
-         "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
-    ("tp" "New Project" entry (file+olp ,(dw/org-path "Projects.org") "Projects" "Inbox")
-         "* PLAN %?\n  %U\n  %a\n  %i" :empty-lines 1)
-
-    ("j" "Journal Entries")
-    ("jj" "Journal" entry
-         (file+olp+datetree ,(dw/get-todays-journal-file-name))
-         ;"\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-         ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
-         :clock-in :clock-resume
-         :empty-lines 1)
-    ("jm" "Meeting" entry
-         (file+olp+datetree ,(dw/get-todays-journal-file-name))
-         "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
-         :clock-in :clock-resume
-         :empty-lines 1)
-    ("jt" "Thinking" entry
-         (file+olp+datetree ,(dw/get-todays-journal-file-name))
-         "\n* %<%I:%M %p> - %^{Topic} :thoughts:\n\n%?\n\n"
-         :clock-in :clock-resume
-         :empty-lines 1)
-    ("jc" "Clocked Entry Notes" entry
-         (file+olp+datetree ,(dw/get-todays-journal-file-name))
-         "* %<%I:%M %p> - %K :notes:\n\n%?"
-         :empty-lines 1)
-    ("jg" "Clocked General Task" entry
-         (file+olp+datetree ,(dw/get-todays-journal-file-name))
-         "* %<%I:%M %p> - %^{Task description} %^g\n\n%?"
-         :clock-in :clock-resume
-         :empty-lines 1)
-
-    ("w" "Workflows")
-    ("we" "Checking Email" entry (file+olp+datetree ,(dw/get-todays-journal-file-name))
-         "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
-
-    ("m" "Metrics Capture")
-    ("mw" "Weight" table-line (file+headline "~/Notes/Metrics.org" "Weight")
-     "| %U | %^{Weight} | %^{Notes} |" :kill-buffer)
-    ("mp" "Blood Pressure" table-line (file+headline "~/Notes/Metrics.org" "Blood Pressure")
-     "| %U | %^{Systolic} | %^{Diastolic} | %^{Notes}" :kill-buffer)))
 
 ;; This is needed as of Org 9.2
 (require 'org-tempo)

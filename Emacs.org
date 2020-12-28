@@ -69,7 +69,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#opening-files-externally][Opening Files Externally]]
 - [[#org-mode][Org Mode]]
   - [[#org-configuration][Org Configuration]]
-  - [[#weekly-planning][Weekly Planning]]
+  - [[#workflow-configuration][Workflow Configuration]]
   - [[#automatically-tangle-on-save][Automatically "Tangle" on Save]]
   - [[#fonts-and-bullets][Fonts and Bullets]]
   - [[#block-templates][Block Templates]]
@@ -1576,58 +1576,61 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
 
 #+begin_src emacs-lisp
 
-;; TODO: Mode this to another section
-(setq-default fill-column 80)
+  ;; TODO: Mode this to another section
+  (setq-default fill-column 80)
 
-;; Turn on indentation and auto-fill mode for Org files
-(defun dw/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (auto-fill-mode 0)
-  (visual-line-mode 1)
-  (setq evil-auto-indent nil)
-  (diminish org-indent-mode))
+  ;; Turn on indentation and auto-fill mode for Org files
+  (defun dw/org-mode-setup ()
+    (org-indent-mode)
+    (variable-pitch-mode 1)
+    (auto-fill-mode 0)
+    (visual-line-mode 1)
+    (setq evil-auto-indent nil)
+    (diminish org-indent-mode))
 
-(use-package org
-  :defer t
-  :hook (org-mode . dw/org-mode-setup)
-  :config
-  (setq org-ellipsis " ▾"
-        org-hide-emphasis-markers t
-        org-src-fontify-natively t
-        org-src-tab-acts-natively t
-        org-edit-src-content-indentation 0
-        org-hide-block-startup nil
-        org-src-preserve-indentation nil
-        org-startup-folded 'content
-        org-cycle-separator-lines 2)
+  (use-package org
+    :defer t
+    :hook (org-mode . dw/org-mode-setup)
+    :config
+    (setq org-ellipsis " ▾"
+          org-hide-emphasis-markers t
+          org-src-fontify-natively t
+          org-src-tab-acts-natively t
+          org-edit-src-content-indentation 2
+          org-hide-block-startup nil
+          org-src-preserve-indentation nil
+          org-startup-folded 'content
+          org-cycle-separator-lines 2)
 
-  (setq org-modules
-    '(org-crypt
-        org-habit
-        org-bookmark
-        org-eshell
-        org-irc))
+    (setq org-modules
+      '(org-crypt
+          org-habit
+          org-bookmark
+          org-eshell
+          org-irc))
 
-  (setq org-refile-targets '((nil :maxlevel . 3)
-                            (org-agenda-files :maxlevel . 3)))
-  (setq org-outline-path-complete-in-steps nil)
-  (setq org-refile-use-outline-path t)
+    (setq org-refile-targets '((nil :maxlevel . 2)
+                               (org-agenda-files :maxlevel . 2)))
 
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
+    (setq org-outline-path-complete-in-steps nil)
+    (setq org-refile-use-outline-path t)
 
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup)
+    (require 'dw-workflow)
 
-  (org-babel-do-load-languages
-    'org-babel-load-languages
-    '((emacs-lisp . t)
-      (ledger . t)))
+    (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
+    (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
 
-  (push '("conf-unix" . conf-unix) org-src-lang-modes)
+    (evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
+    (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup)
 
-  ;; NOTE: Subsequent sections are still part of this use-package block!
+    (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((emacs-lisp . t)
+        (ledger . t)))
+
+    (push '("conf-unix" . conf-unix) org-src-lang-modes)
+
+    ;; NOTE: Subsequent sections are still part of this use-package block!
 
 #+end_src
 
