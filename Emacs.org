@@ -213,12 +213,12 @@ I don't want a bunch of transient files showing up as untracked in the Git repo 
 
 #+begin_src emacs-lisp
 
-  ;; Keep transient cruft out of ~/.emacs.d/
-  (setq user-emacs-directory "~/.cache/emacs/"
-        backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory)))
-        url-history-file (expand-file-name "url/history" user-emacs-directory)
-        auto-save-list-file-prefix (expand-file-name "auto-save-list/.saves-" user-emacs-directory)
-        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-emacs-directory))
+  ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
+  (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+        url-history-file (expand-file-name "url/history" user-emacs-directory))
+
+  ;; Use no-littering to automatically set common paths to the new user-emacs-directory
+  (use-package no-littering)
 
   ;; Keep customization settings in a temporary file (thanks Ambrevar!)
   (setq custom-file
@@ -226,6 +226,14 @@ I don't want a bunch of transient files showing up as untracked in the Git repo 
             (expand-file-name "custom.el" server-socket-dir)
           (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
   (load custom-file t)
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-no-littering"
 
 #+end_src
 
