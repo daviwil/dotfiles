@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <instant>
-  <Main x="0" y="0" w="3840" h="2115" current-tab="mixer"/>
-  <Mixer mixer-rhs-pane1-pos="0.60000002384185791" mixer-rhs_pane2-pos="0.69999998807907104" mixer-list-hpane-pos="0.20000000298023224" mixer-inner-pane-pos="0.80000001192092896" narrow-strips="0" show-mixer="0" show-mixer-list="1" maximised="0" monitor-section-visible="0">
+  <Main x="0" y="35" w="2560" h="1315" current-tab="preferences"/>
+  <Editor id="41" edit-horizontal-pane-pos="0.89999997615814209" notebook-shrunk="0" edit-vertical-pane-pos="0.93783783912658691" mixer-width="Wide" zoom-focus="ZoomFocusPlayhead" zoom="124" snap-to="SnapToBeatDiv4" snap-mode="SnapNormal" internal-snap-to="SnapToBeatDiv4" internal-snap-mode="SnapNormal" pre-internal-snap-to="SnapToBeatDiv4" pre-internal-snap-mode="SnapOff" edit-point="EditAtMouse" visible-track-count="-1" playhead="0" left-frame="0" y-origin="0" show-measures="1" maximised="0" follow-playhead="1" stationary-playhead="0" region-list-sort-type="ByEndInFile" mouse-mode="MouseDraw" join-object-range="0" show-editor-mixer="0" show-editor-list="0" editor-list-page="0" show-marker-lines="0" nudge-clock-value="240000">
+    <Window name="Editor" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" tabbed="1"/>
+    <Buttons>
+      <Press/>
+      <Release/>
+    </Buttons>
+    <Selection/>
+    <RegionList sort-type="ByEndInFile" sort-ascending="1" show-all="0" show-automatic-regions="1"/>
+    <ActionScript lua="Lua 5.3">c2NyaXB0cyA9IHt9IA==</ActionScript>
+    <ActionHooks/>
+    <EditorLocations clock-mode="BBT"/>
+  </Editor>
+  <Mixer mixer-rhs-pane1-pos="0.39849624037742615" mixer-rhs_pane2-pos="0.69999998807907104" mixer-list-hpane-pos="0.20000000298023224" mixer-inner-pane-pos="0.80000001192092896" narrow-strips="0" show-mixer="0" show-mixer-list="1" maximised="0" monitor-section-visible="0">
     <Window name="Mixer" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" tabbed="1"/>
     <PluginOrder/>
   </Mixer>
@@ -9,20 +21,6 @@
     <Window name="Preferences" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" tabbed="1"/>
   </Preferences>
   <Meterbridge show-meterbridge="0">
-    <geometry x-size="600" y-size="400" x-pos="1" y-pos="1"/>
+    <geometry x-size="416" y-size="497" x-pos="2" y-pos="2"/>
   </Meterbridge>
-  <Editor id="41" edit-horizontal-pane-pos="0.89999997615814209" notebook-shrunk="0" edit-vertical-pane-pos="0.89999997615814209" mixer-width="Wide" zoom-focus="ZoomFocusPlayhead" zoom="2023" snap-to="SnapToBeat" snap-mode="SnapOff" internal-snap-to="SnapToBeat" internal-snap-mode="SnapOff" pre-internal-snap-to="SnapToBeat" pre-internal-snap-mode="SnapOff" edit-point="EditAtMouse" visible-track-count="-1" playhead="406623" left-frame="0" y-origin="0" show-measures="1" maximised="0" follow-playhead="1" stationary-playhead="0" region-list-sort-type="ByEndInFile" mouse-mode="MouseRange" join-object-range="0" show-editor-mixer="0" show-editor-list="0" editor-list-page="0" show-marker-lines="0" nudge-clock-value="240000">
-    <Window name="Editor" visible="0" x-off="-1" y-off="-1" x-size="-1" y-size="-1" tabbed="1"/>
-    <Buttons>
-      <Press/>
-      <Release/>
-    </Buttons>
-    <Selection>
-      <StripableView id="1575"/>
-    </Selection>
-    <RegionList sort-type="ByEndInFile" sort-ascending="1" show-all="0" show-automatic-regions="1"/>
-    <ActionScript lua="Lua 5.3">c2NyaXB0cyA9IHt9IA==</ActionScript>
-    <ActionHooks/>
-    <EditorLocations clock-mode="BBT"/>
-  </Editor>
 </instant>
