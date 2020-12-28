@@ -1,5 +1,8 @@
 # -*- mode: gitignore; -*-
 
+; Generated files
+init.el
+
 elpa/
 eshell/history
 eshell/lastdir
