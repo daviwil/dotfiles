@@ -10,6 +10,7 @@
 ; Desktop Environment
 .config/polybar/config
 .config/dunst/dunstrc
+.config/xsettingsd/xsettingsd.conf
 
 ; Browsers
 .config/vimb/config
