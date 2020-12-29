@@ -8,6 +8,7 @@
 .emacs.d/lisp/dw-workflow.el
 
 ; Desktop Environment
+.config/mimeapps.list
 .config/polybar/config
 .config/dunst/dunstrc
 .config/xsettingsd/xsettingsd.conf

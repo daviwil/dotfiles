@@ -21,6 +21,7 @@ This file contains configuration for my overall desktop environment.  My workflo
 - [[#panel-via-polybar][Panel via Polybar]]
 - [[#desktop-notifications-via-dunst][Desktop Notifications via Dunst]]
 - [[#display-management][Display Management]]
+- [[#default-applications][Default Applications]]
 - [[#user-services][User Services]]
 - [[#scheduled-tasks][Scheduled Tasks]]
 - [[#applications][Applications]]
@@ -966,6 +967,21 @@ case $(hostname) in
         ;;
 
 esac
+
+#+end_src
+
+* Default Applications
+
+The file =.config/mimeapps.list= configures default applications for various content types.  Right now I'm using it to control which browser opens URLs from other applications.
+
+#+begin_src conf :tangle .config/mimeapps.list
+
+  [Default Applications]
+  text/html=qutebrowser.desktop
+  x-scheme-handler/http=qutebrowser.desktop
+  x-scheme-handler/https=qutebrowser.desktop
+  x-scheme-handler/about=qutebrowser.desktop
+  x-scheme-handler/unknown=qutebrowser.desktop
 
 #+end_src
 
