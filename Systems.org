@@ -709,15 +709,18 @@ Updating my dotfiles requires running a script in Emacs to loop over all of my l
 
 #+begin_src sh :tangle .bin/update-dotfiles :shebang #!/bin/sh
 
-# Navigate to the directory of this script (generally ~/.dotfiles/.bin)
-cd $(dirname $(readlink -f $0))
-cd ..
+  # Navigate to the directory of this script (generally ~/.dotfiles/.bin)
+  cd $(dirname $(readlink -f $0))
+  cd ..
 
-# The heavy lifting is done by an Emacs script
-emacs -Q --script ./.emacs.d/tangle-dotfiles.el
+  # The heavy lifting is done by an Emacs script
+  emacs -Q --script ./.emacs.d/tangle-dotfiles.el
 
-# Make sure any running Emacs instance gets updated settings
-emacsclient -e '(load-file "~/.emacs.d/per-system-settings.el")' -a "echo 'Emacs is not currently running'"
+  # Make sure any running Emacs instance gets updated settings
+  emacsclient -e '(load-file "~/.emacs.d/per-system-settings.el")' -a "echo 'Emacs is not currently running'"
+
+  # Update configuration symlinks
+  stow .
 
 #+end_src
 
