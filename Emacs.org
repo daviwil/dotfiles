@@ -194,7 +194,12 @@ Some parts of the configuration require knowledge of whether Emacs is running on
 
 #+begin_src emacs-lisp
 
-  (load-file "~/.emacs.d/per-system-settings.el")
+  (defun dw/load-system-settings ()
+    (interactive)
+    (load-file "~/.emacs.d/per-system-settings.el"))
+
+  ;; Load settings for the first time
+  (dw/load-system-settings)
 
   (require 'subr-x)
   (setq dw/is-termux
@@ -605,8 +610,7 @@ A nice gallery of Emacs themes can be found at https://emacsthemes.com/.
 
 *** Set the font
 
-Different platforms need different default font sizes, and
-[[https://mozilla.github.io/Fira/][Fira Mono]] is currently my favorite face.
+Different platforms need different default font sizes, and [[https://mozilla.github.io/Fira/][Fira Mono]] is currently my favorite face.
 
 #+begin_src emacs-lisp
 
@@ -614,13 +618,18 @@ Different platforms need different default font sizes, and
   (pcase system-type
     ((or 'windows-nt 'cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
     ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170))
-    ('gnu/linux (set-face-attribute 'default nil :font "Fira Code Retina" :height 120)))
+    ('gnu/linux (set-face-attribute 'default nil :font "Fira Code Retina" :height (dw/system-settings-get 'emacs/default-face-size))))
 
   ;; Set the fixed pitch face
-  (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 200)
+  (set-face-attribute 'fixed-pitch nil
+                      :font "Fira Code Retina"
+                      :height (dw/system-settings-get 'emacs/fixed-face-size))
 
   ;; Set the variable pitch face
-  (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 245 :weight 'regular)
+  (set-face-attribute 'variable-pitch nil
+                      :font "Cantarell"
+                      :height (dw/system-settings-get 'emacs/variable-face-size)
+                      :weight 'regular)
 
 #+end_src
 

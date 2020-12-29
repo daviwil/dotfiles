@@ -59,7 +59,7 @@ Load system-specific settings from =.emacs.d/per-system-settings.el= and unpack 
 
 #+NAME: get-setting
 #+begin_src emacs-lisp :var name="nil" :session system-settings
-(alist-get (intern name) dw/system-settings)
+(dw/system-settings-get (intern name))
 #+end_src
 
 * Fonts and Themes

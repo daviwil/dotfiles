@@ -316,6 +316,8 @@ Because I'm lame, all of my machines are named from characters, things, and plac
 
 Some settings need to be customized on a per-system basis without tweaking individual configuration files.  Thanks to org-mode's =noweb= functionality, I can define a set of variables that can be tweaked for each system and applied across these configuration files when they get generated.
 
+I also define a function called =dw/system-settings-get= which can retrieve these settings appropriately.
+
 #+begin_src emacs-lisp :tangle .emacs.d/per-system-settings.el :noweb yes
 
 (require 'map) ;; Needed for map-merge
@@ -325,6 +327,9 @@ Some settings need to be customized on a per-system basis without tweaking indiv
     'list
     '((desktop/dpi . 180)
       (desktop/background . "samuel-ferrara-uOi3lg8fGl4-unsplash.jpg")
+      (emacs/default-face-size . 220)
+      (emacs/variable-face-size . 245)
+      (emacs/fixed-face-size . 200)
       (polybar/height . 35)
       (polybar/font-0-size . 18)
       (polybar/font-1-size . 14)
@@ -334,6 +339,9 @@ Some settings need to be customized on a per-system basis without tweaking indiv
       (dunst/max-icon-size . 88)
       (vimb/default-zoom . 180))
     <<system-settings>>))
+
+(defun dw/system-settings-get (setting)
+  (alist-get setting dw/system-settings))
 
 #+end_src
 
