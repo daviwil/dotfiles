@@ -1929,10 +1929,32 @@ It's nice to have a table of contents section for long literate configuration fi
           org-tree-slide-deactivate-message "Presentation ended."
           org-tree-slide-header t))
 
-  ;; Need to experiment with this, docs at https://github.com/rlister/org-present
+#+end_src
+
+Trying out =org-present= for the presentations I give during System Crafters videos:
+
+#+begin_src emacs-lisp
+
+  (defun dw/org-present-hook ()
+    ;; (org-present-big)
+    (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
+                                       (org-verbatim (:height 1.75) org-verbatim)
+                                       (org-block (:height 1.25) org-block)
+                                       (org-block-begin-line (:height 0.7) org-block)))
+    (org-display-inline-images))
+
+  (defun dw/org-present-quit-hook ()
+    (setq-local face-remapping-alist '((default variable-pitch default)))
+    (org-present-small)
+    (org-remove-inline-images))
+
   (use-package org-present
-    :config
-    (setq org-present-text-scale 4))
+    :config (setq org-present-text-scale 2)
+    :bind (:map org-present-mode-keymap
+           ("C-c C-j" . org-present-next)
+           ("C-c C-k" . org-present-prev))
+    :hook ((org-present-mode . dw/org-present-hook)
+           (org-present-mode-quit . dw/org-present-quit-hook)))
 
 #+end_src
 
