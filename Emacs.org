@@ -194,9 +194,7 @@ Some parts of the configuration require knowledge of whether Emacs is running on
 
 #+begin_src emacs-lisp
 
-  (defun dw/load-system-settings ()
-    (interactive)
-    (load-file "~/.emacs.d/per-system-settings.el"))
+  (load-file "~/.emacs.d/elisp/dw-settings.el")
 
   ;; Load settings for the first time
   (dw/load-system-settings)

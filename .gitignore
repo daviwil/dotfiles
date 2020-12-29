@@ -3,6 +3,7 @@
 ; Emacs
 .emacs.d/init.el
 .emacs.d/per-system-settings.el
+.emacs.d/tangle-dotfiles.el
 .emacs.d/elisp/dw-desktop.el
 .emacs.d/elisp/dw-workflow.el
 

@@ -340,9 +340,6 @@ I also define a function called =dw/system-settings-get= which can retrieve thes
       (vimb/default-zoom . 180))
     <<system-settings>>))
 
-(defun dw/system-settings-get (setting)
-  (alist-get setting dw/system-settings))
-
 #+end_src
 
 *** zerocool
@@ -728,17 +725,25 @@ emacsclient -e '(load-file "~/.emacs.d/per-system-settings.el")' -a "echo 'Emacs
 
 #+begin_src emacs-lisp :tangle .emacs.d/tangle-dotfiles.el
 
-(require 'org)
+  (require 'org)
+  (load-file "~/.dotfiles/.emacs.d/elisp/dw-settings.el")
 
-;; Don't ask when evaluating code blocks
-(setq org-confirm-babel-evaluate nil)
+  ;; Don't ask when evaluating code blocks
+  (setq org-confirm-babel-evaluate nil)
 
-(let* ((dotfiles-path (expand-file-name "~/.dotfiles"))
-       (org-files (directory-files dotfiles-path nil "\\.org$")))
-  (dolist (org-file org-files)
-    (unless (equal org-file "README.org")
+  (let* ((dotfiles-path (expand-file-name "~/.dotfiles"))
+	 (org-files (directory-files dotfiles-path nil "\\.org$")))
+
+    (defun dw/tangle-org-file (org-file)
       (message "\n\033[1;32mUpdating %s\033[0m\n" org-file)
-      (org-babel-tangle-file (expand-file-name org-file dotfiles-path)))))
+      (org-babel-tangle-file (expand-file-name org-file dotfiles-path)))
+
+    ;; Tangle Systems.org first
+    (dw/tangle-org-file "Systems.org")
+
+    (dolist (org-file org-files)
+      (unless (member org-file '("README.org" "Systems.org"))
+      	(dw/tangle-org-file org-file))))
 
 #+end_src
 
