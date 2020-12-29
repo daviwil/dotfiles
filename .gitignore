@@ -4,8 +4,8 @@
 .emacs.d/init.el
 .emacs.d/per-system-settings.el
 .emacs.d/tangle-dotfiles.el
-.emacs.d/elisp/dw-desktop.el
-.emacs.d/elisp/dw-workflow.el
+.emacs.d/lisp/dw-desktop.el
+.emacs.d/lisp/dw-workflow.el
 
 ; Desktop Environment
 .config/polybar/config

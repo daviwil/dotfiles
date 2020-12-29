@@ -194,7 +194,7 @@ Some parts of the configuration require knowledge of whether Emacs is running on
 
 #+begin_src emacs-lisp
 
-  (load-file "~/.emacs.d/elisp/dw-settings.el")
+  (load-file "~/.emacs.d/lisp/dw-settings.el")
 
   ;; Load settings for the first time
   (dw/load-system-settings)
@@ -286,12 +286,12 @@ Set up ELPA, MELPA, and Org package repositories and load =use-package= to manag
 
 * Update Load Path
 
-I've got a folder of custom elisp files which must be added to the load path.
+I've got a folder of custom Emacs Lisp libraries which must be added to the load path.
 
 #+begin_src emacs-lisp
 
-  ;; Add my elisp path to load-path
-  (push "~/.emacs.d/elisp" load-path)
+  ;; Add my library path to load-path
+  (push "~/.emacs.d/lisp" load-path)
 
 #+end_src
 
@@ -2195,9 +2195,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 *** Project Configurations
 
-This section contains project configurations for specific projects that I can't
-drop a =.dir-locals.el= file into.  Documentation on this approach can be found in
-the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-Variables.html][Emacs manual]].
+This section contains project configurations for specific projects that I can't drop a =.dir-locals.el= file into.  Documentation on this approach can be found in the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Local-Variables.html][Emacs manual]].
 
 #+begin_src emacs-lisp
 

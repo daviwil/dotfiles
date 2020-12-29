@@ -143,7 +143,7 @@ I also have to do an extra step to make sure Emacs can find the font path from t
 
 I use Emacs as the desktop window manager thanks to the excellent EXWM.  This configuration gets loaded relatively early in Emacs startup if running on a Linux machine.
 
-#+begin_src emacs-lisp :tangle .emacs.d/elisp/dw-desktop.el
+#+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
 
 (use-package exwm
   :init
@@ -178,7 +178,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 ** Helper Functions
 
-#+begin_src emacs-lisp :tangle .emacs.d/elisp/dw-desktop.el
+#+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
 
   (defun exwm/run-in-background (command)
     (let ((command-parts (split-string command "[ ]+")))
@@ -208,7 +208,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 ** Configuration
 
-#+begin_src emacs-lisp :tangle .emacs.d/elisp/dw-desktop.el
+#+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
 
   (defun dw/exwm-init-hook ()
     ;; Launch Telega in workspace 0 if we've logged in before
@@ -279,7 +279,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 ** Desktop Configuration
 
-#+begin_src emacs-lisp :tangle .emacs.d/elisp/dw-desktop.el
+#+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
 
 (defun dw/run-xmodmap ()
   (interactive)
@@ -328,7 +328,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 ** Panel
 
-#+begin_src emacs-lisp :tangle .emacs.d/elisp/dw-desktop.el
+#+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
 
 (defun dw/send-polybar-hook (name number)
   (start-process-shell-command "polybar-msg" nil (format "polybar-msg hook %s %s" name number)))
@@ -385,7 +385,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 ** Keybindings
 
-#+begin_src emacs-lisp :tangle .emacs.d/elisp/dw-desktop.el
+#+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
 
   (when dw/exwm-enabled
     ;; These keys should always pass through to Emacs
@@ -474,7 +474,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 ** Provide the dw-desktop package
 
-#+begin_src emacs-lisp :tangle .emacs.d/elisp/dw-desktop.el
+#+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
 
   (provide 'dw-desktop)
 

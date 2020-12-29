@@ -726,7 +726,7 @@ emacsclient -e '(load-file "~/.emacs.d/per-system-settings.el")' -a "echo 'Emacs
 #+begin_src emacs-lisp :tangle .emacs.d/tangle-dotfiles.el
 
   (require 'org)
-  (load-file "~/.dotfiles/.emacs.d/elisp/dw-settings.el")
+  (load-file "~/.dotfiles/.emacs.d/lisp/dw-settings.el")
 
   ;; Don't ask when evaluating code blocks
   (setq org-confirm-babel-evaluate nil)
