@@ -1290,16 +1290,6 @@ shortcut-add man=https://fanglingsu.github.io/vimb/man.html
 #+end_src
 
 ** Mail
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-"mu"
-"offlineimap"
-
-#+end_src
-
 ** Password Management
 
 *Guix Packages*

@@ -129,7 +129,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 - [[#applications][Applications]]
   - [[#binding-prefix][Binding Prefix]]
   - [[#mail][Mail]]
-    - [[#mu4e][mu4e]]
   - [[#calendar][Calendar]]
   - [[#finance][Finance]]
   - [[#eshell][eshell]]
@@ -1038,7 +1037,8 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
     "fdd" '((lambda () (interactive) (find-file "~/.dotfiles/Desktop.org")) :which-key "desktop")
     "fde" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/Emacs.org"))) :which-key "edit config")
     "fdE" '((lambda () (interactive) (dw/org-file-show-headings "~/.dotfiles/Emacs.org")) :which-key "edit config")
-    "fdm" '((lambda () (interactive) (counsel-find-file "~/.dotfiles/.config/guix/manifests/")) :which-key "manifests")
+    "fdm" '((lambda () (interactive) (find-file "~/.dotfiles/Mail.org")) :which-key "mail")
+    "fdM" '((lambda () (interactive) (counsel-find-file "~/.dotfiles/.config/guix/manifests/")) :which-key "manifests")
     "fds" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" "Base Configuration")) :which-key "base system")
     "fdS" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" system-name)) :which-key "this system")
     "fdp" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Desktop.org" "Panel via Polybar")) :which-key "polybar")
@@ -2895,166 +2895,26 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 ** Mail
 
-*** mu4e
-
-[[http://www.djcbsoftware.nl/code/mu/mu4e.html][mu4e]] is seriously the best mail interface I've ever used because it's fast and makes it really easy to power through a huge e-mail backlog.  Love the ability to capture links to emails with org-mode too.
+My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely require it here to have it loaded in the main Emacs configuration.
 
 #+begin_src emacs-lisp
 
-  ;; TODO: Move this check elsewhere
+  ;; Only fetch mail on zerocool
   (setq dw/mail-enabled (string-equal system-name "zerocool"))
-
-  (use-package mu4e
-    :if (and (eq system-type 'gnu/linux) dw/mail-enabled)
-    :config
-    ;; After building/installing mu4e the .el files are here:
-    ;;(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") ;; On Fedora
-    ;;(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e") ;; On Manjaro / Arch
-
-    (require 'org-mu4e)
-    (setq mail-user-agent 'mu4e-user-agent)
-
-    ;; Refresh mail using offlineimap every 10 minutes
-    (setq mu4e-update-interval (* 10 60))
-    (setq mu4e-get-mail-command "offlineimap")
-    (setq mu4e-maildir "~/Mail")
-
-    ;; Set up contexts for email accounts
-    (setq mu4e-contexts
-          `(,(make-mu4e-context
-              :name "Fastmail"
-              :match-func (lambda (msg) (when msg
-                                          (string-prefix-p "/Fastmail" (mu4e-message-field msg :maildir))))
-              :vars '(
-                      (user-full-name . "David Wilson")
-                      (user-mail-address . "david@daviwil.com")
-                      (mu4e-sent-folder . "/Fastmail/Sent Items")
-                      (mu4e-trash-folder . "/Fastmail/Trash")
-                      (mu4e-drafts-folder . "/Fastmail/Drafts")
-                      (mu4e-refile-folder . "/Fastmail/Archive")
-                      (mu4e-sent-messages-behavior . sent)
-                      ))
-            ,(make-mu4e-context
-              :name "Personal"
-              :match-func (lambda (msg) (when msg
-                                          (string-prefix-p "/Personal" (mu4e-message-field msg :maildir))))
-              :vars '(
-                      (mu4e-sent-folder . "/Personal/Sent")
-                      (mu4e-trash-folder . "/Personal/Deleted")
-                      (mu4e-refile-folder . "/Personal/Archive")
-                      ))
-            ))
-    (setq mu4e-context-policy 'pick-first)
-
-    ;; Prevent mu4e from permanently deleting trashed items
-    ;; This snippet was taken from the following article:
-    ;; http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
-    (defun remove-nth-element (nth list)
-      (if (zerop nth) (cdr list)
-        (let ((last (nthcdr (1- nth) list)))
-          (setcdr last (cddr last))
-          list)))
-    (setq mu4e-marks (remove-nth-element 5 mu4e-marks))
-    (add-to-list 'mu4e-marks
-                 '(trash
-                   :char ("d" . "▼")
-                   :prompt "dtrash"
-                   :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
-                   :action (lambda (docid msg target)
-                             (mu4e~proc-move docid
-                                             (mu4e~mark-check-target target) "-N"))))
-
-    ;; Display options
-    (setq mu4e-view-show-images t)
-    (setq mu4e-view-show-addresses 't)
-
-    ;; Composing mail
-    (setq mu4e-compose-dont-reply-to-self t)
-
-    ;; Sending mail
-    (setq message-send-mail-function 'smtpmail-send-it
-          smtpmail-smtp-server "smtp.fastmail.com"
-          smtpmail-smtp-service 465
-          smtpmail-stream-type  'ssl)
-
-    ;; Signing messages (use mml-secure-sign-pgpmime)
-    (setq mml-secure-openpgp-signers '("53C41E6E41AAFE55335ACA5E446A2ED4D940BF14"))
-
-    ;; (See the documentation for `mu4e-sent-messages-behavior' if you have
-    ;; additional non-Gmail addresses and want assign them different
-    ;; behavior.)
-
-    ;; setup some handy shortcuts
-    ;; you can quickly switch to your Inbox -- press ``ji''
-    ;; then, when you want archive some messages, move them to
-    ;; the 'All Mail' folder by pressing ``ma''.
-    (setq mu4e-maildir-shortcuts
-          '( ("/INBOX"       . ?i)
-             ("/Sent Mail"   . ?s)
-             ("/Trash"       . ?t)
-             ("/All Mail"    . ?a)))
-
-    (add-to-list 'mu4e-bookmarks
-                 (make-mu4e-bookmark
-                  :name "All Inboxes"
-                  :query "maildir:/Fastmail/INBOX OR maildir:/Personal/Inbox"
-                  :key ?i))
-
-    ;; don't keep message buffers around
-    (setq message-kill-buffer-on-exit t)
-
-    (setq dw/mu4e-inbox-query
-          "(maildir:/Personal/Inbox OR maildir:/Fastmail/INBOX) AND flag:unread")
-
-    (defun dw/go-to-inbox ()
-      (interactive)
-      (mu4e-headers-search dw/mu4e-inbox-query))
-
-    (dw/leader-key-def
-      "m"  '(:ignore t :which-key "mail")
-      "mm" 'mu4e
-      "mi" 'dw/go-to-inbox
-      "ms" 'mu4e-update-mail-and-index)
-
-    ;; Start mu4e in the background so that it syncs mail periodically
-    (run-at-time "10 sec" nil
-                 (lambda ()
-                   (let ((current-prefix-arg '(4)))
-                     (call-interactively 'mu4e)))))
-
-#+end_src
-
-Use [[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] to show notifications when e-mail comes in:
-
-#+begin_src emacs-lisp
-
-  (use-package mu4e-alert
-    :after mu4e
-    :config
-    ;; Use Emacs' built-in notifier
-    (mu4e-alert-set-default-style 'notifications)
-
-    ;; Show unread emails from all inboxes
-    ;; (setq mu4e-alert-interesting-mail-query dw/mu4e-inbox-query)
-
-    (add-hook 'after-init-hook #'mu4e-alert-enable-notifications))
+  (when dw/mail-enabled
+    (require 'dw-mail))
 
 #+end_src
 
 *Guix Packages*
+
+=emacs-mu4e-alert= pulls in =mu= so we don't need to specify it here also.
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-mu4e-alert"
 
 #+end_src
-
-Useful mu4e manual pages:
-
-- [[https://www.djcbsoftware.nl/code/mu/mu4e/MSGV-Keybindings.html#MSGV-Keybindings][Key bindings]]
-- [[https://www.djcbsoftware.nl/code/mu/mu4e/Org_002dmode-links.html#Org_002dmode-links][org-mode integration]]
-
-Here's some info on using [[https://hobo.house/2017/07/17/using-offlineimap-with-the-gmail-imap-api/][offlineimap with Gmail]].
 
 ** Calendar
 
