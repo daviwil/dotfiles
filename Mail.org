@@ -20,7 +20,7 @@ Useful mu4e manual pages:
     ;; Load org-mode integration
     (require 'org-mu4e)
 
-    ;; Refresh mail using offlineimap every 10 minutes
+    ;; Refresh mail using isync every 10 minutes
     (setq mu4e-update-interval (* 10 60))
     (setq mu4e-get-mail-command "mbsync -a")
     (setq mu4e-maildir "~/Mail")
@@ -28,6 +28,7 @@ Useful mu4e manual pages:
     ;; Make sure that moving a message (like to Trash) causes the
     ;; message to get a new file name.  This helps to avoid the
     ;; dreaded "UID is N beyond highest assigned" error.
+    ;; See this link for more info: https://stackoverflow.com/a/43461973
     (setq mu4e-change-filenames-when-moving t)
 
     ;; Set up contexts for email accounts
@@ -125,6 +126,7 @@ Useful mu4e manual pages:
     (dw/leader-key-def
       "m"  '(:ignore t :which-key "mail")
       "mm" 'mu4e
+      "mc" 'mu4e-compose-new
       "mi" 'dw/go-to-inbox
       "ms" 'mu4e-update-mail-and-index)
 

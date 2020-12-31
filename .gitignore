@@ -6,12 +6,16 @@
 .emacs.d/tangle-dotfiles.el
 .emacs.d/lisp/dw-desktop.el
 .emacs.d/lisp/dw-workflow.el
+.emacs.d/lisp/dw-mail.el
 
 ; Desktop Environment
 .config/mimeapps.list
 .config/polybar/config
 .config/dunst/dunstrc
 .config/xsettingsd/xsettingsd.conf
+
+; Mail
+.mbsyncrc
 
 ; Browsers
 .config/vimb/config
