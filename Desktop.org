@@ -241,7 +241,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       (pcase exwm-class-name
         ("Pidgin" (exwm-workspace-move-window 0))
         ("Pidgin<2>" (exwm-workspace-move-window 0))
-        ("teams-for-linux" (exwm-workspace-move-window 3))
+        ("discord" (exwm-workspace-move-window 3))
         ("Microsoft Teams - Preview" (exwm-workspace-move-window 3))
         ("Spotify" (exwm-workspace-move-window 4))
         ("Vimb" (exwm-workspace-move-window 2))
