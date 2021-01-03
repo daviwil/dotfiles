@@ -1665,6 +1665,8 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
   ;;                         '(("^ *\\([-]\\) "
   ;;                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
+  ;; Increase the size of various headings
+  (set-face-attribute 'org-document-title nil :font "Cantarell" :weight 'bold :height 1.3)
   (dolist (face '((org-level-1 . 1.2)
                   (org-level-2 . 1.1)
                   (org-level-3 . 1.05)
@@ -1935,24 +1937,41 @@ Trying out =org-present= for the presentations I give during System Crafters vid
 
 #+begin_src emacs-lisp
 
+  (defun dw/org-present-prepare-slide ()
+    (org-overview)
+    (org-show-entry)
+    (org-show-children))
+
   (defun dw/org-present-hook ()
-    ;; (org-present-big)
     (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
+                                       (header-line (:height 4.5) variable-pitch)
                                        (org-verbatim (:height 1.75) org-verbatim)
                                        (org-block (:height 1.25) org-block)
                                        (org-block-begin-line (:height 0.7) org-block)))
-    (org-display-inline-images))
+    (setq header-line-format " ")
+    (org-display-inline-images)
+    (dw/org-present-prepare-slide))
 
   (defun dw/org-present-quit-hook ()
     (setq-local face-remapping-alist '((default variable-pitch default)))
+    (setq header-line-format nil)
     (org-present-small)
     (org-remove-inline-images))
 
+  (defun dw/org-present-prev ()
+    (interactive)
+    (org-present-prev)
+    (dw/org-present-prepare-slide))
+
+  (defun dw/org-present-next ()
+    (interactive)
+    (org-present-next)
+    (dw/org-present-prepare-slide))
+
   (use-package org-present
-    :config (setq org-present-text-scale 2)
     :bind (:map org-present-mode-keymap
-           ("C-c C-j" . org-present-next)
-           ("C-c C-k" . org-present-prev))
+           ("C-c C-j" . dw/org-present-next)
+           ("C-c C-k" . dw/org-present-prev))
     :hook ((org-present-mode . dw/org-present-hook)
            (org-present-mode-quit . dw/org-present-quit-hook)))
 
