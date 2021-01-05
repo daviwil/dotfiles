@@ -9,3 +9,4 @@ alias ud update-dotfiles
 alias us update-system
 alias up update-profiles $*
 alias ffo find-file-other-window $1
+alias guix-clean sudo guix gc -d 7d
