@@ -775,7 +775,7 @@ Installing packages:
 
 #+begin_src sh
 
-nix-env -i nodejs dotnet-sdk
+nix-env -i nodejs dotnet-sdk gh
 # nix-env -iA nixpkgs.nodejs-12_x # For a specific version
 
 #+end_src
