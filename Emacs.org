@@ -1000,6 +1000,23 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 
 #+end_src
 
+** Origami.el for Folding
+
+#+begin_src emacs-lisp
+
+(use-package origami
+  :hook (yaml-mode . origami-mode))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"emacs-origami-el"
+
+#+end_src
+
 * Configuration Files
 
 ** Helpers
