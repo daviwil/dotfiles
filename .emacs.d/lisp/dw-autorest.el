@@ -13,6 +13,7 @@
     (with-current-buffer autorest-buffer
       (ansi-color-for-comint-mode-on)
       (comint-mode)
+      (display-line-numbers-mode 0)
       (end-of-buffer)
       (insert "\n"
               (format-time-string "[%m/%d/%Y - %I:%M:%S %p]")
@@ -22,6 +23,7 @@
       (when pre-command
         (insert "Pre-run command: " pre-command "\n\n")))
 
+    ;; TODO: This buffer display function isn't perfect
     (message run-message)
     (display-buffer-pop-up-window autorest-buffer '((window-height . 13)))
 
@@ -43,14 +45,17 @@
                                 (use '())
                                 language
                                 version
+                                args
                                 (inspector t)
-                                (debug t)
+                                debug
                                 verbose
                                 pre-command)
   (let* ((use-param (mapconcat (lambda (u) (format "--use:%s" u)) use " "))
+         (misc-args (mapconcat (lambda (arg) arg) args " "))
          (args (list "autorest"
                      (when language (format "--%s" language))
                      use-param
+                     misc-args
                      (if (s-ends-with? ".md" input-file)
                          input-file
                          (format "--input-file:%s" input-file))
