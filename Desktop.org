@@ -16,7 +16,6 @@ This file contains configuration for my overall desktop environment.  My workflo
   - [[#desktop-configuration][Desktop Configuration]]
   - [[#panel][Panel]]
   - [[#keybindings][Keybindings]]
-  - [[#provide-the-dw-desktop-package][Provide the dw-desktop package]]
   - [[#useful-links][Useful Links]]
 - [[#panel-via-polybar][Panel via Polybar]]
 - [[#desktop-notifications-via-dunst][Desktop Notifications via Dunst]]
@@ -47,6 +46,7 @@ This file contains configuration for my overall desktop environment.  My workflo
 - [[#desktop-profile][Desktop Profile]]
 - [[#notes][Notes]]
   - [[#bluetooth-setup][Bluetooth Setup]]
+- [[#provide-the-dw-desktop-package][Provide the dw-desktop package]]
 :END:
 
 * System Settings
@@ -471,14 +471,6 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (exwm-input-set-key (kbd "<s-return>") 'vterm)
     (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
     (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen))
-
-#+end_src
-
-** Provide the dw-desktop package
-
-#+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
-
-  (provide 'dw-desktop)
 
 #+end_src
 
@@ -1582,5 +1574,13 @@ as I currently do in Guix, you'll need to enter these commands at the
   pair 04:52:C7:5E:5C:A8
   trust 04:52:C7:5E:5C:A8 # To enable auto-connect
   connect 04:52:C7:5E:5C:A8
+
+#+end_src
+
+* Provide the dw-desktop package
+
+#+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
+
+  (provide 'dw-desktop)
 
 #+end_src
