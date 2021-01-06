@@ -414,7 +414,8 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       (exwm-workspace-switch-create 2))
 
     (exwm/bind-function
-      "s-o" 'exwm/run-qute)
+      "s-o" 'exwm/run-qute
+      "s-q" 'kill-buffer)
 
     (exwm/bind-command
       "s-p" "playerctl play-pause"
