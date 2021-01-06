@@ -337,7 +337,8 @@ I also define a function called =dw/system-settings-get= which can retrieve thes
       (polybar/font-3-size . 13)
       (dunst/font-size . 20)
       (dunst/max-icon-size . 88)
-      (vimb/default-zoom . 180))
+      (vimb/default-zoom . 180)
+      (qutebrowser/default-zoom . 200))
     <<system-settings>>))
 
 #+end_src
@@ -442,7 +443,8 @@ I also define a function called =dw/system-settings-get= which can retrieve thes
       (polybar/font-3-size . 9)
       (dunst/font-size . 14)
       (dunst/max-icon-size . 64)
-      (vimb/default-zoom . 150)))
+      (vimb/default-zoom . 150)
+      (qutebrowser/default-zoom . 150)))
 
 #+end_src
 

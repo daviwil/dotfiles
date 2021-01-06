@@ -19,6 +19,7 @@
 
 ; Browsers
 .config/vimb/config
+.config/qutebrowser/config.py
 
 ; Guix Configuration
 .config/guix/systems/davinci.scm
