@@ -16,6 +16,9 @@ for i in $GUIX_EXTRA_PROFILES/*; do
   unset profile
 done
 
+# Load Nix environment
+. /run/current-system/profile/etc/profile.d/nix.sh
+
 # Don't use the system-wide PulseAudio configuration
 unset PULSE_CONFIG
 unset PULSE_CLIENTCONFIG
