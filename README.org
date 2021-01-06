@@ -42,8 +42,6 @@ I've started to migrate all of my important configuration files to a [[https://l
 - [[file:Systems.org][System Configurations via Guix]]
 - [[file:Mail.org][Mail with mu4e and isync]]
 
-For now, I'm checking in the configuration files that are written out using =org-babel-tangle-file= so that I don't have to remember to regenerate all of them every time that I pull the repo.  This may change in the future; one downside of this approach is that I have to remember to stage the original =.org= file and all of the updated configuration files when I want to make a commit to the repo.  It hasn't been a headache yet, but time will tell.
-
 ** Org Babel Tips
 
 When inside of an Org source block, you can use =org-babel-demarcate-block= (=C-c C-v d= by default) to split the block you're currently in so that you can insert an annotation.
@@ -54,7 +52,16 @@ When inside of an Org source block, you can use =org-babel-demarcate-block= (=C-
 
 Instructions for installing a system from a Guix configuration can be found in the [[file:Systems.org::*System Installation][System Installation]] section of [[file:Systems.org][Systems.org]].
 
+* Check out my YouTube channel
+
+I have created a number of videos on YouTube that will teach you how to make a custom system and desktop environment configuration like mine.  Check out the [[https://www.youtube.com/c/SystemCrafters][System Crafters]] channel, or any of the following playlists:
+
+- [[https://www.youtube.com/playlist?list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ][Emacs From Scratch]]: Build a
+- [[https://www.youtube.com/playlist?list=PLEoMzSkcN8oNPbEMYEtswOVTvq7CVddCS][Emacs Desktop Environment]]: Create a minimalistic desktop environment with EXWM and other tools
+- [[https://www.youtube.com/playlist?list=PLEoMzSkcN8oNvsrtk_iZSb94krGRofFjN][Emacs IDE]]: Set up a development environment using lsp-mode and dap-mode
+- [[https://www.youtube.com/playlist?list=PLEoMzSkcN8oMHJ6Xil1YdnYtlWd5hHZql][Emacs Tips]]: A variety of tips and explanations of community packages
+- [[https://www.youtube.com/watch?v=yZRyEhi4y44&list=PLEoMzSkcN8oM-kA19xOQc8s0gr0PpFGJQ][Emacs Mail]]: Configuring Emacs as a mail client
+
 * License
 
-Released under the [[./LICENSE][GPL v3]] unless otherwise specified by license files in
-subfolders.
+Released under the [[./LICENSE][GPL v3]] unless otherwise specified by license files in subfolders.
