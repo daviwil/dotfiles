@@ -2542,7 +2542,6 @@ Configure TypeScript and JavaScript language modes
   (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
 
   (use-package helpful
-    :ensure t
     :custom
     (counsel-describe-function-function #'helpful-callable)
     (counsel-describe-variable-function #'helpful-variable)
@@ -2566,7 +2565,7 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  ;; "emacs-helpful"
+  "emacs-helpful"
 
 #+end_src
 
