@@ -56,10 +56,10 @@ Instructions for installing a system from a Guix configuration can be found in t
 
 I have created a number of videos on YouTube that will teach you how to make a custom system and desktop environment configuration like mine.  Check out the [[https://www.youtube.com/c/SystemCrafters][System Crafters]] channel, or any of the following playlists:
 
-- [[https://www.youtube.com/playlist?list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ][Emacs From Scratch]]: Build a
-- [[https://www.youtube.com/playlist?list=PLEoMzSkcN8oNPbEMYEtswOVTvq7CVddCS][Emacs Desktop Environment]]: Create a minimalistic desktop environment with EXWM and other tools
-- [[https://www.youtube.com/playlist?list=PLEoMzSkcN8oNvsrtk_iZSb94krGRofFjN][Emacs IDE]]: Set up a development environment using lsp-mode and dap-mode
-- [[https://www.youtube.com/playlist?list=PLEoMzSkcN8oMHJ6Xil1YdnYtlWd5hHZql][Emacs Tips]]: A variety of tips and explanations of community packages
+- [[https://www.youtube.com/watch?v=74zOY-vgkyw&list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ][Emacs From Scratch]]: Step by step creation of a custom Emacs configuration from scratch
+- [[https://www.youtube.com/watch?v=f7xB2fFk1tQ&list=PLEoMzSkcN8oNPbEMYEtswOVTvq7CVddCS][Emacs Desktop Environment]]: Create a minimalistic desktop environment with EXWM and other tools
+- [[https://www.youtube.com/watch?v=E-NAM9U5JYE&list=PLEoMzSkcN8oNvsrtk_iZSb94krGRofFjN][Emacs IDE]]: Set up a development environment using lsp-mode and dap-mode
+- [[https://www.youtube.com/watch?v=wKTKmE1wLyw&list=PLEoMzSkcN8oMHJ6Xil1YdnYtlWd5hHZql][Emacs Tips]]: A variety of tips and explanations of community packages
 - [[https://www.youtube.com/watch?v=yZRyEhi4y44&list=PLEoMzSkcN8oM-kA19xOQc8s0gr0PpFGJQ][Emacs Mail]]: Configuring Emacs as a mail client
 
 * License
