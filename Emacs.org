@@ -42,12 +42,14 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#displaying-world-time][Displaying World Time]]
   - [[#pinentry][Pinentry]]
   - [[#tramp][TRAMP]]
+  - [[#emacs-as-external-editor][Emacs as External Editor]]
 - [[#editing-configuration][Editing Configuration]]
   - [[#tab-widths][Tab Widths]]
   - [[#use-spaces-instead-of-tabs-for-indentation][Use spaces instead of tabs for indentation]]
   - [[#commenting-lines][Commenting Lines]]
   - [[#automatically-clean-whitespace][Automatically clean whitespace]]
   - [[#use-parinfer-for-lispy-languages][Use Parinfer for Lispy languages]]
+  - [[#origamiel-for-folding][Origami.el for Folding]]
 - [[#configuration-files][Configuration Files]]
   - [[#helpers][Helpers]]
   - [[#bindings][Bindings]]
@@ -910,6 +912,20 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
   ;; Set default connection mode to SSH
   (setq tramp-default-method "ssh")
+
+#+end_src
+
+** Emacs as External Editor
+
+#+begin_src emacs-lisp
+
+(defun dw/show-server-edit-buffer (buffer)
+  ;; TODO: Set a transient keymap to close with 'C-c C-c'
+  (split-window-vertically -15)
+  (other-window 1)
+  (set-buffer buffer))
+
+(setq server-window #'dw/show-server-edit-buffer)
 
 #+end_src
 
