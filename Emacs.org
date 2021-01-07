@@ -84,6 +84,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#calendar-sync][Calendar Sync]]
   - [[#reminders][Reminders]]
   - [[#presentations][Presentations]]
+  - [[#org-roam][Org Roam]]
   - [[#addons-to-try][Addons to Try]]
 - [[#website-management][Website Management]]
   - [[#daviwilcom][daviwil.com]]
@@ -2145,6 +2146,27 @@ Trying out =org-present= for the presentations I give during System Crafters vid
 
   "emacs-org-tree-slide"
   "emacs-org-present"
+
+#+end_src
+
+** Org Roam
+
+#+begin_src emacs-lisp
+
+  (use-package org-roam
+    :straight t
+    :hook
+    (after-init . org-roam-mode)
+    :custom
+    (org-roam-directory "~/Notes/Roam/")
+    (org-roam-dailies-directory "~/Notes/Roam/Journal/")
+    :bind (:map org-roam-mode-map
+            (("C-c n l" . org-roam)
+             ("C-c n f" . org-roam-find-file)
+             ("C-c n g" . org-roam-graph))
+           :map org-mode-map
+           (("C-c n i" . org-roam-insert))
+           (("C-c n I" . org-roam-insert-immediate))))
 
 #+end_src
 
