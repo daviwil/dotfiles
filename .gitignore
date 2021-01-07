@@ -7,6 +7,9 @@
 .emacs.d/lisp/dw-desktop.el
 .emacs.d/lisp/dw-workflow.el
 .emacs.d/lisp/dw-mail.el
+.emacs.d/straight/build/
+.emacs.d/straight/repos/
+.emacs.d/straight/build-cache.el
 
 ; Desktop Environment
 .config/mimeapps.list

@@ -10,8 +10,9 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 :CONTENTS:
 - [[#startup-performance][Startup Performance]]
 - [[#system-settings][System Settings]]
-- [[#keep-emacsd-clean][Keep .emacs.d Clean]]
 - [[#package-management][Package Management]]
+  - [[#straightel][straight.el]]
+- [[#keep-emacsd-clean][Keep .emacs.d Clean]]
 - [[#update-load-path][Update Load Path]]
 - [[#server-mode][Server Mode]]
 - [[#desktop-environment][Desktop Environment]]
@@ -211,41 +212,13 @@ Some parts of the configuration require knowledge of whether Emacs is running on
 
 #+end_src
 
-* Keep .emacs.d Clean
-
-I don't want a bunch of transient files showing up as untracked in the Git repo so I move them all to another location.
-
-#+begin_src emacs-lisp
-
-  ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
-  (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
-        url-history-file (expand-file-name "url/history" user-emacs-directory))
-
-  ;; Use no-littering to automatically set common paths to the new user-emacs-directory
-  (use-package no-littering)
-
-  ;; Keep customization settings in a temporary file (thanks Ambrevar!)
-  (setq custom-file
-        (if (boundp 'server-socket-dir)
-            (expand-file-name "custom.el" server-socket-dir)
-          (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
-  (load custom-file t)
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-  "emacs-no-littering"
-
-#+end_src
-
 * Package Management
 
 Set up ELPA, MELPA, and Org package repositories and load =use-package= to manage package configuration.
 
-#+begin_src emacs-lisp
+*NOTE:* I'm keeping this section in but disabling tangling for now because I'm trying out =straight.el= as an alternative.
+
+#+begin_src emacs-lisp :tangle no
 
   ;; Initialize package sources
   (require 'package)
@@ -282,6 +255,61 @@ Set up ELPA, MELPA, and Org package repositories and load =use-package= to manag
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-use-package"
+
+#+end_src
+
+** straight.el
+
+Trying out =straight.el= for package management.  So far so good!
+
+#+begin_src emacs-lisp
+
+  ;; Bootstrap straight.el
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+          "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+          'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  ;; Use straight.el for use-package expressions
+  (straight-use-package 'use-package)
+
+#+end_src
+
+* Keep .emacs.d Clean
+
+I don't want a bunch of transient files showing up as untracked in the Git repo so I move them all to another location.
+
+#+begin_src emacs-lisp
+
+  ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
+  (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+        url-history-file (expand-file-name "url/history" user-emacs-directory))
+
+  ;; Use no-littering to automatically set common paths to the new user-emacs-directory
+  (use-package no-littering)
+
+  ;; Keep customization settings in a temporary file (thanks Ambrevar!)
+  (setq custom-file
+        (if (boundp 'server-socket-dir)
+            (expand-file-name "custom.el" server-socket-dir)
+          (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+  (load custom-file t)
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-no-littering"
 
 #+end_src
 
@@ -646,7 +674,7 @@ Different platforms need different default font sizes, and [[https://mozilla.git
             `(,updated-block))))
 
   (use-package unicode-fonts
-    :ensure t
+    :straight t
     :if (not dw/is-termux)
     :custom
     (unicode-fonts-skip-font-groups '(low-quality-glyphs))
@@ -828,7 +856,7 @@ anymore if I set up =diminish= correctly.
 #+begin_src emacs-lisp
 
   (use-package super-save
-    :ensure t
+    :straight t
     :defer 1
     :diminish super-save-mode
     :config
@@ -1191,8 +1219,8 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
   (use-package wgrep)
 
   (use-package ivy-posframe
-    :custom
     :disabled
+    :custom
     (ivy-posframe-width      115)
     (ivy-posframe-min-width  115)
     (ivy-posframe-height     10)
@@ -1265,7 +1293,7 @@ I'm trying to figure out how to integrate Bufler with Ivy more effectively (buff
 #+begin_src emacs-lisp
 
   (use-package bufler
-    :ensure t
+    :straight t
     :bind (("C-M-j" . bufler-switch-buffer)
            ("C-M-k" . bufler-workspace-frame-set))
     :config
@@ -1361,7 +1389,6 @@ The keybindings for this are =C+M+-= and =C+M+==.
 #+begin_src emacs-lisp
 
   (use-package winner
-    :ensure nil
     :after evil
     :config
     (winner-mode)
@@ -1459,7 +1486,6 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 #+begin_src emacs-lisp
 
   (use-package dired
-    :ensure nil
     :defer 1
     :commands (dired dired-jump)
     :config
@@ -1508,7 +1534,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
       (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
     (use-package dired-single
-      :ensure t
+      :straight t
       :defer t)
 
     (use-package dired-ranger
@@ -2298,12 +2324,14 @@ This section contains project configurations for specific projects that I can't 
 
 #+begin_src emacs-lisp
 
-  (use-package ivy-xref
-    :init (if (< emacs-major-version 27)
-            (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
-            (setq xref-show-definitions-function #'ivy-xref-show-defs)))
+  ;; (use-package ivy-xref
+  ;;   :straight t
+  ;;   :init (if (< emacs-major-version 27)
+  ;;           (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
+  ;;           (setq xref-show-definitions-function #'ivy-xref-show-defs)))
 
   (use-package lsp-mode
+    :straight t
     :commands lsp
     :hook ((typescript-mode js2-mode web-mode) . lsp)
     :bind (:map lsp-mode-map
@@ -2321,6 +2349,7 @@ This section contains project configurations for specific projects that I can't 
     "lX" 'lsp-execute-code-action)
 
   (use-package lsp-ui
+    :straight t
     :hook (lsp-mode . lsp-ui-mode)
     :config
     (setq lsp-ui-sideline-enable t)
@@ -2328,16 +2357,19 @@ This section contains project configurations for specific projects that I can't 
     (setq lsp-ui-doc-position 'bottom)
     (lsp-ui-doc-show))
 
+  ;; (use-package lsp-ivy
+  ;;   :hook (lsp-mode . lsp-ivy-mode))
+
 #+end_src
 
 *Guix Packages*
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  "emacs-lsp-mode"
-  "emacs-lsp-ui"
-  "emacs-ivy-xref"
-  "emacs-lsp-ivy" ;; Not in config yet
+  ;; "emacs-lsp-mode"
+  ;; "emacs-lsp-ui"
+  ;; "emacs-ivy-xref"
+  ;; "emacs-lsp-ivy"
 
 #+end_src
 
@@ -2522,7 +2554,7 @@ Configure TypeScript and JavaScript language modes
     :init (setq rust-format-on-save t))
 
   (use-package cargo
-    :ensure t
+    :straight t
     :defer t)
 
 #+end_src
@@ -2595,7 +2627,7 @@ Configure TypeScript and JavaScript language modes
   ;;        ("TAB" . completion-at-point))
 
   (use-package geiser
-    :ensure t
+    :straight t
     :config
     ;; (setq geiser-default-implementation 'gambit)
     (setq geiser-default-implementation 'guile)
@@ -2620,7 +2652,7 @@ Configure TypeScript and JavaScript language modes
 
   (use-package zig-mode
     :after lsp-mode
-    :ensure t
+    :straight t
     :config
     (require 'lsp)
     (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
@@ -2637,7 +2669,7 @@ Configure TypeScript and JavaScript language modes
 #+begin_src emacs-lisp
 
   (use-package markdown-mode
-    :pin melpa-stable
+    :straight t
     :mode "\\.md\\'"
     :config
     (setq markdown-command "marked")
@@ -2678,10 +2710,10 @@ Configure TypeScript and JavaScript language modes
   ;; 1. Start the server with `httpd-start'
   ;; 2. Use `impatient-mode' on any buffer
   (use-package impatient-mode
-    :ensure t)
+    :straight t)
 
   (use-package skewer-mode
-    :ensure t)
+    :straight t)
 
 #+end_src
 
@@ -2901,7 +2933,7 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
   (use-package posframe)
 
   (use-package command-log-mode
-    :ensure t
+    :straight t
     :after posframe)
 
   (setq dw/command-window-frame nil)
@@ -3432,7 +3464,7 @@ Since I switched over to =eshell= I don't use =multi-term= as much anymore.  Som
 #+begin_src emacs-lisp
 
   (use-package elcord
-    :ensure t
+    :straight t
     :disabled dw/is-termux
     :custom
     (elcord-display-buffer-details nil)
