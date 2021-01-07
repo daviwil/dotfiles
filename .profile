@@ -17,7 +17,9 @@ for i in $GUIX_EXTRA_PROFILES/*; do
 done
 
 # Load Nix environment
-. /run/current-system/profile/etc/profile.d/nix.sh
+if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then
+  . /run/current-system/profile/etc/profile.d/nix.sh
+fi
 
 # Don't use the system-wide PulseAudio configuration
 unset PULSE_CONFIG
