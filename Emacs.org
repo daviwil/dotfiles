@@ -56,6 +56,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#bindings][Bindings]]
 - [[#stateful-keymaps-with-hydra][Stateful Keymaps with Hydra]]
 - [[#better-completions-with-ivy][Better Completions with Ivy]]
+- [[#experimental-selectrum-setup][Experimental Selectrum Setup]]
 - [[#jumping-with-avy][Jumping with Avy]]
 - [[#buffer-management-with-bufler][Buffer Management with Bufler]]
 - [[#window-management][Window Management]]
@@ -1156,7 +1157,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
            ("C-k" . ivy-previous-line)
            ("C-d" . ivy-reverse-i-search-kill))
     :init
-    (ivy-mode 1)
+    ;; (ivy-mode 1)
     :config
     (setq ivy-use-virtual-buffers t)
     (setq ivy-wrap t)
@@ -1179,12 +1180,13 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     :after hydra)
 
   (use-package ivy-rich
-    :init
-    (ivy-rich-mode 1)
+    ;; :init
+    ;; (ivy-rich-mode 1)
+    :after ivy
     :config
     (setq ivy-format-function #'ivy-format-function-line)
-    (setq ivy-rich--display-transformers-list
-          (plist-put ivy-rich--display-transformers-list
+    (setq ivy-rich-display-transformers-list
+          (plist-put ivy-rich-display-transformers-list
                      'ivy-switch-buffer
                      '(:columns
                        ((ivy-rich-candidate (:width 40))
@@ -1200,18 +1202,19 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
                                (not (derived-mode-p 'exwm-mode)))))))))
 
   (use-package counsel
-    :bind (("M-x" . counsel-M-x)
-           ("C-x b" . counsel-ibuffer)
-           ("C-x C-f" . counsel-find-file)
-           ("C-M-l" . counsel-imenu)
-           :map minibuffer-local-map
-           ("C-r" . 'counsel-minibuffer-history))
+    ;; :bind (("M-x" . counsel-M-x)
+    ;;        ("C-x b" . counsel-ibuffer)
+    ;;        ("C-x C-f" . counsel-find-file)
+    ;;        ("C-M-l" . counsel-imenu)
+    ;;        :map minibuffer-local-map
+    ;;        ("C-r" . 'counsel-minibuffer-history))
     :custom
     (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
     :config
     (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
 
   (use-package flx  ;; Improves sorting for fuzzy-matched results
+    :after ivy
     :defer t
     :init
     (setq ivy-flx-limit 10000))
@@ -1231,11 +1234,6 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
                                     (left-fringe . 8)
                                     (right-fringe . 8)))
     (ivy-posframe-mode 1))
-
-  (use-package prescient
-    :config
-    (ivy-prescient-mode 1)
-    (prescient-persist-mode 1))
 
   (dw/leader-key-def
     "r"   '(ivy-resume :which-key "ivy resume")
@@ -1257,7 +1255,102 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
   ;; "emacs-ivy-posframe"
   "emacs-flx"
   "emacs-wgrep"
-  "emacs-prescient"
+
+#+end_src
+
+* Experimental Selectrum Setup
+
+Trying this as an alternative to Ivy and Counsel.
+
+#+begin_src emacs-lisp
+
+  (use-package selectrum
+    :straight t
+    :bind (:map selectrum-minibuffer-map
+           ("C-r" . selectrum-select-from-history)
+           ("C-j" . selectrum-next-candidate)
+           ("C-k" . selectrum-previous-candidate))
+    :custom-face
+    (selectrum-current-candidate ((t (:background "#3a3f5a"))))
+    :init
+    (selectrum-mode 1))
+
+  ;; (use-package restricto
+  ;;   :straight t
+  ;;   :after selectrum
+  ;;   :demand t
+  ;;   :bind (:map minibuffer-local-completion-map
+  ;;          ("S-SPC" . restricto-narrow))
+  ;;   :config
+  ;;   (restricto-mode))
+
+  (use-package consult
+    :straight t
+    :demand t
+    :bind (("C-s" . consult-line)
+           ("C-M-l" . consult-imenu))
+    :custom
+    (consult-narrow-key "<")
+    :config
+    (consult-preview-mode 1))
+
+  (use-package consult-selectrum
+    :straight t
+    :after selectrum
+    :demand t)
+
+  (use-package prescient
+    :straight t
+    :config
+    (prescient-persist-mode 1))
+
+  (use-package selectrum-prescient
+    :straight t
+    :config
+    (selectrum-prescient-mode 1))
+
+  (use-package marginalia
+    :straight t
+    :after selectrum
+    :custom
+    (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+    :init
+    ;; Ensure that Selectrum is refreshed when cycling annotations.
+    (marginalia-mode)
+    (advice-add #'marginalia-cycle :after (lambda () (selectrum-exhibit))))
+
+  (use-package embark
+    :straight t
+    :bind (("C-S-a" . embark-act)
+           :map minibuffer-local-map
+           ("C-d" . embark-act))
+    :config
+    ;; For Selectrum users:
+    (defun current-candidate+category ()
+      (when selectrum-active-p
+        (cons (selectrum--get-meta 'category)
+              (selectrum-get-current-candidate))))
+
+    (add-hook 'embark-target-finders #'current-candidate+category)
+
+    (defun current-candidates+category ()
+      (when selectrum-active-p
+        (cons (selectrum--get-meta 'category)
+              (selectrum-get-current-candidates
+              ;; Pass relative file names for dired.
+              minibuffer-completing-file-name))))
+
+    ;; Show Embark actions via which-key
+    (setq embark-action-indicator
+          (lambda (map)
+            (which-key--show-keymap "Embark" map nil nil 'no-paging)
+            #'which-key--hide-popup-ignore-command)
+          embark-become-indicator embark-action-indicator)
+
+    (add-hook 'embark-candidate-collectors #'current-candidates+category)
+
+    ;; No unnecessary computation delay after injection.
+    (add-hook 'embark-setup-hook 'selectrum-set-selected-candidate))
 
 #+end_src
 
@@ -2586,9 +2679,9 @@ Configure TypeScript and JavaScript language modes
     (counsel-describe-function-function #'helpful-callable)
     (counsel-describe-variable-function #'helpful-variable)
     :bind
-    ([remap describe-function] . counsel-describe-function)
+    ([remap describe-function] . helpful-function)
+    ([remap describe-variable] . helpful-variable)
     ([remap describe-command] . helpful-command)
-    ([remap describe-variable] . counsel-describe-variable)
     ([remap describe-key] . helpful-key))
 
   (dw/leader-key-def
