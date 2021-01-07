@@ -2375,26 +2375,17 @@ This section contains project configurations for specific projects that I can't 
 
 *** Debug Adapter Support
 
-Not so convinced about this yet.
-
 #+begin_src emacs-lisp
 
-  ;; (use-package dap-mode
-  ;;   :ensure t
-  ;;   :hook (lsp-mode . dap-mode)
-  ;;   :config
-  ;;   (dap-ui-mode 1)
-  ;;   (dap-tooltip-mode 1)
-  ;;   (require 'dap-node)
-  ;;   (dap-node-setup)
-
-  ;;   (dap-register-debug-template "Node: Attach"
-  ;;     (list :type "node"
-  ;;           :cwd nil
-  ;;           :request "attach"
-  ;;           :program nil
-  ;;           :port 9229
-  ;;           :name "Node::Run")))
+  (use-package dap-mode
+    :straight t
+    :custom
+    (lsp-enable-dap-auto-configure nil)
+    :config
+    (dap-ui-mode 1)
+    (dap-tooltip-mode 1)
+    (require 'dap-node)
+    (dap-node-setup))
 
 #+end_src
 
