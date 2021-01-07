@@ -3183,7 +3183,7 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
           eshell-highlight-prompt t
           eshell-scroll-to-bottom-on-input t
           eshell-prefer-lisp-functions nil
-          eshell-aliases-file "~/.emacs.d/eshell/alias")
+          eshell-aliases-file (expand-file-name "~/.emacs.d/eshell/alias")))
 
   (use-package eshell
     :hook (eshell-first-time-mode . dw/eshell-configure)
