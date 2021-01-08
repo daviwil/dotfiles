@@ -56,7 +56,13 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#bindings][Bindings]]
 - [[#stateful-keymaps-with-hydra][Stateful Keymaps with Hydra]]
 - [[#better-completions-with-ivy][Better Completions with Ivy]]
-- [[#experimental-selectrum-setup][Experimental Selectrum Setup]]
+- [[#completion-system][Completion System]]
+  - [[#preserve-minibuffer-history-with-savehist-mode][Preserve Minibuffer History with savehist-mode]]
+  - [[#improved-candidate-filtering-with-orderless][Improved Candidate Filtering with Orderless]]
+  - [[#consult-commands][Consult Commands]]
+  - [[#completion-annotations-with-marginalia][Completion Annotations with Marginalia]]
+  - [[#completion-actions-with-embark][Completion Actions with Embark]]
+  - [[#selectrum][Selectrum]]
 - [[#jumping-with-avy][Jumping with Avy]]
 - [[#buffer-management-with-bufler][Buffer Management with Bufler]]
 - [[#window-management][Window Management]]
@@ -1134,12 +1140,10 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 - While in an Ivy minibuffer, you can search within the current results by using =S-Space=.
 - To quickly jump to an item in the minibuffer, use =C-'= to get Avy line jump keys.
-- To see actions for the selected minibuffer item, use =M-o= and then press the
-  action's key.
-- *Super useful*: Use =C-c C-o= to open =ivy-occur= to open the search results in a
-  separate buffer.  From there you can click any item to perform the ivy action.
+- To see actions for the selected minibuffer item, use =M-o= and then press the action's key.
+- *Super useful*: Use =C-c C-o= to open =ivy-occur= to open the search results in a separate buffer.  From there you can click any item to perform the ivy action.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 
   (use-package ivy
     :diminish
@@ -1203,6 +1207,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
                                (not (derived-mode-p 'exwm-mode)))))))))
 
   (use-package counsel
+    :after ivy
     ;; :bind (("M-x" . counsel-M-x)
     ;;        ("C-x b" . counsel-ibuffer)
     ;;        ("C-x C-f" . counsel-find-file)
@@ -1251,30 +1256,73 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  "emacs-ivy"
-  "emacs-ivy-rich"
+  ;;"emacs-ivy"
+  ;;"emacs-ivy-rich"
   ;; "emacs-ivy-posframe"
-  "emacs-flx"
+  ;;"emacs-flx"
   "emacs-wgrep"
 
 #+end_src
 
-* Experimental Selectrum Setup
+* Completion System
 
 Trying this as an alternative to Ivy and Counsel.
 
+** Preserve Minibuffer History with savehist-mode
+
 #+begin_src emacs-lisp
 
-  (use-package selectrum
+  (use-package savehist
+    :config
+    (setq history-length 25)
+    (savehist-mode 1))
+
+    ;; Individual history elements can be configured separately
+    ;;(put 'minibuffer-history 'history-length 25)
+    ;;(put 'evil-ex-history 'history-length 50)
+    ;;(put 'kill-ring 'history-length 25))
+
+#+end_src
+
+** Improved Candidate Filtering with Orderless
+
+#+begin_src emacs-lisp
+
+  (use-package orderless
+    :straight t)
+
+  (use-package icomplete-vertical
     :straight t
-    :bind (:map selectrum-minibuffer-map
-           ("C-r" . selectrum-select-from-history)
-           ("C-j" . selectrum-next-candidate)
-           ("C-k" . selectrum-previous-candidate))
+    :demand t
+    :after orderless
+    :bind (:map icomplete-minibuffer-map
+                ("C-j"   . icomplete-forward-completions)
+                ("C-k"   . icomplete-backward-completions)
+                ("C-f"   . icomplete-force-complete-and-exit)
+                ("C-M-f" . icomplete-force-complete)
+                ("TAB"   . icomplete-force-complete)
+                ("RET"   . icomplete-force-complete-and-exit)
+                ("M-h"   . backward-kill-word))
+    :custom
+    (completion-styles '(orderless partial-completion substring))
+    (completion-category-overrides '((file (styles basic substring))))
+    (read-file-name-completion-ignore-case t)
+    (read-buffer-completion-ignore-case t)
+    (completion-ignore-case t)
+    (completion-cycling t)
+    (completion-cycle-threshold 5)
+    (icomplete-compute-delay 0.1)
+    (icomplete-vertical-prospects-height 7)
     :custom-face
-    (selectrum-current-candidate ((t (:background "#3a3f5a"))))
-    :init
-    (selectrum-mode 1))
+    (icomplete-first-match ((t (:foreground "LightGreen" :weight bold))))
+    :config
+    ;; Deal with a weird issue where the minibuffer disappears
+    ;; in some cases when resize-mini-windows isn't nil
+    (setq resize-mini-windows nil)
+
+    ;; Enable icomplete and vertical completions
+    (icomplete-mode)
+    (icomplete-vertical-mode))
 
   ;; (use-package restricto
   ;;   :straight t
@@ -1285,34 +1333,42 @@ Trying this as an alternative to Ivy and Counsel.
   ;;   :config
   ;;   (restricto-mode))
 
+#+end_src
+
+** Consult Commands
+
+#+begin_src emacs-lisp
+
+  (defun dw/get-project-root ()
+    (when (fboundp 'projectile-project-root)
+      (projectile-project-root)))
+
   (use-package consult
     :straight t
     :demand t
     :bind (("C-s" . consult-line)
-           ("C-M-l" . consult-imenu))
+           ("C-M-l" . consult-imenu)
+           ("C-M-j" . consult-buffer))
     :custom
-    (consult-narrow-key "<")
+    (consult-project-root-function #'dw/get-project-root)
+    (completion-in-region-function #'consult-completion-in-region)
     :config
     (consult-preview-mode 1))
 
   (use-package consult-selectrum
+    :disabled
     :straight t
     :after selectrum
     :demand t)
 
-  (use-package prescient
-    :straight t
-    :config
-    (prescient-persist-mode 1))
+#+end_src
 
-  (use-package selectrum-prescient
-    :straight t
-    :config
-    (selectrum-prescient-mode 1))
+** Completion Annotations with Marginalia
+
+#+begin_src emacs-lisp
 
   (use-package marginalia
     :straight t
-    :after selectrum
     :custom
     (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
     :init
@@ -1320,19 +1376,25 @@ Trying this as an alternative to Ivy and Counsel.
     (marginalia-mode)
     (advice-add #'marginalia-cycle :after (lambda () (selectrum-exhibit))))
 
+#+end_src
+
+** Completion Actions with Embark
+
+#+begin_src emacs-lisp
+
   (use-package embark
     :straight t
     :bind (("C-S-a" . embark-act)
            :map minibuffer-local-map
            ("C-d" . embark-act))
     :config
-    ;; For Selectrum users:
+    ;; ---- Selectrum only ----
     (defun current-candidate+category ()
       (when selectrum-active-p
         (cons (selectrum--get-meta 'category)
               (selectrum-get-current-candidate))))
 
-    (add-hook 'embark-target-finders #'current-candidate+category)
+    ;(add-hook 'embark-target-finders #'current-candidate+category)
 
     (defun current-candidates+category ()
       (when selectrum-active-p
@@ -1341,6 +1403,9 @@ Trying this as an alternative to Ivy and Counsel.
               ;; Pass relative file names for dired.
               minibuffer-completing-file-name))))
 
+    ;; No unnecessary computation delay after injection.
+    ;;(add-hook 'embark-setup-hook 'selectrum-set-selected-candidate))
+
     ;; Show Embark actions via which-key
     (setq embark-action-indicator
           (lambda (map)
@@ -1348,10 +1413,29 @@ Trying this as an alternative to Ivy and Counsel.
             #'which-key--hide-popup-ignore-command)
           embark-become-indicator embark-action-indicator)
 
-    (add-hook 'embark-candidate-collectors #'current-candidates+category)
+    ;;(add-hook 'embark-candidate-collectors #'current-candidates+category)
+    (add-hook 'embark-pre-action-hook #'completion--flush-all-sorted-completions))
 
-    ;; No unnecessary computation delay after injection.
-    (add-hook 'embark-setup-hook 'selectrum-set-selected-candidate))
+#+end_src
+
+** Selectrum
+
+#+begin_src emacs-lisp
+
+  (use-package selectrum
+    :straight t
+    :disabled
+    :bind (("C-M-r" . selectrum-repeat)
+           :map selectrum-minibuffer-map
+           ("C-r" . selectrum-select-from-history)
+           ("C-j" . selectrum-next-candidate)
+           ("C-k" . selectrum-previous-candidate)
+           :map minibuffer-local-map
+           ("M-h" . backward-kill-word))
+    :custom-face
+    (selectrum-current-candidate ((t (:background "#3a3f5a"))))
+    :init
+    (selectrum-mode 1))
 
 #+end_src
 
@@ -1387,6 +1471,7 @@ I'm trying to figure out how to integrate Bufler with Ivy more effectively (buff
 #+begin_src emacs-lisp
 
   (use-package bufler
+    :disabled
     :straight t
     :bind (("C-M-j" . bufler-switch-buffer)
            ("C-M-k" . bufler-workspace-frame-set))
@@ -1548,9 +1633,12 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 #+begin_src emacs-lisp
 
   (use-package ivy-pass
+    :disabled
     :commands ivy-pass
     :config
     (setq password-store-password-length 12))
+
+  (use-package password-store)
 
   (use-package auth-source-pass
     :config
@@ -1568,7 +1656,8 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  "emacs-ivy-pass"
+  ;;"emacs-ivy-pass"
+  "emacs-password-store"
   "emacs-auth-source-pass"
 
 #+end_src
@@ -2387,6 +2476,7 @@ files contained within the repo.  More information at the [[https://github.com/a
   (use-package projectile
     :diminish projectile-mode
     :config (projectile-mode)
+    :demand t
     :bind-keymap
     ("C-c p" . projectile-command-map)
     :init
@@ -2394,13 +2484,13 @@ files contained within the repo.  More information at the [[https://github.com/a
       (setq projectile-project-search-path '("~/Projects/Code")))
     (setq projectile-switch-project-action #'projectile-dired))
 
-  (use-package counsel-projectile
-    :after projectile)
+  ;; (use-package counsel-projectile
+  ;;   :after projectile)
 
   (dw/leader-key-def
     "pf"  'counsel-projectile-find-file
     "ps"  'counsel-projectile-switch-project
-    "pF"  'counsel-projectile-rg
+    "pF"  'consult-ripgrep
     "pp"  'counsel-projectile
     "pc"  'projectile-compile-project
     "pd"  'projectile-dired)
@@ -2412,7 +2502,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-projectile"
-  "emacs-counsel-projectile"
+  ;;"emacs-counsel-projectile"
   "ripgrep" ;; For counsel-projectile-rg
   "the-silver-searcher" ;; For counsel-projectile-ag
 
@@ -2885,7 +2975,7 @@ Configure TypeScript and JavaScript language modes
 
   "emacs-yasnippet"
   "emacs-yasnippet-snippets"
-  "emacs-ivy-yasnippet"  ;; Not in config yet
+  ;; "emacs-ivy-yasnippet"  ;; Not in config yet
 
 #+end_src
 
@@ -3272,10 +3362,13 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
     (add-hook 'eshell-post-command-hook
               '(lambda () (setenv "TERM" "dumb")))
 
-    ;; Use Ivy to provide completions in eshell
+    ;; Use completion-at-point to provide completions in eshell
     (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)
 
-    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'counsel-esh-history)
+    ;; Initialize the shell history
+    (eshell-hist-initialize)
+
+    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'consult-history)
     (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
     (evil-normalize-keymaps)
 
