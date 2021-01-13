@@ -2276,7 +2276,15 @@ Trying out =org-present= for the presentations I give during System Crafters vid
     (after-init . org-roam-mode)
     :custom
     (org-roam-directory "~/Notes/Roam/")
-    (org-roam-dailies-directory "~/Notes/Roam/Journal/")
+    (org-roam-completion-everywhere t)
+    (org-roam-completion-system 'ivy)
+    (org-roam-dailies-directory "Journal/")
+    (org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         #'org-roam-capture--get-point
+         "* %?"
+         :file-name "Journal/%<%Y-%m-%d>"
+         :head "#+title: %<%Y-%m-%d>\n\n[[roam:%<%Y-%B>]]\n\n")))
     :bind (:map org-roam-mode-map
             (("C-c n l" . org-roam)
              ("C-c n f" . org-roam-find-file)
