@@ -59,9 +59,11 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 - [[#completion-system][Completion System]]
   - [[#preserve-minibuffer-history-with-savehist-mode][Preserve Minibuffer History with savehist-mode]]
   - [[#improved-candidate-filtering-with-orderless][Improved Candidate Filtering with Orderless]]
+  - [[#completions-with-icomplete][Completions with icomplete]]
   - [[#consult-commands][Consult Commands]]
   - [[#completion-annotations-with-marginalia][Completion Annotations with Marginalia]]
   - [[#completion-actions-with-embark][Completion Actions with Embark]]
+  - [[#launching-apps][Launching apps]]
   - [[#selectrum][Selectrum]]
 - [[#jumping-with-avy][Jumping with Avy]]
 - [[#buffer-management-with-bufler][Buffer Management with Bufler]]
@@ -1143,7 +1145,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 - To see actions for the selected minibuffer item, use =M-o= and then press the action's key.
 - *Super useful*: Use =C-c C-o= to open =ivy-occur= to open the search results in a separate buffer.  From there you can click any item to perform the ivy action.
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 
   (use-package ivy
     :diminish
@@ -1162,7 +1164,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
            ("C-k" . ivy-previous-line)
            ("C-d" . ivy-reverse-i-search-kill))
     :init
-    ;; (ivy-mode 1)
+    (ivy-mode 1)
     :config
     (setq ivy-use-virtual-buffers t)
     (setq ivy-wrap t)
@@ -1185,8 +1187,8 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
     :after hydra)
 
   (use-package ivy-rich
-    ;; :init
-    ;; (ivy-rich-mode 1)
+    :init
+    (ivy-rich-mode 1)
     :after ivy
     :config
     (setq ivy-format-function #'ivy-format-function-line)
@@ -1208,12 +1210,13 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
   (use-package counsel
     :after ivy
-    ;; :bind (("M-x" . counsel-M-x)
-    ;;        ("C-x b" . counsel-ibuffer)
-    ;;        ("C-x C-f" . counsel-find-file)
-    ;;        ("C-M-l" . counsel-imenu)
-    ;;        :map minibuffer-local-map
-    ;;        ("C-r" . 'counsel-minibuffer-history))
+    :bind (("M-x" . counsel-M-x)
+           ("C-x b" . counsel-ibuffer)
+           ("C-x C-f" . counsel-find-file)
+           ("C-M-j" . counsel-switch-buffer)
+           ("C-M-l" . counsel-imenu)
+           :map minibuffer-local-map
+           ("C-r" . 'counsel-minibuffer-history))
     :custom
     (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
     :config
@@ -1256,10 +1259,11 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  ;;"emacs-ivy"
-  ;;"emacs-ivy-rich"
+  "emacs-ivy"
+  "emacs-ivy-rich"
+  "emacs-counsel"
   ;; "emacs-ivy-posframe"
-  ;;"emacs-flx"
+  "emacs-flx"
   "emacs-wgrep"
 
 #+end_src
@@ -1291,7 +1295,13 @@ Trying this as an alternative to Ivy and Counsel.
   (use-package orderless
     :straight t)
 
+#+end_src
+
+** Completions with icomplete
+
+#+begin_src emacs-lisp
   (use-package icomplete-vertical
+    :disabled
     :straight t
     :demand t
     :after orderless
@@ -1344,6 +1354,7 @@ Trying this as an alternative to Ivy and Counsel.
       (projectile-project-root)))
 
   (use-package consult
+    :disabled
     :straight t
     :demand t
     :bind (("C-s" . consult-line)
@@ -1356,7 +1367,6 @@ Trying this as an alternative to Ivy and Counsel.
     (consult-preview-mode 1))
 
   (use-package consult-selectrum
-    :disabled
     :straight t
     :after selectrum
     :demand t)
@@ -1368,6 +1378,7 @@ Trying this as an alternative to Ivy and Counsel.
 #+begin_src emacs-lisp
 
   (use-package marginalia
+    :disabled
     :straight t
     :custom
     (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
@@ -1383,6 +1394,7 @@ Trying this as an alternative to Ivy and Counsel.
 #+begin_src emacs-lisp
 
   (use-package embark
+    :disabled
     :straight t
     :bind (("C-S-a" . embark-act)
            :map minibuffer-local-map
@@ -1394,7 +1406,7 @@ Trying this as an alternative to Ivy and Counsel.
         (cons (selectrum--get-meta 'category)
               (selectrum-get-current-candidate))))
 
-    ;(add-hook 'embark-target-finders #'current-candidate+category)
+    ;; (add-hook 'embark-target-finders #'current-candidate+category)
 
     (defun current-candidates+category ()
       (when selectrum-active-p
@@ -1404,7 +1416,9 @@ Trying this as an alternative to Ivy and Counsel.
               minibuffer-completing-file-name))))
 
     ;; No unnecessary computation delay after injection.
-    ;;(add-hook 'embark-setup-hook 'selectrum-set-selected-candidate))
+    ;; (add-hook 'embark-setup-hook 'selectrum-set-selected-candidate)
+
+    ;; (add-hook 'embark-candidate-collectors #'current-candidates+category))
 
     ;; Show Embark actions via which-key
     (setq embark-action-indicator
@@ -1413,8 +1427,17 @@ Trying this as an alternative to Ivy and Counsel.
             #'which-key--hide-popup-ignore-command)
           embark-become-indicator embark-action-indicator)
 
-    ;;(add-hook 'embark-candidate-collectors #'current-candidates+category)
+    ;; Use this for icomplete
     (add-hook 'embark-pre-action-hook #'completion--flush-all-sorted-completions))
+
+#+end_src
+
+** Launching apps
+
+#+begin_src emacs-lisp
+
+  (use-package app-launcher
+    :straight '(app-launcher :host github :repo "SebastienWae/app-launcher"))
 
 #+end_src
 
@@ -1423,8 +1446,8 @@ Trying this as an alternative to Ivy and Counsel.
 #+begin_src emacs-lisp
 
   (use-package selectrum
-    :straight t
     :disabled
+    :straight t
     :bind (("C-M-r" . selectrum-repeat)
            :map selectrum-minibuffer-map
            ("C-r" . selectrum-select-from-history)
@@ -1432,6 +1455,11 @@ Trying this as an alternative to Ivy and Counsel.
            ("C-k" . selectrum-previous-candidate)
            :map minibuffer-local-map
            ("M-h" . backward-kill-word))
+    :custom
+    (selectrum-fix-minibuffer-height t)
+    (selectrum-num-candidates-displayed 7)
+    (selectrum-refine-candidates-function #'orderless-filter)
+    (selectrum-highlight-candidates-function #'orderless-highlight-matches)
     :custom-face
     (selectrum-current-candidate ((t (:background "#3a3f5a"))))
     :init
@@ -2484,13 +2512,14 @@ files contained within the repo.  More information at the [[https://github.com/a
       (setq projectile-project-search-path '("~/Projects/Code")))
     (setq projectile-switch-project-action #'projectile-dired))
 
-  ;; (use-package counsel-projectile
-  ;;   :after projectile)
+  (use-package counsel-projectile
+    :after projectile)
 
   (dw/leader-key-def
     "pf"  'counsel-projectile-find-file
     "ps"  'counsel-projectile-switch-project
-    "pF"  'consult-ripgrep
+    "pF"  'counsel-projectile-rg
+    ;; "pF"  'consult-ripgrep
     "pp"  'counsel-projectile
     "pc"  'projectile-compile-project
     "pd"  'projectile-dired)
@@ -2502,7 +2531,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-projectile"
-  ;;"emacs-counsel-projectile"
+  "emacs-counsel-projectile"
   "ripgrep" ;; For counsel-projectile-rg
   "the-silver-searcher" ;; For counsel-projectile-ag
 
