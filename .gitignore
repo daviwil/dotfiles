@@ -16,6 +16,7 @@
 .config/polybar/config
 .config/dunst/dunstrc
 .config/xsettingsd/xsettingsd.conf
+.config/fontconfig/fonts.conf
 
 ; Mail
 .mbsyncrc

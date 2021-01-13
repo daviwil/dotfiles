@@ -93,6 +93,7 @@ I also have to do an extra step to make sure Emacs can find the font path from t
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
 <fontconfig>
+  <dir>~/.dotfiles/fonts</dir>
   <dir>~/.guix-extra-profiles/desktop/desktop/share/fonts</dir>
   <alias>
     <family>Apple Color Emoji</family>
