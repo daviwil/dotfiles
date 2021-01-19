@@ -446,6 +446,22 @@ I also define a function called =dw/system-settings-get= which can retrieve thes
       (vimb/default-zoom . 150)
       (qutebrowser/default-zoom . 150)))
 
+  ;; When booted into Windows
+  (when (equal system-name "daviwil-t480")
+    '((desktop/dpi . 130)
+      (emacs/default-face-size . 110)
+      (emacs/fixed-face-size . 110)
+      (emacs/variable-face-size . 134)
+      (polybar/height . 25)
+      (polybar/font-0-size . 12)
+      (polybar/font-1-size . 8)
+      (polybar/font-2-size . 14)
+      (polybar/font-3-size . 9)
+      (dunst/font-size . 14)
+      (dunst/max-icon-size . 64)
+      (vimb/default-zoom . 150)
+      (qutebrowser/default-zoom . 150)))
+
 #+end_src
 
 *** phantom

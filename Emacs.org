@@ -215,8 +215,9 @@ Some parts of the configuration require knowledge of whether Emacs is running on
   (setq dw/is-termux
         (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
 
-  (require 'f)
   (setq dw/is-guix-system (and (eq system-type 'gnu/linux)
+                               (featurep 'f)
+                               (require 'f)
                                (string-equal (f-read "/etc/issue")
                                              "\nThis is the GNU system.  Welcome.\n")))
 
@@ -287,6 +288,9 @@ Trying out =straight.el= for package management.  So far so good!
         (goto-char (point-max))
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
+
+  ;; Always use straight to install on systems other than Linux
+  (setq straight-use-package-by-default (not (eq system-type 'gnu/linux)))
 
   ;; Use straight.el for use-package expressions
   (straight-use-package 'use-package)
@@ -653,9 +657,11 @@ Different platforms need different default font sizes, and [[https://mozilla.git
 
   ;; Set the font face based on platform
   (pcase system-type
-    ((or 'windows-nt 'cygwin) (set-face-attribute 'default nil :font "Fira Mono:antialias=subpixel" :height 130))
-    ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170))
-    ('gnu/linux (set-face-attribute 'default nil :font "Fira Code Retina" :height (dw/system-settings-get 'emacs/default-face-size))))
+    ((or 'gnu/linux 'windows-nt 'cygwin)
+     (set-face-attribute 'default nil
+                         :font "Fira Code Retina"
+                         :height (dw/system-settings-get 'emacs/default-face-size)))
+    ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170)))
 
   ;; Set the fixed pitch face
   (set-face-attribute 'fixed-pitch nil
@@ -929,7 +935,8 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
 
 #+begin_src emacs-lisp
 
-  (unless dw/is-termux
+  (unless (or dw/is-termux
+              (eq system-type 'windows-nt))
     (setq epa-pinentry-mode 'loopback)
     (pinentry-start))
 
@@ -1189,7 +1196,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
   (use-package ivy-rich
     :init
     (ivy-rich-mode 1)
-    :after ivy
+    :after counsel
     :config
     (setq ivy-format-function #'ivy-format-function-line)
     (setq ivy-rich-display-transformers-list
@@ -1708,6 +1715,8 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 #+begin_src emacs-lisp
 
   (use-package dired
+    :ensure nil
+    :straight nil
     :defer 1
     :commands (dired dired-jump)
     :config
@@ -2368,6 +2377,7 @@ https://magit.vc/manual/magit/
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
   (use-package evil-magit
+    :if dw/is-guix-system
     :after magit)
 
   ;; Add a super-convenient global binding for magit-status since
@@ -2465,6 +2475,7 @@ files contained within the repo.  More information at the [[https://github.com/a
 #+begin_src emacs-lisp
 
   (use-package git-gutter
+    :straight git-gutter-fringe
     :diminish
     :hook ((text-mode . git-gutter-mode)
            (prog-mode . git-gutter-mode))
@@ -2735,6 +2746,7 @@ Not currently doing any Common Lisp development so these packages are disabled f
 
   ;; Include .sld library definition files
   (use-package scheme-mode
+    :straight nil
     :mode "\\.sld\\'")
 
 #+end_src
@@ -3148,6 +3160,7 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 #+begin_src emacs-lisp
 
   (use-package substratic-forge
+    :straight nil
     :if (file-exists-p "~/Projects/Code/crash-the-stack/lib/github.com/substratic/forge/@/")
     :load-path "~/Projects/Code/crash-the-stack/lib/github.com/substratic/forge/@/"
     :bind (:map substratic-forge-mode-map
