@@ -420,6 +420,10 @@ Some tips can be found here:
     (interactive)
     (message "Arrow keys are bad, you know?"))
 
+  (use-package undo-tree
+    :init
+    (global-undo-tree-mode 1))
+
   (use-package evil
     :init
     (setq evil-want-integration t)
@@ -427,6 +431,7 @@ Some tips can be found here:
     (setq evil-want-C-u-scroll t)
     (setq evil-want-C-i-jump nil)
     (setq evil-respect-visual-line-mode t)
+    (setq evil-undo-system 'undo-tree)
     :config
     (add-hook 'evil-mode-hook 'dw/evil-hook)
     (evil-mode 1)
