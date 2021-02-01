@@ -3034,6 +3034,7 @@ Configure TypeScript and JavaScript language modes
 #+begin_src emacs-lisp
 
   (use-package adl-mode
+    :straight nil
     :mode "\\.adl\\'")
 
 #+end_src
