@@ -124,6 +124,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     - [[#markdown][Markdown]]
     - [[#html][HTML]]
     - [[#yaml][YAML]]
+    - [[#adl][ADL]]
   - [[#productivity][Productivity]]
     - [[#syntax-checking-with-flycheck][Syntax checking with Flycheck]]
     - [[#snippets][Snippets]]
@@ -3020,6 +3021,15 @@ Configure TypeScript and JavaScript language modes
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-yaml-mode"
+
+#+end_src
+
+*** ADL
+
+#+begin_src emacs-lisp
+
+  (use-package adl-mode
+    :mode "\\.adl\\'")
 
 #+end_src
 
