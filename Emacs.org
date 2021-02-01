@@ -339,6 +339,15 @@ I've got a folder of custom Emacs Lisp libraries which must be added to the load
 
 #+end_src
 
+* Default Coding System
+
+Avoid constant errors on Windows about the coding system by setting the default to UTF-8.
+
+#+begin_src emacs-lisp
+
+  (set-default-coding-systems 'utf-8)
+
+#+end_src
 * Server Mode
 
 Start the Emacs server from this instance so that all =emacsclient= calls are routed here.
