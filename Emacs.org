@@ -2333,6 +2333,12 @@ Trying out =org-present= for the presentations I give during System Crafters vid
          :file-name "Journal/%<%Y-%m-%d>"
          :olp ("Log")
          :head "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
+        ("l" "log entry" entry
+         #'org-roam-capture--get-point
+         "* %<%I:%M %p> - %?"
+         :file-name "Journal/%<%Y-%m-%d>"
+         :olp ("Log")
+         :head "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
         ("m" "meeting" entry
          #'org-roam-capture--get-point
          "* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n%?\n\n"
