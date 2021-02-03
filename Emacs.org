@@ -3267,6 +3267,19 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
               :internal-border-color "#c792ea"
               :override-parameters '((parent-frame . nil)))))))
 
+  (use-package keycast
+    :config
+    ;; This works with doom-modeline, inspired by this comment:
+    ;; https://github.com/tarsius/keycast/issues/7#issuecomment-627604064
+    (define-minor-mode keycast-mode
+      "Show current command and its key binding in the mode line."
+      :global t
+      (if keycast-mode
+          (add-hook 'pre-command-hook 'keycast-mode-line-update t)
+          (remove-hook 'pre-command-hook 'keycast-mode-line-update)))
+
+    (add-to-list 'global-mode-string '("" mode-line-keycast " ")))
+
   (dw/leader-key-def
    "tc" 'dw/toggle-command-window)
 
@@ -3277,6 +3290,7 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-posframe"
+  "emacs-keycast"
 
 #+end_src
 
