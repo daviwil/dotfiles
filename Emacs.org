@@ -2393,17 +2393,10 @@ https://magit.vc/manual/magit/
 #+begin_src emacs-lisp
 
   (use-package magit
+    :bind ("C-M-;" . magit-status)
     :commands (magit-status magit-get-current-branch)
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
-
-  (use-package evil-magit
-    :if dw/is-guix-system
-    :after magit)
-
-  ;; Add a super-convenient global binding for magit-status since
-  ;; I use it 8 million times a day
-  (global-set-key (kbd "C-M-;") 'magit-status)
 
   (dw/leader-key-def
     "g"   '(:ignore t :which-key "git")
@@ -2428,7 +2421,6 @@ https://magit.vc/manual/magit/
 
   "emacs-magit"
   "emacs-magit-todos"
-  "emacs-evil-magit"
 
 #+end_src
 
