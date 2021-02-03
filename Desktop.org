@@ -1,5 +1,7 @@
 #+TITLE: Desktop Environment
 #+PROPERTY: header-args :mkdirp yes
+#+PROPERTY: header-args:sh   :tangle-mode (identity #o555)
+#+PROPERTY: header-args:conf :tangle-mode (identity #o555)
 
 This file contains configuration for my overall desktop environment.  My workflow is driven by Emacs but there are still a number of applications, tools, themes, and fonts that I must install to have a complete desktop experience.
 

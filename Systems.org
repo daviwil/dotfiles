@@ -1,4 +1,6 @@
 #+TITLE: System Configuration with Guix
+#+PROPERTY: header-args    :tangle-mode (identity #o444)
+#+PROPERTY: header-args:sh :tangle-mode (identity #o555)
 
 * Table of Contents
 :PROPERTIES:
