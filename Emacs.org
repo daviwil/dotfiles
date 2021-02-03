@@ -1729,6 +1729,8 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 
 #+begin_src emacs-lisp
 
+  (use-package all-the-icons-dired)
+
   (use-package dired
     :ensure nil
     :straight nil
@@ -1750,6 +1752,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
               (lambda ()
                 (interactive)
                 (dired-omit-mode 1)
+                (dired-hide-details-mode 1)
                 (unless (or dw/is-termux
                             (s-equals? "/gnu/store/" (expand-file-name default-directory)))
                   (all-the-icons-dired-mode 1))
