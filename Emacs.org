@@ -14,6 +14,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#straightel][straight.el]]
 - [[#keep-emacsd-clean][Keep .emacs.d Clean]]
 - [[#update-load-path][Update Load Path]]
+- [[#default-coding-system][Default Coding System]]
 - [[#server-mode][Server Mode]]
 - [[#desktop-environment][Desktop Environment]]
 - [[#keyboard-bindings][Keyboard Bindings]]
