@@ -17,6 +17,8 @@
 .config/dunst/dunstrc
 .config/xsettingsd/xsettingsd.conf
 .config/fontconfig/fonts.conf
+.config/mpv/mpv.conf
+.config/zathura/zathurarc
 
 ; Mail
 .mbsyncrc
@@ -24,6 +26,7 @@
 ; Browsers
 .config/vimb/config
 .config/qutebrowser/config.py
+.config/qutebrowser/quickmarks
 
 ; Guix Configuration
 .config/guix/systems/davinci.scm
