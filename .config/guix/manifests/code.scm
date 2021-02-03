@@ -20,6 +20,11 @@
    ;; Java
    "icedtea"
 
+   ;; Guile
+   "guile@2.2"
+   "guile2.2-cairo"
+   "guile-gnome"
+
    ;; SDL
    "glu"
    "glfw"
