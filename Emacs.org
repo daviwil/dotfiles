@@ -3313,6 +3313,7 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
 
   ;; Only fetch mail on zerocool
   (setq dw/mail-enabled (string-equal system-name "zerocool"))
+  (setq dw/mu4e-inbox-query nil)
   (when dw/mail-enabled
     (require 'dw-mail))
 

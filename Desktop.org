@@ -357,7 +357,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       "")))
 
 (defun dw/polybar-mail-count (max-count)
-  (if dw/mail-enabled
+  (if (and dw/mail-enabled dw/mu4e-inbox-query)
     (let* ((mail-count (shell-command-to-string
                          (format "mu find --nocolor -n %s \"%s\" | wc -l" max-count dw/mu4e-inbox-query))))
       (format " %s" (string-trim mail-count)))
