@@ -29,7 +29,7 @@
 
     (setq dw/autorest-last-run (list command-string run-name pre-command))
 
-    (let ((default-directory "~/Projects/Code/autorest.megarepo/")
+    (let ((default-directory "~/Projects/Code/autorest/")
           (full-command
              (string-join (list (when pre-command
                                       (format "%s &&" pre-command))
