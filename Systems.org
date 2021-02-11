@@ -20,7 +20,6 @@
   - [[#activating-profiles][Activating Profiles]]
   - [[#updating-profiles][Updating Profiles]]
 - [[#dotfiles-management][Dotfiles Management]]
-  - [[#initializing][Initializing]]
   - [[#syncing][Syncing]]
   - [[#updating][Updating]]
 - [[#nix-package-manager][Nix Package Manager]]
@@ -37,24 +36,25 @@ Guix supports the concept of [[https://guix.gnu.org/manual/en/html_node/Channels
 
   ;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
-  (cons* (channel
-          (name 'nonguix)
-          (url "https://gitlab.com/nonguix/nonguix"))
-         %default-channels)
-
-  ;; (list (channel
+  ;; (cons* (channel
   ;;         (name 'nonguix)
   ;;         (commit "c34fa8bfacdce5fa45b2a684c2b27309c09a9056")
   ;;         (url "https://gitlab.com/nonguix/nonguix"))
-  ;;       (channel
-  ;;         (name 'guix)
-  ;;         (commit "190187326ad7516dd6728eed7bb6ef2d4f92897a")
-  ;;         (url "https://git.savannah.gnu.org/git/guix.git")
-  ;;         (introduction
-  ;;           (make-channel-introduction
-  ;;             "9edb3f66fd807b096b48283debdcddccfea34bad"
-  ;;           (openpgp-fingerprint
-  ;;             "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
+  ;;        %default-channels)
+
+  (list (channel
+          (name 'nonguix)
+          (commit "c34fa8bfacdce5fa45b2a684c2b27309c09a9056")
+          (url "https://gitlab.com/nonguix/nonguix"))
+        (channel
+          (name 'guix)
+          (commit "190187326ad7516dd6728eed7bb6ef2d4f92897a")
+          (url "https://git.savannah.gnu.org/git/guix.git")
+          (introduction
+            (make-channel-introduction
+              "9edb3f66fd807b096b48283debdcddccfea34bad"
+            (openpgp-fingerprint
+              "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
 
 #+end_src
 
@@ -552,7 +552,7 @@ To install Guix on another machine, you first to build need a USB image.  Since 
 
     ;; Add some extra packages useful for the installation process
     (packages
-     (append (list exfat-utils fuse-exfat git curl stow vim)
+     (append (list git exfat-utils fuse-exfat stow vim)
              (operating-system-packages installation-os)))))
 
 installation-os-nonfree
@@ -661,23 +661,6 @@ done
 * Dotfiles Management
 
 Since I keep all of my important configuration files in Org Mode code blocks, I have to ensure that the real configuration files are kept up to date when I sync the latest changes to my [[https://github.com/daviwil/dotfiles][dotfiles]] repo.  I've written a couple of scripts to simplify that process:
-
-** Initializing
-
-This script can be executed remotely using the following command, provided that you have =curl=, =bash=, and =stow= installed:
-
-#+begin_src sh
-
-  curl -s -L https://github.com/daviwil/dotfiles/blob/master/init.sh | bash -
-
-#+end_src
-
-#+begin_src sh :tangle init.sh :shebang #!/bin/sh
-
-  git clone https://github.com/daviwil/dotfiles.git ~/.dotfiles
-  ~/.dotfiles/.bin/update-dotfiles
-
-#+end_src
 
 ** Syncing
 
@@ -802,7 +785,7 @@ Installing packages:
 
 #+begin_src sh
 
-nix-env -i nodejs dotnet-sdk gh hledger
+nix-env -i nodejs dotnet-sdk gh
 # nix-env -iA nixpkgs.nodejs-12_x # For a specific version
 
 #+end_src
