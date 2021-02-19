@@ -141,6 +141,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 - [[#writing][Writing]]
   - [[#darkroom-for-distraction-free-writing][Darkroom for distraction-free writing]]
 - [[#streaming][Streaming]]
+  - [[#obs-websocket][obs-websocket]]
 - [[#applications][Applications]]
   - [[#binding-prefix][Binding Prefix]]
   - [[#mail][Mail]]
@@ -3294,6 +3295,38 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
   "emacs-posframe"
   "emacs-keycast"
+
+#+end_src
+
+** obs-websocket
+
+I use the [[https://github.com/Palakis/obs-websocket][obs-websocket]] plugin for OBS Studio to enable automation of scene transitions, etc using Sacha Chua's excellent [[https://github.com/sachac/obs-websocket-el/][obs-websocket-el]] package.  This enables me to control the how flow of video recording and streaming from within Emacs!
+
+#+begin_src emacs-lisp
+
+  (use-package obs-websocket
+    :after hydra
+    :straight '(obs-websocket :host github :repo "sachac/obs-websocket-el")
+    :config
+    (defhydra dw/stream-keys (:exit t)
+      "Stream Commands"
+      ("c" (obs-websocket-connect) "Connect")
+      ("s" (obs-websocket-send "SetCurrentScene" :scene-name "Screen") "Screen")
+      ("w" (obs-websocket-send "SetCurrentScene" :scene-name "Webcam") "Webcam")
+      ("p" (obs-websocket-send "SetCurrentScene" :scene-name "Sponsors") "Sponsors")
+      ("Ss" (obs-websocket-send "StartStreaming") "Start Stream")
+      ("Se" (obs-websocket-send "StopStreaming") "End Stream"))
+
+    ;; This is Super-s (for now)
+    (global-set-key (kbd "s-s") #'dw/stream-keys/body))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-websocket"
 
 #+end_src
 
