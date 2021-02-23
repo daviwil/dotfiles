@@ -36,6 +36,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     - [[#enable-mode-diminishing][Enable Mode Diminishing]]
     - [[#smart-mode-line][Smart Mode Line]]
     - [[#doom-modeline][Doom Modeline]]
+  - [[#workspaces][Workspaces]]
   - [[#notifications][Notifications]]
   - [[#auto-saving-changed-files][Auto-Saving Changed Files]]
   - [[#auto-reverting-changed-files][Auto-Reverting Changed Files]]
@@ -859,6 +860,31 @@ anymore if I set up =diminish= correctly.
   "emacs-doom-modeline"
   "emacs-all-the-icons"
   "emacs-minions"
+
+#+end_src
+
+** Workspaces
+
+#+begin_src emacs-lisp
+
+  (use-package perspective
+    :bind (("C-M-j" . persp-counsel-switch-buffer)
+           ("C-M-k" . persp-switch)
+           ("C-M-n" . persp-next)
+           ("C-x k" . persp-kill-buffer*))
+    :custom
+    (persp-initial-frame-name "Main")
+    :config
+    (unless persp-mode
+      (persp-mode 1)))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-perspective"
 
 #+end_src
 
