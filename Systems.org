@@ -24,6 +24,12 @@
   - [[#updating][Updating]]
 - [[#nix-package-manager][Nix Package Manager]]
 - [[#system-installation][System Installation]]
+  - [[#building-the-installation-image][Building the Installation Image]]
+  - [[#installing-guix][Installing Guix]]
+    - [[#setting-up-wifi][Setting up WiFi]]
+    - [[#setting-up-partitions][Setting Up Partitions]]
+    - [[#initial-system-installation][Initial System Installation]]
+    - [[#initial-system-setup][Initial System Setup]]
 :END:
 
 * Channels
@@ -792,4 +798,194 @@ nix-env -i nodejs dotnet-sdk gh
 
 * System Installation
 
-Until I migrate its Markdown contents into Org syntax, consult [[file:.config/guix/systems/README.md][.config/guix/systems/README.md]] for installation instructions.
+Here's a guide for how I install my GNU Guix systems from scratch.  This process is simplified because I've already prepared a reusable system configuration so you might need to do extra work if you end up following this for your own system install.
+
+** Building the Installation Image
+
+Since I use modern Thinkpads, I have to use the non-free kernel and firmware blobs from the [[https://gitlab.com/nonguix/nonguix][nonguix]] channel.  After cloning the repo, the installation image can be built with this command:
+
+#+begin_src sh
+
+  guix system image ./install.scm
+
+#+end_src
+
+*NOTE:* It can take an hour or more for this to complete, so be patient...
+
+Once the build is complete, Guix will print out the path to the disk image file that was created.  You can now write the installation image to a USB stick using =dd=:
+
+#+begin_src sh
+
+  sudo dd if=/gnu/store/nyg6jv3a4l0pbcvb0x7jfsb60k9qalga-disk-image of=/dev/sdX status=progress
+
+#+end_src
+
+** Installing Guix
+
+With the newly "burned" installation image, boot from the USB drive and choose "Install using the shell based process."
+
+*** Setting up WiFi
+
+First, run the following commands to unblock the wifi card and determine its device name:
+
+#+begin_src sh
+
+  rfkill unblock all
+  ifconfig -a
+
+#+end_src
+
+Use an editor (or =echo=) to create a new file called =wifi.conf= to store the wifi configuration.  Make sure to set =ssid= to the name of your wifi access point and =psk= to the passphrase for your wifi.  You may also need to change the =key_mgmt= parameter depending on the type of authentication your wifi router supports ([[https://wiki.archlinux.org/index.php/Wpa_supplicant#Configuration][some examples]] on Arch Wiki).
+
+#+begin_src
+
+  network={
+    ssid="ssid-name"
+    key_mgmt=WPA-PSK
+    psk="unencrypted passphrase"
+  }
+
+#+end_src
+
+Now run the following command to connect to your wifi, using the device name you received from =ifconfig -a=.  In my case it's =wlp4s0= so I run the command like so:
+
+#+begin_src sh
+
+  wpa_supplicant -c wifi.conf -i wlp4s0 -B
+
+#+end_src
+
+#+begin_quote
+
+*NOTE:* If for any reason running `wpa_supplicant` fails, make sure to kill any
+background instances of it before trying to run it again because the old
+instances will block new runs from working.  This wasted a couple hours of my
+time the first time I tried installing Guix!
+
+#+end_quote
+
+The last step to set up networking is to run =dhclient= to turn on DNS for your wifi connection:
+
+#+begin_src sh
+
+  dhclient -v wlp4s0
+
+#+end_src
+
+*** Setting Up Partitions
+
+Since we're installing on a ThinkPad with UEFI, follow the [[https://guix.gnu.org/manual/en/guix.html#Disk-Partitioning][instructions in the Guix manual]] for disk partitioning.
+
+Once you have your Linux root partition set up, you can enable LUKS to encrypt that partition by running the following commands (where =/dev/nvme0n1p5= is your root partition and =system-root= is an arbitrary label you'd like to use for it):
+
+#+begin_src sh
+
+  cryptsetup luksFormat /dev/nvme0n1p5
+  cryptsetup open --type luks /dev/nvme0n1p5 system-root
+  mkfs.ext4 -L system-root /dev/mapper/system-root
+  mount LABEL=system-root /mnt
+
+#+end_src
+
+Finally, make sure to mount your EFI partition to =/mnt/boot= so that the installer can install the bootloader.  The Guix installation instructions obscure this step slightly so it's easy to miss:
+
+#+begin_src sh
+
+  mkdir -p /mnt/boot/efi
+  mount /dev/<EFI partition> /mnt/boot/efi
+
+#+end_src
+
+Now your EFI and encrypted root filesystems are mounted so you can proceed with system installation.
+
+*** Initial System Installation
+
+If you've got a system configuration prepared already, you can use =git= to pull it down into the current directory (the one you're already in, not =/mnt=):
+
+#+begin_src sh
+
+  git clone https://github.com/daviwil/dotfiles
+
+#+end_src
+
+One important step before you attempt system installation is to set up the =nonguix= channel so that the system can be installed from it.  Once you've cloned your dotfiles repo, you can place your =channels.scm= file into the root user's =.config/guix= path and then run =guix pull= to activate it:
+
+#+begin_src sh
+
+  mkdir -p ~/.config/guix
+  cp dotfiles/guix/channels.scm ~/.config/guix
+  guix pull
+  hash guix  # This is necessary to ensure the updated profile path is active!
+
+#+end_src
+
+The pull operation may take a while depending on how recently you generated your installation USB image (if packages in the main Guix repository have been updated since then).
+
+Once your channels are set up, you will need to tweak your configuration to
+reflect the partition UUIDs and labels for the system that you are installing.
+To figure out the UUID of your encrypted root partition, you can use the following command:
+
+#+begin_src sh
+
+  cryptsetup luksUUID /dev/<root partition>
+
+#+end_src
+
+#+begin_quote
+
+**TIP:** To make it easier to copy the UUID into your config file, you can switch to another tty using =Ctrl-Alt-F4= and press =Enter= to get to another root prompt.  You can then switch back and forth between the previous TTY on =F3=.
+
+#+end_quote
+
+Once your system configuration is correct, start up =herd=:
+
+#+begin_src sh
+
+  herd start cow-store /mnt
+
+#+end_src
+
+Now you can initialize your system using the following command:
+
+#+begin_src sh
+
+  guix system init path/to/config.scm /mnt
+
+#+end_src
+
+This could take a while, so make sure your laptop is plugged in and let it run.  If you see any errors during installation, don't fret, you can usually resume from where you left off because your Guix store will have any packages that were already installed.
+
+*** Initial System Setup
+
+Congrats!  You now have a new Guix system installed, reboot now to complete the initial setup of your user account.
+
+The first thing you'll want to do when you land at the login prompt is login as =root= and immediately change the =root= and user passwords using =passwd= (there isn't a root password by default!):
+
+#+begin_src sh
+
+  passwd             # Set passwd for 'root'
+  passwd <username>  # Set password for your user account (no angle brackets)
+
+#+end_src
+
+Now log into your user account and clone your dotfiles repository.
+
+Since we used the =nonguix= channel to install the non-free Linux kernel, we'll need to make sure that channel is configured in our user account so that we have access to those packages the next time we =guix pull=.  At the moment I just symlink the Guix config folder from my =.dotfiles= to =~/.config/guix=:
+
+#+begin_src sh
+
+  ln -sf ~/.dotfiles/guix ~/.config/guix
+
+#+end_src
+
+Verify that your =channels.scm= file is in the target path (=~/.config/guix/channels.scm=) and then run =guix pull= to sync in the new channel.
+
+Now you can install the packages that you want to use for day-to-day activities.  I separate different types of packages into individual manifest files and manage them with my =activate-profiles= script:
+
+#+begin_src sh
+
+  activate-profiles desktop emacs
+
+#+end_src
+
+Now the packages for these manifests will be installed and usable.  They can be updated in the future by using the =update-profiles= script.

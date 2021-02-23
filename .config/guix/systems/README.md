@@ -1,5 +1,9 @@
 # Guix Configuration
 
+## Deprecation Notice
+
+I've rewritten my installation structions in Org Mode so this file is now out of date.  You can check out the updated steps in my [Systems.org](https://github.com/daviwil/dotfiles/blob/master/Systems.org#system-installation) file.
+
 ## Building the Installation Image
 
 Since I use modern Thinkpads, I have to use the non-free kernel and firmware
