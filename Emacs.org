@@ -74,6 +74,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#window-selection-with-ace-window][Window Selection with ace-window]]
   - [[#window-history-with-winner-mode][Window History with winner-mode]]
   - [[#set-margins-for-modes][Set Margins for Modes]]
+  - [[#control-buffer-placement][Control Buffer Placement]]
 - [[#expand-region][Expand Region]]
 - [[#credential-management][Credential Management]]
 - [[#file-browsing][File Browsing]]
@@ -1688,6 +1689,22 @@ The keybindings for this are =C+M+-= and =C+M+==.
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-visual-fill-column"
+
+#+end_src
+
+** Control Buffer Placement
+
+Emacs' default buffer placement algorithm is pretty disruptive if you like setting up window layouts a certain way in your workflow.  The =display-buffer-alist= video controls this behavior and you can customize it to prevent Emacs from popping up new windows when you run commands.
+
+#+begin_src emacs-lisp
+
+  (setq display-buffer-alist
+        '((".*" (display-buffer-reuse-mode-window
+                 display-buffer-reuse-window
+                 display-buffer-same-window))))
+
+  ;; If a popup does happen, don't resize windows to be equal-sized
+  (setq even-window-sizes nil)
 
 #+end_src
 
