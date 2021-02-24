@@ -2655,7 +2655,10 @@ files contained within the repo.  More information at the [[https://github.com/a
     (setq projectile-switch-project-action #'projectile-dired))
 
   (use-package counsel-projectile
-    :after projectile)
+    :after projectile
+    :bind (("C-M-p" . counsel-projectile-find-file))
+    :config
+    (counsel-projectile-mode))
 
   (dw/leader-key-def
     "pf"  'counsel-projectile-find-file
