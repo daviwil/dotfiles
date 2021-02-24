@@ -1635,12 +1635,18 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 ** Window Selection with ace-window
 
+=ace-window= helps with easily switching between windows based on a predefined set of keys used to identify each.
+
 #+begin_src emacs-lisp
 
   (use-package ace-window
     :bind (("M-o" . ace-window))
+    :custom
+    (aw-scope 'frame)
+    (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+    (aw-minibuffer-flag t)
     :config
-    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+    (ace-window-display-mode 1))
 
 #+end_src
 
