@@ -2745,7 +2745,8 @@ This section contains project configurations for specific projects that I can't 
     :commands lsp
     :hook ((typescript-mode js2-mode web-mode) . lsp)
     :bind (:map lsp-mode-map
-           ("TAB" . completion-at-point)))
+           ("TAB" . completion-at-point))
+    :custom (lsp-headerline-breadcrumb-enable nil))
 
   (dw/leader-key-def
     "l"  '(:ignore t :which-key "lsp")
