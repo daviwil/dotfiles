@@ -32,6 +32,7 @@
 .config/guix/systems/davinci.scm
 .config/guix/systems/phantom.scm
 .config/guix/systems/zerocool.scm
+.config/guix/systems/install.scm
 .config/guix/systems/base-system.scm
 .config/guix/manifests/mail.scm
 .config/guix/manifests/emacs.scm
