@@ -2645,6 +2645,12 @@ files contained within the repo.  More information at the [[https://github.com/a
 
 #+begin_src emacs-lisp
 
+  (defun dw/switch-project-action ()
+    "Switch to a workspace with the project name and start `magit-status'."
+    ;; TODO: Switch to EXWM workspace 1?
+    (persp-switch (projectile-project-name))
+    (magit-status))
+
   (use-package projectile
     :diminish projectile-mode
     :config (projectile-mode)
@@ -2654,7 +2660,7 @@ files contained within the repo.  More information at the [[https://github.com/a
     :init
     (when (file-directory-p "~/Projects/Code")
       (setq projectile-project-search-path '("~/Projects/Code")))
-    (setq projectile-switch-project-action #'projectile-dired))
+    (setq projectile-switch-project-action #'dw/switch-project-action))
 
   (use-package counsel-projectile
     :after projectile
