@@ -21,6 +21,7 @@ This file contains configuration for my overall desktop environment.  My workflo
   - [[#useful-links][Useful Links]]
 - [[#panel-via-polybar][Panel via Polybar]]
 - [[#desktop-notifications-via-dunst][Desktop Notifications via Dunst]]
+- [[#automatic-disk-mounting-with-udiskie][Automatic Disk Mounting with Udiskie]]
 - [[#display-management][Display Management]]
 - [[#default-applications][Default Applications]]
 - [[#user-services][User Services]]
@@ -243,6 +244,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (exwm/run-in-background "dunst")
     (exwm/run-in-background "nm-applet")
     (exwm/run-in-background "syncthing-gtk --minimized")
+    (exwm/run-in-background "udiskie -t")
     (exwm/run-in-background "redshift -l 47.675510:-122.203362 -t 6500:3500"))
 
   (use-package exwm
@@ -950,6 +952,16 @@ fi
 
 "dunst"
 "libnotify"  ; For notify-send
+
+#+end_src
+
+* Automatic Disk Mounting with Udiskie
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+"udiskie"
 
 #+end_src
 
