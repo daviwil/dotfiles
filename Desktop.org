@@ -225,6 +225,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       (telega nil))
 
     (persp-kill "Main")
+    (exwm-workspace-switch-create 1)
     (exwm-workspace-switch-create 2)
     (persp-switch "Browsers")
     (persp-kill "Main")
