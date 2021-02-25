@@ -833,9 +833,7 @@ anymore if I set up =diminish= correctly.
   ;; installing this package!
 
   (use-package minions
-    :hook (doom-modeline-mode . minions-mode)
-    :custom
-    (minions-mode-line-lighter ""))
+    :hook (doom-modeline-mode . minions-mode))
 
   (use-package doom-modeline
     :after eshell     ;; Make sure it gets hooked after eshell
