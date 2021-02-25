@@ -806,7 +806,9 @@ Since I use modern Thinkpads, I have to use the non-free kernel and firmware blo
 
 #+begin_src sh
 
-  guix system image ./install.scm
+  # Create a slightly larger install image to have some headroom
+  # for temporary file creation and avoid "no space free" errors
+  guix system image ./install.scm --image-size=5G
 
 #+end_src
 
@@ -826,15 +828,6 @@ With the newly "burned" installation image, boot from the USB drive and choose "
 
 *** Setting up WiFi
 
-First, run the following commands to unblock the wifi card and determine its device name:
-
-#+begin_src sh
-
-  rfkill unblock all
-  ifconfig -a
-
-#+end_src
-
 Use an editor (or =echo=) to create a new file called =wifi.conf= to store the wifi configuration.  Make sure to set =ssid= to the name of your wifi access point and =psk= to the passphrase for your wifi.  You may also need to change the =key_mgmt= parameter depending on the type of authentication your wifi router supports ([[https://wiki.archlinux.org/index.php/Wpa_supplicant#Configuration][some examples]] on Arch Wiki).
 
 #+begin_src
@@ -847,20 +840,19 @@ Use an editor (or =echo=) to create a new file called =wifi.conf= to store the w
 
 #+end_src
 
-Now run the following command to connect to your wifi, using the device name you received from =ifconfig -a=.  In my case it's =wlp4s0= so I run the command like so:
+First, run the following commands to unblock the wifi card, determine its device name, and connect using the device name you received from =ifconfig -a=.  In my case it's =wlp4s0= so I run the command like so:
 
 #+begin_src sh
 
+  rfkill unblock all
+  ifconfig -a
   wpa_supplicant -c wifi.conf -i wlp4s0 -B
 
 #+end_src
 
 #+begin_quote
 
-*NOTE:* If for any reason running `wpa_supplicant` fails, make sure to kill any
-background instances of it before trying to run it again because the old
-instances will block new runs from working.  This wasted a couple hours of my
-time the first time I tried installing Guix!
+*NOTE:* If for any reason running =wpa_supplicant= fails, make sure to kill any background instances of it before trying to run it again because the old instances will block new runs from working.  This wasted a couple hours of my time the first time I tried installing Guix!
 
 #+end_quote
 
@@ -874,7 +866,13 @@ The last step to set up networking is to run =dhclient= to turn on DNS for your 
 
 *** Setting Up Partitions
 
-Since we're installing on a ThinkPad with UEFI, follow the [[https://guix.gnu.org/manual/en/guix.html#Disk-Partitioning][instructions in the Guix manual]] for disk partitioning.
+Since we're installing on a ThinkPad with UEFI, follow the [[https://guix.gnu.org/manual/en/guix.html#Disk-Partitioning][instructions in the Guix manual]] for disk partitioning.  The short of it is that you need to use =cfdisk= to create a partition in your free space:
+
+#+begin_src sh
+
+  cfdisk /dev/nvme0n1
+
+#+end_src
 
 Once you have your Linux root partition set up, you can enable LUKS to encrypt that partition by running the following commands (where =/dev/nvme0n1p5= is your root partition and =system-root= is an arbitrary label you'd like to use for it):
 
@@ -896,7 +894,13 @@ Finally, make sure to mount your EFI partition to =/mnt/boot= so that the instal
 
 #+end_src
 
-Now your EFI and encrypted root filesystems are mounted so you can proceed with system installation.
+Now your EFI and encrypted root filesystems are mounted so you can proceed with system installation.  You must now set up the installation enviornment using =herd=:
+
+#+begin_src sh
+
+  herd start cow-store /mnt
+
+#+end_src
 
 *** Initial System Installation
 
@@ -921,9 +925,7 @@ One important step before you attempt system installation is to set up the =nong
 
 The pull operation may take a while depending on how recently you generated your installation USB image (if packages in the main Guix repository have been updated since then).
 
-Once your channels are set up, you will need to tweak your configuration to
-reflect the partition UUIDs and labels for the system that you are installing.
-To figure out the UUID of your encrypted root partition, you can use the following command:
+Once your channels are set up, you will need to tweak your configuration to reflect the partition UUIDs and labels for the system that you are installing.  To figure out the UUID of your encrypted root partition, you can use the following command:
 
 #+begin_src sh
 
@@ -937,19 +939,11 @@ To figure out the UUID of your encrypted root partition, you can use the followi
 
 #+end_quote
 
-Once your system configuration is correct, start up =herd=:
-
-#+begin_src sh
-
-  herd start cow-store /mnt
-
-#+end_src
-
 Now you can initialize your system using the following command:
 
 #+begin_src sh
 
-  guix system init path/to/config.scm /mnt
+  guix system -L ~/.dotfiles/.config/guix/systems init path/to/config.scm /mnt
 
 #+end_src
 
