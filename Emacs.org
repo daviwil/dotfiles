@@ -1793,7 +1793,8 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
     :config
     (setq dired-listing-switches "-agho --group-directories-first"
           dired-omit-files "^\\.[^.].*"
-          dired-omit-verbose nil)
+          dired-omit-verbose nil
+          dired-hide-details-hide-symlink-targets nil)
 
     (autoload 'dired-omit-mode "dired-x")
 
