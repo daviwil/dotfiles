@@ -3521,6 +3521,11 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
                       ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
                       ("account" "%(binary) -f %(ledger-file) reg %(account)"))))
 
+  (use-package hledger-mode
+    :straight t
+    :bind (:map hledger-mode-map
+                ("TAB" . completion-at-point)))
+
 #+end_src
 
 *Guix Packages*
@@ -3528,6 +3533,7 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "ledger"
+  ;; "hledger"
   "emacs-ledger-mode"
 
 #+end_src
