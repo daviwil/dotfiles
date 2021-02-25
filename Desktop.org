@@ -216,13 +216,14 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 #+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
 
   (defun dw/exwm-init-hook ()
+    ;; Set up perspective names on initial workspaces
+    (exwm-workspace-switch-create 0)
+    (persp-switch "Chat")
+
     ;; Launch Telega in workspace 0 if we've logged in before
     (when (file-exists-p "~/.telega/db.sqlite")
       (telega nil))
 
-    ;; Set up perspective names on initial workspaces
-    (exwm-workspace-switch-create 0)
-    (persp-switch "Chat")
     (persp-kill "Main")
     (exwm-workspace-switch-create 2)
     (persp-switch "Browsers")
