@@ -872,6 +872,7 @@ anymore if I set up =diminish= correctly.
 #+begin_src emacs-lisp
 
   (use-package perspective
+    :after counsel
     :bind (("C-M-j" . persp-counsel-switch-buffer)
            ("C-M-k" . persp-switch)
            ("C-M-n" . persp-next)
