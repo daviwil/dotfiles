@@ -1169,6 +1169,7 @@ cups http://localhost:631
 az https://portal.azure.com
 azdo https://dev.azure.com/azure-sdk/
 ajs https://github.com/Azure/azure-sdk-for-js
+adl https://github.com/Azure/adl
 dajs https://github.com/daviwil/azure-sdk-for-js
 anet https://github.com/Azure/azure-sdk-for-net
 aja https://github.com/Azure/azure-sdk-for-java
