@@ -1761,7 +1761,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 
   (dw/leader-key-def
     "ap" '(:ignore t :which-key "pass")
-    "app" 'ivy-pass
+    "app" 'password-store-copy
     "api" 'password-store-insert
     "apg" 'password-store-generate)
 
