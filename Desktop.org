@@ -219,6 +219,20 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (when (file-exists-p "~/.telega/db.sqlite")
       (telega nil))
 
+    ;; Set up perspective names on initial workspaces
+    (exwm-workspace-switch-create 0)
+    (persp-switch "Chat")
+    (persp-kill "Main")
+    (exwm-workspace-switch-create 2)
+    (persp-switch "Browsers")
+    (persp-kill "Main")
+    (exwm-workspace-switch-create 3)
+    (persp-switch "Comms")
+    (persp-kill "Main")
+    (exwm-workspace-switch-create 4)
+    (persp-switch "Media")
+    (persp-kill "Main")
+
     ;; Make workspace 1 be the one where we land at startup
     (exwm-workspace-switch-create 1)
 
@@ -402,6 +416,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
         ?\M-:
         ?\C-\M-j  ;; Buffer list
         ?\C-\M-k  ;; Browser list
+        ?\C-\M-n  ;; Next workspace
         ?\C-\     ;; Ctrl+Space
         ?\C-\;))
 
