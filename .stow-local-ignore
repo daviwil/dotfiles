@@ -2,5 +2,6 @@
 archive
 backgrounds
 mail
+fonts
 ^/.*\.org
 LICENSE
