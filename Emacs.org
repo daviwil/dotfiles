@@ -470,6 +470,8 @@ Some tips can be found here:
 
   (use-package evil-collection
     :after evil
+    :init
+    (setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
     :custom
     (evil-collection-outline-bind-tab-p nil)
     :config
