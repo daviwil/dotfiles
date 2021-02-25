@@ -96,6 +96,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#reminders][Reminders]]
   - [[#presentations][Presentations]]
   - [[#org-roam][Org Roam]]
+  - [[#deft][Deft]]
   - [[#addons-to-try][Addons to Try]]
 - [[#website-management][Website Management]]
   - [[#daviwilcom][daviwil.com]]
@@ -2434,6 +2435,26 @@ Trying out =org-present= for the presentations I give during System Crafters vid
            :map org-mode-map
            (("C-c n i" . org-roam-insert))
            (("C-c n I" . org-roam-insert-immediate))))
+
+#+end_src
+
+** Deft
+
+#+begin_src emacs-lisp
+
+  (use-package deft
+    :commands (deft)
+    :config (setq deft-directory "~/Notes/Roam"
+                  deft-recursive t
+                  deft-extensions '("md" "org")))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-deft"
 
 #+end_src
 
