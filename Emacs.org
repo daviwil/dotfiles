@@ -2912,9 +2912,14 @@ Configure TypeScript and JavaScript language modes
     (add-hook 'js2-mode-hook #'dw/set-js-indentation)
     (add-hook 'json-mode-hook #'dw/set-js-indentation))
 
+
+  (use-package apheleia
+    :config
+    (apheleia-global-mode +1))
+
   (use-package prettier-js
-    :hook ((js2-mode . prettier-js-mode)
-           (typescript-mode . prettier-js-mode))
+    ;; :hook ((js2-mode . prettier-js-mode)
+    ;;        (typescript-mode . prettier-js-mode))
     :config
     (setq prettier-js-show-errors nil))
 
@@ -2926,6 +2931,7 @@ Configure TypeScript and JavaScript language modes
 
   "emacs-js2-mode"
   "emacs-typescript-mode"
+  "emacs-apheleia"
   "emacs-prettier"
 
 #+end_src
