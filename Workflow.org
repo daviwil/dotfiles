@@ -32,6 +32,7 @@ This file contains the description and configuration of the productivity workflo
 ** Don't look at Org files to find the next task, use the agenda view
 ** Ensure sufficient metadata on tasks for effective filtering
 ** Keep a daily log of work being done
+
 * Tasks
 
 Here are some things I need to do to make this workflow even more effective:
@@ -50,7 +51,27 @@ The location where my =Notes= folder lives changes in some cases
         "~/storage/shared/Notes"
         "~/Notes"))
 
-  (setq org-agenda-files `(,org-directory))
+  ;; (setq org-agenda-files `(,org-directory))
+
+  ;; Inspired by this great article:
+  ;; https://d12frosted.io/posts/2021-01-16-task-management-with-roam-vol5.html
+  (defun dw/org-roam-project-files ()
+    "Return a list of note files containing Project tag."
+    (seq-filter
+      #'identity
+      (seq-map
+        #'car
+        (org-roam-db-query
+          [:select file
+          :from tags
+          :where (like tags (quote "%\"Project\"%"))]))))
+
+  (defun dw/update-org-agenda-files ()
+    (interactive)
+    (setq org-agenda-files (dw/org-roam-project-files)))
+
+  (with-eval-after-load 'org-roam
+    (dw/update-org-agenda-files))
 
   (defun dw/org-path (path)
     (expand-file-name path org-directory))
