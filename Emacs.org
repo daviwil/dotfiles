@@ -2468,7 +2468,7 @@ Trying out =org-present= for the presentations I give during System Crafters vid
 
 ** daviwil.com
 
-I generate and publish my personal site [[daviwil.com][daviwil.com]] using =org-mode= using =dw/generate-site= and =dw/publish-site=:
+I generate and publish my personal site [[https://daviwil.com/][daviwil.com]] using =org-mode= using =dw/generate-site= and =dw/publish-site=:
 
 #+begin_src emacs-lisp
 
