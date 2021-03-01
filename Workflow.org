@@ -1,5 +1,5 @@
 #+TITLE: Org Mode Workflow
-#+PROPERTY: header-args:emacs-lisp :tangle ./.emacs.d/lisp/dw-workflow.el
+#+PROPERTY: header-args:emacs-lisp :tangle .emacs.d/lisp/dw-workflow.el
 
 This file contains the description and configuration of the productivity workflow I use with Org Mode.
 

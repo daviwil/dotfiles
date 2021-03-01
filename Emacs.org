@@ -1,5 +1,5 @@
 #+TITLE: Emacs Configuration
-#+PROPERTY: header-args:emacs-lisp :tangle ./.emacs.d/init.el
+#+PROPERTY: header-args:emacs-lisp :tangle .emacs.d/init.el
 
 This is an ongoing evolution of my original Emacs configuration files, inspired by a bunch of resources I've found online.
 

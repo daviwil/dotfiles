@@ -1,6 +1,6 @@
 #+TITLE: Mail Configuration
 #+PROPERTY: header-args :mkdirp yes
-#+PROPERTY: header-args:emacs-lisp :tangle ./.emacs.d/lisp/dw-mail.el
+#+PROPERTY: header-args:emacs-lisp :tangle .emacs.d/lisp/dw-mail.el
 
 * Mail in Emacs with mu4e
 
