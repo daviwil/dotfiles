@@ -54,6 +54,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#use-parinfer-for-lispy-languages][Use Parinfer for Lispy languages]]
   - [[#origamiel-for-folding][Origami.el for Folding]]
 - [[#configuration-files][Configuration Files]]
+  - [[#configuration-file-management-with-dotcrafterel][Configuration file management with dotcrafter.el]]
   - [[#helpers][Helpers]]
   - [[#bindings][Bindings]]
 - [[#stateful-keymaps-with-hydra][Stateful Keymaps with Hydra]]
@@ -1124,6 +1125,23 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 #+end_src
 
 * Configuration Files
+** Configuration file management with dotcrafter.el
+
+#+begin_src emacs-lisp
+
+  (use-package dotcrafter
+    :straight '(dotcrafter :host github
+                           :repo "daviwil/dotcrafter.el"
+                           :branch "future")
+    :custom
+    (dotcrafter-dotfiles-folder "~/.dotfiles")
+    (dotcrafter-org-files '("Emacs.org"
+                            "Desktop.org"
+                            "Systems.org"
+                            "Mail.org"
+                            "Workflow.org")))
+
+#+end_src
 
 ** Helpers
 
