@@ -98,6 +98,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#presentations][Presentations]]
   - [[#org-roam][Org Roam]]
   - [[#deft][Deft]]
+  - [[#auto-show-markup-symbols][Auto-show Markup Symbols]]
   - [[#addons-to-try][Addons to Try]]
 - [[#website-management][Website Management]]
   - [[#daviwilcom][daviwil.com]]
@@ -2477,6 +2478,25 @@ Trying out =org-present= for the presentations I give during System Crafters vid
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-deft"
+
+#+end_src
+
+** Auto-show Markup Symbols
+
+This package makes it much easier to edit Org documents when =org-hide-emphasis-markers= is turned on.  It temporarily shows the emphasis markers around certain markup elements when you place your cursor inside of them.  No more fumbling around with ~=~ and ~*~ characters!
+
+#+begin_src emacs-lisp
+
+  (use-package org-appear
+    :hook (org-mode . org-appear-mode))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-org-appear"
 
 #+end_src
 
