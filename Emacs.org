@@ -2509,7 +2509,7 @@ This package makes it much easier to edit Org documents when =org-hide-emphasis-
 
 ** daviwil.com
 
-I generate and publish my personal site [[daviwil.com][daviwil.com]] using =org-mode= using =dw/generate-site= and =dw/publish-site=:
+I generate and publish my personal site [[https://daviwil.com/][daviwil.com]] using =org-mode= using =dw/generate-site= and =dw/publish-site=:
 
 #+begin_src emacs-lisp
 
