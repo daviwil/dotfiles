@@ -681,20 +681,23 @@ Different platforms need different default font sizes, and [[https://mozilla.git
   (pcase system-type
     ((or 'gnu/linux 'windows-nt 'cygwin)
      (set-face-attribute 'default nil
-                         :font "Fira Code Retina"
+                         :font "JetBrains Mono"
+                         :weight 'light
                          :height (dw/system-settings-get 'emacs/default-face-size)))
     ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170)))
 
   ;; Set the fixed pitch face
   (set-face-attribute 'fixed-pitch nil
-                      :font "Fira Code Retina"
+                      :font "JetBrains Mono"
+                      :weight 'light
                       :height (dw/system-settings-get 'emacs/fixed-face-size))
 
   ;; Set the variable pitch face
   (set-face-attribute 'variable-pitch nil
-                      :font "Cantarell"
+                      ;; :font "Cantarell"
+                      :font "Iosevka Aile"
                       :height (dw/system-settings-get 'emacs/variable-face-size)
-                      :weight 'regular)
+                      :weight 'light)
 
 #+end_src
 
@@ -1700,7 +1703,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
   ;;     (set-window-margins nil margin-size margin-size)))
 
   (defun dw/org-mode-visual-fill ()
-    (setq visual-fill-column-width 100
+    (setq visual-fill-column-width 120
           visual-fill-column-center-text t)
     (visual-fill-column-mode 1))
 

@@ -131,12 +131,14 @@ I also have to do an extra step to make sure Emacs can find the font path from t
 "papirus-icon-theme"
 
 ;; Fonts
-"font-fira-mono"
 "font-fira-code"
+"font-jetbrains-mono"
+"font-iosevka"
+"font-iosevka-aile"
 "font-abattis-cantarell"
 "font-dejavu"
 "font-google-noto"
-"font-gnu-freefont-ttf"
+"font-gnu-freefont"
 "font-liberation"
 "font-awesome"
 "font-google-material-design-icons"
