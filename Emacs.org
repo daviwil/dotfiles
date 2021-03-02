@@ -1705,7 +1705,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
   ;;     (set-window-margins nil margin-size margin-size)))
 
   (defun dw/org-mode-visual-fill ()
-    (setq visual-fill-column-width 120
+    (setq visual-fill-column-width 110
           visual-fill-column-center-text t)
     (visual-fill-column-mode 1))
 
