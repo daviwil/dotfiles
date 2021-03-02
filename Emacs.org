@@ -145,6 +145,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#substratic-forge][Substratic Forge]]
 - [[#writing][Writing]]
   - [[#darkroom-for-distraction-free-writing][Darkroom for distraction-free writing]]
+  - [[#previewing-info-files][Previewing Info files]]
 - [[#streaming][Streaming]]
   - [[#obs-websocket][obs-websocket]]
 - [[#applications][Applications]]
@@ -3384,6 +3385,16 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-darkroom"
+
+#+end_src
+
+** Previewing Info files
+
+I'm experimenting with generating =Texinfo= from Org Mode files and I need a way to quickly preview the resulting =.info= files.  This =auto-mode-alist= entry automatically previews an =.info= file when visited with =find-file=:
+
+#+begin_src emacs-lisp
+
+  (add-to-list 'auto-mode-alist '("\\.info\\'" . Info-on-current-buffer))
 
 #+end_src
 
