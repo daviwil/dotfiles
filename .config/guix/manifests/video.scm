@@ -3,6 +3,7 @@
 (specifications->manifest
  '(;; Screen Capture and Streaming
    "obs"
+   "obs-websocket"
    "ffmpeg"    ;; ffmpeg and ffplay
    "v4l-utils" ;; Get details about webcams: v4l2-ctl --list-devices
 
