@@ -876,7 +876,7 @@ anymore if I set up =diminish= correctly.
 #+begin_src emacs-lisp
 
   (use-package perspective
-    :after counsel
+    :demand t
     :bind (("C-M-j" . persp-counsel-switch-buffer)
            ("C-M-k" . persp-switch)
            ("C-M-n" . persp-next)
@@ -884,8 +884,9 @@ anymore if I set up =diminish= correctly.
     :custom
     (persp-initial-frame-name "Main")
     :config
-    (unless persp-mode
-      (persp-mode 1)))
+    ;; Running `persp-mode' multiple times resets the perspective list...
+    (unless (equal persp-mode t)
+      (persp-mode)))
 
 #+end_src
 
@@ -1284,11 +1285,11 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
                                (not (derived-mode-p 'exwm-mode)))))))))
 
   (use-package counsel
-    :after ivy
+    :demand t
     :bind (("M-x" . counsel-M-x)
            ("C-x b" . counsel-ibuffer)
            ("C-x C-f" . counsel-find-file)
-           ("C-M-j" . counsel-switch-buffer)
+           ;; ("C-M-j" . counsel-switch-buffer)
            ("C-M-l" . counsel-imenu)
            :map minibuffer-local-map
            ("C-r" . 'counsel-minibuffer-history))
