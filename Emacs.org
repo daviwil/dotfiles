@@ -2086,6 +2086,10 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
 
+  ;; Get rid of the background on column views
+  (set-face-attribute 'org-column nil :background nil)
+  (set-face-attribute 'org-column-title nil :background nil)
+
   ;; TODO: Others to consider
   ;; '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
   ;; '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
