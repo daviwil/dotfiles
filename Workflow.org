@@ -18,6 +18,7 @@ This file contains the description and configuration of the productivity workflo
 - [[#workflow-states][Workflow States]]
 - [[#tags][Tags]]
 - [[#agendas][Agendas]]
+- [[#clocking][Clocking]]
 - [[#capture-templates][Capture Templates]]
 - [[#old-configuration][Old Configuration]]
   - [[#agenda][Agenda]]
@@ -135,6 +136,12 @@ Tags are used to filter all tasks to find anything actionable in a particular co
   (setq org-agenda-span 'day)
   (setq org-agenda-start-with-log-mode t)
 
+  ;; Make done tasks show up in the agenda log
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+
+  (setq org-columns-default-format "%20CATEGORY(Category) %65ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
+
   (setq org-agenda-custom-commands
         `(("d" "Dashboard"
            ((agenda "" ((org-deadline-warning-days 7)))
@@ -142,7 +149,8 @@ Tags are used to filter all tasks to find anything actionable in a particular co
                        ((org-agenda-overriding-header "High Priority")))
             (tags-todo "+followup" ((org-agenda-overriding-header "Needs Follow Up")))
             (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Actions")))
+                  ((org-agenda-overriding-header "Next Actions")
+                   (org-agenda-max-todos nil)))
             (todo "TODO"
                   ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
                    (org-agenda-files '(,(dw/org-path "Inbox.org")))
@@ -158,6 +166,16 @@ Tags are used to filter all tasks to find anything actionable in a particular co
            ((org-agenda-overriding-header "Low Effort Tasks")
             (org-agenda-max-todos 20)
             (org-agenda-files org-agenda-files)))))
+
+#+end_src
+
+* Clocking
+
+I like to use =org-timer-set-timer= to set a countdown timer for a task based on the "effort" value I set on it.  Since Org doesn't seem to automatically clock the task when I set a timer, this hook will take care of that.
+
+#+begin_src emacs-lisp
+
+  (add-hook 'org-timer-set-hook #'org-clock-in)
 
 #+end_src
 
@@ -339,8 +357,6 @@ The following blocks are being migrated over from my Org Mode configuration in [
 #+begin_src emacs-lisp :tangle no
 
   ;; Configure TODO settings
-  (setq org-log-done 'time)
-  (setq org-log-into-drawer t)
   (setq org-datetree-add-timestamp 'inactive)
   (setq org-habit-graph-column 60)
   (setq org-fontify-whole-heading-line t)
