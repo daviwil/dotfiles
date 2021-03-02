@@ -5,6 +5,7 @@
    "jack"
    "jack2"
    "jack-keyboard"
+   "carla"
    "qjackctl"
    "patchage"
 
