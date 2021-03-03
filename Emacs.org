@@ -303,6 +303,9 @@ Trying out =straight.el= for package management.  So far so good!
   ;; Use straight.el for use-package expressions
   (straight-use-package 'use-package)
 
+  ;; Load the helper package for commands like `straight-x-clean-unused-repos'
+  (require 'straight-x)
+
 #+end_src
 
 * Keep .emacs.d Clean
