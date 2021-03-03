@@ -3477,7 +3477,7 @@ I use the [[https://github.com/Palakis/obs-websocket][obs-websocket]] plugin for
 
   (use-package obs-websocket
     :after hydra
-    :straight '(obs-websocket :host github :repo "sachac/obs-websocket-el")
+    ;; :straight '(obs-websocket :host github :repo "sachac/obs-websocket-el")
     :config
     (defhydra dw/stream-keys (:exit t)
       "Stream Commands"
@@ -3497,7 +3497,7 @@ I use the [[https://github.com/Palakis/obs-websocket][obs-websocket]] plugin for
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  "emacs-websocket"
+  "emacs-obs-websocket-el"
 
 #+end_src
 
