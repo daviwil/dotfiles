@@ -43,6 +43,10 @@ Guix supports the concept of [[https://guix.gnu.org/manual/en/html_node/Channels
   ;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
   (cons* (channel
+          (name 'channel-x)
+          (url "https://github.com/daviwil/channel-x"))
+          ;; (url "file:///home/daviwil/Projects/Code/channel-x"))
+         (channel
           (name 'nonguix)
           (url "https://gitlab.com/nonguix/nonguix"))
          %default-channels)
