@@ -927,12 +927,19 @@ anymore if I set up =diminish= correctly.
 #+begin_src emacs-lisp
 
   (use-package super-save
-    :straight t
     :defer 1
     :diminish super-save-mode
     :config
     (super-save-mode +1)
     (setq super-save-auto-save-when-idle t))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-super-save"
 
 #+end_src
 
@@ -1383,6 +1390,7 @@ Trying this as an alternative to Ivy and Counsel.
 #+begin_src emacs-lisp
 
   (use-package orderless
+    :disabled
     :straight t)
 
 #+end_src
@@ -1445,7 +1453,6 @@ Trying this as an alternative to Ivy and Counsel.
 
   (use-package consult
     :disabled
-    :straight t
     :demand t
     :bind (("C-s" . consult-line)
            ("C-M-l" . consult-imenu)
@@ -1457,9 +1464,16 @@ Trying this as an alternative to Ivy and Counsel.
     (consult-preview-mode 1))
 
   (use-package consult-selectrum
-    :straight t
     :after selectrum
     :demand t)
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-consult"
 
 #+end_src
 
@@ -1469,7 +1483,6 @@ Trying this as an alternative to Ivy and Counsel.
 
   (use-package marginalia
     :disabled
-    :straight t
     :custom
     (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
     :init
@@ -1479,13 +1492,20 @@ Trying this as an alternative to Ivy and Counsel.
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-marginalia"
+
+#+end_src
+
 ** Completion Actions with Embark
 
 #+begin_src emacs-lisp
 
   (use-package embark
     :disabled
-    :straight t
     :bind (("C-S-a" . embark-act)
            :map minibuffer-local-map
            ("C-d" . embark-act))
@@ -1522,12 +1542,28 @@ Trying this as an alternative to Ivy and Counsel.
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-embark"
+
+#+end_src
+
 ** Launching apps
 
 #+begin_src emacs-lisp
 
-  (use-package app-launcher
-    :straight '(app-launcher :host github :repo "SebastienWae/app-launcher"))
+  (use-package app-launcher)
+    ;; :straight '(app-launcher :host github :repo "SebastienWae/app-launcher"))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-app-launcher"
 
 #+end_src
 
@@ -1537,7 +1573,6 @@ Trying this as an alternative to Ivy and Counsel.
 
   (use-package selectrum
     :disabled
-    :straight t
     :bind (("C-M-r" . selectrum-repeat)
            :map selectrum-minibuffer-map
            ("C-r" . selectrum-select-from-history)
@@ -1554,6 +1589,14 @@ Trying this as an alternative to Ivy and Counsel.
     (selectrum-current-candidate ((t (:background "#3a3f5a"))))
     :init
     (selectrum-mode 1))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-selectrum"
 
 #+end_src
 
@@ -1863,7 +1906,6 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
       (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
     (use-package dired-single
-      :straight t
       :defer t)
 
     (use-package dired-ranger
@@ -1901,6 +1943,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
+  "emacs-dired-single"
   "emacs-dired-hacks"
   "emacs-all-the-icons-dired"
 
@@ -2394,7 +2437,6 @@ Trying out =org-present= for the presentations I give during System Crafters vid
 #+begin_src emacs-lisp
 
   (use-package org-roam
-    :straight t
     :hook
     (after-init . org-roam-mode)
     :custom
@@ -2486,6 +2528,7 @@ Trying out =org-present= for the presentations I give during System Crafters vid
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
+  "emacs-org-roam"
   "emacs-deft"
 
 #+end_src
@@ -4313,6 +4356,7 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 
 #+begin_src scheme :tangle .config/guix/manifests/emacs.scm :noweb yes
 
+  ;; '("emacs-native-comp"
   (specifications->manifest
    '("emacs"
      <<packages>>
