@@ -20,16 +20,17 @@
    ;; Effects
    "calf"
    "g2reverb"
-   "dragonfly-reverb"
    "wolf-shaper"
+   "dragonfly-reverb"
 
    ;; Synths
    "helm"
    "amsynth"
-   "avldrums-lv2"
    "geonkick"
    "fluidsynth"
+   "surge-synth"
    "zynaddsubfx"
+   "avldrums-lv2"
 
    ;; Mixing Tools
    "wolf-spectrum"))
