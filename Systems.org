@@ -272,6 +272,7 @@ Define the =base-operating-system= which will be inherited by all machine config
                         stow
                         vim
                         emacs
+                        xterm
                         bluez
                         bluez-alsa
                         pulseaudio
