@@ -981,7 +981,8 @@ list of timezones.  Nice for working in a team with remote members.
 #+begin_src emacs-lisp
 
   (setq display-time-world-list
-    '(("America/Los_Angeles" "Seattle")
+    '(("Etc/UTC" "UTC")
+      ("America/Los_Angeles" "Seattle")
       ("America/New_York" "New York")
       ("Europe/Athens" "Athens")
       ("Pacific/Auckland" "Auckland")
