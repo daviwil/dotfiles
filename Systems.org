@@ -44,8 +44,18 @@ Guix supports the concept of [[https://guix.gnu.org/manual/en/html_node/Channels
 
   (cons* (channel
           (name 'channel-x)
-          (url "https://github.com/daviwil/channel-x"))
-          ;; (url "file:///home/daviwil/Projects/Code/channel-x"))
+          ;; (url "https://github.com/daviwil/channel-x"))
+          (url "file:///home/daviwil/Projects/Code/channel-x"))
+         (channel
+          (name 'flat)
+          (url "https://github.com/flatwhatson/guix-channel.git")
+          (commit
+           "302f8a4f7e56cb3b484de9fe86617a3aaf20098c")
+          (introduction
+           (make-channel-introduction
+            "33f86a4b48205c0dc19d7c036c85393f0766f806"
+            (openpgp-fingerprint
+             "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))
          (channel
           (name 'nonguix)
           (url "https://gitlab.com/nonguix/nonguix"))
