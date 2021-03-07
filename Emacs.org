@@ -9,6 +9,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 :END:
 :CONTENTS:
 - [[#startup-performance][Startup Performance]]
+- [[#native-compilation][Native Compilation]]
 - [[#system-settings][System Settings]]
 - [[#package-management][Package Management]]
   - [[#straightel][straight.el]]
@@ -206,6 +207,17 @@ Make startup faster by reducing the frequency of garbage collection and then use
                                (float-time
                                 (time-subtract after-init-time before-init-time)))
                        gcs-done)))
+
+#+end_src
+
+* Native Compilation
+
+I've started experimenting with the =native-comp= branch of Emacs for increased performance.  Here are some settings to tweak the behavior slightly:
+
+#+begin_src emacs-lisp
+
+  ;; Silence compiler warnings as they can be pretty disruptive
+  (setq comp-async-report-warnings-errors nil)
 
 #+end_src
 
