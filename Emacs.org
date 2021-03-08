@@ -97,6 +97,8 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#calendar-sync][Calendar Sync]]
   - [[#reminders][Reminders]]
   - [[#presentations][Presentations]]
+    - [[#org-present][org-present]]
+    - [[#org-tree-slide][org-tree-slide]]
   - [[#org-roam][Org Roam]]
   - [[#deft][Deft]]
   - [[#auto-show-markup-symbols][Auto-show Markup Symbols]]
@@ -2363,36 +2365,9 @@ It's nice to have a table of contents section for long literate configuration fi
 
 ** Presentations
 
-#+begin_src emacs-lisp
+*** org-present
 
-  (defun dw/org-start-presentation ()
-    (interactive)
-    (org-tree-slide-mode 1)
-    (setq text-scale-mode-amount 3)
-    (text-scale-mode 1))
-
-  (defun dw/org-end-presentation ()
-    (interactive)
-    (text-scale-mode 0)
-    (org-tree-slide-mode 0))
-
-  (use-package org-tree-slide
-    :defer t
-    :after org
-    :commands org-tree-slide-mode
-    :config
-    (evil-define-key 'normal org-tree-slide-mode-map
-      (kbd "q") 'dw/org-end-presentation
-      (kbd "C-j") 'org-tree-slide-move-next-tree
-      (kbd "C-k") 'org-tree-slide-move-previous-tree)
-    (setq org-tree-slide-slide-in-effect nil
-          org-tree-slide-activate-message "Presentation started."
-          org-tree-slide-deactivate-message "Presentation ended."
-          org-tree-slide-header t))
-
-#+end_src
-
-Trying out =org-present= for the presentations I give during System Crafters videos:
+=org-present= is the package I use for giving presentations in Emacs.  I like it because it's simple and allows me to customize the display of it pretty easily.
 
 #+begin_src emacs-lisp
 
@@ -2434,6 +2409,39 @@ Trying out =org-present= for the presentations I give during System Crafters vid
            ("C-c C-k" . dw/org-present-prev))
     :hook ((org-present-mode . dw/org-present-hook)
            (org-present-mode-quit . dw/org-present-quit-hook)))
+
+#+end_src
+
+*** org-tree-slide
+
+I previously used =org-tree-slide= for presentations before trying out =org-present=.  I'm keeping my old configuration around here just in case I need to use it again!
+
+#+begin_src emacs-lisp
+
+  (defun dw/org-start-presentation ()
+    (interactive)
+    (org-tree-slide-mode 1)
+    (setq text-scale-mode-amount 3)
+    (text-scale-mode 1))
+
+  (defun dw/org-end-presentation ()
+    (interactive)
+    (text-scale-mode 0)
+    (org-tree-slide-mode 0))
+
+  (use-package org-tree-slide
+    :defer t
+    :after org
+    :commands org-tree-slide-mode
+    :config
+    (evil-define-key 'normal org-tree-slide-mode-map
+      (kbd "q") 'dw/org-end-presentation
+      (kbd "C-j") 'org-tree-slide-move-next-tree
+      (kbd "C-k") 'org-tree-slide-move-previous-tree)
+    (setq org-tree-slide-slide-in-effect nil
+          org-tree-slide-activate-message "Presentation started."
+          org-tree-slide-deactivate-message "Presentation ended."
+          org-tree-slide-header t))
 
 #+end_src
 
