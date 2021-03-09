@@ -51,6 +51,7 @@ fonts/truetype/.uuid
 .config/guix/systems/install.scm
 .config/guix/systems/phantom.scm
 .config/guix/systems/davinci.scm
+.config/guix/systems/acidburn.scm
 .config/guix/systems/zerocool.scm
 .emacs.d/per-system-settings.el
 .config/guix/systems/base-system.scm

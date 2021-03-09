@@ -13,6 +13,7 @@
   - [[#machines][Machines]]
     - [[#per-system-settings][Per-System Settings]]
     - [[#zerocool][zerocool]]
+    - [[#acidburn][acidburn]]
     - [[#davinci][davinci]]
     - [[#phantom][phantom]]
   - [[#usb-installation-image][USB Installation Image]]
@@ -403,11 +404,68 @@ I also define a function called =dw/system-settings-get= which can retrieve thes
 
 #+end_src
 
+*** acidburn
+
+=acidburn= is a 1st Generation ThinkPad X1 Nano that I use for most of my writing and hacking at home.
+
+*.config/guix/systems/acidburn.scm:*
+
+#+begin_src scheme :tangle .config/guix/systems/acidburn.scm
+
+  ;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
+
+  (define-module (acidburn)
+    #:use-module (base-system)
+    #:use-module (gnu))
+
+  (operating-system
+   (inherit base-operating-system)
+   (host-name "acidburn")
+
+   ;; Don't load modules that can conflict with drivers needed for
+   ;; sound on this system.  See also:
+   ;; https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_7)#Audio
+   (kernel-arguments '("modprobe.blacklist=snd_hda_intel,snd_soc_skl"))
+
+   (mapped-devices
+    (list (mapped-device
+           (source (uuid "15ece913-c423-49aa-ac42-3bad39fdd966"))
+           (target "system-root")
+           (type luks-device-mapping))))
+
+   (file-systems (cons*
+                  (file-system
+                   (device (file-system-label "system-root"))
+                   (mount-point "/")
+                   (type "ext4")
+                   (dependencies mapped-devices))
+                  (file-system
+                   (device "/dev/nvme0n1p1")
+                   (mount-point "/boot/efi")
+                   (type "vfat"))
+                  %base-file-systems)))
+
+#+end_src
+
 *System Settings*
 
 #+begin_src emacs-lisp :noweb-ref system-settings :noweb-sep ""
 
-(when (equal system-name "zerocool"))
+  (when (equal system-name "acidburn")
+    '((desktop/dpi . 180)
+      (emacs/default-face-size . 190)
+      (emacs/variable-face-size . 200)
+      (emacs/fixed-face-size . 190)
+      (polybar/height . 30)
+      (polybar/font-0-size . 16)
+      (polybar/font-1-size . 12)
+      (polybar/font-2-size . 18)
+      (polybar/font-3-size . 11)
+      (dunst/font-size . 20)
+      (dunst/max-icon-size . 88)
+      (vimb/default-zoom . 160)
+      (qutebrowser/default-zoom . 180)))
+
 
 #+end_src
 
