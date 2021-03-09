@@ -26,5 +26,10 @@ xset -b
 # Enable screen locking on suspend
 xss-lock -- slock &
 
+# Uncomment this to start xterm instead for debugging purposes!
+# Then you can manually run the window manager and log output
+# > exec dbus-launch emacs -mm --debug-init --use-exwm 2>&1 | tee ~/debug.log
+#xterm
+
 # Fire it up
 exec dbus-launch --exit-with-session emacs -mm --debug-init --use-exwm
