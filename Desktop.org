@@ -1145,6 +1145,10 @@ I use [[https://www.gnu.org/software/mcron/][GNU mcron]] for scheduling tasks to
   config.bind('<Ctrl-k>', 'completion-item-focus --history prev', mode='command')
 
   # More binding hints here: https://gitlab.com/Kaligule/qutebrowser-emacs-config/blob/master/config.py
+
+  # Load the autoconfig file (quteconfig.py)
+  config.load_autoconfig()
+
 #+end_src
 
 #+begin_src conf :tangle .config/qutebrowser/quickmarks
