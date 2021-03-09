@@ -309,6 +309,8 @@ Define the =base-operating-system= which will be inherited by all machine config
                      (list
                       (pam-limits-entry "@realtime" 'both 'rtprio 99)
                       (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
+                    (extra-special-file "/usr/bin/env"
+                      (file-append coreutils "/bin/env"))
                     (service thermald-service-type)
                     (service docker-service-type)
                     (service libvirt-service-type
