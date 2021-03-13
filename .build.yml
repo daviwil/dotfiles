@@ -9,10 +9,10 @@ tasks:
   - mirror: |
       git remote add github git@github.com:daviwil/dotfiles
       git push github master
-  # - build: |
-  #     cd dotfiles
-  #     emacs --batch -l ./publish.el --funcall dw/publish
-  #     cd .site
-  #     tar -cvz . > ../../site.tar.gz
-  # - upload: |
-  #     acurl -f https://pages.sr.ht/publish/$site -Fcontent=@site.tar.gz
+  - build: |
+      cd dotfiles
+      emacs --batch -l ./publish.el --funcall dw/publish
+      cd .site
+      tar -cvz . > ../../site.tar.gz
+  - upload: |
+      acurl -f https://pages.sr.ht/publish/$site -Fcontent=@site.tar.gz
