@@ -1,0 +1,18 @@
+packages:
+  - emacs-nox
+oauth: pages.sr.ht/PAGES:RW
+environment:
+  site: config.daviwil.com
+secrets:
+  - 5269a80d-deda-4fc5-bcfb-d05b10b3cef0
+tasks:
+  - mirror: |
+      git remote add github git@github.com:daviwil/dotfiles
+      git push github master
+  # - build: |
+  #     cd dotfiles
+  #     emacs --batch -l ./publish.el --funcall dw/publish
+  #     cd .site
+  #     tar -cvz . > ../../site.tar.gz
+  # - upload: |
+  #     acurl -f https://pages.sr.ht/publish/$site -Fcontent=@site.tar.gz
