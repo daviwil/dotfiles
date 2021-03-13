@@ -131,16 +131,16 @@
 
 (defun get-article-output-path (org-file pub-dir)
   (let ((article-dir (concat pub-dir
-                             (file-name-as-directory
+                             (downcase
+                              (file-name-as-directory
                                (file-name-sans-extension
-                                 (file-name-nondirectory org-file))))))
+                                (file-name-nondirectory org-file)))))))
 
-    (if (string-match "\\/index.org$" org-file)
+    (if (string-match "\\/README.org$" org-file)
         pub-dir
         (progn
           (unless (file-directory-p article-dir)
             (make-directory article-dir t))
-
           article-dir))))
 
 (defun dw/org-html-template (contents info)
