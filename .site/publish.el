@@ -73,6 +73,7 @@
 (setq org-publish-use-timestamps-flag t
       org-publish-timestamp-directory "./.org-cache/"
       org-export-with-section-numbers nil
+      org-export-use-babel nil
       org-export-with-smart-quotes t
       org-export-with-sub-superscripts nil
       org-export-with-tags 'not-in-toc
