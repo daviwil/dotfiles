@@ -104,8 +104,8 @@
                                      (a (@ (class "nav-link") (href "/")) "Home") " "
                                      (a (@ (class "nav-link") (href "/emacs")) "Emacs") " "
                                      (a (@ (class "nav-link") (href "/desktop")) "Desktop Environment") " "
-                                     (a (@ (class "nav-link") (href "/systems")) "System Configurations")
-                                     (a (@ (class "nav-link") (href "/workflow")) "Workflow")
+                                     (a (@ (class "nav-link") (href "/systems")) "System Configurations") " "
+                                     (a (@ (class "nav-link") (href "/workflow")) "Workflow") " "
                                      (a (@ (class "nav-link") (href "/mail")) "Mail")))))))))))
 
 (defun dw/site-footer (info)
@@ -120,7 +120,7 @@
                 (div (@ (class "col-sm col-md text-sm-left text-md-right text-lg-right text-xl-right"))
                      (p "Made with " ,(plist-get info :creator)))))))
    (sxml-to-xml
-    `(script (@ (src "/js/bootstrap.min.js"))))))
+    `(script (@ (src "/js/bootstrap.bundle.min.js"))))))
 
 (setq org-html-preamble  #'dw/site-header
       org-html-postamble #'dw/site-footer
