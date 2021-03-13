@@ -161,6 +161,8 @@
             (link (@ (rel "stylesheet")
                      (href "/fonts/iosevka-aile/iosevka-aile.css")))
             (link (@ (rel "stylesheet")
+                     (href "/fonts/jetbrains-mono/jetbrains-mono.css")))
+            (link (@ (rel "stylesheet")
                      (href "/css/site.css")))
             (title ,(concat (org-export-data (plist-get info :title) info) " - config.daviwil.com")))
            (body
