@@ -104,7 +104,9 @@
                                      (a (@ (class "nav-link") (href "/")) "Home") " "
                                      (a (@ (class "nav-link") (href "/emacs")) "Emacs") " "
                                      (a (@ (class "nav-link") (href "/desktop")) "Desktop Environment") " "
-                                     (a (@ (class "nav-link") (href "/systems")) "System Configurations")))))))))))
+                                     (a (@ (class "nav-link") (href "/systems")) "System Configurations")
+                                     (a (@ (class "nav-link") (href "/workflow")) "Workflow")
+                                     (a (@ (class "nav-link") (href "/mail")) "Mail")))))))))))
 
 (defun dw/site-footer (info)
   (concat
