@@ -1,12 +1,15 @@
 packages:
   - emacs-nox
 oauth: pages.sr.ht/PAGES:RW
+sources:
+  - https://git.sr.ht/~daviwil/dotfiles
 environment:
   site: config.daviwil.com
 secrets:
   - 5269a80d-deda-4fc5-bcfb-d05b10b3cef0
 tasks:
   - mirror: |
+      cd dotfiles
       git remote add github git@github.com:daviwil/dotfiles
       git push github master
   - build: |
