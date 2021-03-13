@@ -33,7 +33,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;; Usage:
-;; emacs --batch -l ./publish.el --funcall dw/publish
+;; emacs -Q --batch -l ./publish.el --funcall dw/publish
 
 ;; Initialize package sources
 (require 'package)
@@ -60,6 +60,9 @@
   :ensure t)
 
 (use-package ox-slimhtml
+  :ensure t)
+
+(use-package htmlize
   :ensure t)
 
 (use-package webfeeder
@@ -122,15 +125,6 @@
    (sxml-to-xml
     `(script (@ (src "/js/bootstrap.bundle.min.js"))))))
 
-(setq org-html-preamble  #'dw/site-header
-      org-html-postamble #'dw/site-footer
-      org-html-metadata-timestamp-format "%Y-%m-%d"
-      org-html-checkbox-type 'site-html
-      org-html-html5-fancy nil
-      org-html-htmlize-output-type nil
-      org-html-validation-link nil
-      org-html-doctype "html5")
-
 (defun get-article-output-path (org-file pub-dir)
   (let ((article-dir (concat pub-dir
                              (downcase
@@ -162,6 +156,8 @@
                      (href "/fonts/iosevka-aile/iosevka-aile.css")))
             (link (@ (rel "stylesheet")
                      (href "/fonts/jetbrains-mono/jetbrains-mono.css")))
+            (link (@ (rel "stylesheet")
+                     (href "/css/code.css")))
             (link (@ (rel "stylesheet")
                      (href "/css/site.css")))
             (title ,(concat (org-export-data (plist-get info :title) info) " - config.daviwil.com")))
@@ -234,6 +230,15 @@
                (cdr list)
                "\n")
     "\n#+END_EXPORT\n"))
+
+(setq org-html-preamble  #'dw/site-header
+      org-html-postamble #'dw/site-footer
+      org-html-metadata-timestamp-format "%Y-%m-%d"
+      org-html-checkbox-type 'site-html
+      org-html-html5-fancy nil
+      org-html-htmlize-output-type 'css
+      org-html-validation-link nil
+      org-html-doctype "html5")
 
 (setq org-publish-project-alist
       (list
