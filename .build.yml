@@ -4,6 +4,7 @@ packages:
 oauth: pages.sr.ht/PAGES:RW
 sources:
   - https://git.sr.ht/~daviwil/dotfiles
+  - https://git.sr.ht/~daviwil/daviwil.com
 environment:
   site: config.daviwil.com
 secrets:
@@ -15,9 +16,10 @@ tasks:
       ssh-keyscan github.com >> ~/.ssh/known_hosts
       git push github master
   - build: |
-      cd dotfiles
+      cd dotfiles/.site
+      cp -R ../../daviwil.com/public .
       emacs --batch -l ./publish.el --funcall dw/publish
-      cd .site
-      tar -cvz . > ../../site.tar.gz
+      cd public
+      tar -cvz . > ../../../site.tar.gz
   - upload: |
       acurl -f https://pages.sr.ht/publish/$site -Fcontent=@site.tar.gz

@@ -1,0 +1,8 @@
+; Don't commit downloaded Emacs packages
+.packages/
+
+; Ignore the org-publish cache
+.org-cache/
+
+; Ignore shared content with daviwil.com
+public/
