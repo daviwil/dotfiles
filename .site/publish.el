@@ -194,10 +194,21 @@
 
              ,(dw/site-footer info))))))
 
+;; Thanks Ashraz!
+(defun dw/org-html-link (link contents info)
+  "Removes file extension and changes the path into lowercase file:// links."
+  (when (string= 'file (org-element-property :type link))
+    (org-element-put-property link :path
+                              (downcase
+                               (file-name-sans-extension
+                                (org-element-property :path link)))))
+  (org-export-with-backend 'slimhtml link contents info))
+
 (org-export-define-derived-backend 'site-html
     'slimhtml
   :translate-alist
-  '((template . dw/org-html-template))
+  '((template . dw/org-html-template)
+    (link . dw/org-html-link))
   :options-alist
   '((:page-type "PAGE-TYPE" nil nil t)
     (:html-use-infojs nil nil nil)))
