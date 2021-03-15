@@ -70,7 +70,7 @@
 
 (require 'ox-publish)
 
-(setq dw/site-title   "config.daviwil.com")
+(setq dw/site-title   "/home/daviwil/.dotfiles")
 (setq dw/site-tagline "The path to GNUrvana")
 
 (setq org-publish-use-timestamps-flag t
@@ -104,12 +104,13 @@
                       (div (@ (class "row align-items-center justify-content-between"))
                            (div (@ (class "col-sm-12 col-md-12"))
                                 (nav (@ (class "nav"))
-                                     (a (@ (class "nav-link") (href "/")) "Home") " "
+                                     (a (@ (class "nav-link") (href "/")) "Main") " "
                                      (a (@ (class "nav-link") (href "/emacs")) "Emacs") " "
                                      (a (@ (class "nav-link") (href "/desktop")) "Desktop Environment") " "
-                                     (a (@ (class "nav-link") (href "/systems")) "System Configurations") " "
+                                     (a (@ (class "nav-link") (href "/systems")) "System Configs") " "
                                      (a (@ (class "nav-link") (href "/workflow")) "Workflow") " "
-                                     (a (@ (class "nav-link") (href "/mail")) "Mail")))))))))))
+                                     (a (@ (class "nav-link") (href "/mail")) "Mail") " "
+                                     (a (@ (class "nav-link") (href "https://daviwil.com")) "daviwil.com")))))))))))
 
 (defun dw/site-footer (info)
   (concat
