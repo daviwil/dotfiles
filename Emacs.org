@@ -1114,6 +1114,7 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 #+begin_src emacs-lisp
 
   (use-package parinfer
+    :disabled
     :hook ((clojure-mode . parinfer-mode)
            (emacs-lisp-mode . parinfer-mode)
            (common-lisp-mode . parinfer-mode)
@@ -2945,11 +2946,15 @@ Here are packages that are useful across different Lisp and Scheme implementatio
     :hook ((emacs-lisp-mode . lispy-mode)
            (scheme-mode . lispy-mode)))
 
+  ;; (use-package evil-lispy
+  ;;   :hook ((lispy-mode . evil-lispy-mode)))
+
   (use-package lispyville
-    :disabled
     :hook ((lispy-mode . lispyville-mode))
     :config
-    (lispyville-set-key-theme '(operators c-w additional)))
+    (lispyville-set-key-theme '(operators c-w additional
+                                additional-movement slurp/barf-cp
+                                prettify)))
 
 #+end_src
 
