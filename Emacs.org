@@ -1994,8 +1994,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
             (list (openwith-make-extension-regexp
                   '("pdf"))
                   "zathura"
-                  '(file))))
-    (openwith-mode 1))
+                  '(file)))))
 
 #+end_src
 
