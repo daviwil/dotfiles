@@ -3612,7 +3612,7 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
 #+begin_src emacs-lisp
 
   ;; Only fetch mail on zerocool
-  (setq dw/mail-enabled (string-equal system-name "zerocool"))
+  (setq dw/mail-enabled (member system-name '("zerocool" "acidburn")))
   (setq dw/mu4e-inbox-query nil)
   (when dw/mail-enabled
     (require 'dw-mail))
