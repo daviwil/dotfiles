@@ -2,9 +2,7 @@
 
 (list (channel
         (name 'channel-x)
-        (url "file:///home/daviwil/Projects/Code/channel-x")
-        (commit
-          "1a8624799b84fb768215290fec1345467c495718"))
+        (url "file:///home/daviwil/Projects/Code/channel-x"))
       (channel
         (name 'flat)
         (url "https://github.com/flatwhatson/guix-channel.git")
@@ -15,10 +13,13 @@
             "33f86a4b48205c0dc19d7c036c85393f0766f806"
             (openpgp-fingerprint
               "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))
+      ;; (channel
+      ;;   (name 'nonguix)
+      ;;   (branch "add-sof-firmware")
+      ;;   (url "file:///home/daviwil/Projects/Code/nonguix"))
       (channel
         (name 'nonguix)
-        (branch "add-sof-firmware")
-        (url "file:///home/daviwil/Projects/Code/nonguix"))
+        (url "https://gitlab.com/nonguix/nonguix"))
       (channel
         (name 'guix)
         (url "https://git.savannah.gnu.org/git/guix.git")
