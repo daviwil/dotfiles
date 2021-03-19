@@ -112,11 +112,13 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     - [[#magit-todos][magit-todos]]
     - [[#git-link][git-link]]
     - [[#git-gutter][Git Gutter]]
+    - [[#send-e-mail-for-git-patches][Send e-mail for Git patches]]
   - [[#projectile][Projectile]]
     - [[#initial-setup][Initial Setup]]
     - [[#project-configurations][Project Configurations]]
   - [[#languages][Languages]]
     - [[#language-server-support][Language Server Support]]
+      - [[#eglot][Eglot]]
     - [[#debug-adapter-support][Debug Adapter Support]]
     - [[#meta-lisp][Meta Lisp]]
     - [[#clojure][Clojure]]
@@ -2773,6 +2775,19 @@ files contained within the repo.  More information at the [[https://github.com/a
 
   "emacs-git-gutter"
   "emacs-git-gutter-fringe"
+
+#+end_src
+
+*** Send e-mail for Git patches
+
+OK, this isn't Emacs configuration, but it's relevant to development!
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "git"
+  "git:send-email"
 
 #+end_src
 
