@@ -4271,6 +4271,22 @@ Since I switched over to =eshell= I don't use =multi-term= as much anymore.  Som
 
 #+end_src
 
+** Gemini
+
+#+begin_src emacs-lisp
+
+  (use-package elpher)
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-elpher"
+
+#+end_src
+
 * System Utilities
 
 ** Guix
