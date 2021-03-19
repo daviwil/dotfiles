@@ -1943,20 +1943,20 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
       "X" 'dired-ranger-move
       "p" 'dired-ranger-paste))
 
-  (defun dw/dired-link (path)
-    (lexical-let ((target path))
-      (lambda () (interactive) (message "Path: %s" target) (dired target))))
+  ;; (defun dw/dired-link (path)
+  ;;   (lexical-let ((target path))
+  ;;     (lambda () (interactive) (message "Path: %s" target) (dired target))))
 
-  (dw/leader-key-def
-    "d"   '(:ignore t :which-key "dired")
-    "dd"  '(dired :which-key "Here")
-    "dh"  `(,(dw/dired-link "~") :which-key "Home")
-    "dn"  `(,(dw/dired-link "~/Notes") :which-key "Notes")
-    "do"  `(,(dw/dired-link "~/Downloads") :which-key "Downloads")
-    "dp"  `(,(dw/dired-link "~/Pictures") :which-key "Pictures")
-    "dv"  `(,(dw/dired-link "~/Videos") :which-key "Videos")
-    "d."  `(,(dw/dired-link "~/.dotfiles") :which-key "dotfiles")
-    "de"  `(,(dw/dired-link "~/.emacs.d") :which-key ".emacs.d"))
+  ;; (dw/leader-key-def
+  ;;   "d"   '(:ignore t :which-key "dired")
+  ;;   "dd"  '(dired :which-key "Here")
+  ;;   "dh"  `(,(dw/dired-link "~") :which-key "Home")
+  ;;   "dn"  `(,(dw/dired-link "~/Notes") :which-key "Notes")
+  ;;   "do"  `(,(dw/dired-link "~/Downloads") :which-key "Downloads")
+  ;;   "dp"  `(,(dw/dired-link "~/Pictures") :which-key "Pictures")
+  ;;   "dv"  `(,(dw/dired-link "~/Videos") :which-key "Videos")
+  ;;   "d."  `(,(dw/dired-link "~/.dotfiles") :which-key "dotfiles")
+  ;;   "de"  `(,(dw/dired-link "~/.emacs.d") :which-key ".emacs.d"))
 
 #+end_src
 
