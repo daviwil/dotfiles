@@ -4197,6 +4197,22 @@ Since I switched over to =eshell= I don't use =multi-term= as much anymore.  Som
   - Settings: https://github.com/jwiegley/dot-emacs/blob/0f7d2c04ac38857d8e0fb036faedbf84193c8bd4/settings.el#L445
   - Commands: https://github.com/jwiegley/dot-emacs/blob/f23993cfcb9ca90c289b4214b9bafbf46883bdb4/lisp/erc-macros.el
 
+*** Matrix
+
+#+begin_src emacs-lisp
+
+  (use-package matrix-client)
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-matrix-client"
+
+#+end_src
+
 ** Mastodon
 
 #+begin_src emacs-lisp
