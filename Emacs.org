@@ -1841,13 +1841,9 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 
 #+begin_src emacs-lisp
 
-  (use-package ivy-pass
-    :disabled
-    :commands ivy-pass
+  (use-package password-store
     :config
     (setq password-store-password-length 12))
-
-  (use-package password-store)
 
   (use-package auth-source-pass
     :config
@@ -1865,7 +1861,6 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  ;;"emacs-ivy-pass"
   "emacs-password-store"
   "emacs-auth-source-pass"
 
