@@ -2023,6 +2023,10 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
     (setq evil-auto-indent nil)
     (diminish org-indent-mode))
 
+  ;; Make sure Straight pulls Org from Guix
+  (when dw/is-guix-system
+    (straight-use-package '(org :type built-in)))
+
   (use-package org
     :defer t
     :hook (org-mode . dw/org-mode-setup)
@@ -2461,6 +2465,7 @@ I previously used =org-tree-slide= for presentations before trying out =org-pres
 #+begin_src emacs-lisp
 
   (use-package org-roam
+    :straight t
     :hook
     (after-init . org-roam-mode)
     :custom
@@ -2552,7 +2557,8 @@ I previously used =org-tree-slide= for presentations before trying out =org-pres
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  "emacs-org-roam"
+  ;; The packaged org-roam is missing some things!
+  ;; "emacs-org-roam"
   "emacs-deft"
 
 #+end_src
