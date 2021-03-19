@@ -1119,8 +1119,9 @@ I use [[https://www.gnu.org/software/mcron/][GNU mcron]] for scheduling tasks to
   c.fonts.statusbar = "18pt Cantarell"
 
   # Use dark mode where possible
-  # c.colors.webpage.darkmode.enabled = True
-  # c.colors.webpage.bg = "black"
+  c.colors.webpage.darkmode.enabled = True
+  c.colors.webpage.darkmode.policy.images = "never"
+  c.colors.webpage.bg = "black"
 
   # Automatically turn on insert mode when a loaded page focuses a text field
   c.input.insert_mode.auto_load = True
