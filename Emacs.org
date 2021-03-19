@@ -736,7 +736,7 @@ Different platforms need different default font sizes, and [[https://mozilla.git
             `(,updated-block))))
 
   (use-package unicode-fonts
-    :straight t
+    :disabled
     :if (not dw/is-termux)
     :custom
     (unicode-fonts-skip-font-groups '(low-quality-glyphs))
@@ -750,6 +750,14 @@ Different platforms need different default font sizes, and [[https://mozilla.git
         "Miscellaneous Symbols and Pictographs"
         "Transport and Map Symbols"))
     (unicode-fonts-setup))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  ;; "emacs-unicode-fonts"
 
 #+end_src
 
