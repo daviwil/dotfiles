@@ -80,7 +80,7 @@
       org-export-with-smart-quotes t
       org-export-with-sub-superscripts nil
       org-export-with-tags 'not-in-toc
-      org-export-with-toc nil)
+      org-export-with-toc t)
 
 ;; We're using Git, we don't need no steenking backups
 (setq make-backup-files nil)
@@ -168,7 +168,7 @@
                   (div (@ (class "row"))
                        (div (@ (class "col-sm-12 blog-main"))
                             (div (@ (class "blog-post"))
-                                 (h2 (@ (class "blog-post-title"))
+                                 (h1 (@ (class "blog-post-title"))
                                      ,(org-export-data (plist-get info :title) info))
                                  (p (@ (class "blog-post-meta"))
                                     ,(org-export-data (org-export-get-date info "%B %e, %Y") info))
@@ -203,13 +203,61 @@
                               (downcase
                                (file-name-sans-extension
                                 (org-element-property :path link)))))
-  (org-export-with-backend 'slimhtml link contents info))
+
+  (if (equal contents nil)
+      (format "<a href=\"%s\">%s</a>"
+              (org-element-property :raw-link link)
+              (org-element-property :raw-link link))
+    (org-export-with-backend 'slimhtml link contents info)))
+
+;; Make sure we have thread-last
+(require 'subr-x)
+
+(defun dw/make-heading-anchor-name (headline-text)
+  (thread-last headline-text
+    (downcase)
+    (replace-regexp-in-string " " "-")
+    (replace-regexp-in-string "[^[:alnum:]_-]" "")))
+
+(defun dw/org-html-headline (headline contents info)
+  (let* ((text (org-export-data (org-element-property :title headline) info))
+         (level (org-export-get-relative-level headline info))
+         (level (min 7 (when level (1+ level))))
+         (anchor-name (dw/make-heading-anchor-name text))
+         (attributes (org-element-property :ATTR_HTML headline))
+         (container (org-element-property :HTML_CONTAINER headline))
+         (container-class (and container (org-element-property :HTML_CONTAINER_CLASS headline))))
+    (when attributes
+      (setq attributes
+            (format " %s" (org-html--make-attribute-string
+                           (org-export-read-attribute 'attr_html `(nil
+                                                                   (attr_html ,(split-string attributes))))))))
+    (concat
+     (when (and container (not (string= "" container)))
+       (format "<%s%s>" container (if container-class (format " class=\"%s\"" container-class) "")))
+     (if (not (org-export-low-level-p headline info))
+         (format "<h%d%s><a id=\"%s\" class=\"anchor\" href=\"#%s\">¶</a>%s</h%d>%s"
+                 level
+                 (or attributes "")
+                 anchor-name
+                 anchor-name
+                 text
+                 level
+                 (or contents ""))
+       (concat
+        (when (org-export-first-sibling-p headline info) "<ul>")
+        (format "<li>%s%s</li>" text (or contents ""))
+        (when (org-export-last-sibling-p headline info) "</ul>")))
+     (when (and container (not (string= "" container)))
+       (format "</%s>" (cl-subseq container 0 (cl-search " " container)))))))
 
 (org-export-define-derived-backend 'site-html
     'slimhtml
   :translate-alist
   '((template . dw/org-html-template)
-    (link . dw/org-html-link))
+    (link . dw/org-html-link)
+    (code . ox-slimhtml-verbatim)
+    (headline . dw/org-html-headline))
   :options-alist
   '((:page-type "PAGE-TYPE" nil nil t)
     (:html-use-infojs nil nil nil)))
@@ -249,6 +297,7 @@
       org-html-checkbox-type 'site-html
       org-html-html5-fancy nil
       org-html-htmlize-output-type 'css
+      org-html-self-link-headlines t
       org-html-validation-link nil
       org-html-doctype "html5")
 
