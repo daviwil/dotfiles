@@ -140,6 +140,14 @@
             (make-directory article-dir t))
           article-dir))))
 
+;; Thanks Ashraz!
+(defun dw/strip-html (s)
+  "Remove all HTML tags from S."
+  (let ((result s))
+    (while (string-match "<[^<]*>" result)
+      (setq result (replace-match "" nil nil result)))
+    result))
+
 (defun dw/org-html-template (contents info)
   (concat
    "<!DOCTYPE html>"
@@ -161,7 +169,7 @@
                      (href "/css/code.css")))
             (link (@ (rel "stylesheet")
                      (href "/css/site.css")))
-            (title ,(concat (org-export-data (plist-get info :title) info) " - config.daviwil.com")))
+            (title ,(concat (dw/strip-html (org-export-data (plist-get info :title) info)) " - config.daviwil.com")))
            (body
              ,(dw/site-header info)
              (div (@ (class "container"))
