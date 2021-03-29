@@ -16,21 +16,21 @@
         "monitoring_type": 0,
         "muted": false,
         "name": "Desktop Audio",
-        "prev_ver": 419430408,
+        "prev_ver": 436273154,
         "private_settings": {},
         "push-to-mute": false,
         "push-to-mute-delay": 0,
         "push-to-talk": false,
         "push-to-talk-delay": 0,
         "settings": {
-            "device_id": "default"
+            "device_id": "alsa_output.usb-Focusrite_Scarlett_2i4_USB-00.analog-surround-40.monitor"
         },
         "sync": 0,
         "versioned_id": "pulse_output_capture",
-        "volume": 1.0
+        "volume": 0.76539677381515503
     },
-    "current_program_scene": "Screen",
-    "current_scene": "Screen",
+    "current_program_scene": "Webcam",
+    "current_scene": "Webcam",
     "current_transition": "Fade",
     "groups": [
         {
@@ -50,7 +50,7 @@
             "monitoring_type": 0,
             "muted": false,
             "name": "Background",
-            "prev_ver": 419430408,
+            "prev_ver": 436273154,
             "private_settings": {},
             "push-to-mute": false,
             "push-to-mute-delay": 0,
@@ -135,6 +135,9 @@
             "switch_if_not_matching": false,
             "switches": []
         },
+        "decklink_captions": {
+            "source": ""
+        },
         "output-timer": {
             "autoStartRecordTimer": false,
             "autoStartStreamTimer": false,
@@ -145,8 +148,7 @@
             "streamTimerHours": 0,
             "streamTimerMinutes": 0,
             "streamTimerSeconds": 30
-        },
-        "scripts-tool": []
+        }
     },
     "name": "Untitled",
     "preview_locked": false,
@@ -173,19 +175,186 @@
     "scaling_off_y": 0.0,
     "scene_order": [
         {
-            "name": "Screen"
+            "name": "Logo Screen"
         },
         {
             "name": "Webcam"
         },
         {
-            "name": "Starting Soon"
+            "name": "Screen"
+        },
+        {
+            "name": "Screen Big Cam"
+        },
+        {
+            "name": "Screen Other"
+        },
+        {
+            "name": "Sponsors"
+        },
+        {
+            "name": "Thanks For Watching"
         },
         {
             "name": "Be Right Back"
+        },
+        {
+            "name": "Twitter"
         }
     ],
     "sources": [
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {},
+            "id": "v4l2_input",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "PC Capture",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "device_id": "/dev/video5",
+                "framerate": 65596,
+                "input": 0,
+                "pixelformat": 861030210,
+                "resolution": 134218808
+            },
+            "sync": 0,
+            "versioned_id": "v4l2_input",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {
+                "OBSBasic.SelectScene": [],
+                "libobs.hide_scene_item.Logitech Webcam": [],
+                "libobs.hide_scene_item.Microphone": [],
+                "libobs.hide_scene_item.PC Capture": [],
+                "libobs.show_scene_item.Logitech Webcam": [],
+                "libobs.show_scene_item.Microphone": [],
+                "libobs.show_scene_item.PC Capture": []
+            },
+            "id": "scene",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Screen Other",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "custom_size": false,
+                "id_counter": 4,
+                "items": [
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 4,
+                        "locked": false,
+                        "name": "PC Capture",
+                        "pos": {
+                            "x": -128.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 2.0,
+                            "y": 2.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 2,
+                        "locked": false,
+                        "name": "Microphone",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 1245.0,
+                            "y": 752.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 2,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 75,
+                        "crop_top": 140,
+                        "group_item_backup": false,
+                        "id": 3,
+                        "locked": false,
+                        "name": "Logitech Webcam",
+                        "pos": {
+                            "x": 2667.0,
+                            "y": 1316.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    }
+                ]
+            },
+            "sync": 0,
+            "versioned_id": "scene",
+            "volume": 1.0
+        },
         {
             "balance": 0.5,
             "deinterlace_field_order": 0,
@@ -197,15 +366,163 @@
             "mixers": 0,
             "monitoring_type": 0,
             "muted": false,
-            "name": "Image",
-            "prev_ver": 419430408,
+            "name": "Sponsors Image",
+            "prev_ver": 436273154,
             "private_settings": {},
             "push-to-mute": false,
             "push-to-mute-delay": 0,
             "push-to-talk": false,
             "push-to-talk-delay": 0,
             "settings": {
-                "file": "/home/daviwil/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg"
+                "file": "/home/daviwil/Notes/Streams/Emacs/Sponsors-Screen.png"
+            },
+            "sync": 0,
+            "versioned_id": "image_source",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {
+                "OBSBasic.SelectScene": [],
+                "libobs.hide_scene_item.Logitech Webcam": [],
+                "libobs.hide_scene_item.Microphone": [],
+                "libobs.hide_scene_item.Sponsors Image": [],
+                "libobs.show_scene_item.Logitech Webcam": [],
+                "libobs.show_scene_item.Microphone": [],
+                "libobs.show_scene_item.Sponsors Image": []
+            },
+            "id": "scene",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Sponsors",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "custom_size": false,
+                "id_counter": 10,
+                "items": [
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 10,
+                        "locked": false,
+                        "name": "Sponsors Image",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.634042501449585,
+                            "y": 1.6338880062103271
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 8,
+                        "locked": false,
+                        "name": "Microphone",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 1245.0,
+                            "y": 752.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 2,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 75,
+                        "crop_top": 140,
+                        "group_item_backup": false,
+                        "id": 9,
+                        "locked": false,
+                        "name": "Logitech Webcam",
+                        "pos": {
+                            "x": 2667.0,
+                            "y": 1314.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    }
+                ]
+            },
+            "sync": 0,
+            "versioned_id": "scene",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {},
+            "id": "image_source",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Logo",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "file": "/home/daviwil/Notes/Streams/System Crafters2-01.png"
             },
             "sync": 0,
             "versioned_id": "image_source",
@@ -222,8 +539,8 @@
             "mixers": 0,
             "monitoring_type": 0,
             "muted": false,
-            "name": "Be Right Back Text",
-            "prev_ver": 419430408,
+            "name": "Follow",
+            "prev_ver": 436273154,
             "private_settings": {},
             "push-to-mute": false,
             "push-to-mute-delay": 0,
@@ -234,15 +551,941 @@
                 "font": {
                     "face": "Fira Code Retina",
                     "flags": 0,
-                    "size": 256,
+                    "size": 230,
                     "style": "Regular"
                 },
                 "log_mode": false,
                 "outline": true,
-                "text": "Be Right Back..."
+                "text": "Follow on Twitter @SystemCrafters"
             },
             "sync": 0,
             "versioned_id": "text_ft2_source_v2",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {},
+            "id": "text_ft2_source",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Thanks For Watching Text 2",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "color1": 4284940107,
+                "font": {
+                    "face": "Fira Code Retina",
+                    "flags": 0,
+                    "size": 230,
+                    "style": "Regular"
+                },
+                "log_mode": false,
+                "outline": true,
+                "text": "Twitter: @SystemCrafters"
+            },
+            "sync": 0,
+            "versioned_id": "text_ft2_source_v2",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {
+                "OBSBasic.SelectScene": [],
+                "libobs.hide_scene_item.Thanks For Watching Text 2": [],
+                "libobs.show_scene_item.Thanks For Watching Text 2": []
+            },
+            "id": "scene",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Twitter",
+            "prev_ver": 436273154,
+            "private_settings": {
+                "transition": "Fade"
+            },
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "custom_size": false,
+                "id_counter": 1,
+                "items": [
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 1,
+                        "locked": false,
+                        "name": "Thanks For Watching Text 2",
+                        "pos": {
+                            "x": 300.0,
+                            "y": 1780.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 0.95108693838119507,
+                            "y": 0.95017790794372559
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    }
+                ]
+            },
+            "sync": 0,
+            "versioned_id": "scene",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {},
+            "id": "text_ft2_source",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Thanks For Watching Text",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "color1": 4284940107,
+                "font": {
+                    "face": "Fira Code Retina",
+                    "flags": 0,
+                    "size": 230,
+                    "style": "Regular"
+                },
+                "log_mode": false,
+                "outline": true,
+                "text": "Thanks for Watching!"
+            },
+            "sync": 0,
+            "versioned_id": "text_ft2_source_v2",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {
+                "OBSBasic.SelectScene": [
+                    {
+                        "command": true,
+                        "key": "OBS_KEY_SLASH"
+                    }
+                ],
+                "libobs.hide_scene_item.Background": [],
+                "libobs.hide_scene_item.Follow": [],
+                "libobs.hide_scene_item.Thanks For Watching Text": [],
+                "libobs.show_scene_item.Background": [],
+                "libobs.show_scene_item.Follow": [],
+                "libobs.show_scene_item.Thanks For Watching Text": []
+            },
+            "id": "scene",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Thanks For Watching",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "custom_size": false,
+                "id_counter": 4,
+                "items": [
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 3840.0,
+                            "y": 2160.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 1,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": true,
+                        "id": 4,
+                        "locked": false,
+                        "name": "Image",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 3840.0,
+                            "y": 2160.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 1,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": true,
+                        "id": 2,
+                        "locked": false,
+                        "name": "Starting BG",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 1,
+                        "locked": false,
+                        "name": "Background",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 3,
+                        "locked": false,
+                        "name": "Thanks For Watching Text",
+                        "pos": {
+                            "x": 39.0,
+                            "y": 1288.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.3298171758651733,
+                            "y": 1.3303835391998291
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 4,
+                        "locked": false,
+                        "name": "Follow",
+                        "pos": {
+                            "x": 136.0,
+                            "y": 1761.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 0.77843654155731201,
+                            "y": 0.77935945987701416
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    }
+                ]
+            },
+            "sync": 0,
+            "versioned_id": "scene",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {
+                "OBSBasic.SelectScene": [
+                    {
+                        "command": true,
+                        "key": "OBS_KEY_PERIOD"
+                    }
+                ],
+                "libobs.hide_scene_item.Background": [],
+                "libobs.hide_scene_item.Logitech Webcam": [],
+                "libobs.hide_scene_item.Microphone": [],
+                "libobs.hide_scene_item.Twitter": [
+                    {
+                        "alt": true,
+                        "command": true,
+                        "key": "OBS_KEY_T"
+                    }
+                ],
+                "libobs.show_scene_item.Background": [],
+                "libobs.show_scene_item.Logitech Webcam": [],
+                "libobs.show_scene_item.Microphone": [],
+                "libobs.show_scene_item.Twitter": [
+                    {
+                        "alt": true,
+                        "command": true,
+                        "key": "OBS_KEY_T"
+                    }
+                ]
+            },
+            "id": "scene",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Webcam",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "custom_size": false,
+                "id_counter": 6,
+                "items": [
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 3840.0,
+                            "y": 2160.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 1,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": true,
+                        "id": 4,
+                        "locked": false,
+                        "name": "Image",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 3840.0,
+                            "y": 2160.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 1,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": true,
+                        "id": 2,
+                        "locked": false,
+                        "name": "Starting BG",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 5,
+                        "locked": false,
+                        "name": "Background",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 3986.0,
+                            "y": 2232.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 2,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 75,
+                        "crop_top": 140,
+                        "group_item_backup": false,
+                        "id": 1,
+                        "locked": false,
+                        "name": "Logitech Webcam",
+                        "pos": {
+                            "x": -202.0,
+                            "y": 27.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 4,
+                        "locked": false,
+                        "name": "Microphone",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 6,
+                        "locked": false,
+                        "name": "Twitter",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": false
+                    }
+                ]
+            },
+            "sync": 0,
+            "versioned_id": "scene",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "filters": [
+                {
+                    "balance": 0.5,
+                    "deinterlace_field_order": 0,
+                    "deinterlace_mode": 0,
+                    "enabled": true,
+                    "flags": 0,
+                    "hotkeys": {},
+                    "id": "chroma_key_filter",
+                    "mixers": 0,
+                    "monitoring_type": 0,
+                    "muted": false,
+                    "name": "Chroma Key",
+                    "prev_ver": 436273154,
+                    "private_settings": {},
+                    "push-to-mute": false,
+                    "push-to-mute-delay": 0,
+                    "push-to-talk": false,
+                    "push-to-talk-delay": 0,
+                    "settings": {
+                        "similarity": 432,
+                        "smoothness": 25
+                    },
+                    "sync": 0,
+                    "versioned_id": "chroma_key_filter",
+                    "volume": 1.0
+                },
+                {
+                    "balance": 0.5,
+                    "deinterlace_field_order": 0,
+                    "deinterlace_mode": 0,
+                    "enabled": false,
+                    "flags": 0,
+                    "hotkeys": {},
+                    "id": "color_filter",
+                    "mixers": 0,
+                    "monitoring_type": 0,
+                    "muted": false,
+                    "name": "Color Correction 2",
+                    "prev_ver": 436273154,
+                    "private_settings": {},
+                    "push-to-mute": false,
+                    "push-to-mute-delay": 0,
+                    "push-to-talk": false,
+                    "push-to-talk-delay": 0,
+                    "settings": {
+                        "contrast": 0.0,
+                        "gamma": 0.0,
+                        "hue_shift": 0.0,
+                        "opacity": 100,
+                        "saturation": 0.34000000000000002
+                    },
+                    "sync": 0,
+                    "versioned_id": "color_filter",
+                    "volume": 1.0
+                }
+            ],
+            "flags": 0,
+            "hotkeys": {},
+            "id": "v4l2_input",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Logitech Webcam",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "Exposure, Auto": 1,
+                "Power Line Frequency": 0,
+                "White Balance Temperature, Auto": true,
+                "Zoom, Absolute": 113,
+                "buffering": false,
+                "device_id": "/dev/video2",
+                "framerate": 65596,
+                "input": 0,
+                "pixelformat": 1448695129,
+                "resolution": 125830200
+            },
+            "sync": 0,
+            "versioned_id": "v4l2_input",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {},
+            "id": "xshm_input",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Screen Capture (XSHM)",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {},
+            "sync": 0,
+            "versioned_id": "xshm_input",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {
+                "OBSBasic.SelectScene": [
+                    {
+                        "command": true,
+                        "key": "OBS_KEY_COMMA"
+                    }
+                ],
+                "libobs.hide_scene_item.Logitech Webcam": [],
+                "libobs.hide_scene_item.Microphone": [],
+                "libobs.hide_scene_item.Screen Capture (XSHM)": [],
+                "libobs.show_scene_item.Logitech Webcam": [],
+                "libobs.show_scene_item.Microphone": [],
+                "libobs.show_scene_item.Screen Capture (XSHM)": []
+            },
+            "id": "scene",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Screen",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "custom_size": false,
+                "id_counter": 11,
+                "items": [
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 3840.0,
+                            "y": 2160.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 2,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 2,
+                        "locked": false,
+                        "name": "Screen Capture (XSHM)",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "group_item_backup": false,
+                        "id": 6,
+                        "locked": false,
+                        "name": "Microphone",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    },
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 1245.0,
+                            "y": 752.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 2,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 75,
+                        "crop_top": 140,
+                        "group_item_backup": false,
+                        "id": 11,
+                        "locked": false,
+                        "name": "Logitech Webcam",
+                        "pos": {
+                            "x": 2667.0,
+                            "y": 1316.0
+                        },
+                        "private_settings": {},
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    }
+                ]
+            },
+            "sync": 0,
+            "versioned_id": "scene",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "filters": [
+                {
+                    "balance": 0.5,
+                    "deinterlace_field_order": 0,
+                    "deinterlace_mode": 0,
+                    "enabled": true,
+                    "flags": 0,
+                    "hotkeys": {},
+                    "id": "noise_gate_filter",
+                    "mixers": 255,
+                    "monitoring_type": 0,
+                    "muted": false,
+                    "name": "Noise Gate",
+                    "prev_ver": 436273154,
+                    "private_settings": {},
+                    "push-to-mute": false,
+                    "push-to-mute-delay": 0,
+                    "push-to-talk": false,
+                    "push-to-talk-delay": 0,
+                    "settings": {
+                        "close_threshold": -64.0,
+                        "hold_time": 50,
+                        "open_threshold": -42.0,
+                        "release_time": 75
+                    },
+                    "sync": 0,
+                    "versioned_id": "noise_gate_filter",
+                    "volume": 1.0
+                },
+                {
+                    "balance": 0.5,
+                    "deinterlace_field_order": 0,
+                    "deinterlace_mode": 0,
+                    "enabled": true,
+                    "flags": 0,
+                    "hotkeys": {},
+                    "id": "compressor_filter",
+                    "mixers": 255,
+                    "monitoring_type": 0,
+                    "muted": false,
+                    "name": "Compressor",
+                    "prev_ver": 436273154,
+                    "private_settings": {},
+                    "push-to-mute": false,
+                    "push-to-mute-delay": 0,
+                    "push-to-talk": false,
+                    "push-to-talk-delay": 0,
+                    "settings": {
+                        "output_gain": 4.4000000000000004,
+                        "ratio": 16.5
+                    },
+                    "sync": 0,
+                    "versioned_id": "compressor_filter",
+                    "volume": 1.0
+                }
+            ],
+            "flags": 2,
+            "hotkeys": {
+                "libobs.mute": [],
+                "libobs.push-to-mute": [],
+                "libobs.push-to-talk": [],
+                "libobs.unmute": []
+            },
+            "id": "pulse_input_capture",
+            "mixers": 255,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Microphone",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "device_id": "alsa_input.usb-Focusrite_Scarlett_2i4_USB-00.analog-stereo"
+            },
+            "sync": 0,
+            "versioned_id": "pulse_input_capture",
+            "volume": 1.0
+        },
+        {
+            "balance": 0.5,
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "filters": [
+                {
+                    "balance": 0.5,
+                    "deinterlace_field_order": 0,
+                    "deinterlace_mode": 0,
+                    "enabled": true,
+                    "flags": 0,
+                    "hotkeys": {},
+                    "id": "color_filter",
+                    "mixers": 0,
+                    "monitoring_type": 0,
+                    "muted": false,
+                    "name": "Opacity",
+                    "prev_ver": 436273154,
+                    "private_settings": {},
+                    "push-to-mute": false,
+                    "push-to-mute-delay": 0,
+                    "push-to-talk": false,
+                    "push-to-talk-delay": 0,
+                    "settings": {
+                        "opacity": 85
+                    },
+                    "sync": 0,
+                    "versioned_id": "color_filter",
+                    "volume": 1.0
+                }
+            ],
+            "flags": 0,
+            "hotkeys": {},
+            "id": "color_source",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "Starting BG",
+            "prev_ver": 436273154,
+            "private_settings": {},
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
+                "color": 4282264873
+            },
+            "sync": 0,
+            "versioned_id": "color_source_v2",
             "volume": 1.0
         },
         {
@@ -263,7 +1506,7 @@
             "monitoring_type": 0,
             "muted": false,
             "name": "Be Right Back",
-            "prev_ver": 419430408,
+            "prev_ver": 436273154,
             "private_settings": {},
             "push-to-mute": false,
             "push-to-mute-delay": 0,
@@ -377,8 +1620,8 @@
                         "locked": false,
                         "name": "Be Right Back Text",
                         "pos": {
-                            "x": 231.0,
-                            "y": 864.0
+                            "x": 792.0,
+                            "y": 880.0
                         },
                         "private_settings": {},
                         "rot": 0.0,
@@ -400,66 +1643,14 @@
             "deinterlace_field_order": 0,
             "deinterlace_mode": 0,
             "enabled": true,
-            "filters": [
-                {
-                    "balance": 0.5,
-                    "deinterlace_field_order": 0,
-                    "deinterlace_mode": 0,
-                    "enabled": true,
-                    "flags": 0,
-                    "hotkeys": {},
-                    "id": "color_filter",
-                    "mixers": 0,
-                    "monitoring_type": 0,
-                    "muted": false,
-                    "name": "Opacity",
-                    "prev_ver": 419430408,
-                    "private_settings": {},
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "settings": {
-                        "opacity": 77
-                    },
-                    "sync": 0,
-                    "versioned_id": "color_filter",
-                    "volume": 1.0
-                }
-            ],
-            "flags": 0,
-            "hotkeys": {},
-            "id": "color_source",
-            "mixers": 0,
-            "monitoring_type": 0,
-            "muted": false,
-            "name": "Starting BG",
-            "prev_ver": 419430408,
-            "private_settings": {},
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "settings": {
-                "color": 4282850585
-            },
-            "sync": 0,
-            "versioned_id": "color_source_v2",
-            "volume": 1.0
-        },
-        {
-            "balance": 0.5,
-            "deinterlace_field_order": 0,
-            "deinterlace_mode": 0,
-            "enabled": true,
             "flags": 0,
             "hotkeys": {},
             "id": "text_ft2_source",
             "mixers": 0,
             "monitoring_type": 0,
             "muted": false,
-            "name": "Starting Text",
-            "prev_ver": 419430408,
+            "name": "Be Right Back Text",
+            "prev_ver": 436273154,
             "private_settings": {},
             "push-to-mute": false,
             "push-to-mute-delay": 0,
@@ -468,14 +1659,14 @@
             "settings": {
                 "color1": 4284940107,
                 "font": {
-                    "face": "Fira Code Retina",
+                    "face": "Sans Serif",
                     "flags": 0,
-                    "size": 256,
-                    "style": "Regular"
+                    "size": 230,
+                    "style": ""
                 },
                 "log_mode": false,
                 "outline": true,
-                "text": "Starting Soon"
+                "text": "Be Right Back"
             },
             "sync": 0,
             "versioned_id": "text_ft2_source_v2",
@@ -486,59 +1677,24 @@
             "deinterlace_field_order": 0,
             "deinterlace_mode": 0,
             "enabled": true,
-            "filters": [
-                {
-                    "balance": 0.5,
-                    "deinterlace_field_order": 0,
-                    "deinterlace_mode": 0,
-                    "enabled": true,
-                    "flags": 0,
-                    "hotkeys": {},
-                    "id": "noise_gate_filter",
-                    "mixers": 255,
-                    "monitoring_type": 0,
-                    "muted": false,
-                    "name": "Noise Gate",
-                    "prev_ver": 419430408,
-                    "private_settings": {},
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "settings": {
-                        "close_threshold": -64.0,
-                        "hold_time": 50,
-                        "open_threshold": -42.0,
-                        "release_time": 75
-                    },
-                    "sync": 0,
-                    "versioned_id": "noise_gate_filter",
-                    "volume": 1.0
-                }
-            ],
-            "flags": 2,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": [],
-                "libobs.unmute": []
-            },
-            "id": "pulse_input_capture",
-            "mixers": 255,
+            "flags": 0,
+            "hotkeys": {},
+            "id": "image_source",
+            "mixers": 0,
             "monitoring_type": 0,
             "muted": false,
-            "name": "Microphone",
-            "prev_ver": 419430408,
+            "name": "Image",
+            "prev_ver": 436273154,
             "private_settings": {},
             "push-to-mute": false,
             "push-to-mute-delay": 0,
             "push-to-talk": false,
             "push-to-talk-delay": 0,
             "settings": {
-                "device_id": "alsa_input.usb-Focusrite_Scarlett_2i4_USB-00.analog-stereo"
+                "file": "/home/daviwil/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg"
             },
             "sync": 0,
-            "versioned_id": "pulse_input_capture",
+            "versioned_id": "image_source",
             "volume": 1.0
         },
         {
@@ -550,16 +1706,16 @@
             "hotkeys": {
                 "OBSBasic.SelectScene": [],
                 "libobs.hide_scene_item.Background": [],
-                "libobs.hide_scene_item.Starting Text": [],
+                "libobs.hide_scene_item.Logo": [],
                 "libobs.show_scene_item.Background": [],
-                "libobs.show_scene_item.Starting Text": []
+                "libobs.show_scene_item.Logo": []
             },
             "id": "scene",
             "mixers": 0,
             "monitoring_type": 0,
             "muted": false,
-            "name": "Starting Soon",
-            "prev_ver": 419430408,
+            "name": "Logo Screen",
+            "prev_ver": 436273154,
             "private_settings": {},
             "push-to-mute": false,
             "push-to-mute-delay": 0,
@@ -567,7 +1723,7 @@
             "push-to-talk-delay": 0,
             "settings": {
                 "custom_size": false,
-                "id_counter": 5,
+                "id_counter": 3,
                 "items": [
                     {
                         "align": 5,
@@ -640,7 +1796,7 @@
                         "crop_right": 0,
                         "crop_top": 0,
                         "group_item_backup": false,
-                        "id": 5,
+                        "id": 1,
                         "locked": false,
                         "name": "Background",
                         "pos": {
@@ -669,18 +1825,18 @@
                         "crop_right": 0,
                         "crop_top": 0,
                         "group_item_backup": false,
-                        "id": 1,
+                        "id": 3,
                         "locked": false,
-                        "name": "Starting Text",
+                        "name": "Logo",
                         "pos": {
-                            "x": 437.0,
-                            "y": 846.0
+                            "x": 473.0,
+                            "y": 626.0
                         },
                         "private_settings": {},
                         "rot": 0.0,
                         "scale": {
-                            "x": 1.5174825191497803,
-                            "y": 1.5175719261169434
+                            "x": 1.0,
+                            "y": 1.0
                         },
                         "scale_filter": "disable",
                         "visible": true
@@ -698,12 +1854,7 @@
             "enabled": true,
             "flags": 0,
             "hotkeys": {
-                "OBSBasic.SelectScene": [
-                    {
-                        "command": true,
-                        "key": "OBS_KEY_COMMA"
-                    }
-                ],
+                "OBSBasic.SelectScene": [],
                 "libobs.hide_scene_item.Logitech Webcam": [],
                 "libobs.hide_scene_item.Microphone": [],
                 "libobs.hide_scene_item.Screen Capture (XSHM)": [],
@@ -715,8 +1866,8 @@
             "mixers": 0,
             "monitoring_type": 0,
             "muted": false,
-            "name": "Screen",
-            "prev_ver": 419430408,
+            "name": "Screen Big Cam",
+            "prev_ver": 436273154,
             "private_settings": {},
             "push-to-mute": false,
             "push-to-mute-delay": 0,
@@ -724,7 +1875,7 @@
             "push-to-talk-delay": 0,
             "settings": {
                 "custom_size": false,
-                "id_counter": 6,
+                "id_counter": 5,
                 "items": [
                     {
                         "align": 5,
@@ -739,7 +1890,7 @@
                         "crop_right": 0,
                         "crop_top": 0,
                         "group_item_backup": false,
-                        "id": 2,
+                        "id": 1,
                         "locked": false,
                         "name": "Screen Capture (XSHM)",
                         "pos": {
@@ -764,40 +1915,11 @@
                         "bounds_align": 0,
                         "bounds_type": 0,
                         "crop_bottom": 0,
-                        "crop_left": 100,
-                        "crop_right": 100,
-                        "crop_top": 120,
-                        "group_item_backup": false,
-                        "id": 3,
-                        "locked": false,
-                        "name": "Logitech Webcam",
-                        "pos": {
-                            "x": 2959.0,
-                            "y": 1285.0
-                        },
-                        "private_settings": {},
-                        "rot": 0.0,
-                        "scale": {
-                            "x": 1.2763158082962036,
-                            "y": 1.2766666412353516
-                        },
-                        "scale_filter": "disable",
-                        "visible": true
-                    },
-                    {
-                        "align": 5,
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_align": 0,
-                        "bounds_type": 0,
-                        "crop_bottom": 0,
                         "crop_left": 0,
                         "crop_right": 0,
                         "crop_top": 0,
                         "group_item_backup": false,
-                        "id": 6,
+                        "id": 3,
                         "locked": false,
                         "name": "Microphone",
                         "pos": {
@@ -812,251 +1934,12 @@
                         },
                         "scale_filter": "disable",
                         "visible": true
-                    }
-                ]
-            },
-            "sync": 0,
-            "versioned_id": "scene",
-            "volume": 1.0
-        },
-        {
-            "balance": 0.5,
-            "deinterlace_field_order": 0,
-            "deinterlace_mode": 0,
-            "enabled": true,
-            "flags": 0,
-            "hotkeys": {},
-            "id": "xshm_input",
-            "mixers": 0,
-            "monitoring_type": 0,
-            "muted": false,
-            "name": "Screen Capture (XSHM)",
-            "prev_ver": 419430408,
-            "private_settings": {},
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "settings": {},
-            "sync": 0,
-            "versioned_id": "xshm_input",
-            "volume": 1.0
-        },
-        {
-            "balance": 0.5,
-            "deinterlace_field_order": 0,
-            "deinterlace_mode": 0,
-            "enabled": true,
-            "filters": [
-                {
-                    "balance": 0.5,
-                    "deinterlace_field_order": 0,
-                    "deinterlace_mode": 0,
-                    "enabled": true,
-                    "flags": 0,
-                    "hotkeys": {},
-                    "id": "chroma_key_filter",
-                    "mixers": 0,
-                    "monitoring_type": 0,
-                    "muted": false,
-                    "name": "Chroma Key",
-                    "prev_ver": 419430408,
-                    "private_settings": {},
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "settings": {
-                        "similarity": 435,
-                        "smoothness": 67
-                    },
-                    "sync": 0,
-                    "versioned_id": "chroma_key_filter",
-                    "volume": 1.0
-                },
-                {
-                    "balance": 0.5,
-                    "deinterlace_field_order": 0,
-                    "deinterlace_mode": 0,
-                    "enabled": true,
-                    "flags": 0,
-                    "hotkeys": {},
-                    "id": "color_filter",
-                    "mixers": 0,
-                    "monitoring_type": 0,
-                    "muted": false,
-                    "name": "Color Correction",
-                    "prev_ver": 419430408,
-                    "private_settings": {},
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "settings": {
-                        "hue_shift": -23.399999999999999,
-                        "saturation": 0.29999999999999999
-                    },
-                    "sync": 0,
-                    "versioned_id": "color_filter",
-                    "volume": 1.0
-                }
-            ],
-            "flags": 0,
-            "hotkeys": {},
-            "id": "v4l2_input",
-            "mixers": 0,
-            "monitoring_type": 0,
-            "muted": false,
-            "name": "Logitech Webcam",
-            "prev_ver": 419430408,
-            "private_settings": {},
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "settings": {
-                "Exposure, Auto": 5557561106012987725,
-                "Power Line Frequency": 7234307546238118212,
-                "White Balance Temperature, Auto": true,
-                "Zoom, Absolute": 113,
-                "buffering": true,
-                "device_id": "/dev/video0",
-                "framerate": -1,
-                "input": 0,
-                "pixelformat": 1448695129,
-                "resolution": 62915280
-            },
-            "sync": 0,
-            "versioned_id": "v4l2_input",
-            "volume": 1.0
-        },
-        {
-            "balance": 0.5,
-            "deinterlace_field_order": 0,
-            "deinterlace_mode": 0,
-            "enabled": true,
-            "flags": 0,
-            "hotkeys": {
-                "OBSBasic.SelectScene": [
-                    {
-                        "command": true,
-                        "key": "OBS_KEY_PERIOD"
-                    }
-                ],
-                "libobs.hide_scene_item.Background": [],
-                "libobs.hide_scene_item.Logitech Webcam": [],
-                "libobs.hide_scene_item.Microphone": [],
-                "libobs.show_scene_item.Background": [],
-                "libobs.show_scene_item.Logitech Webcam": [],
-                "libobs.show_scene_item.Microphone": []
-            },
-            "id": "scene",
-            "mixers": 0,
-            "monitoring_type": 0,
-            "muted": false,
-            "name": "Webcam",
-            "prev_ver": 419430408,
-            "private_settings": {},
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "settings": {
-                "custom_size": false,
-                "id_counter": 5,
-                "items": [
-                    {
-                        "align": 5,
-                        "bounds": {
-                            "x": 3840.0,
-                            "y": 2160.0
-                        },
-                        "bounds_align": 0,
-                        "bounds_type": 1,
-                        "crop_bottom": 0,
-                        "crop_left": 0,
-                        "crop_right": 0,
-                        "crop_top": 0,
-                        "group_item_backup": true,
-                        "id": 4,
-                        "locked": false,
-                        "name": "Image",
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "private_settings": {},
-                        "rot": 0.0,
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_filter": "disable",
-                        "visible": true
                     },
                     {
                         "align": 5,
                         "bounds": {
-                            "x": 3840.0,
-                            "y": 2160.0
-                        },
-                        "bounds_align": 0,
-                        "bounds_type": 1,
-                        "crop_bottom": 0,
-                        "crop_left": 0,
-                        "crop_right": 0,
-                        "crop_top": 0,
-                        "group_item_backup": true,
-                        "id": 2,
-                        "locked": false,
-                        "name": "Starting BG",
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "private_settings": {},
-                        "rot": 0.0,
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_filter": "disable",
-                        "visible": true
-                    },
-                    {
-                        "align": 5,
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_align": 0,
-                        "bounds_type": 0,
-                        "crop_bottom": 0,
-                        "crop_left": 0,
-                        "crop_right": 0,
-                        "crop_top": 0,
-                        "group_item_backup": false,
-                        "id": 5,
-                        "locked": false,
-                        "name": "Background",
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "private_settings": {},
-                        "rot": 0.0,
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_filter": "disable",
-                        "visible": true
-                    },
-                    {
-                        "align": 5,
-                        "bounds": {
-                            "x": 3732.0,
-                            "y": 2046.0
+                            "x": 3986.0,
+                            "y": 2232.0
                         },
                         "bounds_align": 0,
                         "bounds_type": 2,
@@ -1065,41 +1948,12 @@
                         "crop_right": 75,
                         "crop_top": 140,
                         "group_item_backup": false,
-                        "id": 1,
+                        "id": 5,
                         "locked": false,
                         "name": "Logitech Webcam",
                         "pos": {
-                            "x": 50.0,
-                            "y": 114.0
-                        },
-                        "private_settings": {},
-                        "rot": 0.0,
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_filter": "disable",
-                        "visible": true
-                    },
-                    {
-                        "align": 5,
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_align": 0,
-                        "bounds_type": 0,
-                        "crop_bottom": 0,
-                        "crop_left": 0,
-                        "crop_right": 0,
-                        "crop_top": 0,
-                        "group_item_backup": false,
-                        "id": 4,
-                        "locked": false,
-                        "name": "Microphone",
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
+                            "x": -202.0,
+                            "y": 27.0
                         },
                         "private_settings": {},
                         "rot": 0.0,
