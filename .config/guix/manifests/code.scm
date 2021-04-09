@@ -24,6 +24,7 @@
    "guile@2.2"
    "guile2.2-cairo"
    "guile-gnome"
+   "guile-sdl2"
 
    ;; SDL
    "glu"
