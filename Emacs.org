@@ -677,6 +677,11 @@ These days I bounce around between themes included with [[https://github.com/hli
 
 A nice gallery of Emacs themes can be found at https://emacsthemes.com/.
 
+Alternate themes:
+
+- =doom-snazzy=
+- =doom-vibrant=
+
 #+begin_src emacs-lisp
 
   (use-package spacegray-theme :defer t)
