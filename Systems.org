@@ -449,11 +449,14 @@ I also define a function called =dw/system-settings-get= which can retrieve thes
 
   (define-module (acidburn)
     #:use-module (base-system)
-    #:use-module (gnu))
+    #:use-module (gnu)
+    #:use-module (nongnu packages linux))
 
   (operating-system
    (inherit base-operating-system)
    (host-name "acidburn")
+
+   (firmware (list linux-firmware sof-firmware))
 
    ;; Don't load modules that can conflict with drivers needed for
    ;; sound on this system.  See also:
