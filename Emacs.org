@@ -127,6 +127,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     - [[#scheme][Scheme]]
     - [[#typescript-and-javascript][TypeScript and JavaScript]]
     - [[#cc][C/C++]]
+    - [[#go][Go]]
     - [[#rust][Rust]]
     - [[#ocaml][OCaml]]
     - [[#f][F#]]
@@ -2205,6 +2206,7 @@ documentation page.
   (add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
   (add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
   (add-to-list 'org-structure-template-alist '("py" . "src python"))
+  (add-to-list 'org-structure-template-alist '("go" . "src go"))
   (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
   (add-to-list 'org-structure-template-alist '("json" . "src json"))
 
@@ -3102,6 +3104,23 @@ Configure TypeScript and JavaScript language modes
 
   "ccls"
   "emacs-ccls"
+
+#+end_src
+
+*** Go
+
+#+begin_src emacs-lisp
+
+  (use-package go-mode
+    :hook (go-mode . lsp-deferred))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-go-mode"
 
 #+end_src
 
