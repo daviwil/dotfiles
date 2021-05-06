@@ -62,6 +62,8 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 - [[#better-completions-with-ivy][Better Completions with Ivy]]
 - [[#completion-system][Completion System]]
   - [[#preserve-minibuffer-history-with-savehist-mode][Preserve Minibuffer History with savehist-mode]]
+  - [[#completions-with-vertico][Completions with Vertico]]
+  - [[#completions-in-regions-with-corfu][Completions in Regions with Corfu]]
   - [[#improved-candidate-filtering-with-orderless][Improved Candidate Filtering with Orderless]]
   - [[#completions-with-icomplete][Completions with icomplete]]
   - [[#consult-commands][Consult Commands]]
@@ -907,8 +909,7 @@ anymore if I set up =diminish= correctly.
 
   (use-package perspective
     :demand t
-    :bind (("C-M-j" . persp-counsel-switch-buffer)
-           ("C-M-k" . persp-switch)
+    :bind (("C-M-k" . persp-switch)
            ("C-M-n" . persp-next)
            ("C-x k" . persp-kill-buffer*))
     :custom
@@ -1269,7 +1270,7 @@ projects super quickly.  Here are some workflow notes on how to best use Ivy:
 - To see actions for the selected minibuffer item, use =M-o= and then press the action's key.
 - *Super useful*: Use =C-c C-o= to open =ivy-occur= to open the search results in a separate buffer.  From there you can click any item to perform the ivy action.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 
   (use-package ivy
     :diminish
@@ -1423,19 +1424,67 @@ Trying this as an alternative to Ivy and Counsel.
 
 #+end_src
 
+** Completions with Vertico
+
+#+begin_src emacs-lisp
+
+  (use-package vertico
+    :straight '(vertico :host github
+                        :repo "minad/vertico"
+                        :branch "main")
+    :bind (:map vertico-map
+           ("C-j" . vertico-next)
+           ("C-k" . vertico-previous)
+           ("C-f" . vertico-exit-input)
+           ("C-l" . vertico-exit-input)
+           :map minibuffer-local-map
+           ("M-h" . backward-kill-word))
+    :custom
+    (vertico-cycle t)
+    :custom-face
+    (vertico-current ((t (:background "#3a3f5a"))))
+    :init
+    (vertico-mode))
+
+#+end_src
+
+** Completions in Regions with Corfu
+
+#+begin_src emacs-lisp
+
+  (use-package corfu
+    :straight '(corfu :host github
+                      :repo "minad/corfu")
+    :bind (:map corfu-map
+           ("C-j" . corfu-next)
+           ("C-k" . corfu-previous)
+           ("C-f" . corfu-insert))
+    :custom
+    (corfu-cycle t)
+    :config
+    (corfu-global-mode))
+
+#+end_src
+
 ** Improved Candidate Filtering with Orderless
 
 #+begin_src emacs-lisp
 
   (use-package orderless
-    :disabled
-    :straight t)
+    :straight t
+    :init
+    (setq completion-styles '(orderless)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles . (partial-completion))))))
 
 #+end_src
 
 ** Completions with icomplete
 
+Tried this out for a while but at the moment I like Vertico better!
+
 #+begin_src emacs-lisp
+
   (use-package icomplete-vertical
     :disabled
     :straight t
@@ -1471,10 +1520,11 @@ Trying this as an alternative to Ivy and Counsel.
     (icomplete-vertical-mode))
 
   ;; (use-package restricto
-  ;;   :straight t
-  ;;   :after selectrum
+  ;;   :straight '(restricto :host github
+  ;;                         :repo "oantolin/restricto")
+  ;;   :after vertico
   ;;   :demand t
-  ;;   :bind (:map minibuffer-local-completion-map
+  ;;   :bind (:map vertico-map
   ;;          ("S-SPC" . restricto-narrow))
   ;;   :config
   ;;   (restricto-mode))
@@ -1483,6 +1533,8 @@ Trying this as an alternative to Ivy and Counsel.
 
 ** Consult Commands
 
+Consult provides a lot of useful completion commands similar to Ivy's Counsel.
+
 #+begin_src emacs-lisp
 
   (defun dw/get-project-root ()
@@ -1490,51 +1542,34 @@ Trying this as an alternative to Ivy and Counsel.
       (projectile-project-root)))
 
   (use-package consult
-    :disabled
+    :straight t
     :demand t
     :bind (("C-s" . consult-line)
            ("C-M-l" . consult-imenu)
-           ("C-M-j" . consult-buffer))
+           ("C-M-j" . persp-switch-to-buffer*)
+           :map minibuffer-local-map
+           ("C-r" . consult-history))
     :custom
     (consult-project-root-function #'dw/get-project-root)
     (completion-in-region-function #'consult-completion-in-region)
     :config
-    (consult-preview-mode 1))
-
-  (use-package consult-selectrum
-    :after selectrum
-    :demand t)
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-  "emacs-consult"
+    (consult-preview-mode))
 
 #+end_src
 
 ** Completion Annotations with Marginalia
 
+Marginalia provides helpful annotations for various types of minibuffer completions.  You can think of it as a replacement of =ivy-rich=.
+
 #+begin_src emacs-lisp
 
   (use-package marginalia
-    :disabled
+    :after vertico
+    :straight t
     :custom
     (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
     :init
-    ;; Ensure that Selectrum is refreshed when cycling annotations.
-    (marginalia-mode)
-    (advice-add #'marginalia-cycle :after (lambda () (selectrum-exhibit))))
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-  "emacs-marginalia"
+    (marginalia-mode))
 
 #+end_src
 
@@ -1543,48 +1578,27 @@ Trying this as an alternative to Ivy and Counsel.
 #+begin_src emacs-lisp
 
   (use-package embark
-    :disabled
+    :straight t
     :bind (("C-S-a" . embark-act)
            :map minibuffer-local-map
            ("C-d" . embark-act))
     :config
-    ;; ---- Selectrum only ----
-    (defun current-candidate+category ()
-      (when selectrum-active-p
-        (cons (selectrum--get-meta 'category)
-              (selectrum-get-current-candidate))))
-
-    ;; (add-hook 'embark-target-finders #'current-candidate+category)
-
-    (defun current-candidates+category ()
-      (when selectrum-active-p
-        (cons (selectrum--get-meta 'category)
-              (selectrum-get-current-candidates
-              ;; Pass relative file names for dired.
-              minibuffer-completing-file-name))))
-
-    ;; No unnecessary computation delay after injection.
-    ;; (add-hook 'embark-setup-hook 'selectrum-set-selected-candidate)
-
-    ;; (add-hook 'embark-candidate-collectors #'current-candidates+category))
 
     ;; Show Embark actions via which-key
     (setq embark-action-indicator
           (lambda (map)
             (which-key--show-keymap "Embark" map nil nil 'no-paging)
             #'which-key--hide-popup-ignore-command)
-          embark-become-indicator embark-action-indicator)
+          embark-become-indicator embark-action-indicator))
 
-    ;; Use this for icomplete
-    (add-hook 'embark-pre-action-hook #'completion--flush-all-sorted-completions))
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-  "emacs-embark"
+  ;; (use-package embark-consult
+  ;;   :straight '(embark-consult :host github
+  ;;                              :repo "oantolin/embark"
+  ;;                              :files ("embark-consult.el"))
+  ;;   :after (embark consult)
+  ;;   :demand t
+  ;;   :hook
+  ;;   (embark-collect-mode . embark-consult-preview-minor-mode))
 
 #+end_src
 
@@ -1593,7 +1607,6 @@ Trying this as an alternative to Ivy and Counsel.
 #+begin_src emacs-lisp
 
   (use-package app-launcher)
-    ;; :straight '(app-launcher :host github :repo "SebastienWae/app-launcher"))
 
 #+end_src
 
@@ -1606,6 +1619,8 @@ Trying this as an alternative to Ivy and Counsel.
 #+end_src
 
 ** Selectrum
+
+Selectrum is good, but I'm enjoying the simplicity of Vertico at the moment!
 
 #+begin_src emacs-lisp
 
@@ -1849,7 +1864,7 @@ tweaking Org agenda views much less annoying.
 
 * Credential Management
 
-I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords locally.  [[https://github.com/ecraven/ivy-pass][ivy-pass]] makes managing passwords much easier in Emacs.  I also use [[https://github.com/DamienCassou/auth-password-store][auth-source-pass]] as the primary =auth-source= provider so that all passwords are stored in a single place.
+I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords locally.  I also use [[https://github.com/DamienCassou/auth-password-store][auth-source-pass]] as the primary =auth-source= provider so that all passwords are stored in a single place.
 
 #+begin_src emacs-lisp
 
@@ -2468,7 +2483,7 @@ I previously used =org-tree-slide= for presentations before trying out =org-pres
     :custom
     (org-roam-directory "~/Notes/Roam/")
     (org-roam-completion-everywhere t)
-    (org-roam-completion-system 'ivy)
+    (org-roam-completion-system 'default)
     (org-roam-capture-templates
       '(("d" "default" plain
          #'org-roam-capture--get-point

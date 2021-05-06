@@ -495,7 +495,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
                         (number-sequence 0 9))))
 
     (exwm-input-set-key (kbd "<s-return>") 'vterm)
-    (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
+    (exwm-input-set-key (kbd "s-SPC") 'app-launcher-run-app)
     (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen))
 
 #+end_src
