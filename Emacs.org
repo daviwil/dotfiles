@@ -3330,7 +3330,8 @@ Configure TypeScript and JavaScript language modes
 
   (use-package adl-mode
     :straight nil
-    :mode "\\.adl\\'")
+    :mode "\\.adl\\'"
+    :hook (adl-mode . lsp-deferred))
 
 #+end_src
 
