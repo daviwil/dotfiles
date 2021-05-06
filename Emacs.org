@@ -2066,6 +2066,7 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
     (setq org-ellipsis " ▾"
           org-hide-emphasis-markers t
           org-src-fontify-natively t
+          org-fontify-quote-and-verse-blocks t
           org-src-tab-acts-natively t
           org-edit-src-content-indentation 2
           org-hide-block-startup nil
