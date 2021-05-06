@@ -456,7 +456,8 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       (desktop-environment-brightness-small-increment "2%+")
       (desktop-environment-brightness-small-decrement "2%-")
       (desktop-environment-brightness-normal-increment "5%+")
-      (desktop-environment-brightness-normal-decrement "5%-"))
+      (desktop-environment-brightness-normal-decrement "5%-")
+      (desktop-environment-screenshot-command "flameshot gui"))
 
     ;; This needs a more elegant ASCII banner
     (defhydra hydra-exwm-move-resize (:timeout 4)
