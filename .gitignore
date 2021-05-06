@@ -5,6 +5,7 @@
 .emacs.d/lisp/dw-workflow.el
 .emacs.d/lisp/dw-mail.el
 .emacs.d/straight/build/
+.emacs.d/straight/modified/
 .emacs.d/straight/repos/
 .emacs.d/straight/build-cache.el
 
