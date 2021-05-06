@@ -85,7 +85,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 - [[#org-mode][Org Mode]]
   - [[#org-configuration][Org Configuration]]
   - [[#workflow-configuration][Workflow Configuration]]
-  - [[#automatically-tangle-on-save][Automatically "Tangle" on Save]]
   - [[#fonts-and-bullets][Fonts and Bullets]]
   - [[#block-templates][Block Templates]]
   - [[#pomodoro][Pomodoro]]
@@ -1177,19 +1176,24 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 * Configuration Files
 ** Configuration file management with dotcrafter.el
 
+I've been working on a package called [[https://github.com/daviwil/dotcrafter.el][dotcrafter.el]] for complete management of your dotfiles folder with special emphasis on configurations written with Org Mode.
+
+Check out my [[https://systemcrafters.cc/learning-emacs-lisp/][Learning Emacs Lisp]] series to see this package be written from scratch!
+
 #+begin_src emacs-lisp
 
   (use-package dotcrafter
     :straight '(dotcrafter :host github
-                           :repo "daviwil/dotcrafter.el"
-                           :branch "future")
+                            :repo "daviwil/dotcrafter.el"
+                            :branch "main")
     :custom
-    (dotcrafter-dotfiles-folder "~/.dotfiles")
     (dotcrafter-org-files '("Emacs.org"
                             "Desktop.org"
                             "Systems.org"
                             "Mail.org"
-                            "Workflow.org")))
+                            "Workflow.org"))
+    :init
+    (dotcrafter-mode))
 
 #+end_src
 
@@ -2098,24 +2102,6 @@ I document and configure my org-mode workflow in a separate document: [[file:Wor
 
   (require 'dw-org)
   (require 'dw-workflow)
-
-#+end_src
-
-** Automatically "Tangle" on Save
-
-Handy tip from [[https://leanpub.com/lit-config/read#leanpub-auto-configuring-emacs-and--org-mode-for-literate-programming][this book]] on literate programming.
-
-#+begin_src emacs-lisp
-
-  ;; Since we don't want to disable org-confirm-babel-evaluate all
-  ;; of the time, do it around the after-save-hook
-  (defun dw/org-babel-tangle-dont-ask ()
-    ;; Dynamic scoping to the rescue
-    (let ((org-confirm-babel-evaluate nil))
-      (org-babel-tangle)))
-
-  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dw/org-babel-tangle-dont-ask
-                                                'run-at-end 'only-in-org-mode)))
 
 #+end_src
 
