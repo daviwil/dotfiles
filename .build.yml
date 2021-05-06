@@ -14,7 +14,7 @@ tasks:
       cd dotfiles
       git remote add github git@github.com:daviwil/dotfiles
       ssh-keyscan github.com >> ~/.ssh/known_hosts
-      git push github master
+      git push -f github master
   - build: |
       cd dotfiles/.site
       cp -R ../../daviwil.com/public .
