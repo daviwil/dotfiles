@@ -1000,12 +1000,13 @@ Once you have your Linux root partition set up, you can enable LUKS to encrypt t
 
 #+end_src
 
-Finally, make sure to mount your EFI partition to =/mnt/boot= so that the installer can install the bootloader.  The Guix installation instructions obscure this step slightly so it's easy to miss:
+Finally, make sure to create and mount your EFI partition to =/mnt/boot= so that the installer can install the bootloader.  The Guix installation instructions obscure this step slightly so it's easy to miss:
 
 #+begin_src sh
 
+  mkfs.vfat -n GUIX-BOOT /dev/<EFI device>
   mkdir -p /mnt/boot/efi
-  mount /dev/<EFI partition> /mnt/boot/efi
+  mount LABEL=GUIX-BOOT /mnt/boot/efi
 
 #+end_src
 
@@ -1058,7 +1059,7 @@ Now you can initialize your system using the following command:
 
 #+begin_src sh
 
-  guix system -L ~/.dotfiles/.config/guix/systems init path/to/config.scm /mnt
+  guix time-machine --channels=~/dotfiles/guix/channels.scm -- system -L ~/.dotfiles/.config/guix/systems init path/to/config.scm /mnt
 
 #+end_src
 
