@@ -1436,6 +1436,17 @@ Trying this as an alternative to Ivy and Counsel.
 
 #+begin_src emacs-lisp
 
+  (defun dw/minibuffer-backward-kill (arg)
+    "When minibuffer is completing a file name delete up to parent
+  folder, otherwise delete a word"
+    (interactive "p")
+    (if minibuffer-completing-file-name
+        ;; Borrowed from https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
+        (if (string-match-p "/." (minibuffer-contents))
+            (zap-up-to-char (- arg) ?/)
+          (delete-minibuffer-contents))
+        (backward-kill-word arg)))
+
   (use-package vertico
     :straight '(vertico :host github
                         :repo "minad/vertico"
@@ -1443,10 +1454,9 @@ Trying this as an alternative to Ivy and Counsel.
     :bind (:map vertico-map
            ("C-j" . vertico-next)
            ("C-k" . vertico-previous)
-           ("C-f" . vertico-exit-input)
-           ("C-l" . vertico-exit-input)
+           ("C-f" . vertico-exit)
            :map minibuffer-local-map
-           ("M-h" . backward-kill-word))
+           ("M-h" . dw/minibuffer-backward-kill))
     :custom
     (vertico-cycle t)
     :custom-face
