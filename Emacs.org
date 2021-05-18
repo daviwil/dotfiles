@@ -235,7 +235,7 @@ Some parts of the configuration require knowledge of whether Emacs is running on
 
 #+begin_src emacs-lisp
 
-  (load-file "~/.emacs.d/lisp/dw-settings.el")
+  (load-file "~/.dotfiles/.emacs.d/lisp/dw-settings.el")
 
   ;; Load settings for the first time
   (dw/load-system-settings)
@@ -365,7 +365,7 @@ I've got a folder of custom Emacs Lisp libraries which must be added to the load
 #+begin_src emacs-lisp
 
   ;; Add my library path to load-path
-  (push "~/.emacs.d/lisp" load-path)
+  (push "~/.dotfiles/.emacs.d/lisp" load-path)
 
 #+end_src
 
@@ -2228,10 +2228,10 @@ documentation page.
   (use-package org-pomodoro
     :after org
     :config
-    (setq org-pomodoro-start-sound "~/.emacs.d/sounds/focus_bell.wav")
-    (setq org-pomodoro-short-break-sound "~/.emacs.d/sounds/three_beeps.wav")
-    (setq org-pomodoro-long-break-sound "~/.emacs.d/sounds/three_beeps.wav")
-    (setq org-pomodoro-finished-sound "~/.emacs.d/sounds/meditation_bell.wav")
+    (setq org-pomodoro-start-sound "~/.dotfiles/.emacs.d/sounds/focus_bell.wav")
+    (setq org-pomodoro-short-break-sound "~/.dotfiles/.emacs.d/sounds/three_beeps.wav")
+    (setq org-pomodoro-long-break-sound "~/.dotfiles/.emacs.d/sounds/three_beeps.wav")
+    (setq org-pomodoro-finished-sound "~/.dotfiles/.emacs.d/sounds/meditation_bell.wav")
 
     (dw/leader-key-def
       "op"  '(org-pomodoro :which-key "pomodoro")))
@@ -3849,13 +3849,13 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
           eshell-hist-ignoredups t
           eshell-highlight-prompt t
           eshell-scroll-to-bottom-on-input t
-          eshell-prefer-lisp-functions nil
-          eshell-aliases-file (expand-file-name "~/.emacs.d/eshell/alias")))
+          eshell-prefer-lisp-functions nil))
 
   (use-package eshell
     :hook (eshell-first-time-mode . dw/eshell-configure)
     :init
-    (setq eshell-directory-name "~/.emacs.d/eshell/"))
+    (setq eshell-directory-name "~/.dotfiles/.emacs.d/eshell/")
+          eshell-aliases-file (expand-file-name "~/.dotfiles/.emacs.d/eshell/alias"))
 
   (use-package eshell-z
     :hook ((eshell-mode . (lambda () (require 'eshell-z)))
