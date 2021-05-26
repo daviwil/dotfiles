@@ -3352,6 +3352,25 @@ Configure TypeScript and JavaScript language modes
 
 #+end_src
 
+** Compilation
+
+Set up the =compile= package and ensure that compilation output automatically scrolls.
+
+#+begin_src emacs-lisp
+
+  (use-package compile
+    :straight nil
+    :custom
+    (compilation-scroll-output t))
+
+  (defun auto-recompile-buffer ()
+    (interactive)
+    (if (member #'recompile after-save-hook)
+        (remove-hook 'after-save-hook #'recompile t)
+      (add-hook 'after-save-hook #'recompile nil t)))
+
+#+end_src
+
 ** Productivity
 
 *** Syntax checking with Flycheck
