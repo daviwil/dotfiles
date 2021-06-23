@@ -7,16 +7,12 @@
         (name 'flat)
         (url "https://github.com/flatwhatson/guix-channel.git")
         (commit
-          "86fb7253a4384b70c77739a0e03115be75d60ad1")
+          "9eeca8a9976d815234c03289fca4bedc9f2667d0")
         (introduction
           (make-channel-introduction
             "33f86a4b48205c0dc19d7c036c85393f0766f806"
             (openpgp-fingerprint
               "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))
-      ;; (channel
-      ;;   (name 'nonguix)
-      ;;   (branch "add-sof-firmware")
-      ;;   (url "file:///home/daviwil/Projects/Code/nonguix"))
       (channel
         (name 'nonguix)
         (url "https://gitlab.com/nonguix/nonguix"))
@@ -30,39 +26,6 @@
             "9edb3f66fd807b096b48283debdcddccfea34bad"
             (openpgp-fingerprint
               "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
-
-  ;; (cons* (channel
-  ;;         (name 'channel-x)
-  ;;         ;; (url "https://github.com/daviwil/channel-x"))
-  ;;         (url "file:///home/daviwil/Projects/Code/channel-x"))
-  ;;        (channel
-  ;;         (name 'flat)
-  ;;         (url "https://github.com/flatwhatson/guix-channel.git")
-  ;;         (commit
-  ;;          "302f8a4f7e56cb3b484de9fe86617a3aaf20098c")
-  ;;         (introduction
-  ;;          (make-channel-introduction
-  ;;           "33f86a4b48205c0dc19d7c036c85393f0766f806"
-  ;;           (openpgp-fingerprint
-  ;;            "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))
-  ;;        (channel
-  ;;         (name 'nonguix)
-  ;;         (url "https://gitlab.com/nonguix/nonguix"))
-  ;;        %default-channels)
-
-  ;;(list (channel
-  ;;        (name 'nonguix)
-  ;;        (commit "c34fa8bfacdce5fa45b2a684c2b27309c09a9056")
-  ;;        (url "https://gitlab.com/nonguix/nonguix"))
-  ;;      (channel
-  ;;        (name 'guix)
-  ;;        (commit "190187326ad7516dd6728eed7bb6ef2d4f92897a")
-  ;;        (url "https://git.savannah.gnu.org/git/guix.git")
-  ;;        (introduction
-  ;;          (make-channel-introduction
-  ;;            "9edb3f66fd807b096b48283debdcddccfea34bad"
-  ;;          (openpgp-fingerprint
-  ;;            "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
 
 ;; (list (channel
 ;;         (name 'nonguix)
