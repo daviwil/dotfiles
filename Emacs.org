@@ -2850,6 +2850,7 @@ OK, this isn't Emacs configuration, but it's relevant to development!
     :diminish projectile-mode
     :config (projectile-mode)
     :demand t
+    :bind ("C-M-p" . projectile-find-file)
     :bind-keymap
     ("C-c p" . projectile-command-map)
     :init
@@ -2858,17 +2859,16 @@ OK, this isn't Emacs configuration, but it's relevant to development!
     (setq projectile-switch-project-action #'dw/switch-project-action))
 
   (use-package counsel-projectile
+    :disabled
     :after projectile
-    :bind (("C-M-p" . counsel-projectile-find-file))
     :config
     (counsel-projectile-mode))
 
   (dw/leader-key-def
-    "pf"  'counsel-projectile-find-file
-    "ps"  'counsel-projectile-switch-project
-    "pF"  'counsel-projectile-rg
-    ;; "pF"  'consult-ripgrep
-    "pp"  'counsel-projectile
+    "pf"  'projectile-find-file
+    "ps"  'projectile-switch-project
+    "pF"  'consult-ripgrep
+    "pp"  'projectile-find-file
     "pc"  'projectile-compile-project
     "pd"  'projectile-dired)
 
