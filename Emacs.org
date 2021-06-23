@@ -1024,7 +1024,8 @@ list of timezones.  Nice for working in a team with remote members.
       ("America/New_York" "New York")
       ("Europe/Athens" "Athens")
       ("Pacific/Auckland" "Auckland")
-      ("Asia/Shanghai" "Shanghai")))
+      ("Asia/Shanghai" "Shanghai")
+      ("Asia/Kolkata" "Hyderabad")))
   (setq display-time-world-time-format "%a, %d %b %I:%M %p %Z")
 
 #+end_src
