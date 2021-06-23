@@ -1570,9 +1570,7 @@ Consult provides a lot of useful completion commands similar to Ivy's Counsel.
            ("C-r" . consult-history))
     :custom
     (consult-project-root-function #'dw/get-project-root)
-    (completion-in-region-function #'consult-completion-in-region)
-    :config
-    (consult-preview-mode))
+    (completion-in-region-function #'consult-completion-in-region))
 
 #+end_src
 
