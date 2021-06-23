@@ -19,8 +19,7 @@
       (channel
         (name 'guix)
         (url "https://git.savannah.gnu.org/git/guix.git")
-        ;; (commit
-        ;;   "b1cabedd28b92324259875fc52ca5d52d411a026")
+        ;; (url "file:///home/daviwil/Projects/Code/guix"))
         (introduction
           (make-channel-introduction
             "9edb3f66fd807b096b48283debdcddccfea34bad"
