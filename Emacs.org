@@ -3644,9 +3644,11 @@ I use the [[https://github.com/Palakis/obs-websocket][obs-websocket]] plugin for
     (defhydra dw/stream-keys (:exit t)
       "Stream Commands"
       ("c" (obs-websocket-connect) "Connect")
+      ("l" (obs-websocket-send "SetCurrentScene" :scene-name "Logo Screen") "Logo Screen")
       ("s" (obs-websocket-send "SetCurrentScene" :scene-name "Screen") "Screen")
       ("w" (obs-websocket-send "SetCurrentScene" :scene-name "Webcam") "Webcam")
       ("p" (obs-websocket-send "SetCurrentScene" :scene-name "Sponsors") "Sponsors")
+      ("e" (obs-websocket-send "SetCurrentScene" :scene-name "Thanks For Watching") "Thanks For Watching")
       ("Ss" (obs-websocket-send "StartStreaming") "Start Stream")
       ("Se" (obs-websocket-send "StopStreaming") "End Stream"))
 
