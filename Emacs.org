@@ -4198,25 +4198,30 @@ Since I switched over to =eshell= I don't use =multi-term= as much anymore.  Som
     (setq
         erc-nick "daviwil"
         erc-user-full-name "David Wilson"
-        erc-prompt-for-nickserv-password nil
+        erc-prompt-for-password nil
         erc-auto-query 'bury
         erc-join-buffer 'bury
+        erc-track-shorten-start 8
         erc-interpret-mirc-color t
         erc-rename-buffers t
-        erc-lurker-hide-list '("JOIN" "PART" "QUIT")
-        erc-track-exclude-types '("JOIN" "NICK" "QUIT" "MODE")
+        erc-kill-buffer-on-part t
+        erc-track-exclude '("#twitter_daviwil")
+        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY")
         erc-track-enable-keybindings nil
         erc-track-visibility nil ; Only use the selected frame for visibility
-        erc-fill-column 80
+        erc-track-exclude-server-buffer t
+        erc-fill-column 120
         erc-fill-function 'erc-fill-static
         erc-fill-static-center 20
-        erc-track-exclude '("#twitter_daviwil")
-        erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#guix"))
-        erc-quit-reason (lambda (s) (or s "Fading out..."))
+        erc-image-inline-rescale 400
+        erc-server-reconnect-timeout 5
+        erc-server-reconnect-attempts 3
+        erc-autojoin-channels-alist '(("irc.libera.chat" "#systemcrafters" "#emacs" "#guix"))
+        erc-quit-reason (lambda (s) (or s "Ejecting from cyberspace"))
         erc-modules
         '(autoaway autojoin button completion fill irccontrols keep-place
             list match menu move-to-prompt netsplit networks noncommands
-            readonly ring stamp track hl-nicks))
+            readonly ring stamp track image hl-nicks notify notifications))
 
     (add-hook 'erc-join-hook 'bitlbee-identify)
     (defun bitlbee-identify ()
@@ -4230,8 +4235,8 @@ Since I switched over to =eshell= I don't use =multi-term= as much anymore.  Som
   (defun dw/connect-irc ()
     (interactive)
     (erc-tls
-       :server "chat.freenode.net" :port 7000
-       :nick "daviwil" :password (password-store-get "IRC/Freenode")))
+       :server "crafter.mx" :port 3110
+       :nick "daviwil" :password (password-store-get "IRC/crafter.mx")))
     ;; (erc
     ;;    :server "127.0.0.1" :port 6667
     ;;    :nick "daviwil" :password (password-store-get "IRC/Bitlbee")))
