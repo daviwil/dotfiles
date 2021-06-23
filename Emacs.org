@@ -4335,7 +4335,14 @@ Since I switched over to =eshell= I don't use =multi-term= as much anymore.  Som
 #+end_src
 
 ** Media
+*** mpv
 
+#+begin_src emacs-lisp
+
+  (use-package mpv
+    :straight t)
+
+#+end_src
 *** EMMS
 
 #+begin_src emacs-lisp
