@@ -3350,7 +3350,9 @@ Configure TypeScript and JavaScript language modes
   (use-package adl-mode
     :straight nil
     :mode "\\.adl\\'"
-    :hook (adl-mode . lsp-deferred))
+    :hook (adl-mode . lsp-deferred)
+    :bind (:map adl-mode-map
+           ("C-c C-c" . recompile)))
 
 #+end_src
 
