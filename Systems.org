@@ -214,7 +214,8 @@ Define the =base-operating-system= which will be inherited by all machine config
 (define-public base-operating-system
   (operating-system
     (host-name "hackstock")
-    (timezone "America/Los_Angeles")
+    ;(timezone "America/Los_Angeles")
+    (timezone "Europe/Athens")
     (locale "en_US.utf8")
 
     ;; Use non-free Linux and firmware
