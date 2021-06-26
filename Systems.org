@@ -422,11 +422,6 @@ I also define a function called =dw/system-settings-get= which can retrieve thes
 
    (firmware (list linux-firmware sof-firmware))
 
-   ;; Don't load modules that can conflict with drivers needed for
-   ;; sound on this system.  See also:
-   ;; https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_7)#Audio
-   (kernel-arguments '("modprobe.blacklist=snd_hda_intel,snd_soc_skl"))
-
    (mapped-devices
     (list (mapped-device
            (source (uuid "15ece913-c423-49aa-ac42-3bad39fdd966"))
