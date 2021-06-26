@@ -50,7 +50,7 @@ Guix supports the concept of [[https://guix.gnu.org/manual/en/html_node/Channels
             (name 'flat)
             (url "https://github.com/flatwhatson/guix-channel.git")
             (commit
-              "9eeca8a9976d815234c03289fca4bedc9f2667d0")
+              "7b8353ebbcf486e3344924d1cac0fa7ba47c371d")
             (introduction
               (make-channel-introduction
                 "33f86a4b48205c0dc19d7c036c85393f0766f806"
