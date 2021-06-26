@@ -266,8 +266,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (defun dw/setup-window-by-class ()
       (interactive)
       (pcase exwm-class-name
-        ("Pidgin" (exwm-workspace-move-window 0))
-        ("Pidgin<2>" (exwm-workspace-move-window 0))
+        ("Emacs" (call-interactively #'exwm-input-toggle-keyboard))
         ("discord" (exwm-workspace-move-window 3))
         ("Microsoft Teams - Preview" (exwm-workspace-move-window 3))
         ("Spotify" (exwm-workspace-move-window 4))
