@@ -23,6 +23,9 @@
    ;; Java
    "icedtea"
 
+   ;; Chibi
+   "chibi-scheme"
+
    ;; Guile
    "guile@2.2"
    "guile2.2-cairo"
