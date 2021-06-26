@@ -1451,9 +1451,9 @@ Trying this as an alternative to Ivy and Counsel.
         (backward-kill-word arg)))
 
   (use-package vertico
-    :straight '(vertico :host github
-                        :repo "minad/vertico"
-                        :branch "main")
+    ;; :straight '(vertico :host github
+    ;;                     :repo "minad/vertico"
+    ;;                     :branch "main")
     :bind (:map vertico-map
            ("C-j" . vertico-next)
            ("C-k" . vertico-previous)
@@ -1466,6 +1466,14 @@ Trying this as an alternative to Ivy and Counsel.
     (vertico-current ((t (:background "#3a3f5a"))))
     :init
     (vertico-mode))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-vertico"
 
 #+end_src
 
@@ -1492,11 +1500,18 @@ Trying this as an alternative to Ivy and Counsel.
 #+begin_src emacs-lisp
 
   (use-package orderless
-    :straight t
     :init
     (setq completion-styles '(orderless)
           completion-category-defaults nil
           completion-category-overrides '((file (styles . (partial-completion))))))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-orderless"
 
 #+end_src
 
@@ -1563,7 +1578,6 @@ Consult provides a lot of useful completion commands similar to Ivy's Counsel.
       (projectile-project-root)))
 
   (use-package consult
-    :straight t
     :demand t
     :bind (("C-s" . consult-line)
            ("C-M-l" . consult-imenu)
@@ -1576,6 +1590,14 @@ Consult provides a lot of useful completion commands similar to Ivy's Counsel.
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-consult"
+
+#+end_src
+
 ** Completion Annotations with Marginalia
 
 Marginalia provides helpful annotations for various types of minibuffer completions.  You can think of it as a replacement of =ivy-rich=.
@@ -1584,11 +1606,18 @@ Marginalia provides helpful annotations for various types of minibuffer completi
 
   (use-package marginalia
     :after vertico
-    :straight t
     :custom
     (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
     :init
     (marginalia-mode))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-marginalia"
 
 #+end_src
 
@@ -1597,7 +1626,6 @@ Marginalia provides helpful annotations for various types of minibuffer completi
 #+begin_src emacs-lisp
 
   (use-package embark
-    :straight t
     :bind (("C-S-a" . embark-act)
            :map minibuffer-local-map
            ("C-d" . embark-act))
@@ -1618,6 +1646,14 @@ Marginalia provides helpful annotations for various types of minibuffer completi
   ;;   :demand t
   ;;   :hook
   ;;   (embark-collect-mode . embark-consult-preview-minor-mode))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-embark"
 
 #+end_src
 
