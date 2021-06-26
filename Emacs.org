@@ -2989,6 +2989,26 @@ This section contains project configurations for specific projects that I can't 
 
 #+end_src
 
+**** Eglot
+
+Trying out Eglot for a bit to see how I like it compared to lsp-mode.
+
+#+begin_src emacs-lisp
+
+  (use-package eglot
+    :disabled
+    :hook ((typescript-mode . eglot-ensure)))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-eglot"
+
+#+end_src
+
 *** Debug Adapter Support
 
 #+begin_src emacs-lisp
