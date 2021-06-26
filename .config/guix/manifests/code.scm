@@ -12,6 +12,7 @@
    "clang"
    "file"                               ; The 'file' command
    "elfutils"
+   "go"
 
    ;; Python
    "python2"
