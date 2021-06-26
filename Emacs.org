@@ -3905,8 +3905,8 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
   (use-package eshell
     :hook (eshell-first-time-mode . dw/eshell-configure)
     :init
-    (setq eshell-directory-name "~/.dotfiles/.emacs.d/eshell/")
-          eshell-aliases-file (expand-file-name "~/.dotfiles/.emacs.d/eshell/alias"))
+    (setq eshell-directory-name "~/.dotfiles/.emacs.d/eshell/"
+          eshell-aliases-file (expand-file-name "~/.dotfiles/.emacs.d/eshell/alias")))
 
   (use-package eshell-z
     :hook ((eshell-mode . (lambda () (require 'eshell-z)))
@@ -4016,6 +4016,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 #+begin_src emacs-lisp
 
   (use-package eshell-toggle
+    :after eshell
     :bind ("C-M-'" . eshell-toggle)
     :custom
     (eshell-toggle-size-fraction 3)
