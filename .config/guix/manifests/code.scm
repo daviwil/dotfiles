@@ -10,6 +10,8 @@
    "llvm"
    "lld"
    "clang"
+   "file"                               ; The 'file' command
+   "elfutils"
 
    ;; Python
    "python2"
