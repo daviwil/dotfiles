@@ -171,7 +171,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     - [[#history-autocompletion][History Autocompletion]]
     - [[#toggling-eshell][Toggling Eshell]]
   - [[#vterm][vterm]]
-  - [[#multi-term][multi-term]]
   - [[#ediff][ediff]]
   - [[#chat][Chat]]
     - [[#tracking][Tracking]]
@@ -4072,35 +4071,6 @@ This enhances eshell's completions with those that Fish is capable of and also f
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-vterm"
-
-#+end_src
-
-** multi-term
-
-Since I switched over to =eshell= I don't use =multi-term= as much anymore.  Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/][here]].
-
-#+begin_src emacs-lisp
-
-  (use-package multi-term
-    :commands multi-term-next
-    :config
-    (setq term-buffer-maximum-size 10000)
-    (setq term-scroll-to-bottom-on-output t)
-    (add-hook 'term-mode-hook
-        (lambda ()
-          (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
-          (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next)))))
-
-  (dw/leader-key-def
-    "C-SPC" 'multi-term-next)
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-  "emacs-multi-term"
 
 #+end_src
 
