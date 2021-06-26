@@ -147,8 +147,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     - [[#rainbow-mode][Rainbow Mode]]
   - [[#tools][Tools]]
     - [[#debbugs-mainly-for-guix][Debbugs (mainly for Guix)]]
-  - [[#reference][Reference]]
-    - [[#http][HTTP]]
 - [[#game-development][Game Development]]
   - [[#substratic-forge][Substratic Forge]]
 - [[#writing][Writing]]
@@ -3521,25 +3519,6 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
   (defun dw/debbugs-guix-patches ()
     (interactive)
     (debbugs-gnu '("serious" "important" "normal") "guix-patches" nil t))
-
-#+end_src
-
-** Reference
-
-*** HTTP
-
-#+begin_src emacs-lisp
-
-  (use-package know-your-http-well
-    :defer t)
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-  "emacs-know-your-http-well"
 
 #+end_src
 
