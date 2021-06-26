@@ -2538,7 +2538,6 @@ I previously used =org-tree-slide= for presentations before trying out =org-pres
 #+begin_src emacs-lisp
 
   (use-package org-roam
-    :straight t
     :hook
     (after-init . org-roam-mode)
     :custom
@@ -2614,6 +2613,14 @@ I previously used =org-tree-slide= for presentations before trying out =org-pres
 
 #+end_src
 
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-org-roam"
+
+#+end_src
+
 ** Deft
 
 #+begin_src emacs-lisp
@@ -2630,8 +2637,6 @@ I previously used =org-tree-slide= for presentations before trying out =org-pres
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  ;; The packaged org-roam is missing some things!
-  ;; "emacs-org-roam"
   "emacs-deft"
 
 #+end_src
