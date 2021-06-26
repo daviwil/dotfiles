@@ -1877,7 +1877,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 ** Control Buffer Placement
 
-Emacs' default buffer placement algorithm is pretty disruptive if you like setting up window layouts a certain way in your workflow.  The =display-buffer-alist= video controls this behavior and you can customize it to prevent Emacs from popping up new windows when you run commands.
+Emacs' default buffer placement algorithm is pretty disruptive if you like setting up window layouts a certain way in your workflow.  The =display-buffer-alist= variable controls this behavior and you can customize it to prevent Emacs from popping up new windows when you run commands.
 
 #+begin_src emacs-lisp
 
