@@ -365,7 +365,7 @@ I also define a function called =dw/system-settings-get= which can retrieve thes
 
 *** zerocool
 
-=zerocool= is a 5th Generation ThinkPad X1 Carbon that I use for most of my writing and hacking at home.
+=zerocool= is a 5th Generation ThinkPad X1 Carbon that I use for system testing and Guix demonstrations for System Crafters.
 
 *.config/guix/systems/zerocool.scm:*
 
