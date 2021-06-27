@@ -177,6 +177,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     - [[#erc][ERC]]
       - [[#configuration][Configuration]]
       - [[#bindings][Bindings]]
+      - [[#sharing-files-with-0x0][Sharing Files with 0x0]]
       - [[#reference][Reference]]
     - [[#matrix][Matrix]]
   - [[#mastodon][Mastodon]]
@@ -4279,6 +4280,18 @@ This enhances eshell's completions with those that Fish is capable of and also f
     "cb" 'erc-switch-to-buffer
     "cc" 'dw/connect-irc
     "ca" 'erc-track-switch-buffer)
+
+#+end_src
+
+**** Sharing Files with 0x0
+
+I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to make sharing files and images on IRC much easier.
+
+#+begin_src emacs-lisp
+
+  (use-package 0x0
+    :straight '(0x0 :host gitlab
+                    :repo "willvaughn/emacs-0x0"))
 
 #+end_src
 
