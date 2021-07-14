@@ -119,7 +119,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     - [[#project-configurations][Project Configurations]]
   - [[#languages][Languages]]
     - [[#language-server-support][Language Server Support]]
-      - [[#eglot][Eglot]]
     - [[#debug-adapter-support][Debug Adapter Support]]
     - [[#meta-lisp][Meta Lisp]]
     - [[#clojure][Clojure]]
