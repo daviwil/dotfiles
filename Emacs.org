@@ -4242,15 +4242,6 @@ This enhances eshell's completions with those that Fish is capable of and also f
             list match menu move-to-prompt netsplit networks noncommands
             readonly ring stamp track image hl-nicks notify notifications))
 
-    (add-hook 'erc-join-hook 'bitlbee-identify)
-    (defun bitlbee-identify ()
-      "If we're on the bitlbee server, send the identify command to the &bitlbee channel."
-      (when (and (string= "127.0.0.1" erc-session-server)
-                 (string= "&bitlbee" (buffer-name)))
-        (erc-message "PRIVMSG" (format "%s identify %s"
-                                       (erc-default-target)
-                                       (password-store-get "IRC/Bitlbee"))))))
-
   (defun dw/connect-irc ()
     (interactive)
     (erc-tls
