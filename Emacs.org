@@ -179,7 +179,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
       - [[#sharing-files-with-0x0][Sharing Files with 0x0]]
       - [[#reference][Reference]]
     - [[#matrix][Matrix]]
-  - [[#mastodon][Mastodon]]
   - [[#rss-with-elfeed][RSS with Elfeed]]
   - [[#media][Media]]
     - [[#mpv][mpv]]
@@ -4307,25 +4306,6 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-matrix-client"
-
-#+end_src
-
-** Mastodon
-
-#+begin_src emacs-lisp
-
-  (use-package mastodon
-    :defer t
-    :config
-    (setq mastodon-instance-url "https://mastodon.social"))
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-  "emacs-mastodon"
 
 #+end_src
 
