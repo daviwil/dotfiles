@@ -24,7 +24,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#lets-be-evil][Let's Be Evil]]
   - [[#keybinding-panel-which-key][Keybinding Panel (which-key)]]
   - [[#simplify-leader-bindings-generalel][Simplify Leader Bindings (general.el)]]
-  - [[#enable-keychord-bind-with-use-package][Enable keychord bind with use-package]]
 - [[#general-configuration][General Configuration]]
   - [[#user-interface][User Interface]]
   - [[#theme][Theme]]
@@ -308,6 +307,8 @@ Set up ELPA, MELPA, and Org package repositories and load =use-package= to manag
 
 Trying out =straight.el= for package management.  So far so good!
 
+Sometimes it's good to clean up unused repositories if I've removed packages from my configuration.  Use =straight-remove-unused-repos= for this purpose.
+
 #+begin_src emacs-lisp
 
   ;; Bootstrap straight.el
@@ -330,8 +331,7 @@ Trying out =straight.el= for package management.  So far so good!
   ;; Use straight.el for use-package expressions
   (straight-use-package 'use-package)
 
-  ;; Load the helper package for commands like `straight-x-clean-unused-repos'
-  (require 'straight-x)
+  ;; Clean up unused repos with `straight-remove-unused-repos'
 
 #+end_src
 
@@ -385,6 +385,7 @@ Avoid constant errors on Windows about the coding system by setting the default 
   (set-default-coding-systems 'utf-8)
 
 #+end_src
+
 * Server Mode
 
 Start the Emacs server from this instance so that all =emacsclient= calls are routed here.
@@ -574,16 +575,6 @@ in conjunction with Evil modes.
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-general"
-
-#+end_src
-
-** Enable keychord bind with use-package
-
-#+begin_src emacs-lisp
-
-  (use-package use-package-chords
-    :disabled
-    :config (key-chord-mode 1))
 
 #+end_src
 
