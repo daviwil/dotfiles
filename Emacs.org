@@ -2914,15 +2914,6 @@ Not currently doing any Common Lisp development so these packages are disabled f
 
 *** TypeScript and JavaScript
 
-Set up nvm so that we can manage Node versions
-
-#+begin_src emacs-lisp
-
-  (use-package nvm
-    :defer t)
-
-#+end_src
-
 Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
