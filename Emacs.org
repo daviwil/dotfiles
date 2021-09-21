@@ -2261,14 +2261,16 @@ It's nice to have a table of contents section for long literate configuration fi
     (setq header-line-format " ")
     (org-appear-mode -1)
     (org-display-inline-images)
-    (dw/org-present-prepare-slide))
+    (dw/org-present-prepare-slide)
+    (dw/kill-panel))
 
   (defun dw/org-present-quit-hook ()
     (setq-local face-remapping-alist '((default variable-pitch default)))
     (setq header-line-format nil)
     (org-present-small)
     (org-remove-inline-images)
-    (org-appear-mode 1))
+    (org-appear-mode 1)
+    (dw/start-panel))
 
   (defun dw/org-present-prev ()
     (interactive)
