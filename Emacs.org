@@ -202,7 +202,11 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
 
 Make startup faster by reducing the frequency of garbage collection and then use a hook to measure Emacs startup time.
 
+Also, turn on =lexical-binding= for the init file!
+
 #+begin_src emacs-lisp
+
+  ;; -*- lexical-binding: t; -*-
 
   ;; The default is 800 kilobytes.  Measured in bytes.
   (setq gc-cons-threshold (* 50 1000 1000))
