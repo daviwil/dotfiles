@@ -2339,78 +2339,61 @@ I previously used =org-tree-slide= for presentations before trying out =org-pres
 #+begin_src emacs-lisp
 
   (use-package org-roam
-    :hook
-    (after-init . org-roam-mode)
+    :straight t
+    :init
+    (setq org-roam-v2-ack t)
+    (setq dw/daily-note-filename "%<%Y-%m-%d>.org"
+          dw/daily-note-header "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
     :custom
     (org-roam-directory "~/Notes/Roam/")
-    (org-roam-completion-everywhere t)
-    (org-roam-completion-system 'default)
-    (org-roam-capture-templates
-      '(("d" "default" plain
-         #'org-roam-capture--get-point
-         "%?"
-         :file-name "%<%Y%m%d%H%M%S>-${slug}"
-         :head "#+title: ${title}\n"
-         :unnarrowed t)
-        ("ll" "link note" plain
-         #'org-roam-capture--get-point
-         "* %^{Link}"
-         :file-name "Inbox"
-         :olp ("Links")
-         :unnarrowed t
-         :immediate-finish)
-        ("lt" "link task" entry
-         #'org-roam-capture--get-point
-         "* TODO %^{Link}"
-         :file-name "Inbox"
-         :olp ("Tasks")
-         :unnarrowed t
-         :immediate-finish)))
     (org-roam-dailies-directory "Journal/")
+    (org-roam-completion-everywhere t)
+    (org-roam-capture-templates
+      '(("d" "default" plain "%?"
+         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n")
+         :unnarrowed t)))
     (org-roam-dailies-capture-templates
-      '(("d" "default" entry
-         #'org-roam-capture--get-point
-         "* %?"
-         :file-name "Journal/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
-        ("t" "Task" entry
-         #'org-roam-capture--get-point
-         "* TODO %?\n  %U\n  %a\n  %i"
-         :file-name "Journal/%<%Y-%m-%d>"
-         :olp ("Tasks")
-         :empty-lines 1
-         :head "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
-        ("j" "journal" entry
-         #'org-roam-capture--get-point
-         "* %<%I:%M %p> - Journal  :journal:\n\n%?\n\n"
-         :file-name "Journal/%<%Y-%m-%d>"
-         :olp ("Log")
-         :head "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
-        ("l" "log entry" entry
-         #'org-roam-capture--get-point
-         "* %<%I:%M %p> - %?"
-         :file-name "Journal/%<%Y-%m-%d>"
-         :olp ("Log")
-         :head "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
-        ("m" "meeting" entry
-         #'org-roam-capture--get-point
-         "* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n%?\n\n"
-         :file-name "Journal/%<%Y-%m-%d>"
-         :olp ("Log")
-         :head "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")))
-    :bind (:map org-roam-mode-map
-            (("C-c n l"   . org-roam)
-             ("C-c n f"   . org-roam-find-file)
-             ("C-c n d"   . org-roam-dailies-find-date)
-             ("C-c n c"   . org-roam-dailies-capture-today)
-             ("C-c n C r" . org-roam-dailies-capture-tomorrow)
-             ("C-c n t"   . org-roam-dailies-find-today)
-             ("C-c n y"   . org-roam-dailies-find-yesterday)
-             ("C-c n r"   . org-roam-dailies-find-tomorrow)
-             ("C-c n g"   . org-roam-graph))
+     `(("d" "default" entry
+        "* %?"
+        :if-new (file+head ,dw/daily-note-filename
+                           ,dw/daily-note-header))
+       ("t" "task" entry
+        "* TODO %?\n  %U\n  %a\n  %i"
+        :if-new (file+head+olp ,dw/daily-note-filename
+                               ,dw/daily-note-header
+                               ("Tasks"))
+        :empty-lines 1)
+       ("l" "log entry" entry
+        "* %<%I:%M %p> - %?"
+        :if-new (file+head+olp ,dw/daily-note-filename
+                               ,dw/daily-note-header
+                               ("Log")))
+       ("j" "journal" entry
+        "* %<%I:%M %p> - Journal  :journal:\n\n%?\n\n"
+        :if-new (file+head+olp ,dw/daily-note-filename
+                               ,dw/daily-note-header
+                               ("Log")))
+       ("m" "meeting" entry
+        "* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n%?\n\n"
+        :if-new (file+head+olp ,dw/daily-note-filename
+                               ,dw/daily-note-header
+                               ("Log")))))
+    :bind (("C-c n l"   . org-roam-buffer-toggle)
+           ("C-c n f"   . org-roam-node-find)
+           ("C-c n d"   . org-roam-dailies-find-date)
+           ("C-c n c"   . org-roam-dailies-capture-today)
+           ("C-c n C r" . org-roam-dailies-capture-tomorrow)
+           ("C-c n t"   . org-roam-dailies-goto-today)
+           ("C-c n y"   . org-roam-dailies-goto-yesterday)
+           ("C-c n r"   . org-roam-dailies-goto-tomorrow)
+           ("C-c n g"   . org-roam-graph)
            :map org-mode-map
-           (("C-c n i" . org-roam-insert))
-           (("C-c n I" . org-roam-insert-immediate))))
+           (("C-c n i" . org-roam-node-insert)
+            ;("C-c n I" . org-roam-insert-immediate)
+            ))
+    :config
+    (org-roam-db-autosync-mode))
 
 #+end_src
 
