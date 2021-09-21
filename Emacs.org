@@ -508,8 +508,8 @@ Some tips can be found here:
       :custom
       (evil-collection-outline-bind-tab-p nil)
       :config
-      (setq evil-collection-mode-list
-            (remove 'lispy evil-collection-mode-list))
+      (delete 'lispy evil-collection-mode-list)
+      (delete 'org-present evil-collection-mode-list)
       (evil-collection-init))
 
 #+end_src
