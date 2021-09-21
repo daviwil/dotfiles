@@ -3994,8 +3994,8 @@ This enhances eshell's completions with those that Fish is capable of and also f
         erc-fill-function 'erc-fill-static
         erc-fill-static-center 20
         erc-image-inline-rescale 400
-        erc-server-reconnect-timeout 5
-        erc-server-reconnect-attempts 3
+        erc-server-reconnect-timeout 10
+        erc-server-reconnect-attempts 5
         erc-autojoin-channels-alist '(("irc.libera.chat" "#systemcrafters" "#emacs" "#guix"))
         erc-quit-reason (lambda (s) (or s "Ejecting from cyberspace"))
         erc-modules
