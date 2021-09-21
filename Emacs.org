@@ -3716,6 +3716,7 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
           eshell-aliases-file (expand-file-name "~/.dotfiles/.emacs.d/eshell/alias")))
 
   (use-package eshell-z
+    :disabled ;; Using consult-dir for this now
     :hook ((eshell-mode . (lambda () (require 'eshell-z)))
            (eshell-z-change-dir .  (lambda () (eshell/pushd (eshell/pwd))))))
 
