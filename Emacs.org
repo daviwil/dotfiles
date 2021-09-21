@@ -150,6 +150,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#previewing-info-files][Previewing Info files]]
 - [[#streaming][Streaming]]
   - [[#obs-websocket][obs-websocket]]
+  - [[#live-crafterel][live-crafter.el]]
 - [[#applications][Applications]]
   - [[#binding-prefix][Binding Prefix]]
   - [[#mail][Mail]]
@@ -2242,7 +2243,9 @@ It's nice to have a table of contents section for long literate configuration fi
   (defun dw/org-present-next ()
     (interactive)
     (org-present-next)
-    (dw/org-present-prepare-slide))
+    (dw/org-present-prepare-slide)
+    (when (fboundp 'live-crafter-add-timestamp)
+      (live-crafter-add-timestamp (substring-no-properties (org-get-heading t t t t)))))
 
   (use-package org-present
     :bind (:map org-present-mode-keymap
@@ -3452,7 +3455,7 @@ I use the [[https://github.com/Palakis/obs-websocket][obs-websocket]] plugin for
     (defhydra dw/stream-keys (:exit t)
       "Stream Commands"
       ("c" (obs-websocket-connect) "Connect")
-      ("l" (obs-websocket-send "SetCurrentScene" :scene-name "Logo Screen") "Logo Screen")
+      ("l" (obs-websocket-send "SetCurrentScene" :scene-name "Logo Screen") "Logo Screen" :exit nil)
       ("s" (obs-websocket-send "SetCurrentScene" :scene-name "Screen") "Screen")
       ("w" (obs-websocket-send "SetCurrentScene" :scene-name "Webcam") "Webcam")
       ("p" (obs-websocket-send "SetCurrentScene" :scene-name "Sponsors") "Sponsors")
@@ -3470,6 +3473,18 @@ I use the [[https://github.com/Palakis/obs-websocket][obs-websocket]] plugin for
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-obs-websocket-el"
+
+#+end_src
+
+** live-crafter.el
+
+The *real* stream automation starts here.
+
+#+begin_src emacs-lisp
+
+  (use-package live-crafter
+    :after mpv
+    :straight '(live-crafter :host github :repo "SystemCrafters/live-crafter"))
 
 #+end_src
 
