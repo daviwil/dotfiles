@@ -64,6 +64,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#completions-in-regions-with-corfu][Completions in Regions with Corfu]]
   - [[#improved-candidate-filtering-with-orderless][Improved Candidate Filtering with Orderless]]
   - [[#consult-commands][Consult Commands]]
+  - [[#switching-directories-with-consult-dir][Switching Directories with consult-dir]]
   - [[#completion-annotations-with-marginalia][Completion Annotations with Marginalia]]
   - [[#completion-actions-with-embark][Completion Actions with Embark]]
   - [[#launching-apps][Launching apps]]
@@ -1393,6 +1394,39 @@ Consult provides a lot of useful completion commands similar to Ivy's Counsel.
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-consult"
+
+#+end_src
+
+** Switching Directories with consult-dir
+
+#+begin_src emacs-lisp
+
+  (use-package consult-dir
+    :straight t
+    :bind (("C-x C-d" . consult-dir)
+           :map vertico-map
+           ("C-x C-d" . consult-dir)
+           ("C-x C-j" . consult-dir-jump-file))
+    :custom
+    (consult-dir-project-list-function nil))
+
+  ;; Thanks Karthik!
+  (with-eval-after-load 'eshell-mode
+    (defun eshell/z (&optional regexp)
+      "Navigate to a previously visited directory in eshell."
+      (let ((eshell-dirs (delete-dups (mapcar 'abbreviate-file-name
+                                              (ring-elements eshell-last-dir-ring)))))
+        (cond
+         ((and (not regexp) (featurep 'consult-dir))
+          (let* ((consult-dir--source-eshell `(:name "Eshell"
+                                                     :narrow ?e
+                                                     :category file
+                                                     :face consult-file
+                                                     :items ,eshell-dirs))
+                 (consult-dir-sources (cons consult-dir--source-eshell consult-dir-sources)))
+            (eshell/cd (substring-no-properties (consult-dir--pick "Switch directory: ")))))
+         (t (eshell/cd (if regexp (eshell-find-previous-directory regexp)
+                         (completing-read "cd: " eshell-dirs))))))))
 
 #+end_src
 
