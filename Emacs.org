@@ -126,7 +126,6 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
     - [[#cc][C/C++]]
     - [[#go][Go]]
     - [[#rust][Rust]]
-    - [[#ocaml][OCaml]]
     - [[#f][F#]]
     - [[#emacs-lisp][Emacs Lisp]]
     - [[#scheme][Scheme]]
@@ -3020,14 +3019,6 @@ Configure TypeScript and JavaScript language modes
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-rust-mode"
-
-#+end_src
-
-*** OCaml
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-  "emacs-tuareg"
 
 #+end_src
 
