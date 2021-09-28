@@ -3895,6 +3895,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 #+begin_src emacs-lisp
 
   (use-package fish-completion
+    :disabled
     :hook (eshell-mode . fish-completion-mode))
 
 #+end_src
