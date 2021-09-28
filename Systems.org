@@ -20,6 +20,7 @@
 - [[#profile-management][Profile Management]]
   - [[#activating-profiles][Activating Profiles]]
   - [[#updating-profiles][Updating Profiles]]
+  - [[#updating-channels][Updating Channels]]
 - [[#dotfiles-management][Dotfiles Management]]
   - [[#syncing][Syncing]]
   - [[#updating][Updating]]
@@ -37,9 +38,11 @@
 
 Guix supports the concept of [[https://guix.gnu.org/manual/en/html_node/Channels.html#Channels][channels]] which basically amount to Git repositories which contain Guix package definitions that can be installed on your machine.  Aside from the =%default-channels= list, I also use the [[https://gitlab.com/nonguix/nonguix][Nonguix]] channel to install packages that aren't included with Guix by default like the non-free Linux kernel.
 
-*.config/guix/channels.scm:*
+I also generate my real =.config/guix/channels.scm= file based on this =base-channels.scm= file.  This allows me to keep a pinned channel list in the real channels file while maintaining a canonical channel listing that I generate it from using the =update-channels= script (defined later in this file).
 
-#+begin_src scheme :tangle .config/guix/channels.scm
+*.config/guix/base-channels.scm:*
+
+#+begin_src scheme :tangle .config/guix/base-channels.scm
 
     ;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
@@ -735,6 +738,17 @@ for profile in $profiles; do
 
   guix package --profile="$profilePath/$profileName" --manifest="$HOME/.config/guix/manifests/$profileName.scm"
 done
+
+#+end_src
+
+** Updating Channels
+
+This script makes it easy to update all channels to the latest commit based on an original channel file (see the Channels section at the top of this document).
+
+#+begin_src sh :tangle .bin/update-channels :shebang #!/bin/sh
+
+  guix pull --channels=$HOME/.config/guix/base-channels.scm
+  guix describe --format=channels > ~/.config/guix/channels.scm
 
 #+end_src
 

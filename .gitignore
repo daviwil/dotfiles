@@ -32,6 +32,7 @@ fonts/truetype/.uuid
 .config/shepherd/init.scm
 .config/mimeapps.list
 .bin/update-screens
+.bin/update-channels
 .config/dunst/dunstrc
 .config/polybar/player-status.sh
 .config/polybar/config
