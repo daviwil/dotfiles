@@ -1770,6 +1770,9 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
     :config
     (auth-source-pass-enable))
 
+  (use-package oauth2
+    :straight t)
+
   (dw/leader-key-def
     "ap" '(:ignore t :which-key "pass")
     "app" 'password-store-copy
