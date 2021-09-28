@@ -3947,6 +3947,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 #+begin_src emacs-lisp
 
   (use-package eshell-toggle
+    :disabled
     :after eshell
     :bind ("C-M-'" . eshell-toggle)
     :custom
