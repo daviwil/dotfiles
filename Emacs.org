@@ -1299,7 +1299,7 @@ Trying this as an alternative to Ivy and Counsel.
         (if (string-match-p "/." (minibuffer-contents))
             (zap-up-to-char (- arg) ?/)
           (delete-minibuffer-contents))
-        (backward-kill-word arg)))
+        (delete-word (- arg))))
 
   (use-package vertico
     ;; :straight '(vertico :host github
