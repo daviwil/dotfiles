@@ -3530,10 +3530,10 @@ I'm experimenting with generating =Texinfo= from Org Mode files and I need a way
           (setq dw/command-window-frame
             (posframe-show
               clm/command-log-buffer
-              :position `(,(- (x-display-pixel-width) 650) . 50)
-              :width 35
+              :position `(,(- (x-display-pixel-width) 590) . 15)
+              :width 38
               :height 5
-              :min-width 35
+              :min-width 38
               :min-height 5
               :internal-border-width 2
               :internal-border-color "#c792ea"
