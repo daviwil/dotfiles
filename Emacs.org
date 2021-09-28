@@ -3547,7 +3547,7 @@ I'm experimenting with generating =Texinfo= from Org Mode files and I need a way
       "Show current command and its key binding in the mode line."
       :global t
       (if keycast-mode
-          (add-hook 'pre-command-hook 'keycast-mode-line-update t)
+          (add-hook 'pre-command-hook 'keycast-mode-line-update)
           (remove-hook 'pre-command-hook 'keycast-mode-line-update)))
 
     (add-to-list 'global-mode-string '("" mode-line-keycast " ")))
