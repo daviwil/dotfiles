@@ -1965,7 +1965,8 @@ Set up Org Mode with a baseline configuration.  The following sections will add 
           org-hide-block-startup nil
           org-src-preserve-indentation nil
           org-startup-folded 'content
-          org-cycle-separator-lines 2)
+          org-cycle-separator-lines 2
+          org-capture-bookmark nil)
 
     (setq org-modules
       '(org-crypt
