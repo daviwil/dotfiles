@@ -267,6 +267,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       (interactive)
       (pcase exwm-class-name
         ("Emacs" (call-interactively #'exwm-input-toggle-keyboard))
+        ("Xephyr" (call-interactively #'exwm-input-toggle-keyboard))
         ("discord" (exwm-workspace-move-window 3))
         ("Microsoft Teams - Preview" (exwm-workspace-move-window 3))
         ("Spotify" (exwm-workspace-move-window 4))
@@ -426,6 +427,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
         ?\C-\M-j  ;; Buffer list
         ?\C-\M-k  ;; Browser list
         ?\C-\M-n  ;; Next workspace
+        ?\C-\M-'  ;; Popper toggle
         ?\C-\     ;; Ctrl+Space
         ?\C-\;))
 
@@ -484,6 +486,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (setq exwm-input-global-keys
            `(([?\s-\C-r] . exwm-reset)
              ([?\s-w] . exwm-workspace-switch)
+             ([?\s-i] . exwm-input-toggle-keyboard)
              ([?\s-r] . hydra-exwm-move-resize/body)
              ([?\s-e] . dired-jump)
              ([?\s-E] . (lambda () (interactive) (dired "~")))
