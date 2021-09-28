@@ -76,6 +76,7 @@ This is an ongoing evolution of my original Emacs configuration files, inspired 
   - [[#window-history-with-winner-mode][Window History with winner-mode]]
   - [[#set-margins-for-modes][Set Margins for Modes]]
   - [[#control-buffer-placement][Control Buffer Placement]]
+  - [[#taming-popups-with-popperel][Taming Popups with Popper.el]]
 - [[#expand-region][Expand Region]]
 - [[#credential-management][Credential Management]]
 - [[#file-browsing][File Browsing]]
@@ -1687,6 +1688,48 @@ Emacs' default buffer placement algorithm is pretty disruptive if you like setti
 
   ;; If a popup does happen, don't resize windows to be equal-sized
   (setq even-window-sizes nil)
+
+#+end_src
+
+** Taming Popups with Popper.el
+
+#+begin_src emacs-lisp
+
+  (defun dw/popper-window-height (window)
+    (let (buffer-mode (with-current-buffer (window-buffer window)
+                        major-mode))
+      (pcase buffer-mode
+        ('exwm-mode 40)
+        (_ 15))))
+
+  (use-package popper
+    :straight (popper :host github
+                      :repo "karthink/popper"
+                      :build (:not autoloads))
+    :bind (("C-M-'" . popper-toggle-latest)
+           ("M-'" . popper-cycle)
+           ("C-M-\"" . popper-toggle-type))
+    :custom
+    (popper-window-height 12)
+     ;; (popper-window-height
+     ;; (lambda (window)
+     ;;   (let ((buffer-mode (with-current-buffer (window-buffer window)
+     ;;                        major-mode)))
+     ;;     (message "BUFFER MODE: %s" buffer-mode)
+     ;;     (pcase buffer-mode
+     ;;       ('exwm-mode 40)
+     ;;       ('helpful-mode 20)
+     ;;       ('eshell-mode (progn (message "eshell!") 10))
+     ;;       (_ 15)))))
+    (popper-reference-buffers
+     '("^\\*eshell\\*"
+       "^vterm"
+       help-mode
+       helpful-mode
+       compilation-mode))
+    :init
+    (require 'popper) ;; Needed because I disabled autoloads
+    (popper-mode 1))
 
 #+end_src
 
