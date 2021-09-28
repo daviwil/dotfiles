@@ -605,12 +605,12 @@ Improve scrolling.
 
 #+begin_src emacs-lisp
 
-    (unless dw/is-termux
-      (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-      (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-      (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-      (setq scroll-step 1) ;; keyboard scroll one line at a time
-      (setq use-dialog-box nil)) ;; Disable dialog boxes since they weren't working in Mac OSX
+  (unless dw/is-termux
+    (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+    (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+    (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+    (setq scroll-step 1) ;; keyboard scroll one line at a time
+    (setq use-dialog-box nil)) ;; Disable dialog boxes since they weren't working in Mac OSX
 
 #+end_src
 
@@ -1069,7 +1069,7 @@ Emacs can be prompted for the PIN of GPG private keys, we just need to set
   (other-window 1)
   (set-buffer buffer))
 
-(setq server-window #'dw/show-server-edit-buffer)
+;; (setq server-window #'dw/show-server-edit-buffer)
 
 #+end_src
 
@@ -3365,7 +3365,6 @@ Set up the =compile= package and ensure that compilation output automatically sc
 
   "emacs-yasnippet"
   "emacs-yasnippet-snippets"
-  ;; "emacs-ivy-yasnippet"  ;; Not in config yet
 
 #+end_src
 
