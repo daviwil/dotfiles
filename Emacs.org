@@ -3970,9 +3970,11 @@ This enhances eshell's completions with those that Fish is capable of and also f
 #+begin_src emacs-lisp
 
   (use-package vterm
+    :after evil-collection
     :commands vterm
     :config
-    (setq vterm-max-scrollback 10000))
+    (setq vterm-max-scrollback 10000)
+    (advice-add 'evil-collection-vterm-insert :before #'vterm-reset-cursor-point))
 
 #+end_src
 
