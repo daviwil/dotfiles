@@ -1569,6 +1569,7 @@ flatpak install --user flathub-beta com.obsproject.Studio
 "openssh"
 "zip"
 "unzip"
+"trash-cli"
 
 #+end_src
 
