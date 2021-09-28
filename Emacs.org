@@ -4161,6 +4161,40 @@ This enhances eshell's completions with those that Fish is capable of and also f
     ;;    :server "127.0.0.1" :port 6667
     ;;    :nick "daviwil" :password (password-store-get "IRC/Bitlbee")))
 
+  ;; Thanks karthik!
+  (defun erc-image-create-image (file-name)
+    "Create an image suitably scaled according to the setting of
+  'ERC-IMAGE-RESCALE."
+    (let* ((positions (window-inside-absolute-pixel-edges))
+          (width (- (nth 2 positions) (nth 0 positions)))
+          (height (- (nth 3 positions) (nth 1 positions)))
+          (image (create-image file-name))
+          (dimensions (image-size image t))
+          (imagemagick-p (and (fboundp 'imagemagick-types) 'imagemagick)))
+                                          ; See if we want to rescale the image
+      (if (and erc-image-inline-rescale
+              (not (image-multi-frame-p image)))
+          ;; Rescale based on erc-image-rescale
+          (cond (;; Numeric: scale down to that size
+                (numberp erc-image-inline-rescale)
+                (if (> (cdr dimensions) erc-image-inline-rescale)
+                    (create-image file-name imagemagick-p nil :height erc-image-inline-rescale)
+                  image))
+                (;; 'window: scale down to window size, if bigger
+                (eq erc-image-inline-rescale 'window)
+                ;; But only if the image is greater than the window size
+                (if (or (> (car dimensions) width)
+                        (> (cdr dimensions) height))
+                    ;; Figure out in which direction we need to scale
+                    (if (> width height)
+                        (create-image file-name imagemagick-p nil :height  height)
+                      (create-image file-name imagemagick-p nil :width width))
+                  ;; Image is smaller than window, just give that back
+                  image))
+                (t (progn (message "Error: none of the rescaling options matched") image)))
+        ;; No rescale
+        image)))
+
 #+end_src
 
 *Guix Packages*
