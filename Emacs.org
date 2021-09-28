@@ -1470,6 +1470,9 @@ Marginalia provides helpful annotations for various types of minibuffer completi
             #'which-key--hide-popup-ignore-command)
           embark-become-indicator embark-action-indicator))
 
+  (use-package embark-consult
+    :after embark)
+
   ;; (use-package embark-consult
   ;;   :straight '(embark-consult :host github
   ;;                              :repo "oantolin/embark"
