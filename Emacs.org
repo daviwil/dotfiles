@@ -4154,9 +4154,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 
   (defun dw/connect-irc ()
     (interactive)
-    (erc-tls
-       :server "crafter.mx" :port 3110
-       :nick "daviwil" :password (password-store-get "IRC/crafter.mx")))
+    (erc-tls :server "crafter.mx" :port 3110 :nick "daviwil"))
     ;; (erc
     ;;    :server "127.0.0.1" :port 6667
     ;;    :nick "daviwil" :password (password-store-get "IRC/Bitlbee")))
