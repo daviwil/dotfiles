@@ -161,34 +161,30 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 #+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
 
-(use-package exwm
-  :init
-  (setq mouse-autoselect-window nil
-        focus-follows-mouse t
-        exwm-workspace-warp-cursor t
-        exwm-workspace-number 5)
-        ;exwm-workspace-display-echo-area-timeout 5
-        ;exwm-workspace-minibuffer-position 'bottom) ;; Annoying focus issues
-  :config
-  ;; Make class name the buffer name
-  (add-hook 'exwm-update-class-hook
-            (lambda ()
-              (exwm-workspace-rename-buffer exwm-class-name)))
-  (add-hook 'exwm-update-title-hook
-            (lambda ()
-              (pcase exwm-class-name
-                ("Vimb" (exwm-workspace-rename-buffer (format "vimb: %s" exwm-title)))
-                ("qutebrowser" (exwm-workspace-rename-buffer (format "Qutebrowser: %s" exwm-title))))))
+  (setup (:package exwm)
+    (setq mouse-autoselect-window nil
+          focus-follows-mouse t
+          exwm-workspace-warp-cursor t
+          exwm-workspace-number 5)
+          ;exwm-workspace-display-echo-area-timeout 5
+          ;exwm-workspace-minibuffer-position 'bottom) ;; Annoying focus issues
 
-  (exwm-enable))
+    ;; Make class name the buffer name
+    (add-hook 'exwm-update-class-hook
+        (lambda ()
+          (exwm-workspace-rename-buffer exwm-class-name)))
+    (add-hook 'exwm-update-title-hook
+        (lambda ()
+          (pcase exwm-class-name
+            ("Vimb" (exwm-workspace-rename-buffer (format "vimb: %s" exwm-title)))
+            ("qutebrowser" (exwm-workspace-rename-buffer (format "Qutebrowser: %s" exwm-title))))))
 
-;; Enable exwm-randr before exwm-init gets called
-(use-package exwm-randr
-  :if dw/exwm-enabled
-  :after (exwm)
-  :config
-  (exwm-randr-enable)
-  (setq exwm-randr-workspace-monitor-plist '(4 "eDP-1")))
+    ;; Enable exwm-randr before exwm-init gets called
+    (require 'exwm-randr)
+    (exwm-randr-enable)
+    (setq exwm-randr-workspace-monitor-plist '(0 "DP-3-3" 1 "DP-3-3" 2 "DP-3-3" 3 "eDP-1" 4 "eDP-1"))
+
+    (exwm-enable))
 
 #+end_src
 
@@ -259,31 +255,29 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (exwm/run-in-background "nm-applet")
     (exwm/run-in-background "syncthing-gtk --minimized")
     (exwm/run-in-background "udiskie -t")
-    ;(exwm/run-in-background "redshift -l 47.675510:-122.203362 -t 6500:3500")
-    (exwm/run-in-background "redshift -l 37.983810:23.727539 -t 6500:3500"))
+    (exwm/run-in-background "redshift -l 47.675510:-122.203362 -t 6500:3500"))
+    ;; Athens
+    ;(exwm/run-in-background "redshift -l 37.983810:23.727539 -t 6500:3500"))
 
-  (use-package exwm
-    :if dw/exwm-enabled
-    :config
+  (defun dw/setup-window-by-class ()
+    (interactive)
+    (pcase exwm-class-name
+      ("Emacs" (call-interactively #'exwm-input-toggle-keyboard))
+      ("Xephyr" (call-interactively #'exwm-input-toggle-keyboard))
+      ("discord" (exwm-workspace-move-window 3))
+      ("Microsoft Teams - Preview" (exwm-workspace-move-window 3))
+      ("Spotify" (exwm-workspace-move-window 4))
+      ("Vimb" (exwm-workspace-move-window 2))
+      ("qutebrowser" (exwm-workspace-move-window 2))
+      ("qjackctl" (exwm-floating-toggle-floating))
+      ("mpv" (exwm-floating-toggle-floating)
+              (dw/exwm-floating-toggle-pinned))
+      ("gsi" (exwm-input-toggle-keyboard))))
 
+  (setup exwm
     (add-hook 'exwm-mode-hook
               (lambda ()
                 (evil-local-set-key 'motion (kbd "C-u") nil)))
-
-    (defun dw/setup-window-by-class ()
-      (interactive)
-      (pcase exwm-class-name
-        ("Emacs" (call-interactively #'exwm-input-toggle-keyboard))
-        ("Xephyr" (call-interactively #'exwm-input-toggle-keyboard))
-        ("discord" (exwm-workspace-move-window 3))
-        ("Microsoft Teams - Preview" (exwm-workspace-move-window 3))
-        ("Spotify" (exwm-workspace-move-window 4))
-        ("Vimb" (exwm-workspace-move-window 2))
-        ("qutebrowser" (exwm-workspace-move-window 2))
-        ("qjackctl" (exwm-floating-toggle-floating))
-        ("mpv" (exwm-floating-toggle-floating)
-               (dw/exwm-floating-toggle-pinned))
-        ("gsi" (exwm-input-toggle-keyboard))))
 
     ;; Do some post-init setup
     (add-hook 'exwm-init-hook #'dw/exwm-init-hook)
@@ -297,18 +291,10 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
                 ;; Hide the modeline on all X windows
                 ;(exwm-layout-hide-mode-line)))
 
-    ;; Hide the modeline on all X windows
+    ;; Hide the modeline on all floating windows
     (add-hook 'exwm-floating-setup-hook
               (lambda ()
                 (exwm-layout-hide-mode-line))))
-
-  (use-package exwm-systemtray
-    :disabled
-    :if dw/exwm-enabled
-    :after (exwm)
-    :config
-    (exwm-systemtray-enable)
-    (setq exwm-systemtray-height 35))
 
 #+end_src
 
@@ -458,15 +444,13 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       "s-[" "playerctl previous"
       "s-]" "playerctl next")
 
-    (use-package desktop-environment
-      :after exwm
-      :config (desktop-environment-mode)
-      :custom
-      (desktop-environment-brightness-small-increment "2%+")
-      (desktop-environment-brightness-small-decrement "2%-")
-      (desktop-environment-brightness-normal-increment "5%+")
-      (desktop-environment-brightness-normal-decrement "5%-")
-      (desktop-environment-screenshot-command "flameshot gui"))
+    (setup (:package desktop-environment)
+      (desktop-environment-mode)
+      (:option desktop-environment-brightness-small-increment "2%+"
+               desktop-environment-brightness-small-decrement "2%-"
+               desktop-environment-brightness-normal-increment "5%+"
+               desktop-environment-brightness-normal-decrement "5%-"
+               desktop-environment-screenshot-command "flameshot gui"))
 
     ;; This needs a more elegant ASCII banner
     (defhydra hydra-exwm-move-resize (:timeout 4)
