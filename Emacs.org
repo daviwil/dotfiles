@@ -362,19 +362,22 @@ Used to disable a package configuration, similar to =:disabled= in =use-package=
 
 ** :load-after
 
-This keyword (from the wiki page) causes a setup block to be executed after other packages/features are loaded:
+This keyword causes a body to be executed after other packages/features are loaded:
 
 #+begin_src emacs-lisp
 
   (setup-define :load-after
-    (lambda (&rest features)
-      (let ((body `(require ',(setup-get 'feature))))
-        (dolist (feature (if (listp features)
-                             (nreverse features)
-                           (list features)))
-          (setq body `(with-eval-after-load ',feature ,body)))
-        body))
-    :documentation "Load the current feature after FEATURES.")
+      (lambda (features &rest body)
+        (let ((body `(progn
+                       (require ',(setup-get 'feature))
+                       ,@body)))
+          (dolist (feature (if (listp features)
+                               (nreverse features)
+                             (list features)))
+            (setq body `(with-eval-after-load ',feature ,body)))
+          body))
+    :documentation "Load the current feature after FEATURES."
+    :indent 1)
 
 #+end_src
 
@@ -494,11 +497,11 @@ Some tips can be found here:
 - https://nathantypanski.com/blog/2014-08-03-a-vim-like-emacs-config.html
 
 #+begin_src emacs-lisp
-  
+
   (setup (:pkg undo-tree)
     (setq undo-tree-auto-save-history nil)
     (global-undo-tree-mode 1))
-  
+
   (setup (:pkg evil)
     ;; Pre-load configuration
     (setq evil-want-integration t)
@@ -507,10 +510,10 @@ Some tips can be found here:
     (setq evil-want-C-i-jump nil)
     (setq evil-respect-visual-line-mode t)
     (setq evil-undo-system 'undo-tree)
-  
+
     ;; Activate the Evil
     (evil-mode 1)
-  
+
     ;; Set Emacs state modes
     (dolist (mode '(custom-mode
                     eshell-mode
@@ -522,19 +525,19 @@ Some tips can be found here:
                     sauron-mode
                     term-mode))
       (add-to-list 'evil-emacs-state-modes mode))
-  
+
     (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
     (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-  
+
     ;; Use visual line motions even outside of visual-line-mode buffers
     (evil-global-set-key 'motion "j" 'evil-next-visual-line)
     (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-  
+
     (unless dw/is-termux
       (defun dw/dont-arrow-me-bro ()
         (interactive)
         (message "Arrow keys are bad, you know?"))
-  
+
       ;; Disable arrow keys in normal and visual modes
       (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
       (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
@@ -544,20 +547,19 @@ Some tips can be found here:
       (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
       (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
       (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro))
-  
+
     (evil-set-initial-state 'messages-buffer-mode 'normal)
     (evil-set-initial-state 'dashboard-mode 'normal))
-  
+
   (setup (:pkg evil-collection)
     ;; Is this a bug in evil-collection?
     (setq evil-collection-company-use-tng nil)
-    (:load-after evil)
-    (:when-loaded
+    (:load-after evil
       (:option evil-collection-outline-bind-tab-p nil)
       (delete 'lispy evil-collection-mode-list)
       (delete 'org-present evil-collection-mode-list)
       (evil-collection-init)))
-  
+
 #+end_src
 
 *Guix Packages*
@@ -1765,9 +1767,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
       "p" 'dired-ranger-paste))
 
   (setup (:pkg dired-rainbow)
-    (:load-after dired)
-    (:when-loaded
-     (progn
+    (:load-after dired
      (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
      (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
      (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
@@ -1787,7 +1787,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
      (dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf"))
      (dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak"))
      (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
-     (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))))
+     (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*")))
 
   ;; (defun dw/dired-link (path)
   ;;   (lexical-let ((target path))
@@ -2915,8 +2915,7 @@ Configure TypeScript and JavaScript language modes
   (setup (:pkg zig-mode :straight t)
     (:disabled)
     (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
-    (:load-after lsp-mode)
-    (:when-loaded
+    (:load-after lsp-mode
       (lsp-register-client
         (make-lsp-client
           :new-connection (lsp-stdio-connection "~/Projects/Code/zls/zig-cache/bin/zls")
@@ -3515,8 +3514,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 #+begin_src emacs-lisp
   
   (setup (:pkg eshell-syntax-highlighting)
-    (:load-after eshell)
-    (:when-loaded
+    (:load-after eshell
       (eshell-syntax-highlighting-global-mode +1)))
   
 #+end_src
