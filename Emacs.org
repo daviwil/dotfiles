@@ -1,15 +1,27 @@
 #+TITLE: Emacs Configuration
 #+PROPERTY: header-args:emacs-lisp :tangle .emacs.d/init.el
 
-This is an ongoing evolution of my original Emacs configuration files, inspired by a bunch of resources I've found online.
+* Preface
+
+GNU Emacs isn't a text editor, it's the ultimate productivity environment for hackers.  This document contains the core parts of my Emacs configuration which drive the workflow I use every day.
 
 If you're viewing this file on GitHub, I recommend using [[https://config.daviwil.com/emacs][my configuration website]] instead for a better experience!
+
+I recently rewrote my Emacs configuration to use =setup.el=, so if you want to see the older version that uses =use-package=, you can [[https://github.com/daviwil/dotfiles/blob/9776d65c4486f2fa08ec60a06e86ecb6d2c40085/Emacs.org][find it here]].
+
+Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in here:
+
+- [[./Desktop.org][Desktop Environment Configuration]]
+- [[./Systems.org][System Configurations with Guix]]
+- [[./Workflow.org][Productivity Workflow]]
+- [[./Mail.org][Mail Configuration]]
 
 * Table of Contents
 :PROPERTIES:
 :TOC:      :include all :ignore this
 :END:
 :CONTENTS:
+- [[#preface][Preface]]
 - [[#startup-performance][Startup Performance]]
 - [[#native-compilation][Native Compilation]]
 - [[#system-settings][System Settings]]
