@@ -161,7 +161,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 #+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
 
-  (setup (:package exwm)
+  (setup (:pkg exwm)
     (setq mouse-autoselect-window nil
           focus-follows-mouse t
           exwm-workspace-warp-cursor t
@@ -444,7 +444,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       "s-[" "playerctl previous"
       "s-]" "playerctl next")
 
-    (setup (:package desktop-environment)
+    (setup (:pkg desktop-environment)
       (desktop-environment-mode)
       (:option desktop-environment-brightness-small-increment "2%+"
                desktop-environment-brightness-small-decrement "2%-"
