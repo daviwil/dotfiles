@@ -27,7 +27,7 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
 - [[#system-settings][System Settings]]
 - [[#package-management][Package Management]]
 - [[#streamlined-configuration-with-setupel][Streamlined Configuration with setup.el]]
-  - [[#package][:package]]
+  - [[#pkg][:pkg]]
   - [[#delay][:delay]]
   - [[#disabled][:disabled]]
   - [[#load-after][:load-after]]
@@ -293,9 +293,9 @@ I've recently switched to the excellent [[https://www.emacswiki.org/emacs/SetupE
 
 #+end_src
 
-** :package
+** :pkg
 
-The =:package= keyword will depend on Guix-installed Emacs packages unless the parameter seems like a =straight.el= recipe (it's a list).
+The =:pkg= keyword will depend on Guix-installed Emacs packages unless the parameter seems like a =straight.el= recipe (it's a list).
 
 #+begin_src emacs-lisp
 
@@ -318,7 +318,7 @@ The =:package= keyword will depend on Guix-installed Emacs packages unless the p
               (car recipe))
             (plist-put plist :straight nil))))
 
-  (setup-define :package
+  (setup-define :pkg
     (lambda (&rest recipe)
       (if (and dw/is-guix-system
                (or (eq (length recipe) 1)
@@ -389,7 +389,7 @@ I don't want a bunch of transient files showing up as untracked in the Git repo 
         url-history-file (expand-file-name "url/history" user-emacs-directory))
   
   ;; Use no-littering to automatically set common paths to the new user-emacs-directory
-  (setup (:package no-littering)
+  (setup (:pkg no-littering)
     (require 'no-littering))
   
   ;; Keep customization settings in a temporary file (thanks Ambrevar!)
@@ -495,11 +495,11 @@ Some tips can be found here:
 
 #+begin_src emacs-lisp
   
-  (setup (:package undo-tree)
+  (setup (:pkg undo-tree)
     (setq undo-tree-auto-save-history nil)
     (global-undo-tree-mode 1))
   
-  (setup (:package evil)
+  (setup (:pkg evil)
     ;; Pre-load configuration
     (setq evil-want-integration t)
     (setq evil-want-keybinding nil)
@@ -548,7 +548,7 @@ Some tips can be found here:
     (evil-set-initial-state 'messages-buffer-mode 'normal)
     (evil-set-initial-state 'dashboard-mode 'normal))
   
-  (setup (:package evil-collection)
+  (setup (:pkg evil-collection)
     ;; Is this a bug in evil-collection?
     (setq evil-collection-company-use-tng nil)
     (:load-after evil)
@@ -577,7 +577,7 @@ based on the prefix keys you entered.  Learned about this one from Spacemacs.
 
 #+begin_src emacs-lisp
 
-  (setup (:package which-key)
+  (setup (:pkg which-key)
     (diminish 'which-key-mode)
     (which-key-mode)
     (setq which-key-idle-delay 0.3))
@@ -599,7 +599,7 @@ in conjunction with Evil modes.
 
 #+begin_src emacs-lisp
 
-  (setup (:package general)
+  (setup (:pkg general)
     (general-evil-setup t)
 
     (general-create-definer dw/leader-key-def
@@ -724,8 +724,8 @@ Alternate themes:
 
 #+begin_src emacs-lisp
 
-  (setup (:package spacegray-theme))
-  (setup (:package doom-themes))
+  (setup (:pkg spacegray-theme))
+  (setup (:pkg doom-themes))
   (unless dw/is-termux
     (load-theme 'doom-palenight t)
     (doom-themes-visual-bell-config))
@@ -788,7 +788,7 @@ This is currently disabled because I was having issues with Emacs 28 crashing wh
       (setf (cdr (nth block-idx unicode-fonts-block-font-mapping))
             `(,updated-block))))
 
-  (setup (:package unicode-fonts)
+  (setup (:pkg unicode-fonts)
     :if (not dw/is-termux)
     :custom
     (unicode-fonts-skip-font-groups '(low-quality-glyphs))
@@ -817,7 +817,7 @@ This is currently disabled because I was having issues with Emacs 28 crashing wh
 
 #+begin_src emacs-lisp
 
-  (setup (:package emojify)
+  (setup (:pkg emojify)
     (:hook erc-mode))
 
 #+end_src
@@ -847,7 +847,7 @@ The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky min
 
 #+begin_src emacs-lisp
 
-  (setup (:package diminish))
+  (setup (:pkg diminish))
 
 #+end_src
 
@@ -858,10 +858,10 @@ The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky min
     ;; You must run (all-the-icons-install-fonts) one time after
     ;; installing this package!
   
-  (setup (:package minions)
+  (setup (:pkg minions)
     (:hook-into doom-modeline-mode))
   
-  (setup (:package doom-modeline)
+  (setup (:pkg doom-modeline)
     (:hook-into after-init-hook)
     (:option doom-modeline-height 15
              doom-modeline-bar-width 6
@@ -892,7 +892,7 @@ The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky min
 
 #+begin_src emacs-lisp
 
-  (setup (:package perspective)
+  (setup (:pkg perspective)
     (:global "C-M-k" persp-switch
              "C-M-n" persp-next
              "C-x k" persp-kill-buffer*)
@@ -917,7 +917,7 @@ The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky min
 
 #+begin_src emacs-lisp
 
-  (setup (:package alert)
+  (setup (:pkg alert)
     (:when-loaded
      (:option alert-default-style 'notifications)))
 
@@ -935,7 +935,7 @@ The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky min
 
 #+begin_src emacs-lisp
   
-  (setup (:package super-save)
+  (setup (:pkg super-save)
     (:delay)
     (:when-loaded
       (super-save-mode +1)
@@ -1075,7 +1075,7 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 
 #+begin_src emacs-lisp
 
-  (setup (:package evil-nerd-commenter)
+  (setup (:pkg evil-nerd-commenter)
     (:global "M-/" evilnc-comment-or-uncomment-lines))
 
 #+end_src
@@ -1092,7 +1092,7 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 
 #+begin_src emacs-lisp
 
-  (setup (:package ws-butler)
+  (setup (:pkg ws-butler)
     (:hook-into text-mode prog-mode))
 
 #+end_src
@@ -1109,7 +1109,7 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 
 #+begin_src emacs-lisp
 
-  (setup (:package parinfer :guix "emacs-parinfer-mode")
+  (setup (:pkg parinfer :guix "emacs-parinfer-mode")
     (:disabled)
     (:hook-into clojure-mode
                 emacs-lisp-mode
@@ -1140,7 +1140,7 @@ Default to an indentation size of 2 spaces since it's the norm for pretty much e
 
 #+begin_src emacs-lisp
 
-  (setup (:package origami :guix "emacs-origami-el")
+  (setup (:pkg origami :guix "emacs-origami-el")
     (:hook-into yaml-mode))
 
 #+end_src
@@ -1162,10 +1162,10 @@ Check out my [[https://systemcrafters.cc/learning-emacs-lisp/][Learning Emacs Li
 
 #+begin_src emacs-lisp
 
-  (setup (:package dotcrafter
-                   :host github
-                   :repo "daviwil/dotcrafter.el"
-                   :branch "main")
+  (setup (:pkg dotcrafter
+               :host github
+               :repo "daviwil/dotcrafter.el"
+               :branch "main")
     (:option dotcrafter-org-files '("Emacs.org"
                                     "Desktop.org"
                                     "Systems.org"
@@ -1225,7 +1225,7 @@ Check out my [[https://systemcrafters.cc/learning-emacs-lisp/][Learning Emacs Li
 
 #+begin_src emacs-lisp
   
-  (setup (:package hydra)
+  (setup (:pkg hydra)
     (require 'hydra))
   
 #+end_src
@@ -1272,7 +1272,7 @@ Trying this as an alternative to Ivy and Counsel.
           (delete-minibuffer-contents))
         (delete-word (- arg))))
 
-  (setup (:package vertico)
+  (setup (:pkg vertico)
     ;; :straight '(vertico :host github
     ;;                     :repo "minad/vertico"
     ;;                     :branch "main")
@@ -1300,7 +1300,7 @@ Trying this as an alternative to Ivy and Counsel.
 
 #+begin_src emacs-lisp
 
-  (setup (:package corfu :host github :repo "minad/corfu")
+  (setup (:pkg corfu :host github :repo "minad/corfu")
     (:with-map corfu-map
       (:bind "C-j" corfu-next
              "C-k" corfu-previous
@@ -1314,7 +1314,7 @@ Trying this as an alternative to Ivy and Counsel.
 
 #+begin_src emacs-lisp
   
-  (setup (:package orderless)
+  (setup (:pkg orderless)
     (require 'orderless)
     (setq completion-styles '(orderless)
           completion-category-defaults nil
@@ -1336,7 +1336,7 @@ Consult provides a lot of useful completion commands similar to Ivy's Counsel.
 
 #+begin_src emacs-lisp
   
-  (setup (:package consult)
+  (setup (:pkg consult)
     (require 'consult)
     (:global "C-s" consult-line
              "C-M-l" consult-imenu
@@ -1366,7 +1366,7 @@ Consult provides a lot of useful completion commands similar to Ivy's Counsel.
 
 #+begin_src emacs-lisp
 
-  (setup (:package consult-dir :straight t)
+  (setup (:pkg consult-dir :straight t)
     (:global "C-x C-d" consult-dir)
     (:with-map vertico-map
       (:bind "C-x C-d" consult-dir
@@ -1398,7 +1398,7 @@ Marginalia provides helpful annotations for various types of minibuffer completi
 
 #+begin_src emacs-lisp
 
-  (setup (:package marginalia)
+  (setup (:pkg marginalia)
     (:option marginalia-annotators '(marginalia-annotators-heavy
                                      marginalia-annotators-light
                                      nil))
@@ -1418,7 +1418,7 @@ Marginalia provides helpful annotations for various types of minibuffer completi
 
 #+begin_src emacs-lisp
 
-  (setup (:package embark)
+  (setup (:pkg embark)
     (:also-load embark-consult)
     (:global "C-S-a" embark-act)
     (:with-map minibuffer-local-map
@@ -1446,7 +1446,7 @@ Marginalia provides helpful annotations for various types of minibuffer completi
 #+begin_src emacs-lisp
   
   ;; Binding will be set by desktop config
-  (setup (:package app-launcher))
+  (setup (:pkg app-launcher))
   
 #+end_src
 
@@ -1462,7 +1462,7 @@ Marginalia provides helpful annotations for various types of minibuffer completi
 
 #+begin_src emacs-lisp
 
-  (setup (:package avy)
+  (setup (:pkg avy)
     (dw/leader-key-def
       "j"   '(:ignore t :which-key "jump")
       "jj"  '(avy-goto-char :which-key "jump to char")
@@ -1487,7 +1487,7 @@ I'm trying to figure out how to integrate Bufler with Ivy more effectively (buff
 
 #+begin_src emacs-lisp
 
-  (setup (:package bufler :straight t)
+  (setup (:pkg bufler :straight t)
     (:disabled)
     (:global "C-M-j" bufler-switch-buffer
              "C-M-k" bufler-workspace-frame-set)
@@ -1547,7 +1547,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+begin_src emacs-lisp
 
-  (setup (:package default-text-scale)
+  (setup (:pkg default-text-scale)
     (default-text-scale-mode))
 
 #+end_src
@@ -1566,7 +1566,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+begin_src emacs-lisp
 
-  (setup (:package ace-window)
+  (setup (:pkg ace-window)
     (:global "M-o" ace-window)
     (:option aw-scope 'frame
              aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
@@ -1598,7 +1598,7 @@ The keybindings for this are =C+M+-= and =C+M+==.
 
 #+begin_src emacs-lisp
 
-  (setup (:package visual-fill-column)
+  (setup (:pkg visual-fill-column)
     (setq visual-fill-column-width 110
           visual-fill-column-center-text t)
     (:hook-into org-mode))
@@ -1640,10 +1640,10 @@ Emacs' default buffer placement algorithm is pretty disruptive if you like setti
         ('exwm-mode 40)
         (_ 15))))
 
-  (setup (:package popper
-                   :host github
-                   :repo "karthink/popper"
-                   :build (:not autoloads))
+  (setup (:pkg popper
+               :host github
+               :repo "karthink/popper"
+               :build (:not autoloads))
     (:global "C-M-'" popper-toggle-latest
              "M-'" popper-cycle
              "C-M-\"" popper-toggle-type)
@@ -1676,7 +1676,7 @@ tweaking Org agenda views much less annoying.
 
 #+begin_src emacs-lisp
 
-  (setup (:package expand-region)
+  (setup (:pkg expand-region)
     (unless dw/is-termux
       (:global "M-[" er/expand-region
                "C-(" er/mark-outside-pairs)))
@@ -1697,7 +1697,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 
 #+begin_src emacs-lisp
 
-  (setup (:package password-store)
+  (setup (:pkg password-store)
     (setq password-store-password-length 12)
     (dw/leader-key-def
       "ap" '(:ignore t :which-key "pass")
@@ -1705,10 +1705,10 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
       "api" 'password-store-insert
       "apg" 'password-store-generate))
 
-  (setup (:package auth-source-pass)
+  (setup (:pkg auth-source-pass)
     (auth-source-pass-enable))
 
-  (setup (:package oauth2 :straight t))
+  (setup (:pkg oauth2 :straight t))
   
 #+end_src
 
@@ -1727,10 +1727,10 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 
 #+begin_src emacs-lisp
 
-  (setup (:package all-the-icons-dired))
-  (setup (:package dired-single))
-  (setup (:package dired-ranger))
-  (setup (:package dired-collapse))
+  (setup (:pkg all-the-icons-dired))
+  (setup (:pkg dired-single))
+  (setup (:pkg dired-ranger))
+  (setup (:pkg dired-collapse))
 
   (setup dired
     (setq dired-listing-switches "-agho --group-directories-first"
@@ -1764,7 +1764,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
       "X" 'dired-ranger-move
       "p" 'dired-ranger-paste))
 
-  (setup (:package dired-rainbow)
+  (setup (:pkg dired-rainbow)
     (:load-after dired)
     (:when-loaded
      (progn
@@ -1820,7 +1820,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 
 #+begin_src emacs-lisp
 
-  (setup (:package openwith)
+  (setup (:pkg openwith)
     (unless dw/is-termux
       (require 'openwith)
       (setq openwith-associations
@@ -1878,7 +1878,7 @@ I document and configure my org-mode workflow in a separate document: [[file:Wor
   (when dw/is-guix-system
     (straight-use-package '(org :type built-in)))
   
-  (setup (:package org)
+  (setup (:pkg org)
     (:also-load org-tempo dw-org dw-workflow)
     (:hook dw/org-mode-setup)
     (setq org-ellipsis " ▾"
@@ -1936,7 +1936,7 @@ Use bullet characters instead of asterisks, plus set the header font sizes to so
 #+begin_src emacs-lisp
   
   (unless dw/is-termux
-    (setup (:package org-superstar)
+    (setup (:pkg org-superstar)
       (:load-after org)
       (:hook-into org-mode)
       (:option org-superstar-remove-leading-stars t
@@ -2025,7 +2025,7 @@ documentation page.
 
 #+begin_src emacs-lisp
 
-  (setup (:package org-pomodoro)
+  (setup (:pkg org-pomodoro)
     (setq org-pomodoro-start-sound "~/.dotfiles/.emacs.d/sounds/focus_bell.wav")
     (setq org-pomodoro-short-break-sound "~/.dotfiles/.emacs.d/sounds/three_beeps.wav")
     (setq org-pomodoro-long-break-sound "~/.dotfiles/.emacs.d/sounds/three_beeps.wav")
@@ -2059,7 +2059,7 @@ through =emacsclient.=
 
 #+begin_src emacs-lisp
 
-  (setup (:package evil-org)
+  (setup (:pkg evil-org)
     (:hook-into org-mode org-agenda-mode)
     (require 'evil-org)
     (require 'evil-org-agenda)
@@ -2097,7 +2097,7 @@ It's nice to have a table of contents section for long literate configuration fi
 
 #+begin_src emacs-lisp
 
-  (setup (:package org-make-toc)
+  (setup (:pkg org-make-toc)
     (:hook-into org-mode))
 
 #+end_src
@@ -2114,7 +2114,7 @@ It's nice to have a table of contents section for long literate configuration fi
 
 #+begin_src emacs-lisp
 
-  (setup (:package org-caldav)
+  (setup (:pkg org-caldav)
     (:delay)
     (setq org-caldav-url "https://caldav.fastmail.com/dav/calendars/user/daviwil@fastmail.fm/"
           ;; org-caldav-files '("~/Notes/Calendar/Personal.org" "~/Notes/Calendar/Work.org")
@@ -2205,7 +2205,7 @@ It's nice to have a table of contents section for long literate configuration fi
     (when (fboundp 'live-crafter-add-timestamp)
       (live-crafter-add-timestamp (substring-no-properties (org-get-heading t t t t)))))
 
-  (setup (:package org-present)
+  (setup (:pkg org-present)
     (:with-map org-present-mode-keymap
       (:bind "C-c C-j" dw/org-present-next
              "C-c C-k" dw/org-present-prev))
@@ -2304,7 +2304,7 @@ It's nice to have a table of contents section for long literate configuration fi
     ("e" dw/org-roam-goto-year)
     ("c" nil "cancel"))
   
-  (setup (:package org-roam :straight t)
+  (setup (:pkg org-roam :straight t)
     (setq org-roam-v2-ack t)
     (setq dw/daily-note-filename "%<%Y-%m-%d>.org"
           dw/daily-note-header "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
@@ -2374,7 +2374,7 @@ This package makes it much easier to edit Org documents when =org-hide-emphasis-
 
 #+begin_src emacs-lisp
 
-  (setup (:package org-appear)
+  (setup (:pkg org-appear)
     (:hook-into org-mode))
 
 #+end_src
@@ -2399,7 +2399,7 @@ https://magit.vc/manual/magit/
 
 #+begin_src emacs-lisp
 
-  (setup (:package magit)
+  (setup (:pkg magit)
     (:also-load magit-todos)
     (:global "C-M-;" magit-status)
     (:option magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
@@ -2419,7 +2419,7 @@ https://magit.vc/manual/magit/
 
 #+begin_src emacs-lisp
 
-  (setup (:package forge)
+  (setup (:pkg forge)
     (:disabled))
 
 #+end_src
@@ -2438,7 +2438,7 @@ This is an interesting extension to Magit that shows a TODOs section in your git
 
 #+begin_src emacs-lisp
 
-  (setup (:package magit-todos))
+  (setup (:pkg magit-todos))
 
 #+end_src
 
@@ -2454,7 +2454,7 @@ This is an interesting extension to Magit that shows a TODOs section in your git
 
 #+begin_src emacs-lisp
 
-  (setup (:package git-link)
+  (setup (:pkg git-link)
     (setq git-link-open-in-browser t)
     (dw/leader-key-def
       "gL"  'git-link))
@@ -2475,7 +2475,7 @@ Get rid of non-fringe package?
 
 #+begin_src emacs-lisp
 
-  (setup (:package git-gutter :straight git-gutter-fringe)
+  (setup (:pkg git-gutter :straight git-gutter-fringe)
     (:hook-into text-mode prog-mode)
     (setq git-gutter:update-interval 2)
     (unless dw/is-termux
@@ -2572,7 +2572,7 @@ OK, this isn't Emacs configuration, but it's relevant to development!
     (persp-switch (projectile-project-name))
     (magit-status))
 
-  (setup (:package projectile)
+  (setup (:pkg projectile)
     (when (file-directory-p "~/Projects/Code")
       (setq projectile-project-search-path '("~/Projects/Code")))
     (setq projectile-switch-project-action #'dw/switch-project-action)
@@ -2623,7 +2623,7 @@ This section contains project configurations for specific projects that I can't 
 
 #+begin_src emacs-lisp
 
-  (setup (:package lsp-mode :straight t)
+  (setup (:pkg lsp-mode :straight t)
     (:hook-into typescript-mode js2-mode web-mode)
     (:bind "TAB" completion-at-point)
     (:option lsp-headerline-breadcrumb-enable nil)
@@ -2639,7 +2639,7 @@ This section contains project configurations for specific projects that I can't 
       "lS" 'lsp-ui-sideline-mode
       "lX" 'lsp-execute-code-action))
 
-  (setup (:package lsp-ui :straight t)
+  (setup (:pkg lsp-ui :straight t)
     (:hook-into lsp-mode)
     (:when-loaded
      (progn
@@ -2665,7 +2665,7 @@ Trying out Eglot for a bit to see how I like it compared to lsp-mode.
 
 #+begin_src emacs-lisp
 
-  (setup (:package eglot)
+  (setup (:pkg eglot)
     (:disabled)
     (add-hook 'typescript-mode-hook #'eglot-ensure))
 
@@ -2683,7 +2683,7 @@ Trying out Eglot for a bit to see how I like it compared to lsp-mode.
 
 #+begin_src emacs-lisp
   
-  (setup (:package dap-mode :straight t)
+  (setup (:pkg dap-mode :straight t)
     ;; Assuming that `dap-debug' will invoke all this
     (:when-loaded
       (:option lsp-enable-dap-auto-configure nil)
@@ -2699,10 +2699,10 @@ Here are packages that are useful across different Lisp and Scheme implementatio
 
 #+begin_src emacs-lisp
 
-  (setup (:package lispy)
+  (setup (:pkg lispy)
     (:hook-into emacs-lisp-mode scheme-mode))
 
-  (setup (:package lispyville)
+  (setup (:pkg lispyville)
     (:hook-into lispy-mode)
     (:when-loaded
       (lispyville-set-key-theme '(operators c-w additional
@@ -2726,11 +2726,11 @@ Not currently doing any Common Lisp development so these packages are disabled f
 
 #+begin_src emacs-lisp
 
-  (setup (:package sly)
+  (setup (:pkg sly)
     (:disabled)
     (:file-match "\\.lisp\\'"))
 
-  (setup (:package slime)
+  (setup (:pkg slime)
     (:disabled)
     (:file-match "\\.lisp\\'"))
 
@@ -2741,7 +2741,7 @@ Not currently doing any Common Lisp development so these packages are disabled f
 #+begin_src emacs-lisp
 
   ;; Include .sld library definition files
-  (setup (:package scheme-mode)
+  (setup (:pkg scheme-mode)
     (:file-match "\\.sld\\'"))
 
 #+end_src
@@ -2752,7 +2752,7 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
-  (setup (:package typescript-mode)
+  (setup (:pkg typescript-mode)
     (:file-match "\\.ts\\'")
     (setq typescript-indent-level 2))
 
@@ -2761,7 +2761,7 @@ Configure TypeScript and JavaScript language modes
     (setq-default evil-shift-width js-indent-level)
     (setq-default tab-width 2))
 
-  (setup (:package js2-mode)
+  (setup (:pkg js2-mode)
     (:file-match "\\.jsx?\\'")
 
     ;; Use js2-mode for Node scripts
@@ -2774,7 +2774,7 @@ Configure TypeScript and JavaScript language modes
     (add-hook 'js2-mode-hook #'dw/set-js-indentation)
     (add-hook 'json-mode-hook #'dw/set-js-indentation))
 
-  (setup (:package apheleia)
+  (setup (:pkg apheleia)
     (apheleia-global-mode +1))
 
 #+end_src
@@ -2793,7 +2793,7 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
-  (setup (:package ccls)
+  (setup (:pkg ccls)
     (:hook lsp)
     (:hook-into c-mode c++-mode objc-mode cuda-mode))
 
@@ -2812,7 +2812,7 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
-  (setup (:package go-mode)
+  (setup (:pkg go-mode)
     (:hook lsp-deferred))
 
 #+end_src
@@ -2829,11 +2829,11 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
-  (setup (:package rust-mode)
+  (setup (:pkg rust-mode)
     (:file-match "\\.rs\\'")
     (setq rust-format-on-save t))
 
-  (setup (:package cargo :straight t))
+  (setup (:pkg cargo :straight t))
 
 #+end_src
 
@@ -2852,7 +2852,7 @@ Configure TypeScript and JavaScript language modes
   (setup emacs-lisp-mode
     (:hook flycheck-mode))
 
-  (setup (:package helpful)
+  (setup (:pkg helpful)
     (:option counsel-describe-function-function #'helpful-callable
              counsel-describe-variable-function #'helpful-variable)
     (:global [remap describe-function] helpful-function
@@ -2887,7 +2887,7 @@ Configure TypeScript and JavaScript language modes
   ;; :bind (:map geiser-mode-map
   ;;        ("TAB" . completion-at-point))
 
-  (setup (:package geiser)
+  (setup (:pkg geiser)
     ;; (setq geiser-default-implementation 'gambit)
     ;; (setq geiser-active-implementations '(gambit guile))
     ;; (setq geiser-implementations-alist '(((regexp "\\.scm$") gambit)
@@ -2912,7 +2912,7 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
-  (setup (:package zig-mode :straight t)
+  (setup (:pkg zig-mode :straight t)
     (:disabled)
     (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
     (:load-after lsp-mode)
@@ -2929,7 +2929,7 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
-  (setup (:package markdown-mode)
+  (setup (:pkg markdown-mode)
     (setq markdown-command "marked")
     (:file-match "\\.md\\'")
     (:when-loaded
@@ -2954,7 +2954,7 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
-  (setup (:package web-mode)
+  (setup (:pkg web-mode)
     (:file-match "(\\.\\(html?\\|ejs\\|tsx\\|jsx\\)\\'")
     (setq-default web-mode-code-indent-offset 2)
     (setq-default web-mode-markup-indent-offset 2)
@@ -2962,8 +2962,8 @@ Configure TypeScript and JavaScript language modes
 
   ;; 1. Start the server with `httpd-start'
   ;; 2. Use `impatient-mode' on any buffer
-  (setup (:package impatient-mode :straight t))
-  (setup (:package skewer-mode :straight t))
+  (setup (:pkg impatient-mode :straight t))
+  (setup (:pkg skewer-mode :straight t))
 
 #+end_src
 
@@ -2979,7 +2979,7 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
-  (setup (:package yaml-mode)
+  (setup (:pkg yaml-mode)
     (:file-match "\\.ya?ml\\'"))
 
 #+end_src
@@ -3026,7 +3026,7 @@ Set up the =compile= package and ensure that compilation output automatically sc
 
 #+begin_src emacs-lisp
 
-  (setup (:package flycheck)
+  (setup (:pkg flycheck)
     (:hook-into lsp-mode))
 
 #+end_src
@@ -3045,7 +3045,7 @@ I don't actually use this at the moment.
 
 #+begin_src emacs-lisp
 
-  (setup (:package yasnippet)
+  (setup (:pkg yasnippet)
     (:disabled)
     (require 'yasnippet)
     (add-hook 'prog-mode-hook #'yas-minor-mode)
@@ -3066,7 +3066,7 @@ I don't actually use this at the moment.
 
 #+begin_src emacs-lisp
 
-  (setup (:package smartparens)
+  (setup (:pkg smartparens)
     (:hook-into prog-mode))
 
 #+end_src
@@ -3083,7 +3083,7 @@ I don't actually use this at the moment.
 
 #+begin_src emacs-lisp
 
-  (setup (:package rainbow-delimiters)
+  (setup (:pkg rainbow-delimiters)
     (:hook-into prog-mode))
 
 #+end_src
@@ -3102,7 +3102,7 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 #+begin_src emacs-lisp
 
-  (setup (:package rainbow-mode)
+  (setup (:pkg rainbow-mode)
     (:hook-into org-mode
                 emacs-lisp-mode
                 web-mode
@@ -3161,8 +3161,8 @@ I'm experimenting with generating =Texinfo= from Org Mode files and I need a way
 
 #+begin_src emacs-lisp
 
-  (setup (:package posframe))
-  (setup (:package command-log-mode :straight t))
+  (setup (:pkg posframe))
+  (setup (:pkg command-log-mode :straight t))
 
   (setq dw/command-window-frame nil)
 
@@ -3193,7 +3193,7 @@ I'm experimenting with generating =Texinfo= from Org Mode files and I need a way
   (dw/leader-key-def
    "tc" 'dw/toggle-command-window)
 
-  (setup (:package keycast)
+  (setup (:pkg keycast)
     ;; This works with doom-modeline, inspired by this comment:
     ;; https://github.com/tarsius/keycast/issues/7#issuecomment-627604064
     (define-minor-mode keycast-mode
@@ -3223,7 +3223,7 @@ I use the [[https://github.com/Palakis/obs-websocket][obs-websocket]] plugin for
 
 #+begin_src emacs-lisp
   
-  (setup (:package obs-websocket :guix "emacs-obs-websocket-el")
+  (setup (:pkg obs-websocket :guix "emacs-obs-websocket-el")
     (require 'obs-websocket)
     (defhydra dw/stream-keys (:exit t)
       "Stream Commands"
@@ -3255,9 +3255,9 @@ The *real* stream automation starts here.
 
 #+begin_src emacs-lisp
 
-  (setup (:package live-crafter
-                   :host github
-                   :repo "SystemCrafters/live-crafter")
+  (setup (:pkg live-crafter
+               :host github
+               :repo "SystemCrafters/live-crafter")
     (:load-after mpv))
 
 #+end_src
@@ -3301,7 +3301,7 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
 
 #+begin_src emacs-lisp
 
-  (setup (:package ledger-mode)
+  (setup (:pkg ledger-mode)
     (:file-match "\\.lgr\\'")
     (:bind "TAB" completion-at-point)
     (:option
@@ -3312,7 +3312,7 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
                       ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
                       ("account" "%(binary) -f %(ledger-file) reg %(account)"))))
 
-  (setup (:package hledger-mode :straight t)
+  (setup (:pkg hledger-mode :straight t)
     (:bind "TAB" completion-at-point))
 
 #+end_src
@@ -3400,7 +3400,7 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
     (require 'evil-collection-eshell)
     (evil-collection-eshell-setup)
 
-    (setup (:package xterm-color))
+    (setup (:pkg xterm-color))
 
     (push 'eshell-tramp eshell-modules-list)
     (push 'xterm-color-filter eshell-preoutput-filter-functions)
@@ -3450,12 +3450,12 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
     (setq eshell-directory-name "~/.dotfiles/.emacs.d/eshell/"
           eshell-aliases-file (expand-file-name "~/.dotfiles/.emacs.d/eshell/alias")))
 
-  (setup (:package eshell-z)
+  (setup (:pkg eshell-z)
     (:disabled) ;; Using consult-dir for this now
     (add-hook 'eshell-mode-hook (lambda () (require 'eshell-z)))
     (add-hook 'eshell-z-change-dir-hook (lambda () (eshell/pushd (eshell/pwd)))))
 
-  (setup (:package exec-path-from-shell)
+  (setup (:pkg exec-path-from-shell)
     (setq exec-path-from-shell-check-startup-files nil)
     (when (memq window-system '(mac ns x))
       (exec-path-from-shell-initialize)))
@@ -3496,7 +3496,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 
 #+begin_src emacs-lisp
 
-  (setup (:package fish-completion)
+  (setup (:pkg fish-completion)
     (:disabled)
     (:hook-into eshell-mode))
 
@@ -3514,7 +3514,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 
 #+begin_src emacs-lisp
   
-  (setup (:package eshell-syntax-highlighting)
+  (setup (:pkg eshell-syntax-highlighting)
     (:load-after eshell)
     (:when-loaded
       (eshell-syntax-highlighting-global-mode +1)))
@@ -3538,7 +3538,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
     (set-face-foreground 'company-preview-common "#4b5668")
     (set-face-background 'company-preview nil))
 
-  (setup (:package esh-autosuggest)
+  (setup (:pkg esh-autosuggest)
     (require 'esh-autosuggest)
     (setq esh-autosuggest-delay 0.5)
     (:hook dw/esh-autosuggest-setup)
@@ -3552,7 +3552,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 
 #+begin_src emacs-lisp
 
-  (setup (:package eshell-toggle)
+  (setup (:pkg eshell-toggle)
     (:disabled)
     (:global "C-M-'" eshell-toggle)
     (:option eshell-toggle-size-fraction 3
@@ -3575,7 +3575,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 
 #+begin_src emacs-lisp
 
-  (setup (:package vterm)
+  (setup (:pkg vterm)
     (:when-loaded
      (progn
        (setq vterm-max-scrollback 10000)
@@ -3608,7 +3608,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 
 #+begin_src emacs-lisp
 
-  (setup (:package tracking)
+  (setup (:pkg tracking)
     (require 'tracking)
     (setq tracking-faces-priorities '(all-the-icons-pink
                                       all-the-icons-lgreen
@@ -3656,7 +3656,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 
   (advice-add 'exwm-workspace-switch :before #'dw/before-exwm-workspace-switch)
 
-  (setup (:package telega)
+  (setup (:pkg telega)
     (setq telega-user-use-avatars nil
           telega-use-tracking-for '(any pin unread)
           telega-emoji-use-images t
@@ -3686,10 +3686,10 @@ This enhances eshell's completions with those that Fish is capable of and also f
     (dolist (buffer erc-modified-channels-alist)
       (tracking-add-buffer (car buffer))))
 
-  (setup (:package erc-hl-nicks)
+  (setup (:pkg erc-hl-nicks)
     (:load-after erc))
 
-  (setup (:package erc-image)
+  (setup (:pkg erc-image)
     (:load-after erc))
 
   (setup erc
@@ -3801,8 +3801,7 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
 #+begin_src emacs-lisp
 
-  (setup (:package 0x0 :host gitlab
-                       :repo "willvaughn/emacs-0x0"))
+  (setup (:pkg 0x0 :host gitlab :repo "willvaughn/emacs-0x0"))
 
 #+end_src
 
@@ -3810,7 +3809,7 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
 #+begin_src emacs-lisp
 
-  (setup (:package mastodon)
+  (setup (:pkg mastodon)
     (setq mastodon-instance-url "https://fosstodon.org"))
 
 #+end_src
@@ -3829,7 +3828,7 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
 #+begin_src emacs-lisp
 
-  (setup (:package elfeed)
+  (setup (:pkg elfeed)
     (setq elfeed-feeds
       '("https://nullprogram.com/feed/"
         "https://ambrevar.xyz/atom.xml"
@@ -3852,14 +3851,14 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
 #+begin_src emacs-lisp
 
-  (setup (:package mpv :straight t))
+  (setup (:pkg mpv :straight t))
 
 #+end_src
 *** EMMS
 
 #+begin_src emacs-lisp
 
-  (setup (:package emms)
+  (setup (:pkg emms)
     (require 'emms-setup)
     (emms-standard)
     (emms-default-players)
@@ -3884,7 +3883,7 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
 #+begin_src emacs-lisp
 
-  (setup (:package elpher))
+  (setup (:pkg elpher))
 
 #+end_src
 
@@ -3902,7 +3901,7 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
 #+begin_src emacs-lisp
 
-  (setup (:package guix))
+  (setup (:pkg guix))
 
   (dw/leader-key-def
     "G"  '(:ignore t :which-key "Guix")
@@ -3926,7 +3925,7 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
 #+begin_src emacs-lisp
 
-  (setup (:package daemons))
+  (setup (:pkg daemons))
 
 #+end_src
 
@@ -3942,7 +3941,7 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
 #+begin_src emacs-lisp
 
-  (setup (:package pulseaudio-control)
+  (setup (:pkg pulseaudio-control)
     (setq pulseaudio-control-pactl-path "/run/current-system/profile/bin/pactl"))
 
 #+end_src
@@ -3989,10 +3988,10 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
 #+begin_src emacs-lisp
 
-  (setup (:package docker)
+  (setup (:pkg docker)
     (:also-load docker-tramp))
 
-  (setup (:package docker-tramp))
+  (setup (:pkg docker-tramp))
 
 #+end_src
 
