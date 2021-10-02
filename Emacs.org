@@ -27,7 +27,6 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
 - [[#system-settings][System Settings]]
 - [[#package-management][Package Management]]
 - [[#streamlined-configuration-with-setupel][Streamlined Configuration with setup.el]]
-  - [[#straight][:straight]]
   - [[#package][:package]]
   - [[#delay][:delay]]
   - [[#disabled][:disabled]]
@@ -291,20 +290,6 @@ I've recently switched to the excellent [[https://www.emacswiki.org/emacs/SetupE
 
   (straight-use-package '(setup :type git :host nil :repo "https://git.sr.ht/~pkal/setup"))
   (require 'setup)
-
-#+end_src
-
-** :straight
-
-Installs package recipes via =straight.el= by passing the parameter directly to =straight-use-package=.
-
-#+begin_src emacs-lisp
-
-  (setup-define :straight
-     (lambda (&rest recipe)
-       `(straight-use-package ',recipe))
-     :documentation "Install RECIPE using straight.el"
-     :shorthand #'cadr)
 
 #+end_src
 
@@ -1177,10 +1162,10 @@ Check out my [[https://systemcrafters.cc/learning-emacs-lisp/][Learning Emacs Li
 
 #+begin_src emacs-lisp
 
-  (setup (:straight dotcrafter
-                    :host github
-                    :repo "daviwil/dotcrafter.el"
-                    :branch "main")
+  (setup (:package dotcrafter
+                   :host github
+                   :repo "daviwil/dotcrafter.el"
+                   :branch "main")
     (:option dotcrafter-org-files '("Emacs.org"
                                     "Desktop.org"
                                     "Systems.org"
