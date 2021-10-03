@@ -32,7 +32,6 @@ fonts/truetype/.uuid
 .config/shepherd/init.scm
 .config/mimeapps.list
 .bin/update-screens
-.bin/update-channels
 .config/dunst/dunstrc
 .config/polybar/player-status.sh
 .config/polybar/config
@@ -48,6 +47,7 @@ fonts/truetype/.uuid
 .emacs.d/tangle-dotfiles.el
 .bin/update-dotfiles
 .bin/sync-dotfiles
+.bin/update-channels
 .bin/update-profiles
 .bin/activate-profiles
 .config/guix/systems/install.scm
@@ -62,7 +62,7 @@ fonts/truetype/.uuid
 .config/guix/systems/base-system.scm
 .config/guix/systems/base-system.scm
 .config/guix/channels.scm
-.config/guix/channels.scm
+.config/guix/base-channels.scm
 .config/guix/manifests/mail.scm
 .mbsyncrc
 .emacs.d/lisp/dw-mail.el
