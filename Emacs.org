@@ -291,6 +291,13 @@ I've recently switched to the excellent [[https://www.emacswiki.org/emacs/SetupE
   (straight-use-package '(setup :type git :host nil :repo "https://git.sr.ht/~pkal/setup"))
   (require 'setup)
 
+  ;; Uncomment this for debugging purposes
+  ;; (defun dw/log-require (&rest args)
+  ;;   (with-current-buffer (get-buffer-create "*require-log*")
+  ;;     (insert (format "%s\n"
+  ;;                     (file-name-nondirectory (car args))))))
+  ;; (add-to-list 'after-load-functions #'dw/log-require)
+
 #+end_src
 
 ** :pkg
