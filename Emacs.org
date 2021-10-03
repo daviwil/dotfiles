@@ -94,7 +94,6 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
   - [[#set-margins-for-modes][Set Margins for Modes]]
   - [[#control-buffer-placement][Control Buffer Placement]]
   - [[#taming-popups-with-popperel][Taming Popups with Popper.el]]
-- [[#expand-region][Expand Region]]
 - [[#credential-management][Credential Management]]
 - [[#file-browsing][File Browsing]]
   - [[#dired][Dired]]
@@ -179,7 +178,6 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
       - [[#configuration][Configuration]]
       - [[#bindings][Bindings]]
       - [[#sharing-files-with-0x0][Sharing Files with 0x0]]
-  - [[#mastodon][Mastodon]]
   - [[#rss-with-elfeed][RSS with Elfeed]]
   - [[#media][Media]]
     - [[#mpv][mpv]]
@@ -1677,29 +1675,6 @@ Emacs' default buffer placement algorithm is pretty disruptive if you like setti
 
 #+end_src
 
-* Expand Region
-
-This module is absolutely necessary for working inside of Emacs Lisp files,
-especially when trying to some parent of an expression (like a =setq=).  Makes
-tweaking Org agenda views much less annoying.
-
-#+begin_src emacs-lisp
-
-  (setup (:pkg expand-region)
-    (unless dw/is-termux
-      (:global "M-[" er/expand-region
-               "C-(" er/mark-outside-pairs)))
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-  "emacs-expand-region"
-
-#+end_src
-
 * Credential Management
 
 I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords locally.  I also use [[https://github.com/DamienCassou/auth-password-store][auth-source-pass]] as the primary =auth-source= provider so that all passwords are stored in a single place.
@@ -3068,7 +3043,7 @@ I don't actually use this at the moment.
 
 #+end_src
 
-*** TODO Smart Parens
+*** Smart Parens
 
 #+begin_src emacs-lisp
 
@@ -3807,23 +3782,6 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 #+begin_src emacs-lisp
 
   (setup (:pkg 0x0 :host gitlab :repo "willvaughn/emacs-0x0"))
-
-#+end_src
-
-** TODO Mastodon
-
-#+begin_src emacs-lisp
-
-  (setup (:pkg mastodon)
-    (setq mastodon-instance-url "https://fosstodon.org"))
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-  "emacs-mastodon"
 
 #+end_src
 
