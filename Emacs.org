@@ -927,8 +927,7 @@ The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky min
 #+begin_src emacs-lisp
 
   (setup (:pkg alert)
-    (:when-loaded
-     (:option alert-default-style 'notifications)))
+    (:option alert-default-style 'notifications))
 
 #+end_src
 
