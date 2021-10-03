@@ -555,9 +555,9 @@ Some tips can be found here:
     ;; Is this a bug in evil-collection?
     (setq evil-collection-company-use-tng nil)
     (:load-after evil
-      (:option evil-collection-outline-bind-tab-p nil)
-      (delete 'lispy evil-collection-mode-list)
-      (delete 'org-present evil-collection-mode-list)
+      (:option evil-collection-outline-bind-tab-p nil
+               (remove evil-collection-mode-list) 'lispy
+               (remove evil-collection-mode-list) 'org-present)
       (evil-collection-init)))
 
 #+end_src
