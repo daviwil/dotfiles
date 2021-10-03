@@ -1312,6 +1312,7 @@ Trying this as an alternative to Ivy and Counsel.
     (:with-map corfu-map
       (:bind "C-j" corfu-next
              "C-k" corfu-previous
+             "TAB" corfu-insert
              "C-f" corfu-insert))
     (:option corfu-cycle t)
     (corfu-global-mode))
