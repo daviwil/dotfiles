@@ -64,4 +64,4 @@ I have created a number of videos on YouTube that will teach you how to make a c
 
 * License
 
-Released under the [[./LICENSE][GPL v3]] unless otherwise specified by license files in subfolders.
+Released under the [[./LICENSE][MIT License]] unless otherwise specified by license files in subfolders.
