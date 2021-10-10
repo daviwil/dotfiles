@@ -2554,6 +2554,9 @@ OK, this isn't Emacs configuration, but it's relevant to development!
     (persp-switch (projectile-project-name))
     (magit-status))
 
+  (setup (:pkg project :straight t)
+    (add-to-list 'project-switch-commands '(magit-status "Magit Status" ?m)))
+
   (setup (:pkg projectile)
     (when (file-directory-p "~/Projects/Code")
       (setq projectile-project-search-path '("~/Projects/Code")))
