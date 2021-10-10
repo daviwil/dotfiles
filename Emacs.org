@@ -51,7 +51,6 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
     - [[#emojis-in-buffers][Emojis in buffers]]
   - [[#mode-line][Mode Line]]
     - [[#basic-customization][Basic Customization]]
-    - [[#enable-mode-diminishing][Enable Mode Diminishing]]
     - [[#doom-modeline][Doom Modeline]]
   - [[#workspaces][Workspaces]]
   - [[#notifications][Notifications]]
@@ -585,7 +584,6 @@ based on the prefix keys you entered.  Learned about this one from Spacemacs.
 #+begin_src emacs-lisp
 
   (setup (:pkg which-key)
-    (diminish 'which-key-mode)
     (which-key-mode)
     (setq which-key-idle-delay 0.3))
 
@@ -848,16 +846,6 @@ This is currently disabled because I was having issues with Emacs 28 crashing wh
 
 #+end_src
 
-*** Enable Mode Diminishing
-
-The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky minor modes from the modelines.
-
-#+begin_src emacs-lisp
-
-  (setup (:pkg diminish))
-
-#+end_src
-
 *** Doom Modeline
 
 #+begin_src emacs-lisp
@@ -945,7 +933,6 @@ The [[https://github.com/myrjola/diminish.el][diminish]] package hides pesky min
     (:delay)
     (:when-loaded
       (super-save-mode +1)
-      (diminish 'super-save-mode)
       (setq super-save-auto-save-when-idle t)))
   
 #+end_src
@@ -1853,9 +1840,8 @@ I document and configure my org-mode workflow in a separate document: [[file:Wor
     (variable-pitch-mode 1)
     (auto-fill-mode 0)
     (visual-line-mode 1)
-    (setq evil-auto-indent nil)
-    (diminish org-indent-mode))
-  
+    (setq evil-auto-indent nil))
+
   ;; Make sure Straight pulls Org from Guix
   (when dw/is-guix-system
     (straight-use-package '(org :type built-in)))
