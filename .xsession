@@ -1,1 +1,0 @@
-.emacs.d/exwm/start-exwm.sh

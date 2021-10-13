@@ -32,4 +32,4 @@ xss-lock -- slock &
 #xterm
 
 # Fire it up
-exec dbus-launch --exit-with-session emacs -mm --debug-init --use-exwm
+exec dbus-launch --exit-with-session emacs -mm --debug-init --use-exwm --with-profile=default
