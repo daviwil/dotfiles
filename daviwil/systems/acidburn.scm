@@ -4,8 +4,8 @@
   #:use-module (daviwil home-services udiskie)
   #:use-module (gnu services)
   #:use-module (gnu home)
-  #:use-module (gnu home-services)
-  #:use-module (gnu home-services shells))
+  #:use-module (gnu home services)
+  #:use-module (gnu home services shells)
 
 ;; TODO: Move this to shared config file
 (define-public common-home-services

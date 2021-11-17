@@ -7,8 +7,8 @@
   #:use-module (gnu packages xdisorg)
   #:use-module (daviwil packages fonts)
   #:use-module (gnu services)
-  #:use-module (gnu home-services)
-  #:use-module (gnu home-services shepherd)
+  #:use-module (gnu home services)
+  #:use-module (gnu home services shepherd)
   #:use-module (guix gexp)
   #:export (home-desktop-service-type))
 
