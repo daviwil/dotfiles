@@ -63,5 +63,5 @@
    (service home-udiskie-service-type)))
 
 (home-environment
- (packages (gather-manifest-packages '(emacs desktop video)))
+ (packages (gather-manifest-packages '(emacs desktop music video)))
  (services common-home-services))
