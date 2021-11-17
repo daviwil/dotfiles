@@ -5,7 +5,9 @@
   #:use-module (gnu services)
   #:use-module (gnu home)
   #:use-module (gnu home services)
+  #:use-module (gnu home services mcron)
   #:use-module (gnu home services shells)
+  #:use-module (guix gexp))
 
 ;; TODO: Move this to shared config file
 (define-public common-home-services
@@ -47,6 +49,15 @@
 
    ;; Set up desktop environment
    (service home-desktop-service-type)
+
+   ;; Start background jobs
+   (service home-mcron-service-type
+            (home-mcron-configuration
+             (jobs
+              (list
+               #~(job
+                  '(next-hour (range 0 24 4))
+                  "~/.dotfiles/.bin/sync-passwords")))))
 
    ;; Udiskie for auto-mounting devices
    (service home-udiskie-service-type)))
