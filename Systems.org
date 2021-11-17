@@ -84,7 +84,7 @@ I also generate my real =.config/guix/channels.scm= file based on this =base-cha
 
 The following channel list can be used when testing patches to packages and services from a local clone of the Guix repo.  You'll have to create a branch and commit changes to it before =guix pull= can pick them up, though.  You can change the target branch using the =branch= field of the =channel=.
 
-#+begin_src scheme :tangle .config/guix/channels.scm
+#+begin_src scheme :tangle no
 
 ;; (list (channel
 ;;         (name 'nonguix)
