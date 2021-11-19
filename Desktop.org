@@ -1547,7 +1547,7 @@ flatpak install --user flathub-beta com.obsproject.Studio
 "xdg-utils"      ;; For xdg-open, etc
 "xdg-dbus-proxy" ;; For Flatpak
 "gtk+:bin"       ;; For gtk-launch
-"glib:bin"       ;; For gio-launch-desktop
+;"glib:bin"       ;; For gio-launch-desktop
 "shared-mime-info"
 
 #+end_src
