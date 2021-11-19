@@ -1,0 +1,11 @@
+#!/bin/sh
+
+GREEN='\033[1;32m'
+BLUE='\033[1;34m'
+NC='\033[0m'
+
+echo
+echo -e "${GREEN}Updating $HOME for ${BLUE}$(hostname)${GREEN}...${NC}"
+echo
+
+guix home -L ~/.dotfiles reconfigure ~/.dotfiles/daviwil/systems/$(hostname).scm
