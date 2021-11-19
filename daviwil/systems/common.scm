@@ -18,13 +18,13 @@
               `(,(plain-file "bash-profile-extras"
                              (string-append
                               ;; Load the Nix profile
-                              "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then"
-                              "  . /run/current-system/profile/etc/profile.d/nix.sh"
-                              "fi"
+                              "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then\n"
+                              "  . /run/current-system/profile/etc/profile.d/nix.sh\n"
+                              "fi\n"
 
                               ;; Don't use the system-level PulseAudio configuration
-                              "unset PULSE_CONFIG"
-                              "unset PULSE_CLIENTCONFIG"))))
+                              "unset PULSE_CONFIG\n"
+                              "unset PULSE_CLIENTCONFIG\n"))))
 
              (environment-variables
               '( ;; Sort hidden (dot) files first in `ls` listings
