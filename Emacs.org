@@ -116,6 +116,7 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
     - [[#forge][Forge]]
     - [[#magit-todos][magit-todos]]
     - [[#git-link][git-link]]
+    - [[#smerge][smerge]]
     - [[#git-gutter][Git Gutter]]
     - [[#send-e-mail-for-git-patches][Send e-mail for Git patches]]
   - [[#projectile][Projectile]]
@@ -2408,6 +2409,20 @@ This is an interesting extension to Magit that shows a TODOs section in your git
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-git-link"
+
+#+end_src
+
+*** smerge
+
+#+begin_src emacs-lisp
+
+  (defhydra dw/smerge-panel ()
+    "smerge"
+    ("k" (smerge-prev) "prev change" )
+    ("j" (smerge-next) "next change")
+    ("u" (smerge-keep-upper) "keep upper")
+    ("l" (smerge-keep-lower) "keep lower")
+    ("q" nil "quit" :exit t))
 
 #+end_src
 
