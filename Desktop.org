@@ -255,10 +255,10 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (exwm/run-in-background "dunst")
     (exwm/run-in-background "nm-applet")
     (exwm/run-in-background "syncthing-gtk --minimized")
-    (exwm/run-in-background "udiskie -t")
-    (exwm/run-in-background "redshift -l 47.675510:-122.203362 -t 6500:3500"))
     ;; Athens
-    ;(exwm/run-in-background "redshift -l 37.983810:23.727539 -t 6500:3500"))
+    (exwm/run-in-background "redshift -l 37.983810:23.727539 -t 6500:3500"))
+    ;; Seattle
+    ;(exwm/run-in-background "redshift -l 47.675510:-122.203362 -t 6500:3500"))
 
   (defun dw/setup-window-by-class ()
     (interactive)
