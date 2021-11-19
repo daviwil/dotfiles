@@ -1390,18 +1390,14 @@ Marginalia provides helpful annotations for various types of minibuffer completi
 
 #+begin_src emacs-lisp
 
-  (setup (:pkg embark)
-    (:also-load embark-consult)
-    (:global "C-S-a" embark-act)
+  (setup (:pkg embark :straight t)
+    ;(:also-load embark-consult)
+    (:global "C-M-." embark-act)
     (:with-map minibuffer-local-map
      (:bind "C-d" embark-act))
 
-    ;; Show Embark actions via which-key
-    (setq embark-action-indicator
-          (lambda (map)
-            (which-key--show-keymap "Embark" map nil nil 'no-paging)
-            #'which-key--hide-popup-ignore-command)
-          embark-become-indicator embark-action-indicator))
+    ;; Use Embark to show command prefix help
+    (setq prefix-help-command #'embark-prefix-help-command))
 
 #+end_src
 
@@ -1409,7 +1405,7 @@ Marginalia provides helpful annotations for various types of minibuffer completi
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  "emacs-embark"
+  ;; "emacs-embark"
 
 #+end_src
 
