@@ -3214,6 +3214,9 @@ The *real* stream automation starts here.
 
 #+begin_src emacs-lisp
 
+  (setup (:pkg request :straight t))
+  (setup (:pkg a :straight t))
+
   (setup (:pkg live-crafter
                :host github
                :repo "SystemCrafters/live-crafter")
