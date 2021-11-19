@@ -966,9 +966,9 @@ list of timezones.  Nice for working in a team with remote members.
 
   (setq display-time-world-list
     '(("Etc/UTC" "UTC")
+      ("Europe/Athens" "Athens")
       ("America/Los_Angeles" "Seattle")
       ("America/New_York" "New York")
-      ("Europe/Athens" "Athens")
       ("Pacific/Auckland" "Auckland")
       ("Asia/Shanghai" "Shanghai")
       ("Asia/Kolkata" "Hyderabad")))
