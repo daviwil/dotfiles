@@ -16,14 +16,16 @@
    (service home-bash-service-type
             (home-bash-configuration
              (bash-profile
-              '( ;; Load the Nix profile
-                "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then"
-                "  . /run/current-system/profile/etc/profile.d/nix.sh"
-                "fi"
+              `(,(plain-file "bash-profile-extras"
+                             (string-append
+                              ;; Load the Nix profile
+                              "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then"
+                              "  . /run/current-system/profile/etc/profile.d/nix.sh"
+                              "fi"
 
-                ;; Don't use the system-level PulseAudio configuration
-                "unset PULSE_CONFIG"
-                "unset PULSE_CLIENTCONFIG"))
+                              ;; Don't use the system-level PulseAudio configuration
+                              "unset PULSE_CONFIG"
+                              "unset PULSE_CLIENTCONFIG"))))
 
              (environment-variables
               '( ;; Sort hidden (dot) files first in `ls` listings
