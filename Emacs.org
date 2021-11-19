@@ -40,7 +40,6 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
   - [[#esc-cancels-all][ESC Cancels All]]
   - [[#rebind-c-u][Rebind C-u]]
   - [[#lets-be-evil][Let's Be Evil]]
-  - [[#keybinding-panel-which-key][Keybinding Panel (which-key)]]
   - [[#simplify-leader-bindings-generalel][Simplify Leader Bindings (general.el)]]
 - [[#general-configuration][General Configuration]]
   - [[#user-interface][User Interface]]
@@ -573,27 +572,6 @@ Some tips can be found here:
   "emacs-evil"
   "emacs-evil-collection"
   "emacs-undo-tree"
-
-#+end_src
-
-** Keybinding Panel (which-key)
-
-[[https://github.com/justbur/emacs-which-key][which-key]] is great for getting an overview of what keybindings are available
-based on the prefix keys you entered.  Learned about this one from Spacemacs.
-
-#+begin_src emacs-lisp
-
-  (setup (:pkg which-key)
-    (which-key-mode)
-    (setq which-key-idle-delay 0.3))
-
-#+end_src
-
-*Guix Packages*
-
-#+begin_src scheme :noweb-ref packages :noweb-sep ""
-
-  "emacs-which-key"
 
 #+end_src
 
