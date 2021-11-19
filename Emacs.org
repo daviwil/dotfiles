@@ -2714,6 +2714,7 @@ Configure TypeScript and JavaScript language modes
 
   (setup (:pkg typescript-mode)
     (:file-match "\\.ts\\'")
+    (:hook lsp-deferred)
     (setq typescript-indent-level 2))
 
   (defun dw/set-js-indentation ()
