@@ -331,6 +331,7 @@ Define the =base-operating-system= which will be inherited by all machine config
                                  (web-interface? #t)
                                  (extensions
                                   (list cups-filters))))
+                       (udev-rules-service 'pipewire-add-udev-rules pipewire-0.3)
                        (service nix-service-type)
                        (bluetooth-service #:auto-enable? #t)
                        (remove (lambda (service)

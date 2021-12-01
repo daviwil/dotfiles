@@ -3,7 +3,7 @@
   #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages fonts)
   #:use-module (gnu packages gnome-xyz)
-  #:use-module (gnu packages pulseaudio)
+  #:use-module (gnu packages linux)
   #:use-module (gnu packages xdisorg)
   #:use-module (daviwil packages fonts)
   #:use-module (gnu services)
@@ -17,9 +17,6 @@
 
 (define (home-desktop-files-service config)
   (list `("xsession" ,(local-file "xsession" #:recursive? #t))
-        `("config/pulse/default.pa" ,(local-file "../../.config/pulse/default.pa"))
-        `("config/pulse/client.conf" ,(local-file "../../.config/pulse/client.conf"))
-        `("config/pulse/daemon.conf" ,(local-file "../../.config/pulse/daemon.conf"))
         `("config/xsettingsd/xsettingsd.conf" ,(plain-file "xsettingsd.conf" (string-append "
 Net/ThemeName \"Matcha-dark-azul\"
 Net/IconThemeName \"Papirus-Dark\"
@@ -34,6 +31,7 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
 
 (define (home-desktop-profile-service config)
   (list emacs-exwm
+        pipewire-0.3
         compton
         xsettingsd
         matcha-theme
@@ -44,12 +42,6 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
 
 (define (home-desktop-shepherd-services config)
   (list
-   ;; TODO: Confiure system service instead
-   (shepherd-service
-    (provision '(pulseaudio))
-    (documentation "Run and control pulseaudio.")
-    (start #~(make-forkexec-constructor '("pulseaudio")))
-    (stop #~(make-kill-destructor)))
    ;; TODO: Use built-in syncthing service
    (shepherd-service
     (provision '(syncthing))
@@ -61,7 +53,26 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
     (provision '(gpg-agent))
     (documentation "Run and control gpg-agent.")
     (start #~(make-system-constructor "gpg-connect-agent /bye"))
-    (stop #~(make-system-destructor "gpgconf --kill gpg-agent")))))
+    (stop #~(make-system-destructor "gpgconf --kill gpg-agent")))
+   ;; Start Pipewire daemons
+   (shepherd-service
+    ;; (requirement '(dbus-home))
+    (provision '(pipewire))
+    (stop  #~(make-kill-destructor))
+    (start #~(make-forkexec-constructor
+              (list #$(file-append pipewire-0.3 "/bin/pipewire")))))
+   (shepherd-service
+    (requirement '(pipewire))
+    (provision '(pipewire-media-session))
+    (stop  #~(make-kill-destructor))
+    (start #~(make-forkexec-constructor
+              (list #$(file-append pipewire-0.3 "/bin/pipewire-media-session")))))
+   (shepherd-service
+    (requirement '(pipewire))
+    (provision '(pipewire-pulse))
+    (stop  #~(make-kill-destructor))
+    (start #~(make-forkexec-constructor
+              (list #$(file-append pipewire-0.3 "/bin/pipewire-pulse")))))))
 
 (define (home-desktop-environment-variables config)
   '(("_JAVA_AWT_WM_NONREPARENTING" . "1")))
