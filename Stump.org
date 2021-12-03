@@ -31,8 +31,13 @@ StumpWM seems to be a good alternative to EXWM for more complicated window manag
   ;; Mouse click should focus the window
   (setf *mouse-focus-policy* :click)
 
-  ;; Show messages in the center
-  (setq *message-window-gravity* :center)
+  ;; Show messages at the top center of the screen
+  (setq *message-window-gravity* :top)
+  (setq *message-window-padding* 10)
+  (setq *message-window-y-padding* 10)
+
+  ;; Show the input window at top center of the screen
+  (setq *input-window-gravity* :top)
 
   ;;; -- Key Bindings --
 
@@ -78,6 +83,12 @@ StumpWM seems to be a good alternative to EXWM for more complicated window manag
   (define-key *top-map* (kbd "C-s-4") "gmove media")
 
   ;;; -- Visual Enhancements --
+
+  ;; Set UI colors
+  (set-border-color "#c792ea")
+  (set-bg-color "#232635")
+  (set-fg-color "#A6Accd")
+  (set-msg-border-width 2)
 
   ;; Get gapped
   (load-module "swm-gaps")
