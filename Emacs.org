@@ -1141,6 +1141,7 @@ Check out my [[https://systemcrafters.cc/learning-emacs-lisp/][Learning Emacs Li
     (:option dotcrafter-org-files '("Emacs.org"
                                     "Desktop.org"
                                     "Systems.org"
+                                    "Stump.org"
                                     "Mail.org"
                                     "Workflow.org"))
     (require 'dotcrafter)

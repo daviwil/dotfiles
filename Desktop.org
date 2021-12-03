@@ -120,14 +120,7 @@ I also have to do an extra step to make sure Emacs can find the font path from t
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  ;; Window Manager
-  ;; "stumpwm"
-  ;; "stumpwm:lib"
-  ;; "sbcl-stumpwm-swm-gaps"
-  ;; "sbcl-stumpwm-ttf-fonts"
-  ;; "sbcl"
-
-  ;; Settin gs Manager
+  ;; Settings Manager
   "xsettingsd"
 
   ;; GTK Themes

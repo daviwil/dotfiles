@@ -1,0 +1,129 @@
+#+title: Experimental StumpWM Configuration
+#+PROPERTY: header-args:lisp :tangle .files/.config/stumpwm/config :mkdirp yes
+
+StumpWM seems to be a good alternative to EXWM for more complicated window management situations.
+
+#+begin_src lisp
+
+  (in-package :stumpwm)
+
+  ;;; -- Add StumpWM module paths --
+
+  (stumpwm:add-to-load-path "~/.guix-home/profile/share/common-lisp/sbcl/stumpwm-swm-gaps")
+  (stumpwm:add-to-load-path "~/.guix-home/profile/share/common-lisp/sbcl/stumpwm-ttf-fonts")
+  (stumpwm:add-to-load-path "~/.guix-home/profile/share/common-lisp/sbcl/stumpwm-stumptray")
+  (stumpwm:add-to-load-path "~/.guix-home/profile/share/common-lisp/sbcl/stumpwm-kbd-layouts")
+
+  ;;; -- Environment setup --
+
+  ;; Set up workspaces
+  (run-commands
+    "gnew chat"
+    "gnew dev"
+    "gnew web"
+    "gnew comm"
+    "gnew media"
+    "gselect dev")
+
+  ;; Change the prefix key to Super-d
+  (set-prefix-key (kbd "s-d"))
+
+  ;; Mouse click should focus the window
+  (setf *mouse-focus-policy* :click)
+
+  ;; Show messages in the center
+  (setq *message-window-gravity* :center)
+
+  ;;; -- Key Bindings --
+
+  ;; Enable multiple keyboard layouts (English and Greek)
+  (load-module "kbd-layouts")
+  (kbd-layouts:keyboard-layout-list "us" "gr")
+  (setf kbd-layouts:*caps-lock-behavior* :ctrl)
+
+  ;; Run xmodmap to remap keys
+  (run-shell-command "xmodmap ~/.dotfiles/.config/i3/Xmodmap")
+
+  ;; Set some super key bindings
+  (define-key *top-map* (kbd "s-h") "move-focus left")
+  (define-key *top-map* (kbd "s-l") "move-focus right")
+  (define-key *top-map* (kbd "s-j") "move-focus down")
+  (define-key *top-map* (kbd "s-k") "move-focus up")
+
+  (define-key *top-map* (kbd "s-C-h") "move-window left")
+  (define-key *top-map* (kbd "s-C-l") "move-window right")
+  (define-key *top-map* (kbd "s-C-j") "move-window down")
+  (define-key *top-map* (kbd "s-C-k") "move-window up")
+
+  (define-key *top-map* (kbd "s-f") "fullscreen")
+  (define-key *top-map* (kbd "s-r") "iresize")
+  (define-key *top-map* (kbd "s-q") "delete")
+  (define-key *top-map* (kbd "s-SPC") "run-shell-command emacsclient -e \"(call-interactively #'app-launcher-run-app)\"")
+  (define-key *top-map* (kbd "C-s-SPC") "switch-keyboard-layout")
+  (define-key *top-map* (kbd "C-s-l") "run-shell-command slock")
+
+  (define-key *top-map* (kbd "s-TAB") "next-in-frame")
+  (define-key *top-map* (kbd "s-S-TAB") "prev-in-frame")
+
+  (define-key *top-map* (kbd "s-`") "gselect chat")
+  (define-key *top-map* (kbd "s-1") "gselect dev")
+  (define-key *top-map* (kbd "s-2") "gselect web")
+  (define-key *top-map* (kbd "s-3") "gselect comm")
+  (define-key *top-map* (kbd "s-4") "gselect media")
+
+  (define-key *top-map* (kbd "C-s-`") "gmove chat")
+  (define-key *top-map* (kbd "C-s-1") "gmove dev")
+  (define-key *top-map* (kbd "C-s-2") "gmove web")
+  (define-key *top-map* (kbd "C-s-3") "gmove comm")
+  (define-key *top-map* (kbd "C-s-4") "gmove media")
+
+  ;;; -- Visual Enhancements --
+
+  ;; Get gapped
+  (load-module "swm-gaps")
+  (setf swm-gaps:*inner-gaps-size* 3)
+  ;(run-commands "toggle-gaps-on")
+
+  ;; Enable TTF fonts
+  (load-module "ttf-fonts")
+  (setf xft:*font-dirs* '("/home/daviwil/.guix-home/profile/share/fonts/"))
+  (setf clx-truetype:+font-cache-filename+ "/home/daviwil/.local/share/fonts/font-cache.sexp")
+  (xft:cache-fonts)
+
+  (set-font (make-instance 'xft:font :family "JetBrains Mono" :subfamily "Regular" :size 16))
+
+  ;;; -- Mode line --
+
+  ;; Set mode line colors
+  (setf *mode-line-background-color* "#232635")
+  (setf *mode-line-foreground-color* "#A6Accd")
+
+  ;; Start the mode line
+  (run-commands "mode-line")
+
+  ;; Add the system tray module
+  (load-module "stumptray")
+  (stumptray:stumptray)
+
+  ;;; -- Start initial applications --
+
+  ;(run-shell-command "polybar panel")
+  (run-shell-command "feh --bg-scale ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg")
+  (run-shell-command "dunst")
+  (run-shell-command "nm-applet")
+  (run-shell-command "syncthing-gtk --minimized")
+  (run-shell-command "redshift -l 37.983810:23.727539 -t 6500:3500")
+  (run-shell-command "emacs")
+
+#+end_src
+
+* References
+
+- [[https://guix.gnu.org/cookbook/en/html_node/StumpWM.html][Guix Cookbook - StumpWM]]
+- [[https://www.emacswiki.org/emacs/StumpWM][EmacsWiki - StumpWM]]
+
+* Example Configs
+
+- https://github.com/montaropdf/dotfiles/blob/056d4e3fcd21ddcc8a36f5f6f2e8ba5cde8795d0/dotfiles/plain/work/.config/stumpwm/conf.d/customs.lisp#L20
+- https://github.com/kostafey/dotfiles/blob/master/.stumpwmrc
+- https://gist.github.com/dtpeters/1ab09bbd61800a36e16c0167b308e0f1

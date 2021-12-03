@@ -3,6 +3,8 @@
   #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages fonts)
   #:use-module (gnu packages gnome-xyz)
+  #:use-module (gnu packages lisp)
+  #:use-module (gnu packages wm)
   #:use-module (gnu packages xdisorg)
   #:use-module (daviwil packages fonts)
   #:use-module (daviwil packages linux)
@@ -30,15 +32,29 @@ Xft/HintStyle \"hintnone\"
 Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
 
 (define (home-desktop-profile-service config)
-  (list emacs-exwm
+  (list stumpwm+slynk
+        `(,stumpwm "lib")
+        stumpish
+        emacs-stumpwm-mode
+        sbcl-stumpwm-swm-gaps
+        sbcl-stumpwm-ttf-fonts
+        sbcl-stumpwm-stumptray
+        sbcl-stumpwm-kbd-layouts
+        sbcl
+
+        ;; Sound
         pipewire-0.3.38
+
+        ;; Appearance
         compton
         xsettingsd
         matcha-theme
+        papirus-icon-theme
+
+        ;; Fonts
         font-jost
         font-iosevka-aile
-        font-jetbrains-mono
-        papirus-icon-theme))
+        font-jetbrains-mono))
 
 (define (home-desktop-shepherd-services config)
   (list
