@@ -8,4 +8,4 @@ echo
 echo -e "${GREEN}Updating $HOME for ${BLUE}$(hostname)${GREEN}...${NC}"
 echo
 
-guix home -L ~/.dotfiles reconfigure ~/.dotfiles/daviwil/systems/$(hostname).scm
+RUNNING_GUIX_HOME=1 guix home -L ~/.dotfiles reconfigure ~/.dotfiles/daviwil/systems/$(hostname).scm
