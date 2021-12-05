@@ -182,6 +182,21 @@ Override the default =%desktop-services= to add the =udev= backlight configurati
 
   (define %my-desktop-services
     (modify-services %desktop-services
+                     (guix-service-type
+                      config =>
+                      (guix-configuration
+                       (inherit config)
+                       (substitute-urls
+                        (append (list "https://mirror.brielmaier.net")
+                                %default-substitute-urls))
+                       (authorized-keys
+                        (append (list (plain-file "mirror.brielmaier.net.pub" "(public-key
+   (ecc
+    (curve Ed25519)
+    (q #7514F8D729DB1935470A581CE3851ED9FD6F1F9BAFE1D8BEC77A931ADB7A4337#)
+    )
+   )"))
+                                %default-authorized-guix-keys))))
                      (elogind-service-type config =>
                                            (elogind-configuration (inherit config)
                                                                   (handle-lid-switch-external-power 'suspend)))
