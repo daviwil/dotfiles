@@ -419,7 +419,7 @@ I also define a function called =dw/system-settings-get= which can retrieve thes
  (mapped-devices
   (list (mapped-device
          (source (uuid "039d3ff8-0f90-40bf-89d2-4b2454ada6df"))
-         (target "system-root")
+         (targets "system-root")
          (type luks-device-mapping))))
 
  (file-systems (cons*
