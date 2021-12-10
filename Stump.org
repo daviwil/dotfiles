@@ -18,12 +18,12 @@ StumpWM seems to be a good alternative to EXWM for more complicated window manag
 
   ;; Set up workspaces
   (run-commands
-    "gnew chat"
+    "gnewbg chat"
     "gnew dev"
-    "gnew web"
-    "gnew comm"
-    "gnew media"
-    "gselect dev")
+    "gnewbg web"
+    "gnewbg comm"
+    "gnewbg media"
+    "gnewbg-float mpv")
 
   ;; Change the prefix key to Super-d
   (set-prefix-key (kbd "s-d"))
@@ -82,6 +82,13 @@ StumpWM seems to be a good alternative to EXWM for more complicated window manag
   (define-key *top-map* (kbd "C-s-3") "gmove comm")
   (define-key *top-map* (kbd "C-s-4") "gmove media")
 
+  ;; Brightness and volume
+  (define-key *top-map* (kbd "XF86MonBrightnessDown") "run-shell-command brightnessctl set 5%-")
+  (define-key *top-map* (kbd "XF86MonBrightnessUp") "run-shell-command brightnessctl set +5%")
+  (define-key *top-map* (kbd "XF86AudioLowerVolume") "run-shell-command amixer set Master 3%- unmute")
+  (define-key *top-map* (kbd "XF86AudioRaiseVolume") "run-shell-command amixer set Master 3%+ unmute")
+  (define-key *top-map* (kbd "XF86AudioMute") "run-shell-command amixer set Master toggle")
+
   ;;; -- Visual Enhancements --
 
   ;; Set UI colors
@@ -109,12 +116,34 @@ StumpWM seems to be a good alternative to EXWM for more complicated window manag
   (setf *mode-line-background-color* "#232635")
   (setf *mode-line-foreground-color* "#A6Accd")
 
+  ;; Set the mode line format
+  (setf *screen-mode-line-format* "[^B%n^b] %W ^>%d")
+  (run-commands "mode-line" "mode-line")
+
   ;; Start the mode line
   (run-commands "mode-line")
 
   ;; Add the system tray module
   (load-module "stumptray")
   (stumptray:stumptray)
+
+  ;;; -- Window Placement Rules --
+
+  (define-frame-preference "chat"
+    (0 nil T :title "Chat"))
+
+  (define-frame-preference "dev"
+    (0 T T :class "Emacs"))
+
+  (define-frame-preference "mpv"
+    (0 T T :class "mpv"))
+
+  (define-frame-preference "web"
+    (0 T T :class "qutebrowser")
+    (0 T T :class "Nightly"))
+
+  (define-frame-preference "media"
+    (0 T T :class "Spotify"))
 
   ;;; -- Start initial applications --
 
@@ -125,6 +154,11 @@ StumpWM seems to be a good alternative to EXWM for more complicated window manag
   (run-shell-command "syncthing-gtk --minimized")
   (run-shell-command "redshift -l 37.983810:23.727539 -t 6500:3500")
   (run-shell-command "emacs")
+
+  ;;; -- Start the REPL --
+
+  (require :slynk)
+  (slynk:create-server :dont-close t)
 
 #+end_src
 
