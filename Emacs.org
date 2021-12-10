@@ -1703,6 +1703,9 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
                   (all-the-icons-dired-mode 1))
                 (hl-line-mode 1)))
 
+    (unless dw/exwm-enabled
+      (global-set-key (kbd "s-e") #'dired-jump))
+
     (evil-collection-define-key 'normal 'dired-mode-map
       "h" 'dired-single-up-directory
       "H" 'dired-omit-mode
