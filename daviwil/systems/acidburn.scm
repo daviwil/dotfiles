@@ -3,6 +3,7 @@
   #:use-module (daviwil systems base)
   #:use-module (daviwil systems common)
   #:use-module (gnu home)
+  #:use-module (gnu packages file-systems)
   #:use-module (gnu services)
   #:use-module (gnu system)
   #:use-module (gnu system uuid)
