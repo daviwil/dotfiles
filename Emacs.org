@@ -2694,9 +2694,14 @@ Not currently doing any Common Lisp development so these packages are disabled f
     (:disabled)
     (:file-match "\\.lisp\\'"))
 
-  (setup (:pkg slime)
-    (:disabled)
-    (:file-match "\\.lisp\\'"))
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-sly"
+  "emacs-sly-asdf"
 
 #+end_src
 
