@@ -1253,7 +1253,7 @@ Trying this as an alternative to Ivy and Counsel.
     (:with-map vertico-map
       (:bind "C-j" vertico-next
              "C-k" vertico-previous
-             "C-f" vertico-exit))
+             "C-f" vertico-exit-input))
     (:with-map minibuffer-local-map
       (:bind "M-h" dw/minibuffer-backward-kill))
     (:option vertico-cycle t)
