@@ -3615,11 +3615,13 @@ This enhances eshell's completions with those that Fish is capable of and also f
                        ((s-contains? "Alex " name) '(all-the-icons-lgreen))
                        ((s-contains? "Steve" name) '(all-the-icons-lblue))))
            (result (apply original-func buffer (list face))))
-      (dw/update-polybar-telegram)
+      (when dw/exwm-enabled
+        (dw/update-polybar-telegram))
       result))
 
   (defun dw/after-tracking-remove-buffer (buffer)
-    (dw/update-polybar-telegram))
+    (when dw/exwm-enabled
+      (dw/update-polybar-telegram)))
 
   (advice-add 'tracking-add-buffer :around #'dw/around-tracking-add-buffer)
   (advice-add 'tracking-remove-buffer :after #'dw/after-tracking-remove-buffer)
