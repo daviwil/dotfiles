@@ -8,6 +8,7 @@
   #:use-module (gnu packages xdisorg)
   #:use-module (daviwil packages fonts)
   #:use-module (daviwil packages linux)
+  #:use-module (flat packages emacs)
   #:use-module (gnu services)
   #:use-module (gnu home services)
   #:use-module (gnu home services shepherd)
@@ -41,6 +42,9 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
         sbcl-stumpwm-stumptray
         sbcl-stumpwm-kbd-layouts
         sbcl
+
+        ;; TODO: Remove when Emacs service is working
+        emacs-native-comp
 
         ;; Sound
         pipewire-0.3.38
