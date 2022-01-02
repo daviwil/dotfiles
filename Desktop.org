@@ -73,7 +73,7 @@ I use [[https://github.com/derat/xsettingsd][xsettingsd]] as a minimal settings 
 
 *.config/xsettingsd/xsettingsd.conf:*
 
-#+begin_src conf :tangle .config/xsettingsd/xsettingsd.conf :noweb yes
+#+begin_src conf :tangle no :noweb yes
 
 Net/ThemeName "Matcha-dark-azul"
 Net/IconThemeName "Papirus-Dark"
@@ -92,7 +92,7 @@ I also have to do an extra step to make sure Emacs can find the font path from t
 
 *.config/fontconfig/fonts.conf:*
 
-#+begin_src xml :tangle .config/fontconfig/fonts.conf
+#+begin_src xml :tangle no
 
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
@@ -265,7 +265,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       ("qutebrowser" (exwm-workspace-move-window 2))
       ("qjackctl" (exwm-floating-toggle-floating))
       ("mpv" (exwm-floating-toggle-floating)
-              (dw/exwm-floating-toggle-pinned))
+             (dw/exwm-floating-toggle-pinned))
       ("gsi" (exwm-input-toggle-keyboard))))
 
   (setup exwm
