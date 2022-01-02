@@ -1494,6 +1494,8 @@ map <C-g> abort
 
 I use Flatpak and the [[https://flathub.org/home][Flathub]] repository to install applications that are otherwise difficult to install in Guix because of application frameworks, etc.
 
+Use FontDownloader to download fonts that are needed for Flatpak applications!
+
 *Applications to Install*
 
 #+begin_src sh
@@ -1504,7 +1506,8 @@ flatpak install --user flathub com.spotify.Client
 flatpak install --user flathub com.valvesoftware.Steam
 flatpak install --user flathub com.microsoft.Teams
 flatpak install --user flathub com.discordapp.Discord
-flatpak install --user flathub-beta com.obsproject.Studio
+flatpak install --user flathub com.obsproject.Studio
+flatpak install --user flathub org.gustavoperedo.FontDownloader
 
 #+end_src
 
