@@ -1513,6 +1513,7 @@ flatpak install --user flathub-beta com.obsproject.Studio
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
 "flatpak"
+"xdg-desktop-portal-gtk"
 
 #+end_src
 
