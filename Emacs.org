@@ -119,7 +119,7 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
     - [[#smerge][smerge]]
     - [[#git-gutter][Git Gutter]]
     - [[#send-e-mail-for-git-patches][Send e-mail for Git patches]]
-  - [[#projectile][Projectile]]
+  - [[#projectel-and-projectile][Project.el and Projectile]]
     - [[#initial-setup][Initial Setup]]
     - [[#project-configurations][Project Configurations]]
   - [[#languages][Languages]]
@@ -820,36 +820,47 @@ This is currently disabled because I was having issues with Emacs 28 crashing wh
 
 #+begin_src emacs-lisp
 
-  (setq display-time-format "%l:%M %p %b %y"
-        display-time-default-load-average nil)
+  (setq display-time-format "%l:%M %p %b %y")
 
 #+end_src
 
 *** Doom Modeline
 
 #+begin_src emacs-lisp
-  
-    ;; You must run (all-the-icons-install-fonts) one time after
-    ;; installing this package!
-  
+
+  ;; You must run (all-the-icons-install-fonts) one time after
+  ;; installing this package!
+
   (setup (:pkg minions)
     (:hook-into doom-modeline-mode))
-  
+
+  (defun dw/start-doom-modeline ()
+    (require 'doom-modeline)
+
+    ;; Customize the default modeline
+    (doom-modeline-def-modeline 'default
+      '(bar window-number modals matches buffer-info remote-host buffer-position word-count parrot selection-info)
+      '(objed-state grip debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker))
+    (doom-modeline-set-modeline 'default t)
+
+    ;; Start it
+    (doom-modeline-mode 1))
+
   (setup (:pkg doom-modeline)
-    (:hook-into after-init-hook)
+    (add-hook 'after-init-hook #'dw/start-doom-modeline)
     (:option doom-modeline-height 15
              doom-modeline-bar-width 6
              doom-modeline-lsp t
              doom-modeline-github nil
              doom-modeline-mu4e nil
-             doom-modeline-irc t
+             doom-modeline-irc nil
              doom-modeline-minor-modes t
              doom-modeline-persp-name nil
              doom-modeline-buffer-file-name-style 'truncate-except-project
              doom-modeline-major-mode-icon nil)
     (custom-set-faces '(mode-line ((t (:height 0.85))))
                       '(mode-line-inactive ((t (:height 0.85))))))
-  
+
 #+end_src
 
 *Guix Packages*
@@ -864,7 +875,39 @@ This is currently disabled because I was having issues with Emacs 28 crashing wh
 
 ** Workspaces
 
+Trying out =tab-bar-mode= for my workspace needs.
+
 #+begin_src emacs-lisp
+
+  (defun dw/switch-tab-buffer (&optional arg)
+    (interactive "P")
+    (cond
+     ((and arg (> (car arg) 0)) (call-interactively #'consult-buffer))
+     ((project-current) (call-interactively #'project-switch-to-buffer))
+     (t (call-interactively #'consult-buffer))))
+
+  (global-set-key (kbd "C-M-j") #'dw/switch-tab-buffer)
+  (global-set-key (kbd "C-M-k") #'tab-bar-switch-to-tab)
+  (global-set-key (kbd "C-M-n") #'tab-bar-switch-to-next-tab)
+
+  (setq tab-bar-close-button-show nil
+        tab-bar-format '(tab-bar-format-history tab-bar-format-tabs-groups tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
+
+  (with-eval-after-load 'doom-modeline
+    (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :inherit 'doom-modeline-bar)
+    (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'default)
+
+    (add-to-list 'global-mode-string '("" doom-modeline--battery-status))
+    (add-to-list 'global-mode-string '("" tracking-mode-line-buffers))
+
+    (display-time-mode 1)
+    (display-battery-mode 1)
+
+    (tab-bar-mode 1))
+
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
 
   (setup (:pkg perspective)
     (:global "C-M-k" persp-switch
@@ -1313,9 +1356,8 @@ Consult provides a lot of useful completion commands similar to Ivy's Counsel.
   (setup (:pkg consult)
     (require 'consult)
     (:global "C-s" consult-line
-             "C-M-l" consult-imenu
-             "C-M-j" persp-switch-to-buffer*)
-  
+             "C-M-l" consult-imenu)
+
     (:with-map minibuffer-local-map
       (:bind "C-r" consult-history))
   
@@ -1628,7 +1670,7 @@ Emacs' default buffer placement algorithm is pretty disruptive if you like setti
              ;;       ('helpful-mode 20)
              ;;       ('eshell-mode (progn (message "eshell!") 10))
              ;;       (_ 15)))))
-             popper-reference-buffers '("^\\*eshell\\*"
+             popper-reference-buffers '("\\*eshell\\*$"
                                         "^vterm"
                                         help-mode
                                         helpful-mode
@@ -2521,20 +2563,30 @@ OK, this isn't Emacs configuration, but it's relevant to development!
 
 #+end_src
 
-** Projectile
+** Project.el and Projectile
 
 *** Initial Setup
 
 #+begin_src emacs-lisp
 
   (defun dw/switch-project-action ()
-    "Switch to a workspace with the project name and start `magit-status'."
-    ;; TODO: Switch to EXWM workspace 1?
-    (persp-switch (projectile-project-name))
-    (magit-status))
+    (interactive)
+    (let* ((project-name (file-name-nondirectory
+                          (directory-file-name
+                           (project-root (project-current)))))
+           (tab-bar-new-tab-choice #'magit-status)
+           (tab-index (tab-bar--tab-index-by-name project-name)))
+      (if tab-index
+          (tab-bar-select-tab (1+ tab-index))
+        (tab-bar-new-tab)
+        (tab-bar-rename-tab project-name))))
 
   (setup (:pkg project :straight t)
-    (add-to-list 'project-switch-commands '(magit-status "Magit Status" ?m)))
+    (:global "C-M-p" project-find-file)
+    (:with-map project-prefix-map
+      (:bind "g" consult-ripgrep))
+
+    (setq project-switch-commands #'dw/switch-project-action))
 
   (setup (:pkg projectile)
     (when (file-directory-p "~/Projects/Code")
@@ -2543,8 +2595,7 @@ OK, this isn't Emacs configuration, but it's relevant to development!
 
     (projectile-mode)
 
-    (:global "C-M-p" projectile-find-file
-             "C-c p" projectile-command-map)
+    (:global "C-c p" projectile-command-map)
 
     (dw/leader-key-def
       "pf"  'projectile-find-file
@@ -3172,15 +3223,18 @@ I'm experimenting with generating =Texinfo= from Org Mode files and I need a way
   (setup (:pkg keycast)
     ;; This works with doom-modeline, inspired by this comment:
     ;; https://github.com/tarsius/keycast/issues/7#issuecomment-627604064
+    (require 'keycast)
     (define-minor-mode keycast-mode
       "Show current command and its key binding in the mode line."
       :global t
-      (require 'keycast)
+      (setq keycast-window-predicate (lambda () t))
       (if keycast-mode
           (add-hook 'pre-command-hook 'keycast-mode-line-update)
           (remove-hook 'pre-command-hook 'keycast-mode-line-update)))
 
-    (add-to-list 'global-mode-string '("" mode-line-keycast " ")))
+    (add-hook 'doom-modeline-mode-hook
+              (lambda ()
+                (add-to-list 'global-mode-string '("" mode-line-keycast " ")))))
 
 #+end_src
 
@@ -3439,8 +3493,14 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
     (when (memq window-system '(mac ns x))
       (exec-path-from-shell-initialize)))
 
+  (defun dw/switch-to-eshell ()
+    (interactive)
+    (if (project-current)
+        (call-interactively #'project-eshell)
+      (call-interactively #'eshell)))
+
   (dw/leader-key-def
-    "SPC" 'eshell)
+    "SPC" #'dw/switch-to-eshell)
 
 #+end_src
 

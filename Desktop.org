@@ -165,20 +165,24 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
     ;; Make class name the buffer name
     (add-hook 'exwm-update-class-hook
-        (lambda ()
-          (exwm-workspace-rename-buffer exwm-class-name)))
+              (lambda ()
+                (exwm-workspace-rename-buffer exwm-class-name)))
     (add-hook 'exwm-update-title-hook
-        (lambda ()
-          (pcase exwm-class-name
-            ("Vimb" (exwm-workspace-rename-buffer (format "vimb: %s" exwm-title)))
-            ("qutebrowser" (exwm-workspace-rename-buffer (format "Qutebrowser: %s" exwm-title))))))
+              (lambda ()
+                (pcase exwm-class-name
+                  ("Vimb" (exwm-workspace-rename-buffer (format "vimb: %s" exwm-title)))
+                  ("qutebrowser" (exwm-workspace-rename-buffer (format "Qutebrowser: %s" exwm-title))))))
 
     ;; Enable exwm-randr before exwm-init gets called
     (require 'exwm-randr)
     (exwm-randr-enable)
     (setq exwm-randr-workspace-monitor-plist '(0 "DP-3-3" 1 "DP-3-3" 2 "DP-3-3" 3 "eDP-1" 4 "eDP-1"))
 
-    (exwm-enable))
+    ;; Enable the system tray
+    (exwm-enable)
+    (require 'exwm-systemtray)
+
+    (exwm-systemtray-enable))
 
 #+end_src
 
@@ -217,6 +221,33 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 #+begin_src emacs-lisp :tangle .emacs.d/lisp/dw-desktop.el
 
   (defun dw/exwm-init-hook ()
+    (with-eval-after-load 'tab-bar
+      ;; Set up perspective names on initial workspaces
+      (exwm-workspace-switch-create 0)
+      (tab-bar-rename-tab " Chat")
+
+      ;; Launch Telega in workspace 0 if we've logged in before
+      (when (file-exists-p "~/.telega/db.sqlite")
+        (telega nil))
+
+      (exwm-workspace-switch-create 1)
+      (tab-bar-rename-tab "Main")
+
+      (exwm-workspace-switch-create 2)
+      (tab-bar-rename-tab "Browsers")
+
+      (exwm-workspace-switch-create 2)
+      (tab-bar-rename-tab "Browsers")
+
+      (exwm-workspace-switch-create 3)
+      (tab-bar-rename-tab "Comms")
+
+      (exwm-workspace-switch-create 4)
+      (tab-bar-rename-tab "Media")
+
+    ;; Make workspace 1 be the one where we land at startup
+    (exwm-workspace-switch-create 1))
+
     (with-eval-after-load 'perspective
       ;; Set up perspective names on initial workspaces
       (exwm-workspace-switch-create 0)
@@ -316,8 +347,8 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
 
 (defun dw/start-panel ()
   (interactive)
-  (dw/kill-panel)
-  (setq dw/panel-process (start-process-shell-command "polybar" nil "polybar panel")))
+  (dw/kill-panel))
+  ;(setq dw/panel-process (start-process-shell-command "polybar" nil "polybar panel")))
 
 (defun dw/update-screen-layout ()
   (interactive)
