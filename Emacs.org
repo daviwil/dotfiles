@@ -1670,8 +1670,8 @@ Emacs' default buffer placement algorithm is pretty disruptive if you like setti
              ;;       ('helpful-mode 20)
              ;;       ('eshell-mode (progn (message "eshell!") 10))
              ;;       (_ 15)))))
-             popper-reference-buffers '("\\*eshell\\*$"
-                                        "^vterm"
+             popper-reference-buffers '(eshell-mode
+                                        vterm-mode
                                         help-mode
                                         helpful-mode
                                         compilation-mode))
