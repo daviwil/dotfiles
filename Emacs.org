@@ -904,7 +904,7 @@ Trying out =tab-bar-mode= for my workspace needs.
 
   (with-eval-after-load 'doom-modeline
     (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :inherit 'doom-modeline-bar)
-    (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'default)
+    (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'mode-line)
 
     (add-to-list 'global-mode-string '("" doom-modeline--battery-status))
     (add-to-list 'global-mode-string '("" tracking-mode-line-buffers))
