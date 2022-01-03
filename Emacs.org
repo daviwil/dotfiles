@@ -3229,6 +3229,10 @@ I'm experimenting with generating =Texinfo= from Org Mode files and I need a way
   (dw/leader-key-def
    "tc" 'dw/toggle-command-window)
 
+  (defun dw/keycast-predicate ()
+    ;; Don't show keys if we're in the minibuffer
+    (not (minibufferp)))
+
   (setup (:pkg keycast)
     ;; This works with doom-modeline, inspired by this comment:
     ;; https://github.com/tarsius/keycast/issues/7#issuecomment-627604064
@@ -3236,11 +3240,13 @@ I'm experimenting with generating =Texinfo= from Org Mode files and I need a way
     (define-minor-mode keycast-mode
       "Show current command and its key binding in the mode line."
       :global t
-      (setq keycast-window-predicate (lambda () t))
+      ;; Don't
+      (setq keycast-window-predicate #'dw/keycast-predicate)
       (if keycast-mode
-          (add-hook 'pre-command-hook 'keycast-mode-line-update)
-          (remove-hook 'pre-command-hook 'keycast-mode-line-update)))
+          (add-hook 'pre-command-hook 'keycast--update)
+          (remove-hook 'pre-command-hook 'keycast--update)))
 
+    ;; Make sure Keycast gets added at the front of the list
     (add-hook 'doom-modeline-mode-hook
               (lambda ()
                 (add-to-list 'global-mode-string '("" mode-line-keycast " ")))))
