@@ -224,7 +224,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (with-eval-after-load 'tab-bar
       ;; Set up perspective names on initial workspaces
       (exwm-workspace-switch-create 0)
-      (tab-bar-rename-tab " Chat")
+      (tab-bar-rename-tab "Chat")
 
       ;; Launch Telega in workspace 0 if we've logged in before
       (when (file-exists-p "~/.telega/db.sqlite")
