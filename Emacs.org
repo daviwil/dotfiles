@@ -890,8 +890,17 @@ Trying out =tab-bar-mode= for my workspace needs.
   (global-set-key (kbd "C-M-k") #'tab-bar-switch-to-tab)
   (global-set-key (kbd "C-M-n") #'tab-bar-switch-to-next-tab)
 
+  (defun dw/exwm-workspace-icon ()
+    (when dw/exwm-enabled
+      (format " %s" (pcase exwm-workspace-current-index
+                      (0 "💬")
+                      (1 "💻")
+                      (2 "🏄")
+                      (3 "📬")
+                      (4 "📸")))))
+
   (setq tab-bar-close-button-show nil
-        tab-bar-format '(tab-bar-format-history tab-bar-format-tabs-groups tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
+        tab-bar-format '(dw/exwm-workspace-icon tab-bar-format-history tab-bar-format-tabs-groups tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
 
   (with-eval-after-load 'doom-modeline
     (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :inherit 'doom-modeline-bar)
