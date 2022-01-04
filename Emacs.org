@@ -1685,6 +1685,7 @@ Emacs' default buffer placement algorithm is pretty disruptive if you like setti
              ;;       (_ 15)))))
              popper-reference-buffers '(eshell-mode
                                         vterm-mode
+                                        geiser-repl-mode
                                         help-mode
                                         helpful-mode
                                         compilation-mode))
