@@ -820,7 +820,8 @@ This is currently disabled because I was having issues with Emacs 28 crashing wh
 
 #+begin_src emacs-lisp
 
-  (setq display-time-format "%l:%M %p %b %d")
+    (setq display-time-format "%l:%M %p %b %d"
+          display-time-load-average-threshold 0.0)
 
 #+end_src
 
