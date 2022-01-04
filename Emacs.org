@@ -837,14 +837,14 @@ This is currently disabled because I was having issues with Emacs 28 crashing wh
   (defun dw/start-doom-modeline ()
     (require 'doom-modeline)
 
+    ;; Start it
+    (doom-modeline-mode 1)
+
     ;; Customize the default modeline
     (doom-modeline-def-modeline 'default
       '(bar window-number modals matches buffer-info remote-host buffer-position word-count parrot selection-info)
       '(objed-state grip debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker))
-    (doom-modeline-set-modeline 'default t)
-
-    ;; Start it
-    (doom-modeline-mode 1))
+    (doom-modeline-set-modeline 'default t))
 
   (setup (:pkg doom-modeline)
     (add-hook 'after-init-hook #'dw/start-doom-modeline)
@@ -903,8 +903,10 @@ Trying out =tab-bar-mode= for my workspace needs.
         tab-bar-format '(dw/exwm-workspace-icon tab-bar-format-history tab-bar-format-tabs-groups tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
 
   (with-eval-after-load 'doom-modeline
-    (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :inherit 'doom-modeline-bar)
-    (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'mode-line)
+    ;; (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :inherit 'doom-modeline-bar)
+    (let ((color (face-attribute 'doom-modeline-bar :background nil t)))
+      (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :weight 'semi-bold :underline `(:color ,color)  :inherit nil)
+      (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'mode-line))
 
     (add-to-list 'global-mode-string '("" doom-modeline--battery-status))
     (add-to-list 'global-mode-string '("" tracking-mode-line-buffers))
