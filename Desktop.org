@@ -245,8 +245,11 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
       (exwm-workspace-switch-create 4)
       (tab-bar-rename-tab "Media")
 
-    ;; Make workspace 1 be the one where we land at startup
-    (exwm-workspace-switch-create 1))
+      ;; Make sure tab-bar faces are set correctly
+      (dw/set-tab-bar-faces)
+
+      ;; Make workspace 1 be the one where we land at startup
+      (exwm-workspace-switch-create 1))
 
     (with-eval-after-load 'perspective
       ;; Set up perspective names on initial workspaces
@@ -319,6 +322,7 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     ;; Hide the modeline on all floating windows
     (add-hook 'exwm-floating-setup-hook
               (lambda ()
+                (toggle-frame-tab-bar) ;; No tab bars on floating frames
                 (exwm-layout-hide-mode-line))))
 
 #+end_src

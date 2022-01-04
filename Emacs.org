@@ -900,15 +900,16 @@ Trying out =tab-bar-mode= for my workspace needs.
                       (3 "📬")
                       (4 "📸")))))
 
+  (defun dw/set-tab-bar-faces ()
+    (let ((color (face-attribute 'doom-modeline-bar :background nil t)))
+      (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :weight 'semi-bold :underline `(:color ,color) :inherit nil)
+      (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'mode-line)))
+
   (setq tab-bar-close-button-show nil
         tab-bar-format '(dw/exwm-workspace-icon tab-bar-format-history tab-bar-format-tabs-groups tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
 
   (with-eval-after-load 'doom-modeline
-    ;; (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :inherit 'doom-modeline-bar)
-    (let ((color (face-attribute 'doom-modeline-bar :background nil t)))
-      (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :weight 'semi-bold :underline `(:color ,color)  :inherit nil)
-      (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'mode-line))
-
+    (dw/set-tab-bar-faces)
     (add-to-list 'global-mode-string '("" doom-modeline--battery-status))
     (add-to-list 'global-mode-string '("" tracking-mode-line-buffers))
 
