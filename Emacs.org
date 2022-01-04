@@ -3248,12 +3248,15 @@ I'm experimenting with generating =Texinfo= from Org Mode files and I need a way
       (setq keycast-window-predicate #'dw/keycast-predicate)
       (if keycast-mode
           (add-hook 'pre-command-hook 'keycast--update)
-          (remove-hook 'pre-command-hook 'keycast--update)))
+        (remove-hook 'pre-command-hook 'keycast--update)))
+
+    ;; Make the key face normal-sized
+    (set-face-attribute 'keycast-key nil :height 1.0)
 
     ;; Make sure Keycast gets added at the front of the list
     (add-hook 'doom-modeline-mode-hook
               (lambda ()
-                (add-to-list 'global-mode-string '("" mode-line-keycast " ")))))
+                (add-to-list 'global-mode-string '("" mode-line-keycast "       ")))))
 
 #+end_src
 
