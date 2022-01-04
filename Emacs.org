@@ -3870,11 +3870,18 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
   (setup (:pkg elfeed)
     (setq elfeed-feeds
-      '("https://nullprogram.com/feed/"
-        "https://ambrevar.xyz/atom.xml"
-        "https://guix.gnu.org/feeds/blog.atom"
-        "https://valdyas.org/fading/feed/"
-        "https://www.reddit.com/r/emacs/.rss")))
+          '("http://ruzkuku.com/all.atom"
+            "https://karthinks.com/index.xml"
+            "https://shom.dev/index.xml"
+            "https://blog.benoitj.ca/posts/index.xml"
+            "https://protesilaos.com/codelog.xml"
+            "https://sachachua.com/blog/feed/"
+            "https://nullprogram.com/feed/"
+            "https://irreal.org/blog/?feed=rss2"
+            "https://ambrevar.xyz/atom.xml"
+            "https://guix.gnu.org/feeds/blog.atom"
+            "https://valdyas.org/fading/feed/"
+            "https://www.reddit.com/r/emacs/.rss")))
 
 #+end_src
 
