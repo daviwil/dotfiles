@@ -232,10 +232,18 @@ I also define a function called =dw/system-settings-get= which can retrieve thes
 
 #+begin_src emacs-lisp :noweb-ref system-settings :noweb-sep ""
 
-(when (equal system-name "phantom")
-  '((desktop/dpi . 240)
-    (polybar/height . 40)
-    (vimb/default-zoom . 200)))
+  (when (equal system-name "phantom")
+    '((desktop/dpi . 220)
+      (emacs/default-face-size . 240)
+      (emacs/variable-face-size . 260)
+      (emacs/fixed-face-size . 230)
+      (polybar/height . 50)
+      (polybar/font-0-size . 20)
+      (polybar/font-1-size . 16)
+      (polybar/font-2-size . 22)
+      (polybar/font-3-size . 15)
+      (qutebrowser/default-zoom . 300)
+      (vimb/default-zoom . 200)))
 
 #+end_src
 
