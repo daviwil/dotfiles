@@ -145,7 +145,7 @@ I also have to do an extra step to make sure Emacs can find the font path from t
   "font-awesome"
   "font-google-material-design-icons"
   "font-jost"
-  "gs-fonts"
+  "font-ghostscript"
 
 #+end_src
 
@@ -1590,6 +1590,9 @@ flatpak install --user flathub org.gustavoperedo.FontDownloader
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
+"curl"
+"wget"
+"virt-manager"
 "openssh"
 "zip"
 "unzip"
