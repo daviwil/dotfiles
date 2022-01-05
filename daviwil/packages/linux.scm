@@ -33,7 +33,7 @@
                (base32
                 "15alnzwdgjbjrmphyinwdbaa1bi9cqbk8gkhrb4y6akjqph76hs0"))))
     (arguments
-     `(#:meson ,meson-0.55
+     `(#:meson ,meson-0.59
        #:configure-flags
        (list (string-append "-Dudevrulesdir=" (assoc-ref %outputs "out")
                             "/lib/udev/rules.d")
