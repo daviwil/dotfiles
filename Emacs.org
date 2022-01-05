@@ -2828,9 +2828,8 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
-  (setup (:pkg ccls)
-    (:hook lsp)
-    (:hook-into c-mode c++-mode objc-mode cuda-mode))
+  (with-eval-after-load 'lsp-mode
+    (add-hook 'c-mode-hook 'lsp-deferred))
 
 #+end_src
 
