@@ -178,10 +178,10 @@ I use Emacs as the desktop window manager thanks to the excellent EXWM.  This co
     (exwm-randr-enable)
     (setq exwm-randr-workspace-monitor-plist '(0 "DP-3-3" 1 "DP-3-3" 2 "DP-3-3" 3 "eDP-1" 4 "eDP-1"))
 
-    ;; Enable the system tray
     (exwm-enable)
-    (require 'exwm-systemtray)
 
+    ;; Enable the system tray
+    (require 'exwm-systemtray)
     (exwm-systemtray-enable))
 
 #+end_src
