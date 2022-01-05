@@ -24,7 +24,6 @@
   #:use-module (gnu packages web-browsers)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages package-management)
-  #:use-module (daviwil packages linux)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd))
 
@@ -218,7 +217,7 @@ EndSection
                                (list cups-filters))))
 
                     ;; Add udev rules to enable PipeWire use
-                    (udev-rules-service 'pipewire-add-udev-rules pipewire-0.3.38)
+                    (udev-rules-service 'pipewire-add-udev-rules pipewire)
 
                     ;; Enable the build service for Nix package manager
                     (service nix-service-type)
