@@ -1698,6 +1698,7 @@ Emacs' default buffer placement algorithm is pretty disruptive if you like setti
                                         vterm-mode
                                         geiser-repl-mode
                                         help-mode
+                                        grep-mode
                                         helpful-mode
                                         compilation-mode))
     (require 'popper) ;; Needed because I disabled autoloads
