@@ -245,9 +245,10 @@ Some parts of the configuration require knowledge of whether Emacs is running on
         (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
 
   (setq dw/is-guix-system (and (eq system-type 'gnu/linux)
-                               (require 'f)
-                               (string-equal (f-read "/etc/issue")
-                                             "\nThis is the GNU system.  Welcome.\n")))
+                               (with-temp-buffer
+                                 (insert-file-contents "/etc/os-release")
+                                 (search-forward "ID=guix" nil t))
+                               t))
 
 #+end_src
 
