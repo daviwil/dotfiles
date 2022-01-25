@@ -1,9 +1,12 @@
+(require 'lsp)
+
 (defvar adl-mode-map
   (let ((map (make-sparse-keymap)))
     map))
 
 (defconst adl--font-lock-keywords
-  '(("^\\s-*\\(namespace\\|op\\|model\\|import\\|using\\)\\s-+" . font-lock-keyword-face)
+  '(("^\\s-*\\(namespace\\|op\\|model\\|import\\|using\\|interface\\)\\s-+" . font-lock-keyword-face)
+    ("\\s-*\\(mixes\\)\\s-+" . font-lock-keyword-face)
     ("\\s-*//.*$" . font-lock-comment-face) ;; This doesn't override others!
     ("@\\w+" . font-lock-function-name-face)
     ("byte\\|int32\\|int64\\|safeint\\|float32\\|float64\\|string\\|plainDate\\|plainTime\\|zonedDateTime\\|boolean\\|null" . font-lock-type-face)
@@ -31,7 +34,11 @@
   (setq-local electric-layout-rules
               '((?\; . after) (?\{ . after) (?\} . before))))
 
-(lsp-register-client
- (make-lsp-client :new-connection (lsp-stdio-connection '("adl-server" "--stdio"))
-                  :major-modes '(adl-mode)
-                  :server-id 'adl))
+(with-eval-after-load 'lsp-mode
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("adl-server" "--stdio"))
+                    :major-modes '(adl-mode)
+                    :server-id 'adl))
+  (add-to-list 'lsp-language-id-configuration '(adl-mode . "cadl")))
+
+(provide 'adl-mode)
