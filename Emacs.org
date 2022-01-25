@@ -1370,22 +1370,26 @@ Trying this as an alternative to Ivy and Counsel.
 Consult provides a lot of useful completion commands similar to Ivy's Counsel.
 
 #+begin_src emacs-lisp
-  
+
+  (setup (:pkg wgrep)
+    (add-hook 'grep-mode-hook #'wgrep-setup))
+
   (setup (:pkg consult)
     (require 'consult)
+    (:also-load wgrep)
     (:global "C-s" consult-line
              "C-M-l" consult-imenu)
 
     (:with-map minibuffer-local-map
       (:bind "C-r" consult-history))
-  
+
     (defun dw/get-project-root ()
       (when (fboundp 'projectile-project-root)
         (projectile-project-root)))
-  
+
     (:option consult-project-root-function #'dw/get-project-root
              completion-in-region-function #'consult-completion-in-region))
-  
+
 #+end_src
 
 *Guix Packages*
@@ -1393,6 +1397,7 @@ Consult provides a lot of useful completion commands similar to Ivy's Counsel.
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-consult"
+  "emacs-wgrep"
 
 #+end_src
 
@@ -1453,7 +1458,7 @@ Marginalia provides helpful annotations for various types of minibuffer completi
 #+begin_src emacs-lisp
 
   (setup (:pkg embark)
-    ;(:also-load embark-consult)
+    (:also-load embark-consult)
     (:global "C-M-." embark-act)
     (:with-map minibuffer-local-map
      (:bind "C-d" embark-act))
