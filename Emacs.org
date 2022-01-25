@@ -177,6 +177,7 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
       - [[#configuration][Configuration]]
       - [[#bindings][Bindings]]
       - [[#sharing-files-with-0x0][Sharing Files with 0x0]]
+    - [[#jabber][Jabber]]
   - [[#rss-with-elfeed][RSS with Elfeed]]
   - [[#media][Media]]
     - [[#mpv][mpv]]
@@ -3893,6 +3894,17 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
 #+end_src
 
+*** Jabber
+
+#+begin_src emacs-lisp
+
+  (setup (:pkg srv :straight t))
+  (setup (:pkg fsm :straight t)) ;; In Guix
+  (setup (:pkg jabber
+               :host nil
+               :repo "https://tildegit.org/wgreenhouse/emacs-jabber"))
+
+#+end_src
 ** RSS with Elfeed
 
 [[https://github.com/skeeto/elfeed][Elfeed]] looks like a great RSS feed reader.  Not using it much yet, but definitely looking forward to using it to keep track of a few different blogs I follow using Twitter.  Also seems to be great for following subreddits like /r/Emacs.
