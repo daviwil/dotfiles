@@ -3050,6 +3050,7 @@ Configure TypeScript and JavaScript language modes
 #+begin_src emacs-lisp
 
   (setup adl-mode
+    (require 'adl-mode)
     (:file-match "\\.cadl\\'")
     (:hook lsp-deferred)
     (:bind "C-c C-c" recompile))
