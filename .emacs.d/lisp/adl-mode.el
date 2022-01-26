@@ -41,4 +41,11 @@
                     :server-id 'adl))
   (add-to-list 'lsp-language-id-configuration '(adl-mode . "cadl")))
 
+(define-skeleton adl-skeleton-resource-update-model
+  "Define a resource update model."
+  "Model name: "
+  "model " str "Update is ResourceUpdateModel<" str "Properties> {\n}")
+
+(define-abbrev adl-mode-abbrev-table "rup" "" 'adl-skeleton-resource-update-model)
+
 (provide 'adl-mode)
