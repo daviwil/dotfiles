@@ -2602,11 +2602,14 @@ OK, this isn't Emacs configuration, but it's relevant to development!
 
 #+begin_src emacs-lisp
 
+  (defun dw/current-project-name ()
+    (file-name-nondirectory
+     (directory-file-name
+      (project-root (project-current)))))
+
   (defun dw/switch-project-action ()
     (interactive)
-    (let* ((project-name (file-name-nondirectory
-                          (directory-file-name
-                           (project-root (project-current)))))
+    (let* ((project-name (dw/current-project-name))
            (tab-bar-new-tab-choice #'magit-status)
            (tab-index (tab-bar--tab-index-by-name project-name)))
       (if tab-index
@@ -2614,9 +2617,18 @@ OK, this isn't Emacs configuration, but it's relevant to development!
         (tab-bar-new-tab)
         (tab-bar-rename-tab project-name))))
 
+  (defun dw/close-project-tab ()
+    (interactive)
+    (let* ((project-name (dw/current-project-name))
+           (tab-index (tab-bar--tab-index-by-name project-name)))
+      (project-kill-buffers t)
+      (when tab-index
+        (tab-bar-close-tab (1+ tab-index)))))
+
   (setup (:pkg project)
     (:global "C-M-p" project-find-file)
     (:with-map project-prefix-map
+      (:bind "k" dw/close-project-tab)
       (:bind "g" consult-ripgrep))
 
     (setq project-switch-commands #'dw/switch-project-action))
