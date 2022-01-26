@@ -1341,7 +1341,8 @@ Trying this as an alternative to Ivy and Counsel.
              "C-f" corfu-insert))
     (:option corfu-cycle t
              corfu-auto t
-             corfu-preview-current nil)
+             corfu-preview-current nil
+             corfu-quit-at-boundary t)
     (corfu-global-mode 1))
 
 #+end_src
