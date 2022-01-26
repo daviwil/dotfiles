@@ -535,6 +535,9 @@ Some tips can be found here:
     (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
     (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
+    ;; Clear the binding of C-k so that it doesn't conflict with Corfu
+    (define-key evil-insert-state-map (kbd "C-k") nil)
+
     ;; Use visual line motions even outside of visual-line-mode buffers
     (evil-global-set-key 'motion "j" 'evil-next-visual-line)
     (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
@@ -1334,9 +1337,12 @@ Trying this as an alternative to Ivy and Counsel.
       (:bind "C-j" corfu-next
              "C-k" corfu-previous
              "TAB" corfu-insert
+             [tab] corfu-insert
              "C-f" corfu-insert))
-    (:option corfu-cycle t)
-    (corfu-global-mode))
+    (:option corfu-cycle t
+             corfu-auto t
+             corfu-preview-current nil)
+    (corfu-global-mode 1))
 
 #+end_src
 
@@ -2705,9 +2711,7 @@ Trying out Eglot for a bit to see how I like it compared to lsp-mode.
 
 #+begin_src emacs-lisp
 
-  (setup (:pkg eglot)
-    (:disabled)
-    (add-hook 'typescript-mode-hook #'eglot-ensure))
+  (setup (:pkg eglot))
 
 #+end_src
 
@@ -2807,7 +2811,7 @@ Configure TypeScript and JavaScript language modes
 
   (setup (:pkg typescript-mode)
     (:file-match "\\.ts\\'")
-    (:hook lsp-deferred)
+    (:hook eglot-ensure)
     (setq typescript-indent-level 2))
 
   (defun dw/set-js-indentation ()
@@ -2848,7 +2852,7 @@ Configure TypeScript and JavaScript language modes
 #+begin_src emacs-lisp
 
   (with-eval-after-load 'lsp-mode
-    (add-hook 'c-mode-hook 'lsp-deferred))
+    (add-hook 'c-mode-hook 'eglot-ensure))
 
 #+end_src
 
@@ -2866,7 +2870,7 @@ Configure TypeScript and JavaScript language modes
 #+begin_src emacs-lisp
 
   (setup (:pkg go-mode)
-    (:hook lsp-deferred))
+    (:hook eglot-ensure))
 
 #+end_src
 
