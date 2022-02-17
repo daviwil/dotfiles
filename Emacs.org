@@ -3036,6 +3036,7 @@ Configure TypeScript and JavaScript language modes
     (require 'adl-mode)
     (:file-match "\\.cadl\\'")
     (:hook lsp-deferred)
+    (:hook abbrev-mode)
     (:bind "C-c C-c" recompile))
 
 #+end_src
