@@ -4017,8 +4017,7 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 
 #+begin_src emacs-lisp
 
-  (setup (:pkg pulseaudio-control)
-    (setq pulseaudio-control-pactl-path "/run/current-system/profile/bin/pactl"))
+  (setup (:pkg pulseaudio-control))
 
 #+end_src
 
