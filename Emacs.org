@@ -851,7 +851,7 @@ Trying out =tab-bar-mode= for my workspace needs.
      ((project-current) (call-interactively #'project-switch-to-buffer))
      (t (call-interactively #'consult-buffer))))
 
-  (global-set-key (kbd "C-M-j") #'dw/switch-tab-buffer)
+  (global-set-key (kbd "C-M-j") #'consult-buffer)
   (global-set-key (kbd "C-M-k") #'tab-bar-switch-to-tab)
   (global-set-key (kbd "C-M-n") #'tab-bar-switch-to-next-tab)
 
