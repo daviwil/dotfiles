@@ -1301,7 +1301,8 @@ Trying this as an alternative to Ivy and Counsel.
     (:option corfu-cycle t
              corfu-auto t
              corfu-preview-current nil
-             corfu-quit-at-boundary t)
+             corfu-quit-at-boundary t
+             corfu-quit-no-match t)
     (corfu-global-mode 1))
 
 #+end_src
@@ -2683,7 +2684,13 @@ Trying out Eglot for a bit to see how I like it compared to lsp-mode.
 
 #+begin_src emacs-lisp
 
-  (setup (:pkg eglot))
+  (setup (:pkg eglot)
+    ;; TODO: Don't load until needed
+    (require 'eglot)
+    (setq eglot-autoshutdown t
+          eglot-confirm-server-initiated-edits nil)
+    (add-to-list 'eglot-server-programs
+                 '((js2-mode typescript-mode) . ("typescript-language-server" "--stdio"))))
 
 #+end_src
 
