@@ -51,13 +51,13 @@
                     (guix-configuration
                      (inherit config)
                      (substitute-urls
-                      (append (list "https://mirror.brielmaier.net")
+                      (append (list "https://substitutes.nonguix.org")
                               %default-substitute-urls))
                      (authorized-keys
-                      (append (list (plain-file "mirror.brielmaier.net.pub" "(public-key
+                      (append (list (plain-file "nonguix.pub" "(public-key
  (ecc
   (curve Ed25519)
-  (q #7514F8D729DB1935470A581CE3851ED9FD6F1F9BAFE1D8BEC77A931ADB7A4337#)
+  (q #C1FD53E5D4CE971933EC50C9F307AE2171A2D3B52C804642A7A35F84F3A4EA98#)
   )
  )"))
                               %default-authorized-guix-keys))))
