@@ -128,6 +128,7 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
     - [[#meta-lisp][Meta Lisp]]
     - [[#common-lisp][Common Lisp]]
     - [[#scheme][Scheme]]
+    - [[#mesche][Mesche]]
     - [[#typescript-and-javascript][TypeScript and JavaScript]]
     - [[#cc][C/C++]]
     - [[#go][Go]]
