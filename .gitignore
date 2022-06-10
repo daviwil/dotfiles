@@ -61,7 +61,6 @@ fonts/truetype/.uuid
 .config/guix/systems/base-system.scm
 .config/guix/systems/base-system.scm
 .config/guix/systems/base-system.scm
-.config/guix/channels.scm
 .config/guix/base-channels.scm
 .config/guix/manifests/mail.scm
 .mbsyncrc
