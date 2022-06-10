@@ -21,6 +21,7 @@
 
 (define home-udiskie-service-type
   (service-type (name 'home-udiskie)
+                (description "A service for launching Udiskie.")
                 (extensions
                  (list (service-extension
                         home-profile-service-type

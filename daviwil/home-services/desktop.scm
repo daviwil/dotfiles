@@ -86,6 +86,7 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
 
 (define home-desktop-service-type
   (service-type (name 'home-desktop)
+                (description "My desktop environment service.")
                 (extensions
                  (list (service-extension
                         home-profile-service-type
