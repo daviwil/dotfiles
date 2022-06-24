@@ -19,8 +19,8 @@
 (define dpi 180)
 
 (define (home-desktop-files-service config)
-  (list `("xsession" ,(local-file "xsession" #:recursive? #t))
-        `("config/xsettingsd/xsettingsd.conf" ,(plain-file "xsettingsd.conf" (string-append "
+  (list `(".xsession" ,(local-file "xsession" #:recursive? #t))
+        `(".config/xsettingsd/xsettingsd.conf" ,(plain-file "xsettingsd.conf" (string-append "
 Net/ThemeName \"Matcha-dark-azul\"
 Net/IconThemeName \"Papirus-Dark\"
 Gtk/DecorationLayout \"menu:minimize,maximize,close\"
@@ -42,6 +42,8 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
         sbcl-stumpwm-stumptray
         sbcl-stumpwm-kbd-layouts
         sbcl
+
+        herbstluftwm
 
         ;; TODO: Remove when Emacs service is working
         emacs-native-comp
@@ -101,3 +103,11 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
                         home-environment-variables-service-type
                         home-desktop-environment-variables)))
                 (default-value #f)))
+
+   ;; #:use-module (gnu home services state)
+   ;; Set up the Chemacs repo as ~/.config/emacs
+   ;; NOTE: Not working at the moment
+   ;; (service home-state-service-type
+   ;;          (list
+   ;;           (state-git "/home/daviwil/.config/emacs"
+   ;;                      "https://github.com/plexus/chemacs2")))

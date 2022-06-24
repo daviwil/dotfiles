@@ -1,0 +1,248 @@
+#!/bin/sh
+
+hc() {
+    herbstclient "$@"
+}
+
+hc emit_hook reload
+
+# Set an initial background color
+xsetroot -solid '#5A8E3A'
+
+# Remove all existing keybindings in case we're reloading configuration
+hc keyunbind --all
+
+# Use super key as the main modifier key
+Mod=Mod4
+
+hc keybind $Mod-Shift-q quit
+hc keybind $Mod-Shift-r reload
+hc keybind $Mod-q close_and_remove # Close the window and remove the frame
+hc keybind $Mod-Return spawn "${TERMINAL:-xterm}" # Launch $TERMINAL with xterm as fallback
+hc keybind $Mod-Shift-e spawn emacs
+
+# basic movement in tiling and floating mode
+# focusing clients
+hc keybind $Mod-Left  focus left
+hc keybind $Mod-Down  focus down
+hc keybind $Mod-Up    focus up
+hc keybind $Mod-Right focus right
+hc keybind $Mod-h     focus --level=tabs left
+hc keybind $Mod-j     focus down
+hc keybind $Mod-k     focus up
+hc keybind $Mod-l     focus --level=tabs right
+
+# moving clients in tiling and floating mode
+hc keybind $Mod-Shift-Left  shift left
+hc keybind $Mod-Shift-Down  shift down
+hc keybind $Mod-Shift-Up    shift up
+hc keybind $Mod-Shift-Right shift right
+hc keybind $Mod-Shift-h     shift left
+hc keybind $Mod-Shift-j     shift down
+hc keybind $Mod-Shift-k     shift up
+hc keybind $Mod-Shift-l     shift right
+
+# splitting frames
+# create an empty frame at the specified direction
+hc keybind $Mod-u       split   bottom  0.5
+hc keybind $Mod-o       split   right   0.5
+# let the current frame explode into subframes
+hc keybind $Mod-Control-space split explode
+
+# resizing frames and floating clients
+resizestep=0.02
+hc keybind $Mod-Control-h       resize left +$resizestep
+hc keybind $Mod-Control-j       resize down +$resizestep
+hc keybind $Mod-Control-k       resize up +$resizestep
+hc keybind $Mod-Control-l       resize right +$resizestep
+hc keybind $Mod-Control-Left    resize left +$resizestep
+hc keybind $Mod-Control-Down    resize down +$resizestep
+hc keybind $Mod-Control-Up      resize up +$resizestep
+hc keybind $Mod-Control-Right   resize right +$resizestep
+
+# Volume Control
+hc keybind XF86AudioRaiseVolume spawn amixer set Master 5%+
+hc keybind XF86AudioLowerVolume spawn amixer set Master 5%-
+hc keybind XF86AudioMute spawn amixer set Master toggle
+hc keybind XF86AudioMicMute spawn amixer set Capture toggle
+hc keybind XF86AudioMicMute spawn amixer set Capture toggle
+
+# Brightness Control
+hc keybind XF86MonBrightnessUp spawn brightnessctl set 5%+
+hc keybind XF86MonBrightnessDown spawn brightnessctl set 5%-
+hc keybind Shift-XF86MonBrightnessUp spawn brightnessctl set 2%+
+hc keybind Shift-XF86MonBrightnessDown spawn brightnessctl set 2%-
+
+# Screenshots
+hc keybind Print spawn flameshot gui
+
+# Launcher
+hc keybind $Mod-space spawn rofi -show drun -theme Arc-Dark -font "JetBrains Mono 18"
+hc keybind $Mod-w spawn rofi -show window -theme Arc-Dark -font "JetBrains Mono 18"
+
+# tags
+tag_names=( "chat" "dev" "web" "comms" "media" )
+tag_keys=( "quoteleft" 1 2 3 4 )
+
+# Bind keys for tags
+hc rename default "${tag_names[0]}" || true
+for i in "${!tag_names[@]}" ; do
+    hc add "${tag_names[$i]}"
+    key="${tag_keys[$i]}"
+    if ! [ -z "$key" ] ; then
+        hc keybind "$Mod-$key" use_index "$((i + 1))"
+        hc keybind "$Mod-Shift-$key" move_index "$((i + 1))"
+    fi
+done
+
+# Bind grave to tag 0
+# hc keybind "$Mod-quoteleft" use_index "0"
+# hc keybind "$Mod-Shift-quoteleft" move_index "0"
+
+# Cycle through all tags
+hc keybind $Mod-period use_index +1 --skip-visible
+hc keybind $Mod-comma  use_index -1 --skip-visible
+
+# layouting
+hc keybind $Mod-r remove
+hc keybind $Mod-s floating toggle
+hc keybind $Mod-f fullscreen toggle
+hc keybind $Mod-Shift-f set_attr clients.focus.floating toggle
+hc keybind $Mod-Shift-m set_attr clients.focus.minimized true
+hc keybind $Mod-Control-m jumpto last-minimized
+hc keybind $Mod-p pseudotile toggle
+hc keybind $Mod-Shift-w cycle_layout +1
+# The following cycles through the available layouts within a frame, but skips
+# layouts, if the layout change wouldn't affect the actual window positions.
+# I.e. if there are two windows within a frame, the grid layout is skipped.
+# hc keybind $Mod-space                                                           \
+#             or , and . compare tags.focus.curframe_wcount = 2                   \
+#                      . cycle_layout +1 vertical horizontal max vertical grid    \
+#                , cycle_layout +1
+
+# Mouse bindings
+hc mouseunbind --all
+hc mousebind $Mod-Button1 move
+hc mousebind $Mod-Button2 zoom
+hc mousebind $Mod-Button3 resize
+
+# focus
+hc keybind $Mod-BackSpace   cycle_monitor
+hc keybind $Mod-Tab         cycle_all +1
+hc keybind $Mod-Shift-Tab   cycle_all -1
+hc keybind $Mod-c cycle
+hc keybind $Mod-i jumpto urgent
+
+# theme
+hc attr theme.tiling.reset 1
+hc attr theme.floating.reset 1
+hc set frame_border_active_color '#c792eacc'
+hc set frame_border_normal_color '#101010cc'
+hc set frame_bg_normal_color '#565656aa'
+hc set frame_bg_active_color '#345F0Caa'
+hc set frame_border_width 0
+hc set always_show_frame on # Don't show frames unless focused
+hc set frame_bg_transparent on
+hc set frame_transparent_width 0
+hc set default_frame_layout max
+
+# Configure the title bar
+hc attr theme.title_font 'JetBrains Mono:pixelsize=12'  # example using Xft
+hc attr theme.title_height 15 # Pixel height for title text
+hc attr theme.title_depth 5  # Pixels below title text
+hc attr theme.title_when multiple_tabs # Only show title bar when there are multiple tabs
+hc attr theme.title_color '#ffffff' # Foreground text color
+
+hc attr theme.padding_top 0  # Space below the title bar
+hc attr theme.active.color '#1c1f2bef'
+hc attr theme.normal.color '#232635dd'
+hc attr theme.urgent.color '#7811A1dd'
+hc attr theme.normal.title_color '#898989'
+hc attr theme.inner_width 0
+hc attr theme.inner_color '#c792ea'
+hc attr theme.outer_color '#c792ea'
+hc attr theme.border_width 4
+hc attr theme.floating.border_width 4
+hc attr theme.floating.outer_width 1
+hc attr theme.floating.outer_color black
+hc attr theme.active.inner_color '#c792ea'
+hc attr theme.urgent.inner_color '#9A65B0'
+hc attr theme.normal.inner_color '#606060'
+
+# copy inner color to outer_color
+for state in active urgent normal ; do
+    hc substitute C theme.${state}.inner_color \
+        attr theme.${state}.outer_color C
+done
+hc attr theme.active.outer_width 1
+hc attr theme.background_color '#141414'
+
+# Space between windows and frames
+hc set window_gap 0     # Best results so far are no window gap
+hc set frame_gap 5      # and some frame gap
+hc set frame_padding 0
+hc set smart_frame_surroundings off  # Always show frames and gaps
+hc set smart_window_surroundings off
+hc set mouse_recenter_gap 0
+
+hc set sizehints_floating on
+hc set sizehints_tiling on
+
+# Max layout
+hc set hide_covered_windows true
+hc set tabbed_max true
+
+# Window Settings
+hc unrule -F
+hc rule focus=on # normally focus new clients
+hc rule floatplacement=smart
+
+# Window Rules
+hc rule class=Firefox tag=3
+hc rule class=Spotify tag=5
+
+# give focus to most common terminals
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' floating=on floatplacement=center
+hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' manage=off
+
+# When a window requests a specific size, always float it
+hc rule fixedsize floating=on
+
+hc set tree_style '╾│ ├└╼─┐'
+
+# Activate "dev" tag and set it to have max layout
+hc use_index 2
+hc set_layout max
+
+# Finalize window configuration by unlocking
+hc unlock
+
+# Detect multiple monitors
+# hc detect_monitors
+hc set auto_detect_monitors true
+
+# Rebind keys
+xmodmap ~/.dotfiles/.config/i3/Xmodmap
+
+# Set the desktop background
+feh --bg-scale ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg
+
+# System tray
+#trayer --transparent true --widthtype request --tint black --align right --height 30 --expand false
+
+polybar herbst
+
+# Start background apps
+syncthing-gtk --minimized
+nm-applet
+dunst
+redshift -l 37.983810:23.727539 -t 6500:3500
+
+# find the panel
+panel=~/.config/herbstluftwm/panel.sh
+[ -x "$panel" ] || panel=/etc/xdg/herbstluftwm/panel.sh
+for monitor in $(hc list_monitors | cut -d: -f1) ; do
+    # start it on each monitor
+    "$panel" "$monitor" &
+done
