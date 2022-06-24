@@ -44,6 +44,8 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
         sbcl
 
         herbstluftwm
+        rofi
+        polybar
 
         ;; TODO: Remove when Emacs service is working
         emacs-native-comp
