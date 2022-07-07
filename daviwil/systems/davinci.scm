@@ -1,25 +1,43 @@
 (define-module (daviwil systems davinci)
+  #:use-module (daviwil utils)
   #:use-module (daviwil systems base)
-  #:use-module (gnu))
+  #:use-module (daviwil systems common)
+  #:use-module (gnu home)
+  #:use-module (gnu packages file-systems)
+  #:use-module (gnu services)
+  #:use-module (gnu system)
+  #:use-module (gnu system uuid)
+  #:use-module (gnu system file-systems)
+  #:use-module (gnu system mapped-devices)
+  #:use-module (nongnu packages linux))
 
-(operating-system
- (inherit base-operating-system)
- (host-name "davinci")
+(define home
+  (home-environment
+   (packages (gather-manifest-packages '(emacs desktop)))
+   (services common-home-services)))
 
- (mapped-devices
-  (list (mapped-device
-         (source (uuid "eaba53d9-d7e5-4129-82c8-df28bfe6527e"))
-         (target "system-root")
-         (type luks-device-mapping))))
+(define system
+  (operating-system
+   (inherit base-operating-system)
+   (host-name "davinci")
 
- (file-systems (cons*
-                (file-system
-                 (device (file-system-label "system-root"))
-                 (mount-point "/")
-                 (type "ext4")
-                 (dependencies mapped-devices))
-                (file-system
-                 (device "/dev/nvme0n1p2")
-                 (mount-point "/boot/efi")
-                 (type "vfat"))
-                %base-file-systems)))
+   (mapped-devices
+    (list (mapped-device
+           (source (uuid "eaba53d9-d7e5-4129-82c8-df28bfe6527e"))
+           (target "system-root")
+           (type luks-device-mapping))))
+
+   (file-systems (cons*
+                  (file-system
+                   (device (file-system-label "system-root"))
+                   (mount-point "/")
+                   (type "ext4")
+                   (dependencies mapped-devices))
+                  (file-system
+                   (device "/dev/nvme0n1p2")
+                   (mount-point "/boot/efi")
+                   (type "vfat"))
+                  %base-file-systems))))
+
+;; Return home or system config based on environment variable
+(if (getenv "RUNNING_GUIX_HOME") home system)
