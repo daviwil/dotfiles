@@ -184,6 +184,7 @@ hc set frame_padding 0
 hc set smart_frame_surroundings off  # Always show frames and gaps
 hc set smart_window_surroundings off
 hc set mouse_recenter_gap 0
+hc set swap_monitors_to_get_tag false
 
 hc set sizehints_floating on
 hc set sizehints_tiling on
@@ -246,3 +247,6 @@ for monitor in $(hc list_monitors | cut -d: -f1) ; do
     # start it on each monitor
     "$panel" "$monitor" &
 done
+
+# Update screen layout
+update-screens
