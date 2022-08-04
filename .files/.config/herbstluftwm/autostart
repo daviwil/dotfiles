@@ -15,11 +15,12 @@ hc keyunbind --all
 # Use super key as the main modifier key
 Mod=Mod4
 
-hc keybind $Mod-Shift-q quit
+hc keybind $Mod-Shift-x quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-q close_and_remove # Close the window and remove the frame
 hc keybind $Mod-Return spawn "${TERMINAL:-xterm}" # Launch $TERMINAL with xterm as fallback
 hc keybind $Mod-Shift-e spawn emacs
+hc keybind $Mod-Shift-m spawn "update-screens"
 
 # basic movement in tiling and floating mode
 # focusing clients
@@ -83,6 +84,11 @@ hc keybind $Mod-w spawn rofi -show window -theme Arc-Dark -font "JetBrains Mono 
 # tags
 tag_names=( "chat" "dev" "web" "comms" "media" )
 tag_keys=( "quoteleft" 1 2 3 4 )
+# tag_monitors= (1 0 0 1 1)
+
+# TODO: Check which monitor is currently focused
+# Might need a bash script to shell out to
+# hc attr monitors.focus.index
 
 # Bind keys for tags
 hc rename default "${tag_names[0]}" || true
