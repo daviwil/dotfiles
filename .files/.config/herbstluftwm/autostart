@@ -96,14 +96,10 @@ for i in "${!tag_names[@]}" ; do
     hc add "${tag_names[$i]}"
     key="${tag_keys[$i]}"
     if ! [ -z "$key" ] ; then
-        hc keybind "$Mod-$key" use_index "$((i + 1))"
-        hc keybind "$Mod-Shift-$key" move_index "$((i + 1))"
+        hc keybind "$Mod-$key" use_index "$i"
+        hc keybind "$Mod-Shift-$key" move_index "$i"
     fi
 done
-
-# Bind grave to tag 0
-# hc keybind "$Mod-quoteleft" use_index "0"
-# hc keybind "$Mod-Shift-quoteleft" move_index "0"
 
 # Cycle through all tags
 hc keybind $Mod-period use_index +1 --skip-visible
