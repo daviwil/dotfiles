@@ -20,7 +20,7 @@ hc keybind $Mod-Shift-r reload
 hc keybind $Mod-q close_and_remove # Close the window and remove the frame
 hc keybind $Mod-Return spawn "${TERMINAL:-xterm}" # Launch $TERMINAL with xterm as fallback
 hc keybind $Mod-Shift-e spawn emacs
-hc keybind $Mod-Shift-m spawn "update-screens"
+hc keybind $Mod-Shift-s spawn "update-screens"
 
 # basic movement in tiling and floating mode
 # focusing clients
