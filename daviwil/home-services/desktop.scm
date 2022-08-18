@@ -43,9 +43,13 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
         sbcl-stumpwm-kbd-layouts
         sbcl
 
+        ;; New herbstluft setup
         herbstluftwm
         rofi
         polybar
+
+        ;; Controlling audio players
+        playerctl
 
         ;; TODO: Remove when Emacs service is working
         emacs-native-comp
