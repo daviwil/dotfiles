@@ -51,7 +51,8 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
         emacs-native-comp
 
         ;; Sound
-        pipewire
+        pipewire-0.3
+        wireplumber
 
         ;; Appearance
         compton
@@ -63,6 +64,30 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
         font-jost
         font-iosevka-aile
         font-jetbrains-mono))
+
+
+(define (home-desktop-xdg-configuration-services config)
+  `(("alsa/asoundrc"
+     ,(mixed-text-file
+       "asoundrc"
+       #~(string-append
+          "<"
+	        #$(file-append
+             pipewire-0.3 "/share/alsa/alsa.conf.d/50-pipewire.conf")
+	        ">\n<"
+	        #$(file-append
+             pipewire-0.3 "/share/alsa/alsa.conf.d/99-pipewire-default.conf")
+          ">\n"
+          "
+pcm_type.pipewire {
+  lib " #$(file-append pipewire-0.3 "/lib/alsa-lib/libasound_module_pcm_pipewire.so")
+  "
+}
+ctl_type.pipewire {
+  lib " #$(file-append pipewire-0.3 "/lib/alsa-lib/libasound_module_ctl_pipewire.so")
+  "
+}
+")))))
 
 (define (home-desktop-shepherd-services config)
   (list
@@ -83,7 +108,45 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
     (provision '(pipewire))
     (stop  #~(make-kill-destructor))
     (start #~(make-forkexec-constructor
-              (list #$(file-append pipewire "/bin/pipewire")))))))
+              (list #$(file-append pipewire-0.3 "/bin/pipewire"))
+              #:log-file (string-append
+                          (or (getenv "XDG_LOG_HOME")
+                              (format #f "~a/.local/var/log"
+                                      (getenv "HOME")))
+                          "/pipewire.log")
+              #:environment-variables
+              (append (list "DISABLE_RTKIT=1")
+                      (default-environment-variables)))))
+   ;; Start Pipewire PulseAudio module
+   (shepherd-service
+    (requirement '(pipewire))
+    (provision '(pipewire-pulse))
+    (stop  #~(make-kill-destructor))
+    (start #~(make-forkexec-constructor
+              (list #$(file-append pipewire-0.3 "/bin/pipewire-pulse"))
+              #:log-file (string-append
+                          (or (getenv "XDG_LOG_HOME")
+                              (format #f "~a/.local/var/log"
+                                      (getenv "HOME")))
+                          "/pipewire-pulse.log")
+              #:environment-variables
+              (append (list "DISABLE_RTKIT=1")
+                      (default-environment-variables)))))
+   ;; Start Wireplumber session manager
+   (shepherd-service
+    (requirement '(pipewire))
+    (provision '(wireplumber))
+    (stop  #~(make-kill-destructor))
+    (start #~(make-forkexec-constructor
+              (list #$(file-append wireplumber "/bin/wireplumber"))
+              #:log-file (string-append
+                          (or (getenv "XDG_LOG_HOME")
+                              (format #f "~a/.local/var/log"
+                                      (getenv "HOME")))
+                          "/wireplumber.log")
+             #:environment-variables
+             (append (list "DISABLE_RTKIT=1")
+                     (default-environment-variables)))))))
 
 (define (home-desktop-environment-variables config)
   '(("_JAVA_AWT_WM_NONREPARENTING" . "1")))
@@ -101,6 +164,9 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
                        (service-extension
                         home-files-service-type
                         home-desktop-files-service)
+                       (service-extension
+                        home-xdg-configuration-files-service-type
+                        home-desktop-xdg-configuration-services)
                        (service-extension
                         home-environment-variables-service-type
                         home-desktop-environment-variables)))
