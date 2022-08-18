@@ -68,6 +68,9 @@ hc keybind XF86AudioMute spawn amixer set Master toggle
 hc keybind XF86AudioMicMute spawn amixer set Capture toggle
 hc keybind XF86AudioMicMute spawn amixer set Capture toggle
 
+# Media Control
+hc keybind $Mod-p spawn "playerctl play-pause"
+
 # Brightness Control
 hc keybind XF86MonBrightnessUp spawn brightnessctl set 5%+
 hc keybind XF86MonBrightnessDown spawn brightnessctl set 5%-
@@ -112,7 +115,7 @@ hc keybind $Mod-f fullscreen toggle
 hc keybind $Mod-Shift-f set_attr clients.focus.floating toggle
 hc keybind $Mod-Shift-m set_attr clients.focus.minimized true
 hc keybind $Mod-Control-m jumpto last-minimized
-hc keybind $Mod-p pseudotile toggle
+hc keybind $Mod-t pseudotile toggle
 hc keybind $Mod-Shift-w cycle_layout +1
 # The following cycles through the available layouts within a frame, but skips
 # layouts, if the layout change wouldn't affect the actual window positions.
