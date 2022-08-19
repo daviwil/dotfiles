@@ -1,5 +1,6 @@
 (define-module (daviwil systems zerocool)
   #:use-module (daviwil systems base)
+  #:use-module (gnu packages file-systems)
   #:use-module (gnu))
 
 (operating-system

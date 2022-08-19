@@ -7,7 +7,7 @@
        (name 'flat)
        (url "https://github.com/flatwhatson/guix-channel.git")
        (commit
-        "657da22f0229b978b7bf4e4d476f59f17f6a175f")
+        "d95204cc50de4c3a7abcbff86cfec7d5eed43a7e")
        (introduction
         (make-channel-introduction
          "33f86a4b48205c0dc19d7c036c85393f0766f806"

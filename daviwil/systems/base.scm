@@ -217,7 +217,7 @@ EndSection
                                (list cups-filters))))
 
                     ;; Add udev rules to enable PipeWire use
-                    (udev-rules-service 'pipewire-add-udev-rules pipewire)
+                    (udev-rules-service 'pipewire-add-udev-rules pipewire-0.3)
 
                     ;; Enable the build service for Nix package manager
                     (service nix-service-type)
