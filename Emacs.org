@@ -178,6 +178,7 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
       - [[#configuration][Configuration]]
       - [[#bindings][Bindings]]
       - [[#sharing-files-with-0x0][Sharing Files with 0x0]]
+    - [[#rcirc][rcirc]]
     - [[#jabber][Jabber]]
   - [[#rss-with-elfeed][RSS with Elfeed]]
   - [[#media][Media]]
@@ -3905,6 +3906,18 @@ I use this nice package from [[https://gitlab.com/willvaughn][nackjicholson]] to
 #+begin_src emacs-lisp
 
   (setup (:pkg 0x0 :host gitlab :repo "willvaughn/emacs-0x0"))
+
+#+end_src
+
+*** rcirc
+
+=rcirc= is a much more minimal IRC client that is built in to Emacs.  I switched to it to avoid some of the performance issues I faced with ERC when reconnecting to a ZNC bouncer.
+
+#+begin_src emacs-lisp
+
+  (setq rcirc-server-alist '(("crafter.mx" :port 3110 :nick "daviwil" :encryption tls))
+        rcirc-reconnect-delay 5
+        rcirc-fill-column 120)
 
 #+end_src
 
