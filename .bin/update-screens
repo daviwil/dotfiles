@@ -5,6 +5,14 @@ case $(hostname) in
         xrandr --output VIRTUAL1 --off --output eDP1 --mode 2560x1440 --pos 3840x416 --rotate normal --output DP1 --off --output HDMI1 --off --output DP1-3 --off --output DP1-2 --off --output DP1-1 --primary --mode 3840x2160 --pos 0x0 --rotate normal --output DP2 --off
         ;;
 
+    acidburn)
+        autorandr -c
+        feh --bg-scale ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg
+        xmodmap ~/.dotfiles/.config/i3/Xmodmap
+        # xrandr --output eDP-1 --mode 2160x1350 --pos 2560x90 --rotate normal --output HDMI-1 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output DP-3-1 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3-2 --off --output DP-3-3 --off
+        #xrandr --output eDP-1 --mode 2160x1350 --pos 2560x45 --rotate normal --output HDMI-1 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output DP-3-1 --off --output DP-3-2 --off --output DP-3-3 --off --output DP-3-1 --off --output DP-3-2 --off --output DP-3-3 --primary --mode 2560x1440 --pos 0x0 --rotate normal
+        ;;
+
     davinci)
         # Temporary: this is for docking my laptop at home with HDMI!
         #xrandr --output HDMI-2 --mode 3840x2160 --pos 0x0 --scale 0.6x0.6 --primary --rotate normal --output HDMI-1 --off --output DP-1 --off --output eDP-1 --mode 1920x1080 --pos 2304x216 --rotate normal --output DP-2 --off
@@ -12,9 +20,12 @@ case $(hostname) in
         ;;
 
     phantom)
+        autorandr -c
+        feh --bg-scale ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg
+        xmodmap ~/.dotfiles/.config/i3/Xmodmap
         # On a new install, run this command first to ensure HDMI works!
         # xrandr --setprovideroutputsource nouveau modesetting
-        xrandr --output eDP-1 --primary --mode 3840x2160 --pos 0x0 --rotate normal --output eDP-1-2 --off --output HDMI-1-1 --mode 3840x2160 --pos 3840x0 --rotate normal --output DP-1-1 --off --output DP-1-2 --off
+        # xrandr --output eDP-1 --primary --mode 3840x2160 --pos 0x0 --rotate normal --output eDP-1-2 --off --output HDMI-1-1 --mode 3840x2160 --pos 3840x0 --rotate normal --output DP-1-1 --off --output DP-1-2 --off
         ;;
 
 esac
