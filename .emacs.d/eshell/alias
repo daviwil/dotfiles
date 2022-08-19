@@ -1,3 +1,4 @@
+alias hc herbstclient $*
 alias e find-file $1
 alias edit find-file $1
 alias vim find-file $1
