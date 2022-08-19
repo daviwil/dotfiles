@@ -2859,7 +2859,7 @@ Configure TypeScript and JavaScript language modes
 
 #+begin_src emacs-lisp
 
-  (with-eval-after-load 'lsp-mode
+  (with-eval-after-load 'eglot
     (add-hook 'c-mode-hook 'eglot-ensure))
 
 #+end_src
