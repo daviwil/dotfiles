@@ -218,7 +218,7 @@ hc rule fixedsize floating=on
 hc set tree_style '╾│ ├└╼─┐'
 
 # Activate "dev" tag and set it to have max layout
-hc use_index 2
+hc use_index 1
 hc set_layout max
 
 # Finalize window configuration by unlocking
