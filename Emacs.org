@@ -109,6 +109,7 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
     - [[#org-present][org-present]]
   - [[#org-roam][Org Roam]]
   - [[#auto-show-markup-symbols][Auto-show Markup Symbols]]
+- [[#denote][Denote]]
 - [[#development][Development]]
   - [[#git][Git]]
     - [[#magit][Magit]]
@@ -2367,6 +2368,33 @@ This package makes it much easier to edit Org documents when =org-hide-emphasis-
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-org-appear"
+
+#+end_src
+
+* Denote
+
+Experimenting with Denote to determine whether I can come up with an interesting workflow with it...
+
+#+begin_src emacs-lisp
+
+  (setup (:pkg denote :straight t)
+    (setq denote-directory "~/Notes/Denote")
+
+    ;; Top-level keywords
+    (setq denote-known-keywords '("journal" "workflow" "daily" "weekly" "monthly"))
+
+    ;; Buttonize all denote links in text buffers
+    (add-hook 'find-file-hook #'denote-link-buttonize-buffer))
+
+  (defun dw/denote-find-daily-log ()
+    (interactive)
+    (let* ((default-directory denote-directory)
+           (existing-file (denote--directory-files-matching-regexp (format-time-string "^%Y%m%d.*_daily"))))
+      (if existing-file
+          (find-file (expand-file-name (car existing-file)))
+        ;; TODO: Initialize with daily note format
+        (denote (format-time-string "%A, %B %e, %Y")
+                '("daily")))))
 
 #+end_src
 
