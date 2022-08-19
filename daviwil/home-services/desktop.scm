@@ -47,6 +47,7 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
         herbstluftwm
         rofi
         polybar
+        autorandr
 
         ;; Controlling audio players
         playerctl
