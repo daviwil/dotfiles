@@ -165,7 +165,7 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
     - [[#configuration][Configuration]]
     - [[#shell-commands][Shell Commands]]
     - [[#visual-commands][Visual Commands]]
-    - [[#fish-completion][Fish Completion]]
+    - [[#pcomplete-enhancements][Pcomplete Enhancements]]
     - [[#command-highlighting][Command Highlighting]]
     - [[#history-autocompletion][History Autocompletion]]
     - [[#toggling-eshell][Toggling Eshell]]
@@ -3593,15 +3593,14 @@ Custom eshell commands will go here.
 
 #+end_src
 
-*** Fish Completion
+*** Pcomplete Enhancements
 
-This enhances eshell's completions with those that Fish is capable of and also falls back to any additional completions that are configured for Bash on the system.  The primary benefit here (for me) is getting completion for commits and branches in =git= commands.
+This enhances eshell's completions with the =pcmpl-args= package to ensure that many command line programs get better completions (especially those like =git=).
 
 #+begin_src emacs-lisp
 
-  (setup (:pkg fish-completion)
-    (:disabled)
-    (:hook-into eshell-mode))
+  (setup (:pkg pcmpl-args)
+    (require 'pcmpl-args))
 
 #+end_src
 
@@ -3609,7 +3608,7 @@ This enhances eshell's completions with those that Fish is capable of and also f
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  "emacs-fish-completion"
+  "emacs-pcmpl-args"
 
 #+end_src
 
