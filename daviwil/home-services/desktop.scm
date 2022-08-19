@@ -5,6 +5,7 @@
   #:use-module (gnu packages gnome-xyz)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages lisp)
+  #:use-module (gnu packages music)
   #:use-module (gnu packages wm)
   #:use-module (gnu packages xdisorg)
   #:use-module (daviwil packages fonts)
