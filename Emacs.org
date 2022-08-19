@@ -847,43 +847,50 @@ Trying out =tab-bar-mode= for my workspace needs.
 
 #+begin_src emacs-lisp
 
-  (defun dw/switch-tab-buffer (&optional arg)
-    (interactive "P")
-    (cond
-     ((and arg (> (car arg) 0)) (call-interactively #'consult-buffer))
-     ((project-current) (call-interactively #'project-switch-to-buffer))
-     (t (call-interactively #'consult-buffer))))
+    (defun dw/switch-tab-buffer (&optional arg)
+      (interactive "P")
+      (cond
+       ((and arg (> (car arg) 0)) (call-interactively #'consult-buffer))
+       ((project-current) (call-interactively #'project-switch-to-buffer))
+       (t (call-interactively #'consult-buffer))))
 
-  (global-set-key (kbd "C-M-j") #'consult-buffer)
-  (global-set-key (kbd "C-M-k") #'tab-bar-switch-to-tab)
-  (global-set-key (kbd "C-M-n") #'tab-bar-switch-to-next-tab)
+    (global-set-key (kbd "C-M-j") #'consult-buffer)
+    (global-set-key (kbd "C-M-k") #'tab-bar-switch-to-tab)
+    (global-set-key (kbd "C-M-n") #'tab-bar-switch-to-next-tab)
 
-  (defun dw/exwm-workspace-icon ()
-    (when dw/exwm-enabled
-      (format " %s" (pcase exwm-workspace-current-index
-                      (0 "💬")
-                      (1 "💻")
-                      (2 "🏄")
-                      (3 "📬")
-                      (4 "📸")))))
+    (defun dw/exwm-workspace-icon ()
+      (when dw/exwm-enabled
+        (format " %s" (pcase exwm-workspace-current-index
+                        (0 "💬")
+                        (1 "💻")
+                        (2 "🏄")
+                        (3 "📬")
+                        (4 "📸")))))
 
-  (defun dw/set-tab-bar-faces ()
-    (let ((color (face-attribute 'doom-modeline-bar :background nil t)))
-      (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :weight 'semi-bold :underline `(:color ,color) :inherit nil)
-      (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'mode-line)))
+    (defun dw/set-tab-bar-faces ()
+      (let ((color (face-attribute 'doom-modeline-bar :background nil t)))
+        (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :weight 'semi-bold :underline `(:color ,color) :inherit nil)
+        (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'mode-line)))
 
-  (setq tab-bar-close-button-show nil
-        tab-bar-format '(dw/exwm-workspace-icon tab-bar-format-history tab-bar-format-tabs-groups tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
+    (setq tab-bar-close-button-show nil
+          tab-bar-format '(dw/exwm-workspace-icon tab-bar-format-history tab-bar-format-tabs-groups tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
 
-  (with-eval-after-load 'doom-modeline
-    (dw/set-tab-bar-faces)
-    (add-to-list 'global-mode-string '("" doom-modeline--battery-status))
-    (add-to-list 'global-mode-string '("" tracking-mode-line-buffers))
+    ;; NOTE: Disabled this for now since I switched to Herbtsluft WM
+    ;; (with-eval-after-load 'doom-modeline
+    ;;   (dw/set-tab-bar-faces)
+    ;;   (add-to-list 'global-mode-string '("" doom-modeline--battery-status))
+    ;;   (add-to-list 'global-mode-string '("" tracking-mode-line-buffers))
 
-    (display-time-mode 1)
-    (display-battery-mode 1)
+    ;;   (display-time-mode 1)
+    ;;   (display-battery-mode 1)
 
-    (tab-bar-mode 1))
+    ;;   (tab-bar-mode 1))
+
+    (with-eval-after-load 'doom-modeline
+      (dw/set-tab-bar-faces)
+      (setq tab-bar-show 1)
+      (tab-bar-mode 1)
+      (tab-bar-rename-tab "Main"))
 
 #+end_src
 
