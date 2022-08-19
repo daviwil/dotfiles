@@ -998,6 +998,7 @@ list of timezones.  Nice for working in a team with remote members.
     '(("Etc/UTC" "UTC")
       ("Europe/Athens" "Athens")
       ("America/Los_Angeles" "Seattle")
+      ("America/Denver" "Denver")
       ("America/New_York" "New York")
       ("Pacific/Auckland" "Auckland")
       ("Asia/Shanghai" "Shanghai")
