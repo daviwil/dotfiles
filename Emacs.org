@@ -4147,8 +4147,7 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 #+begin_src scheme :tangle .config/guix/manifests/emacs.scm :noweb yes
 
   (specifications->manifest
-   '(;;"emacs"
-     "emacs-native-comp"
+   '("emacs"
      <<packages>>
   ))
 

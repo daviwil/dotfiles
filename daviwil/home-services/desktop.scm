@@ -1,5 +1,6 @@
 (define-module (daviwil home-services desktop)
   #:use-module (gnu packages compton)
+  #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages fonts)
   #:use-module (gnu packages gnome-xyz)
@@ -9,7 +10,6 @@
   #:use-module (gnu packages wm)
   #:use-module (gnu packages xdisorg)
   #:use-module (daviwil packages fonts)
-  #:use-module (flat packages emacs)
   #:use-module (gnu services)
   #:use-module (gnu home services)
   #:use-module (gnu home services shepherd)
@@ -54,7 +54,7 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
         playerctl
 
         ;; TODO: Remove when Emacs service is working
-        emacs-native-comp
+        emacs
 
         ;; Sound
         pipewire-0.3
