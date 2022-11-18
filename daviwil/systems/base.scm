@@ -160,20 +160,21 @@ EndSection
                  %base-groups))
 
    ;; Install bare-minimum system packages
-   (packages (append (list git
-                           ntfs-3g
-                           exfat-utils
-                           fuse-exfat
-                           stow
-                           vim
-                           emacs
-                           xterm
-                           bluez
-                           bluez-alsa
-                           tlp
-                           xf86-input-libinput
-                           nss-certs ;; SSL root certificates
-                           gvfs)     ;; Enable user mounts
+   (packages (append (map specification->package
+                          '("git"
+                            "ntfs-3g"
+                            "exfat-utils"
+                            "fuse-exfat"
+                            "stow"
+                            "vim"
+                            "emacs"
+                            "xterm"
+                            "bluez"
+                            "bluez-alsa"
+                            "tlp"
+                            "xf86-input-libinput"
+                            "nss-certs" ;; SSL root certificates
+                            "gvfs"))     ;; Enable user mounts
                      %base-packages))
 
    ;; Use the "desktop" services, which include the X11 log-in service,
