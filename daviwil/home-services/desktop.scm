@@ -1,14 +1,6 @@
 (define-module (daviwil home-services desktop)
-  #:use-module (gnu packages compton)
-  #:use-module (gnu packages emacs)
-  #:use-module (gnu packages emacs-xyz)
-  #:use-module (gnu packages fonts)
-  #:use-module (gnu packages gnome-xyz)
+  #:use-module (gnu packages)
   #:use-module (gnu packages linux)
-  #:use-module (gnu packages lisp)
-  #:use-module (gnu packages music)
-  #:use-module (gnu packages wm)
-  #:use-module (gnu packages xdisorg)
   #:use-module (daviwil packages fonts)
   #:use-module (gnu services)
   #:use-module (gnu home services)
@@ -33,44 +25,53 @@ Xft/Hinting 0
 Xft/HintStyle \"hintnone\"
 Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
 
+(define currently-unused
+  '("stumpwm+slynk"
+    "stumpwm:lib"
+    "stumpish"
+    "emacs-stumpwm-mode"
+    "sbcl-stumpwm-swm-gaps"
+    "sbcl-stumpwm-ttf-fonts"
+    "sbcl-stumpwm-stumptray"
+    "sbcl-stumpwm-kbd-layouts"
+    "sbcl"))
+
 (define (home-desktop-profile-service config)
-  (list stumpwm+slynk
-        `(,stumpwm "lib")
-        stumpish
-        emacs-stumpwm-mode
-        sbcl-stumpwm-swm-gaps
-        sbcl-stumpwm-ttf-fonts
-        sbcl-stumpwm-stumptray
-        sbcl-stumpwm-kbd-layouts
-        sbcl
+  (map specification->package
+       '(;; New herbstluft setup
+         "herbstluftwm"
+         "rofi"
+         "polybar"
 
-        ;; New herbstluft setup
-        herbstluftwm
-        rofi
-        polybar
-        autorandr
+         ;; General tools
+	       "feh"
+         "dunst"
+         "arandr"
+         "autorandr"
+         "xss-lock"
+	       "dbus"
 
-        ;; Controlling audio players
-        playerctl
+         ;; Controlling audio players
+         "playerctl"
 
-        ;; TODO: Remove when Emacs service is working
-        emacs
+         ;; TODO: Remove when Emacs service is working
+         "emacs"
+	       "emacs-exwm"
 
-        ;; Sound
-        pipewire-0.3
-        wireplumber
+         ;; Sound
+         "pipewire"
+         "wireplumber"
 
-        ;; Appearance
-        compton
-        xsettingsd
-        matcha-theme
-        papirus-icon-theme
+         ;; Appearance
+         "compton"
+         "xsettingsd"
+         "matcha-theme"
+         "papirus-icon-theme"
 
-        ;; Fonts
-        font-jost
-        font-iosevka-aile
-        font-jetbrains-mono))
-
+         ;; Fonts
+         "font-jost"
+         "font-iosevka-aile"
+         "font-jetbrains-mono")))
 
 (define (home-desktop-xdg-configuration-services config)
   `(("alsa/asoundrc"
@@ -79,18 +80,18 @@ Xft/DPI " (number->string (* 1024 dpi)) " # 1024 * DPI")))))
        #~(string-append
           "<"
 	        #$(file-append
-             pipewire-0.3 "/share/alsa/alsa.conf.d/50-pipewire.conf")
+             pipewire "/share/alsa/alsa.conf.d/50-pipewire.conf")
 	        ">\n<"
 	        #$(file-append
-             pipewire-0.3 "/share/alsa/alsa.conf.d/99-pipewire-default.conf")
+             pipewire "/share/alsa/alsa.conf.d/99-pipewire-default.conf")
           ">\n"
           "
 pcm_type.pipewire {
-  lib " #$(file-append pipewire-0.3 "/lib/alsa-lib/libasound_module_pcm_pipewire.so")
+  lib " #$(file-append pipewire "/lib/alsa-lib/libasound_module_pcm_pipewire.so")
   "
 }
 ctl_type.pipewire {
-  lib " #$(file-append pipewire-0.3 "/lib/alsa-lib/libasound_module_ctl_pipewire.so")
+  lib " #$(file-append pipewire "/lib/alsa-lib/libasound_module_ctl_pipewire.so")
   "
 }
 ")))))
@@ -114,7 +115,7 @@ ctl_type.pipewire {
     (provision '(pipewire))
     (stop  #~(make-kill-destructor))
     (start #~(make-forkexec-constructor
-              (list #$(file-append pipewire-0.3 "/bin/pipewire"))
+              (list #$(file-append pipewire "/bin/pipewire"))
               #:log-file (string-append
                           (or (getenv "XDG_LOG_HOME")
                               (format #f "~a/.local/var/log"
@@ -129,7 +130,7 @@ ctl_type.pipewire {
     (provision '(pipewire-pulse))
     (stop  #~(make-kill-destructor))
     (start #~(make-forkexec-constructor
-              (list #$(file-append pipewire-0.3 "/bin/pipewire-pulse"))
+              (list #$(file-append pipewire "/bin/pipewire-pulse"))
               #:log-file (string-append
                           (or (getenv "XDG_LOG_HOME")
                               (format #f "~a/.local/var/log"
