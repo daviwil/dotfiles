@@ -17,7 +17,7 @@
           "d4f3c4b57e05fd3286722ed44b6500093c632258"))
       (channel
         (name 'channel-x)
-        (url "file:///home/daviwil/Projects/Code/channel-x")
+        (url "https://github.com/daviwil/channel-x")
         (branch "master")
         (commit
-          "025eca1931ca5c5489ec3f45a4af7ea558f1bec9")))
+          "0c442c2479fc86fed791e401663d964c999732bf")))

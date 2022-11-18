@@ -2,7 +2,7 @@
 
 (list (channel
        (name 'channel-x)
-       (url "file:///home/daviwil/Projects/Code/channel-x"))
+       (url "https://github.com/daviwil/channel-x"))
       (channel
        (name 'nonguix)
        (url "https://gitlab.com/nonguix/nonguix")
