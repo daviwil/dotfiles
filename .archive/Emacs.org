@@ -1,5 +1,6 @@
 #+TITLE: Emacs Configuration
-#+PROPERTY: header-args:emacs-lisp :tangle .emacs.d/init.el
+
+This file is no longer tangled.
 
 * Preface
 
@@ -31,6 +32,7 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
   - [[#delay][:delay]]
   - [[#disabled][:disabled]]
   - [[#load-after][:load-after]]
+  - [[#load-path][:load-path]]
 - [[#keep-emacsd-clean][Keep .emacs.d Clean]]
 - [[#update-load-path][Update Load Path]]
 - [[#default-coding-system][Default Coding System]]
@@ -107,9 +109,12 @@ Other files in my dotfiles repo also contain Emacs Lisp code that get pulled in 
   - [[#reminders][Reminders]]
   - [[#presentations][Presentations]]
     - [[#org-present][org-present]]
+  - [[#org-queries][Org Queries]]
   - [[#org-roam][Org Roam]]
   - [[#auto-show-markup-symbols][Auto-show Markup Symbols]]
 - [[#denote][Denote]]
+- [[#productivity][Productivity]]
+  - [[#timers-with-hammy][Timers with Hammy]]
 - [[#development][Development]]
   - [[#git][Git]]
     - [[#magit][Magit]]
@@ -390,6 +395,28 @@ This keyword causes a body to be executed after other packages/features are load
 
 #+end_src
 
+** :load-path
+
+This keyword comes from the [[https://www.emacswiki.org/emacs/SetupEl][EmacsWiki page]] for setup.el.
+
+#+begin_src emacs-lisp
+
+  (setup-define :load-path
+      (lambda (path)
+        `(let ((path* (expand-file-name ,path)))
+           (if (file-exists-p path*)
+               (add-to-list 'load-path path*)
+             ,(setup-quit))))
+    :documentation "Add PATH to load path.
+  This macro can be used as NAME, and it will replace itself with
+  the nondirectory part of PATH.
+  If PATH does not exist, abort the evaluation."
+    :shorthand (lambda (args)
+                 (intern
+                  (file-name-nondirectory
+                   (directory-file-name (cadr args))))))
+
+#+end_src
 * Keep .emacs.d Clean
 
 I don't want a bunch of transient files showing up as untracked in the Git repo so I move them all to another location.
@@ -654,7 +681,7 @@ Set frame transparency and maximize windows by default.
 #+begin_src emacs-lisp
 
   (unless dw/is-termux
-    (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
+    (set-frame-parameter (selected-frame) 'alpha '(97 . 100))
     (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
     (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
     (add-to-list 'default-frame-alist '(fullscreen . maximized)))
@@ -719,6 +746,7 @@ Alternate themes:
   (setup (:pkg spacegray-theme))
   (setup (:pkg doom-themes))
   (unless dw/is-termux
+    ;; (load-theme 'doom-molokai t)
     (load-theme 'doom-palenight t)
     (doom-themes-visual-bell-config))
 
@@ -769,8 +797,8 @@ Different platforms need different default font sizes, and [[https://mozilla.git
 
 #+begin_src emacs-lisp
 
-  (setup (:pkg emojify)
-    (:hook erc-mode))
+  (setup (:pkg emojify))
+    ;(:hook erc-mode))
 
 #+end_src
 
@@ -1317,24 +1345,42 @@ Trying this as an alternative to Ivy and Counsel.
              corfu-quit-no-match t)
     (global-corfu-mode 1))
 
+  (setup (:pkg kind-icon)
+    (:load-after corfu)
+    (:option kind-icon-default-face 'corfu-default)
+    (:when-loaded
+      (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)))
+
 #+end_src
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-corfu"
+  "emacs-kind-icon"
 
 #+end_src
 
 ** Improved Candidate Filtering with Orderless
 
 #+begin_src emacs-lisp
-  
+
   (setup (:pkg orderless)
     (require 'orderless)
+
+    (orderless-define-completion-style orderless+initialism
+      (orderless-matching-styles '(orderless-initialism
+                                   orderless-literal
+                                   orderless-regexp)))
+
     (setq completion-styles '(orderless)
           completion-category-defaults nil
-          completion-category-overrides '((file (styles . (partial-completion))))))
-  
+          orderless-matching-styles '(orderless-literal orderless-regexp)
+          completion-category-overrides
+           '((file (styles partial-completion)))))
+             ;(command (styles orderless+initialism))
+             ;(symbol (styles orderless-flex orderless-literal))
+             ;(variable (styles orderless+initialism)))))
+
 #+end_src
 
 *Guix Packages*
@@ -1385,7 +1431,7 @@ Consult provides a lot of useful completion commands similar to Ivy's Counsel.
 
 #+begin_src emacs-lisp
 
-  (setup (:pkg consult-dir :straight t)
+  (setup (:pkg consult-dir)
     (:global "C-x C-d" consult-dir)
     (:with-map vertico-map
       (:bind "C-x C-d" consult-dir
@@ -1722,7 +1768,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 #+begin_src emacs-lisp
 
   (setup (:pkg all-the-icons-dired))
-  (setup (:pkg dired-single))
+  (setup (:pkg dired-single :straight t))
   (setup (:pkg dired-ranger))
   (setup (:pkg dired-collapse))
 
@@ -1805,7 +1851,7 @@ I use [[https://www.passwordstore.org/][pass]] to manage all of my passwords loc
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
-  "emacs-dired-single"
+  ;; "emacs-dired-single"
   "emacs-dired-hacks"
   "emacs-all-the-icons-dired"
 
@@ -1866,6 +1912,7 @@ I document and configure my org-mode workflow in a separate document: [[file:Wor
     (variable-pitch-mode 1)
     (auto-fill-mode 0)
     (visual-line-mode 1)
+    (setq corfu-auto nil)
     (setq evil-auto-indent nil))
 
   ;; Make sure Straight pulls Org from Guix
@@ -2209,12 +2256,27 @@ It's nice to have a table of contents section for long literate configuration fi
 
 #+end_src
 
-
 *Guix Packages*
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
   "emacs-org-present"
+
+#+end_src
+
+** Org Queries
+
+#+begin_src emacs-lisp
+
+  (setup (:pkg org-ql))
+
+#+end_src
+
+*Guix Packages*
+
+#+begin_src scheme :noweb-ref packages :noweb-sep ""
+
+  "emacs-org-ql"
 
 #+end_src
 
@@ -2408,6 +2470,39 @@ Experimenting with Denote to determine whether I can come up with an interesting
 
 #+end_src
 
+* Productivity
+
+** Timers with Hammy
+
+#+begin_src emacs-lisp
+
+  (setup (:pkg hammy :straight t)
+    (require 'hammy)
+    (hammy-define (propertize "🍅" 'face '(:foreground "tomato"))
+                  :documentation "The classic pomodoro timer."
+                  :intervals
+                  (list
+                   (interval :name "Work"
+                             :duration "25 minutes"
+                             :before (do (announce "Starting work time.")
+                                         (notify "Starting work time."))
+                             :advance (do (announce "Break time!")
+                                          (notify "Break time!")))
+                   (interval :name "Break"
+                             :duration (do (if (and (not (zerop cycles))
+                                                    (zerop (mod cycles 3)))
+                                               ;; If a multiple of three cycles have
+                                               ;; elapsed, the fourth work period was
+                                               ;; just completed, so take a longer break.
+                                               "30 minutes"
+                                             "5 minutes"))
+                             :before (do (announce "Starting break time.")
+                                         (notify "Starting break time."))
+                             :advance (do (announce "Break time is over!")
+                                          (notify "Break time is over!"))))))
+
+#+end_src
+
 * Development
 
 Configuration for various programming languages and dev tools that I use.
@@ -2440,8 +2535,7 @@ https://magit.vc/manual/magit/
 
 #+begin_src emacs-lisp
 
-  (setup (:pkg forge)
-    (:disabled))
+  (setup (:pkg forge))
 
 #+end_src
 
@@ -2726,6 +2820,8 @@ Trying out Eglot for a bit to see how I like it compared to lsp-mode.
   (setup (:pkg eglot)
     ;; TODO: Don't load until needed
     (require 'eglot)
+    (define-key eglot-mode-map (kbd "C-c C-a") #'eglot-code-actions)
+    (define-key eglot-mode-map (kbd "C-c C-r") #'eglot-rename)
     (setq eglot-autoshutdown t
           eglot-confirm-server-initiated-edits nil)
     (add-to-list 'eglot-server-programs
@@ -2818,6 +2914,18 @@ Not currently doing any Common Lisp development so these packages are disabled f
   ;; Include .sld library definition files
   (setup (:pkg scheme-mode)
     (:file-match "\\.sld\\'"))
+
+#+end_src
+
+*** Mesche
+
+#+begin_src emacs-lisp
+
+  (setup mesche
+    (:load-path "~/Projects/Code/mesche/mesche-emacs")
+    (:with-mode mesche-mode
+      (:file-match "\\.msc\\'"))
+    (require 'mesche))
 
 #+end_src
 
@@ -3038,6 +3146,9 @@ Configure TypeScript and JavaScript language modes
   ;; 2. Use `impatient-mode' on any buffer
   (setup (:pkg impatient-mode :straight t))
   (setup (:pkg skewer-mode))
+
+  (with-eval-after-load 'simple-httpd
+    (add-to-list 'httpd-mime-types '("wasm" . "application/wasm")))
 
 #+end_src
 
@@ -3400,7 +3511,12 @@ My mail configuration is stored in [[file:Mail.org][Mail.org]].  We merely requi
 
 #+begin_src scheme :noweb-ref packages :noweb-sep ""
 
+  "isync"
+  "mu"
   "emacs-mu4e-alert"
+  "notmuch"
+  "emacs-notmuch"
+  "emacs-notmuch-maildir"
 
 #+end_src
 
@@ -3756,9 +3872,9 @@ This enhances eshell's completions with the =pcmpl-args= package to ensure that 
     (when dw/exwm-enabled
       (dw/update-polybar-telegram)))
 
-  (advice-add 'tracking-add-buffer :around #'dw/around-tracking-add-buffer)
-  (advice-add 'tracking-remove-buffer :after #'dw/after-tracking-remove-buffer)
-  (advice-remove 'tracking-remove-buffer #'dw/around-tracking-remove-buffer)
+  ;;(advice-add 'tracking-add-buffer :around #'dw/around-tracking-add-buffer)
+  ;;(advice-add 'tracking-remove-buffer :after #'dw/after-tracking-remove-buffer)
+  ;;(advice-remove 'tracking-remove-buffer #'dw/around-tracking-remove-buffer)
 
   ;; Advise exwm-workspace-switch so that we can more reliably clear tracking buffers
   ;; NOTE: This is a hack and I hate it.  It'd be great to find a better solution.
@@ -3767,14 +3883,12 @@ This enhances eshell's completions with the =pcmpl-args= package to ensure that 
       (when (eq exwm-workspace-current-index 0)
         (tracking-remove-visible-buffers))))
 
-  (advice-add 'exwm-workspace-switch :before #'dw/before-exwm-workspace-switch)
+  ;;(advice-add 'exwm-workspace-switch :before #'dw/before-exwm-workspace-switch)
 
   (setup (:pkg telega)
-    (setq telega-user-use-avatars nil
-          telega-use-tracking-for '(any pin unread)
-          telega-emoji-use-images t
-          telega-completing-read-function #'ivy-completing-read
-          telega-msg-rainbow-title nil
+    (setq telega-use-tracking-for nil
+          telega-completing-read-function #'completing-read
+          telega-msg-rainbow-title t
           telega-chat-fill-column 75))
 
 #+end_src
@@ -3826,8 +3940,9 @@ This enhances eshell's completions with the =pcmpl-args= package to ensure that 
         erc-fill-function 'erc-fill-static
         erc-fill-static-center 20
         erc-image-inline-rescale 400
+        erc-server-auto-reconnect nil
         erc-server-reconnect-timeout 10
-        erc-server-reconnect-attempts 5
+        erc-server-reconnect-attempts 0
         erc-autojoin-channels-alist '(("irc.libera.chat" "#systemcrafters" "#emacs" "#guix"))
         erc-quit-reason (lambda (s) (or s "Ejecting from cyberspace"))
         erc-modules

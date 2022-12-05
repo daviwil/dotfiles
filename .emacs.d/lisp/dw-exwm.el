@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defvar dw/exwm--floating-pinned-windows '()
   "Holds the set of pinned window IDs.")
 

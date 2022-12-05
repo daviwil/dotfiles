@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 
 (defun dw/load-system-settings ()
   (interactive)
@@ -5,5 +6,9 @@
 
 (defun dw/system-settings-get (setting)
   (alist-get setting dw/system-settings))
+
+;; Load settings for the first time
+(dw/load-system-settings)
+
 
 (provide 'dw-settings)

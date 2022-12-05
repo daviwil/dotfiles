@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (setq dw/open-url-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "<return>") 'ivy-immediate-done)

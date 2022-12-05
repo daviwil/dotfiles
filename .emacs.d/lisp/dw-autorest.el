@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defvar dw/autorest-last-run nil
   "Details on the last AutoRest run to use with dw/rerun-autorest-command")
 
