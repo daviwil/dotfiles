@@ -5,12 +5,20 @@
   #:use-module (gnu home services)
   #:use-module (gnu packages file-systems)
   #:use-module (daviwil utils)
+  #:use-module (daviwil home-services pipewire)
+  #:use-module (daviwil home-services xsettingsd)
+  #:use-module (daviwil home-services emacs base)
   #:use-module (daviwil systems common))
 
 (define home
   (home-environment
-   (packages (gather-manifest-packages '(emacs desktop video music games)))
-   (services common-home-services)))
+   (packages (gather-manifest-packages '(emacs desktop video music)))
+   (services (append
+              common-home-services
+              (list (service home-xsettingsd-service-type
+                             (home-xsettingsd-configuration
+                              (dpi 140)))
+                    (service home-pipewire-service-type))))))
 
 (define system
   (operating-system

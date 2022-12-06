@@ -14,7 +14,12 @@
 (define home
   (home-environment
    (packages (gather-manifest-packages '(emacs desktop music video games)))
-   (services common-home-services)))
+   (services (append
+              common-home-services
+              (list (service home-xsettingsd-service-type
+                             (home-xsettingsd-configuration
+                              (dpi 180)))
+                    (service home-pipewire-service-type))))))
 
 (define system
   (operating-system
