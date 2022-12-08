@@ -1,0 +1,112 @@
+# Set the home page to a local file
+set home-page=file:///home/daviwil/.config/vimb/home.html
+
+# Use home-row keys for hints
+set hint-keys=asdfg;lkjh
+set hint-match-element=false
+set hint-keys-same-length=true
+set hint-timeout=0
+
+# Enable smooth scrolling
+set smooth-scrolling=true
+
+# Fake a Chromium User-Agent header
+#set user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36
+set user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36
+
+# Set download directory
+set download-path=~/Downloads
+
+# If enabled the inputbox will be hidden whenever it contains no text
+set input-autohide=true
+
+# Set the default zoom
+set default-zoom=160
+
+# Hint sites to use dark themes
+set dark-mode=on
+
+# Use Emacs as the external editor
+set editor-command=emacsclient
+
+# Enable support for WebGL
+set webgl=true
+
+# While typing a search command, show where the pattern typed so far matches.
+set incsearch=true
+
+# Enable developer tools (binding is gF)
+set webinspector=true
+
+# Turn off dark mode on some sites
+au LoadCommitted https://outlook.office.com/* set dark-mode=off
+
+# Keybindings
+# - 'e' edits URL in current window
+# - 'E' edits URL in new window
+# - 'O' opens URL in new window
+# - 'H' navigates back
+# - 'L' navigates forward
+# - 'D' closes the window
+# - 'C-g' exits command and input mode
+# - 'C-j' and 'C-k' move down and up command selections
+nn e O
+nn E T
+nm O :tabopen<Space>
+nn H <C-O>
+nn L <C-I>
+nm D :q<CR>
+ino <C-G> <Esc>
+cno <C-J> <Tab>
+cno <C-K> <S-Tab>
+
+# Zoom keys
+nmap + zI
+nmap - zO
+nmap = zz
+
+# Shortcuts
+shortcut-add gn=https://github.com/notifications
+shortcut-add dot=https://github.com/daviwil/dotfiles
+shortcut-add ddg=https://duckduckgo.com/?q=$0
+shortcut-add gh=https://github.com/$0
+shortcut-add gm=https://www.iro.umontreal.ca/~gambit/doc/gambit.html
+shortcut-add gam=https://github.com/gambit/gambit
+shortcut-add zig=https://github.com/ziglang/zig
+shortcut-add zigd=https://ziglang.org/documentation/master/
+shortcut-add zigl=https://ziglang.org/documentation/master/std
+shortcut-add sub=https://github.com/substratic/
+shortcut-add sube=https://github.com/substratic/engine
+shortcut-add subb=https://github.com/substratic/build
+shortcut-add subf=https://github.com/substratic/forge
+shortcut-add subc=https://github.com/substratic/crash-the-stack
+shortcut-add tspl=https://scheme.com/tspl4/
+shortcut-add mail=https://fastmail.com
+shortcut-add cups=http://localhost:631
+shortcut-add az=https://portal.azure.com
+shortcut-add azdo=https://dev.azure.com/azure-sdk/
+shortcut-add ajs=https://github.com/Azure/azure-sdk-for-js
+shortcut-add dajs=https://github.com/daviwil/azure-sdk-for-js
+shortcut-add anet=https://github.com/Azure/azure-sdk-for-net
+shortcut-add aja=https://github.com/Azure/azure-sdk-for-java
+shortcut-add apy=https://github.com/Azure/azure-sdk-for-python
+shortcut-add ats=https://github.com/Azure/autorest.typescript
+shortcut-add ats3=https://github.com/Azure/autorest.typescript.v3
+shortcut-add atest=https://github.com/Azure/autorest.testserver
+shortcut-add amf=https://github.com/Azure/autorest.modelerfour
+shortcut-add ar=https://github.com/Azure/autorest
+shortcut-add arpy=https://github.com/Azure/autorest.python
+shortcut-add arc=https://github.com/Azure/autorest.csharp
+shortcut-add are=https://github.com/Azure/autorest/tree/master/docs/extensions
+shortcut-add arp=https://github.com/orgs/Azure/projects/48
+shortcut-add ac=https://github.com/Azure/autorest.compare
+shortcut-add ap=https://github.com/Azure/perks
+shortcut-add specs=https://github.com/Azure/azure-rest-api-specs
+shortcut-add oai2=https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
+shortcut-add oai3=https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
+shortcut-add npm=https://www.npmjs.com/search?q=$0
+shortcut-add oms=https://outlook.com/microsoft.com
+shortcut-add msw=https://microsoft.sharepoint.com
+shortcut-add man=https://fanglingsu.github.io/vimb/man.html
+
+# A newline is needed at EOF because each line is executed like a command as if the user typed it and pressed Enter.

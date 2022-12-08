@@ -1,0 +1,30 @@
+IMAPAccount fastmail
+Host imap.fastmail.com
+Port 993
+User daviwil@fastmail.fm
+PassCmd "pass Mail/Fastmail/daviwil"
+SSLType IMAPS
+SSLVersions TLSv1.2
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+# Define the remote from which mail will be synced
+IMAPStore fastmail-remote
+Account fastmail
+
+# Define where mail will be stored
+MaildirStore fastmail-local
+Path ~/Mail/Fastmail/
+Inbox ~/Mail/Fastmail/INBOX/
+Trash ~/Mail/Fastmail/Trash/
+SubFolders Verbatim
+
+# Connect the remote and the local maildir
+Channel fastmail
+Master :fastmail-remote:
+Slave :fastmail-local:
+Patterns * !"Archive/*"
+Expunge None
+CopyArrivalDate yes
+Sync All
+Create Slave
+SyncState *

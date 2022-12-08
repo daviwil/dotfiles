@@ -3,7 +3,7 @@
         (url "https://git.savannah.gnu.org/git/guix.git")
         (branch "master")
         (commit
-          "ec74eef890d01a82128ffc9d0188a886c710c8e8")
+          "44135122930c8175c6a7a1b4af5b3604bbf73bf6")
         (introduction
           (make-channel-introduction
             "9edb3f66fd807b096b48283debdcddccfea34bad"
@@ -14,7 +14,12 @@
         (url "https://gitlab.com/nonguix/nonguix")
         (branch "master")
         (commit
-          "d4f3c4b57e05fd3286722ed44b6500093c632258"))
+          "25ab067f0208a1e31b558411a1c2f32d2727ee21")
+        (introduction
+          (make-channel-introduction
+            "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
+            (openpgp-fingerprint
+              "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
       (channel
         (name 'channel-x)
         (url "https://github.com/daviwil/channel-x")

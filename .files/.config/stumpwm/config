@@ -1,0 +1,154 @@
+(in-package :stumpwm)
+
+;;; -- Add StumpWM module paths --
+
+(stumpwm:add-to-load-path "~/.guix-home/profile/share/common-lisp/sbcl/stumpwm-swm-gaps")
+(stumpwm:add-to-load-path "~/.guix-home/profile/share/common-lisp/sbcl/stumpwm-ttf-fonts")
+(stumpwm:add-to-load-path "~/.guix-home/profile/share/common-lisp/sbcl/stumpwm-stumptray")
+(stumpwm:add-to-load-path "~/.guix-home/profile/share/common-lisp/sbcl/stumpwm-kbd-layouts")
+
+;;; -- Environment setup --
+
+;; Set up workspaces
+(run-commands
+  "gnewbg chat"
+  "gnew dev"
+  "gnewbg web"
+  "gnewbg comm"
+  "gnewbg media"
+  "gnewbg-float mpv")
+
+;; Change the prefix key to Super-d
+(set-prefix-key (kbd "s-d"))
+
+;; Mouse click should focus the window
+(setf *mouse-focus-policy* :click)
+
+;; Show messages at the top center of the screen
+(setq *message-window-gravity* :top)
+(setq *message-window-padding* 10)
+(setq *message-window-y-padding* 10)
+
+;; Show the input window at top center of the screen
+(setq *input-window-gravity* :top)
+
+;;; -- Key Bindings --
+
+;; Enable multiple keyboard layouts (English and Greek)
+(load-module "kbd-layouts")
+(kbd-layouts:keyboard-layout-list "us" "gr")
+(setf kbd-layouts:*caps-lock-behavior* :ctrl)
+
+;; Run xmodmap to remap keys
+(run-shell-command "xmodmap ~/.dotfiles/.config/i3/Xmodmap")
+
+;; Set some super key bindings
+(define-key *top-map* (kbd "s-h") "move-focus left")
+(define-key *top-map* (kbd "s-l") "move-focus right")
+(define-key *top-map* (kbd "s-j") "move-focus down")
+(define-key *top-map* (kbd "s-k") "move-focus up")
+
+(define-key *top-map* (kbd "s-C-h") "move-window left")
+(define-key *top-map* (kbd "s-C-l") "move-window right")
+(define-key *top-map* (kbd "s-C-j") "move-window down")
+(define-key *top-map* (kbd "s-C-k") "move-window up")
+
+(define-key *top-map* (kbd "s-f") "fullscreen")
+(define-key *top-map* (kbd "s-r") "iresize")
+(define-key *top-map* (kbd "s-q") "delete")
+(define-key *top-map* (kbd "s-SPC") "run-shell-command emacsclient -e \"(call-interactively #'app-launcher-run-app)\"")
+(define-key *top-map* (kbd "C-s-SPC") "switch-keyboard-layout")
+(define-key *top-map* (kbd "C-s-l") "run-shell-command slock")
+
+(define-key *top-map* (kbd "s-TAB") "next-in-frame")
+(define-key *top-map* (kbd "s-S-TAB") "prev-in-frame")
+
+(define-key *top-map* (kbd "s-`") "gselect chat")
+(define-key *top-map* (kbd "s-1") "gselect dev")
+(define-key *top-map* (kbd "s-2") "gselect web")
+(define-key *top-map* (kbd "s-3") "gselect comm")
+(define-key *top-map* (kbd "s-4") "gselect media")
+
+(define-key *top-map* (kbd "C-s-`") "gmove chat")
+(define-key *top-map* (kbd "C-s-1") "gmove dev")
+(define-key *top-map* (kbd "C-s-2") "gmove web")
+(define-key *top-map* (kbd "C-s-3") "gmove comm")
+(define-key *top-map* (kbd "C-s-4") "gmove media")
+
+;; Brightness and volume
+(define-key *top-map* (kbd "XF86MonBrightnessDown") "run-shell-command brightnessctl set 5%-")
+(define-key *top-map* (kbd "XF86MonBrightnessUp") "run-shell-command brightnessctl set +5%")
+(define-key *top-map* (kbd "XF86AudioLowerVolume") "run-shell-command amixer set Master 3%- unmute")
+(define-key *top-map* (kbd "XF86AudioRaiseVolume") "run-shell-command amixer set Master 3%+ unmute")
+(define-key *top-map* (kbd "XF86AudioMute") "run-shell-command amixer set Master toggle")
+
+;;; -- Visual Enhancements --
+
+;; Set UI colors
+(set-border-color "#c792ea")
+(set-bg-color "#232635")
+(set-fg-color "#A6Accd")
+(set-msg-border-width 2)
+
+;; Get gapped
+(load-module "swm-gaps")
+(setf swm-gaps:*inner-gaps-size* 3)
+;(run-commands "toggle-gaps-on")
+
+;; Enable TTF fonts
+(load-module "ttf-fonts")
+(setf xft:*font-dirs* '("/home/daviwil/.guix-home/profile/share/fonts/"))
+(setf clx-truetype:+font-cache-filename+ "/home/daviwil/.local/share/fonts/font-cache.sexp")
+(xft:cache-fonts)
+
+(set-font (make-instance 'xft:font :family "JetBrains Mono" :subfamily "Regular" :size 16))
+
+;;; -- Mode line --
+
+;; Set mode line colors
+(setf *mode-line-background-color* "#232635")
+(setf *mode-line-foreground-color* "#A6Accd")
+
+;; Set the mode line format
+(setf *screen-mode-line-format* "[^B%n^b] %W ^>%d")
+(run-commands "mode-line" "mode-line")
+
+;; Start the mode line
+(run-commands "mode-line")
+
+;; Add the system tray module
+(load-module "stumptray")
+(stumptray:stumptray)
+
+;;; -- Window Placement Rules --
+
+(define-frame-preference "chat"
+  (0 nil T :title "Chat"))
+
+(define-frame-preference "dev"
+  (0 T T :class "Emacs"))
+
+(define-frame-preference "mpv"
+  (0 T T :class "mpv"))
+
+(define-frame-preference "web"
+  (0 T T :class "qutebrowser")
+  (0 T T :class "Nightly"))
+
+(define-frame-preference "media"
+  (0 T T :class "Spotify"))
+
+;;; -- Start initial applications --
+
+;(run-shell-command "polybar panel")
+(run-shell-command "feh --bg-scale ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg")
+(run-shell-command "dunst")
+(run-shell-command "nm-applet")
+(run-shell-command "syncthing-gtk --minimized")
+(run-shell-command "redshift -l 37.983810:23.727539 -t 6500:3500")
+(run-shell-command "emacs")
+
+;;; -- Start the REPL --
+
+(require :slynk)
+(slynk:create-server :dont-close t)

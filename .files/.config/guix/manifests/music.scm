@@ -1,9 +1,7 @@
 ;; Music creation tools
 
 (specifications->manifest
- '(;; JACK tools
-   "jack"
-   "jack2"
+ '( ;; JACK tools
    "jack-keyboard"
    "carla"
    "qjackctl"
@@ -11,7 +9,7 @@
 
    ;; DAWs
    "ardour"
-   "zrythm"
+   ;; "zrythm"
 
    ;; Guitar
    ;; "guitarix"

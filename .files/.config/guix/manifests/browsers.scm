@@ -2,4 +2,5 @@
 ;; need to install their updates when unnecessary.
 
 (specifications->manifest
- '("ungoogled-chromium"))
+ '(;; "ungoogled-chromium"
+   "firefox"))

@@ -90,7 +90,7 @@
    
    "emacs-org-present"
    
-   "emacs-org-ql"
+   ;; "emacs-org-ql"
    
    "emacs-org-roam"
    
