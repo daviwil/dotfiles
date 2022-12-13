@@ -1,26 +1,50 @@
 (define-module (daviwil systems zerocool)
+  #:use-module (daviwil utils)
   #:use-module (daviwil systems base)
+  #:use-module (daviwil systems common)
+  #:use-module (daviwil home-services xsettingsd)
+  #:use-module (daviwil home-services pipewire)  
+  #:use-module (gnu home)
   #:use-module (gnu packages file-systems)
-  #:use-module (gnu))
+  #:use-module (gnu services)
+  #:use-module (gnu system)
+  #:use-module (gnu system uuid)
+  #:use-module (gnu system file-systems)
+  #:use-module (gnu system mapped-devices)
+  #:use-module (nongnu packages linux))
 
-(operating-system
- (inherit base-operating-system)
- (host-name "zerocool")
+(define home
+  (home-environment
+   (packages (gather-manifest-packages '(emacs desktop)))
+   (services (append
+              common-home-services
+              (list (service home-xsettingsd-service-type
+                             (home-xsettingsd-configuration
+                              (dpi 180)))
+                    (service home-pipewire-service-type))))))
 
- (mapped-devices
-  (list (mapped-device
-         (source (uuid "039d3ff8-0f90-40bf-89d2-4b2454ada6df"))
-         (targets "system-root")
-         (type luks-device-mapping))))
+(define system
+  (operating-system
+   (inherit base-operating-system)
+   (host-name "zerocool")
 
- (file-systems (cons*
-                (file-system
-                 (device (file-system-label "zerocool"))
-                 (mount-point "/")
-                 (type "ext4")
-                 (dependencies mapped-devices))
-                (file-system
-                 (device "/dev/nvme0n1p1")
-                 (mount-point "/boot/efi")
-                 (type "vfat"))
-                %base-file-systems)))
+   (mapped-devices
+    (list (mapped-device
+           (source (uuid "fd247c70-2dc6-48c5-872a-9bd0042a1869"))
+           (target "system-root")
+           (type luks-device-mapping))))
+
+   (file-systems (cons*
+                  (file-system
+                   (device "/dev/mapper/system-root")
+                   (mount-point "/")
+                   (type "ext4")
+                   (dependencies mapped-devices))
+                  (file-system
+                   (device "/dev/nvme0n1p1")
+                   (mount-point "/boot/efi")
+                   (type "vfat"))
+                  %base-file-systems))))
+
+;; Return home or system config based on environment variable
+(if (getenv "RUNNING_GUIX_HOME") home system)
