@@ -69,7 +69,7 @@ hc keybind XF86AudioMicMute spawn amixer set Capture toggle
 hc keybind XF86AudioMicMute spawn amixer set Capture toggle
 
 # Media Control
-hc keybind $Mod-p spawn "playerctl play-pause"
+hc keybind $Mod-p spawn playerctl play-pause
 
 # Brightness Control
 hc keybind XF86MonBrightnessUp spawn brightnessctl set 5%+
@@ -229,7 +229,7 @@ hc unlock
 hc set auto_detect_monitors true
 
 # Rebind keys
-xmodmap ~/.dotfiles/.config/i3/Xmodmap
+xmodmap ~/.dotfiles/.files/.config/i3/Xmodmap
 
 # Set the desktop background
 feh --bg-scale ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg
