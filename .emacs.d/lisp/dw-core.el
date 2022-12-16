@@ -305,13 +305,14 @@
 (with-eval-after-load 'doom-modeline
   (dw/set-tab-bar-faces)
 
-  (add-to-list 'global-mode-string '("" doom-modeline--battery-status))
-  (add-to-list 'global-mode-string '("" tracking-mode-line-buffers))
+  (add-to-list 'global-mode-string '(" " display-time-string))
+  (add-to-list 'global-mode-string '(" " doom-modeline--battery-status))
+  (add-to-list 'global-mode-string '(" " tracking-mode-line-buffers))
 
   (display-time-mode 1)
   (display-battery-mode 1)
 
-  ;; (setq tab-bar-show t)
+  (setq tab-bar-show t)
   (tab-bar-mode 1)
   (tab-bar-rename-tab "Main"))
 

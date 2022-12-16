@@ -5,7 +5,9 @@
   (setq tracking-faces-priorities '(all-the-icons-pink
                                     all-the-icons-lgreen
                                     all-the-icons-lblue))
-  (setq tracking-frame-behavior nil))
+  (setq tracking-frame-behavior nil
+        tracking-shorten-buffer-names-p nil)
+  (tracking-mode 1))
 
 ;; Add faces for specific people in the modeline.  There must
 ;; be a better way to do this.
@@ -37,7 +39,7 @@
 ;;(advice-add 'exwm-workspace-switch :before #'dw/before-exwm-workspace-switch)
 
 (setup (:pkg telega)
-  (setq telega-use-tracking-for nil
+  (setq telega-use-tracking-for '(or unmuted mention)
         telega-completing-read-function #'completing-read
         telega-msg-rainbow-title t
         telega-chat-fill-column 75))
