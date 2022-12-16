@@ -2,6 +2,8 @@
   #:use-module (daviwil utils)
   #:use-module (daviwil systems base)
   #:use-module (daviwil systems common)
+  #:use-module (daviwil home-services pipewire)
+  #:use-module (daviwil home-services xsettingsd)
   #:use-module (gnu home)
   #:use-module (gnu packages file-systems)
   #:use-module (gnu services)
@@ -13,12 +15,16 @@
 
 (define home
   (home-environment
-   (packages (gather-manifest-packages '(emacs desktop music video games)))
+   (packages (gather-manifest-packages '(emacs desktop mail music video games)))
    (services (append
               common-home-services
               (list (service home-xsettingsd-service-type
                              (home-xsettingsd-configuration
-                              (dpi 180)))
+                              (dpi 180)
+                              (font "Iosevka Aile 11")
+                              (theme "Matcha-dark-azul")
+                              (icon-theme "Papirus-Dark")
+                              (monospace-font "JetBrains Mono 10")))
                     (service home-pipewire-service-type))))))
 
 (define system
