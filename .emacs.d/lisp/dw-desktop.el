@@ -24,7 +24,7 @@
   (setq exwm-randr-workspace-monitor-plist
         (pcase system-name
           ("acidburn" '(0 "eDP-1" 1 "DP-3-3" 2 "DP-3-3" 3 "DP-3-3" 4 "eDP-1"))
-          (t nil)))
+          (_ nil)))
 
   ;; Set up EXWM, it will be initialized once loading is complete
   (exwm-enable)
@@ -137,7 +137,7 @@
 
 (defun dw/run-xmodmap ()
   (interactive)
-  (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/.config/i3/Xmodmap"))
+  (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/.files/.config/i3/Xmodmap"))
 
 (defun dw/update-wallpapers ()
   (interactive)
@@ -161,8 +161,8 @@
 (defun dw/update-screen-layout ()
   (interactive)
   (let ((layout-script "~/.bin/update-screens"))
-     (message "Running screen layout script: %s" layout-script)
-     (start-process-shell-command "xrandr" nil layout-script)))
+     (message "Updating screen layout with autorandr..." layout-script)
+     (start-process-shell-command "autorandr" nil "autorandr -c")))
 
 (defun dw/configure-desktop ()
   (interactive)
@@ -313,6 +313,7 @@
 
   (exwm-input-set-key (kbd "<s-return>") 'vterm)
   (exwm-input-set-key (kbd "s-SPC") 'app-launcher-run-app)
+  (exwm-input-set-key (kbd "s-S") 'dw/configure-desktop)
   (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen))
 
 (setup (:pkg app-launcher))
