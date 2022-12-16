@@ -34,6 +34,8 @@
          "dunst"
          "arandr"
          "autorandr"
+         "xset"
+         "xhost"
          "xss-lock"
 	       "dbus"
 
