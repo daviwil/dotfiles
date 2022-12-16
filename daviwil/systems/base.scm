@@ -3,6 +3,7 @@
   #:use-module (srfi srfi-1)
   #:use-module (gnu system nss)
   #:use-module (gnu services pm)
+  #:use-module (gnu services ssh)
   #:use-module (gnu services cups)
   #:use-module (gnu services guix)
   #:use-module (gnu services desktop)
@@ -27,10 +28,8 @@
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd))
 
-(use-service-modules nix)
-(use-service-modules desktop xorg)
-(use-package-modules certs)
-(use-package-modules shells)
+(use-service-modules nix desktop networking xorg ssh)
+(use-package-modules certs shells ssh)
 
 ;; Allow members of the "video" group to change the screen brightness.
 (define %backlight-udev-rule
@@ -209,6 +208,12 @@ EndSection
                              (libvirt-configuration
                               (unix-sock-group "libvirt")
                               (tls-port "16555")))
+
+                    ;; Enable SSH access
+                    (service openssh-service-type
+                             (openssh-configuration
+                              (openssh openssh-sans-x)
+                              (port-number 2222)))
 
                     ;; Enable the printing service
                     (service cups-service-type
