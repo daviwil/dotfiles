@@ -196,6 +196,7 @@ EndSection
                     (pam-limits-service
                      (list
                       (pam-limits-entry "@realtime" 'both 'rtprio 99)
+                      (pam-limits-entry "@realtime" 'both 'nice -19)
                       (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
 
                     ;; Enable /usr/bin/env in shell scripts
