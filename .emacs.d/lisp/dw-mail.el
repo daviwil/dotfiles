@@ -61,8 +61,8 @@
                  :prompt "dtrash"
                  :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
                  :action (lambda (docid msg target)
-                           (mu4e~proc-move docid
-                                           (mu4e~mark-check-target target) "-N"))))
+                           (mu4e--server-move docid
+                                           (mu4e--mark-check-target target) "-N"))))
 
   ;; Display options
   (setq mu4e-view-show-images t)
