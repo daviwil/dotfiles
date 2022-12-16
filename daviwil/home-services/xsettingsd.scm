@@ -18,6 +18,10 @@
    (string "Adwaita")
    "The name of the GTK theme to apply.")
 
+  (icon-theme
+   (string "Adwaita")
+   "The name of the icon theme to apply.")
+
   (font
    (string "Deja Vu Sans 10")
    "The name and size of the normal user interface font.")
@@ -36,6 +40,7 @@
 (define (generate-xsettingsd-file config)
   (string-append "
 Net/ThemeName \"" (home-xsettingsd-configuration-theme config) "\"
+Net/IconThemeName \"" (home-xsettingsd-configuration-icon-theme config) "\"
 Gtk/DecorationLayout \"menu:minimize,maximize,close\"
 Gtk/FontName \"" (home-xsettingsd-configuration-font config) "\"
 Gtk/MonospaceFontName \"" (home-xsettingsd-configuration-monospace-font config) "\"
