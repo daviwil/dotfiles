@@ -207,7 +207,7 @@
                     :height (dw/system-settings-get 'emacs/variable-face-size)
                     :weight 'light)
 
-(setq display-time-format "%l:%M %p %b %d"
+(setq display-time-format "%l:%M %p %b %d W%U"
       display-time-load-average-threshold 0.0)
 
 ;; You must run (all-the-icons-install-fonts) one time after
