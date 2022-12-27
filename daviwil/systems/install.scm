@@ -18,7 +18,7 @@
 ;; Generate a bootable image (e.g. for USB sticks, etc.) with:
 ;; $ guix system disk-image nongnu/system/install.scm
 
-(define-module (nongnu system install)
+(define-module (daviwil systems install)
   #:use-module (gnu system)
   #:use-module (gnu system install)
   #:use-module (gnu packages version-control)
@@ -27,6 +27,7 @@
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages mtools)
+  #:use-module (gnu packages file-systems)
   #:use-module (gnu packages package-management)
   #:use-module (nongnu packages linux)
   #:export (installation-os-nonfree))
