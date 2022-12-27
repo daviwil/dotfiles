@@ -31,5 +31,8 @@
 (require 'dw-media)
 (require 'dw-system)
 
+(when (string= system-name "acidburn")
+  (require 'dw-streaming))
+
 (when dw/exwm-enabled (require 'dw-desktop))
 (when dw/mail-enabled (require 'dw-mail))
