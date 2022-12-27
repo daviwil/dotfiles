@@ -15,7 +15,7 @@
                              (setq gc-cons-threshold (* 2 1000 1000))))
 
 ;; Add configuration modules to load path
-(add-to-list 'load-path '"~/.dotfiles/.emacs.d/lisp")
+(add-to-list 'load-path '"~/.dotfiles/.emacs.d/modules")
 
 ;; Load pertinent modules
 (require 'dw-package)
