@@ -177,8 +177,14 @@
 
 (setup (:pkg doom-themes))
 (unless dw/is-termux
-  ;; (load-theme 'doom-molokai t)
-  (load-theme 'doom-palenight t)
+  ;; TODO: Move this to a system setting
+  (load-theme
+   (pcase system-name
+     ("acidburn" 'doom-ayu-dark)
+     ("phantom" 'doom-molokai)
+     (_ 'doom-palenight))
+   t)
+
   (doom-themes-visual-bell-config))
 
 ;; TODO: Do I use this?  Is it needed?
