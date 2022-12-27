@@ -15,6 +15,13 @@
               typescript-mode
               js2-mode))
 
+;;; -- Buffer Environments -----
+
+(setup (:pkg buffer-env)
+  (:option buffer-env-script-name "manifest.scm")
+  (add-hook 'comint-mode-hook #'hack-dir-local-variables-non-file-buffer)
+  (add-hook 'hack-local-variables-hook #'buffer-env-update))
+
 ;;; -- M-x compile -----
 
 (setup compile

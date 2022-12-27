@@ -2,8 +2,8 @@
  '("emacs"
 
    "emacs-tmr"
+   "emacs-buffer-env"
 
-   
    "emacs-no-littering"
    
    "emacs-exwm"
