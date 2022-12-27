@@ -1,0 +1,15 @@
+#+title: Configuration Archive
+
+I previously kept all my important configuration files to a [[https://leanpub.com/lit-config/read][literate configuration]] strategy using Emacs' Org Mode.  This enabled me to have a single annotated file for a particular configuration area which automatically writes out the actual configuration files involved when I save the .org file.
+
+- [[file:Emacs.org][Emacs]]
+- [[file:Desktop.org][Desktop Environment]]
+- [[file:Workflow.org][Productivity Workflow]]
+- [[file:Systems.org][System Configurations via Guix]]
+- [[file:Mail.org][Mail with mu4e and isync]]
+
+** Org Babel Tips
+
+When inside of an Org source block, you can use =org-babel-demarcate-block= (=C-c C-v d= by default) to split the block you're currently in so that you can insert an annotation.
+
+=noweb= blocks are extremely useful for configuration organization and sharing configuration values across files.  The [[https://orgmode.org/manual/Noweb-reference-syntax.html][org documentation]] on this topic is helpful in understanding the different ways you can reference another block in =noweb= style.

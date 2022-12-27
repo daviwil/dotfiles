@@ -2,11 +2,14 @@
 
 This repo is the home of my custom system configuration which enables a consistent computing experience across multiple machines.  These days I primarily use GNU/Linux via the [[https://guix.gnu.org][GNU Guix distribution]].
 
-I manage the various configuration files in this repo using [[https://www.gnu.org/software/stow/][GNU Stow]].  This allows me to set up symlinks for all of my dotfiles using a single command:
+I manage the various configuration files in this repo using a combination of Guix Home and [[https://www.gnu.org/software/stow/][GNU Stow]].  This allows me to set up symlinks for all of my user-level configuraiton using a two commands:
 
 #+BEGIN_SRC sh
 stow .
+update-home
 #+END_SRC
+
+The [[file:.files/.bin/update-home][update-home]] command is my own custom script to launch the =guix home= command.
 
 * Principles
 
@@ -14,13 +17,13 @@ The configuration files in this repo crystallize a workflow that is increasingly
 
 ** Keyboard Focused
 
-I prefer tools that enable me to control everything primarily with the keyboard.  When you work with words and code all day, reaching for the mouse switches your input modality and slows you down.  Using [[https://www.gnu.org/software/emacs/][GNU Emacs]] enables me to have consistent, convenient key bindings for just 80% of what I need to do on a daily basis.  Another 15% is covered by using web sites and apps; the [[https://fanglingsu.github.io/vimb/][Vimb]] browser makes that experience a lot more keyboard friendly and seamlessly integrates with my Emacs workflow.
+I prefer tools that enable me to control everything primarily with the keyboard.  When you work with words and code all day, reaching for the mouse switches your input modality and slows you down.  Using [[https://www.gnu.org/software/emacs/][GNU Emacs]] enables me to have consistent, convenient key bindings for just 80% of what I need to do on a daily basis.  Another 15% is covered by using web sites and apps; [[https://qutebrowser.org/][Qutebrowser]] makes the web browsing experience a lot more keyboard friendly and seamlessly integrates with my Emacs workflow.
 
 ** Minimal Distractions
 
 I don't want things on the screen that are unrelated to what I'm doing.  My workflow focuses on a single main screen with an occasional secondary screen (my laptop) when docked.  I very rarely display more than one buffer or window on the main screen at a time.  Emacs makes it easy and fast to switch between open buffers (and workspaces in EXWM) so there's really no reason to have two unrelated things visible on the screen.
 
-I display minimal information in my Emacs mode line (using [[https://github.com/seagle0128/doom-modeline][doom-modeline]]) and I only display a small amount of computer status information in my panel (using [[https://polybar.github.io/][Polybar]]).
+I display minimal information in my Emacs mode line (using [[https://github.com/seagle0128/doom-modeline][doom-modeline]]) and I only display a small amount of computer status information in Emacs' =tab-bar-mode=.
 
 ** Text-based Configuration
 
@@ -34,23 +37,7 @@ To perfect my computing workflow, I choose tools that allow me to customize them
 
 * Literate Configuration
 
-I've started to migrate all of my important configuration files to a [[https://leanpub.com/lit-config/read][literate configuration]] strategy using Emacs' Org Mode.  This enables me to have a single annotated file for a particular configuration area which automatically writes out the actual configuration files involved when I save the .org file.
-
-- [[file:Emacs.org][Emacs]]
-- [[file:Desktop.org][Desktop Environment]]
-- [[file:Workflow.org][Productivity Workflow]]
-- [[file:Systems.org][System Configurations via Guix]]
-- [[file:Mail.org][Mail with mu4e and isync]]
-
-** Org Babel Tips
-
-When inside of an Org source block, you can use =org-babel-demarcate-block= (=C-c C-v d= by default) to split the block you're currently in so that you can insert an annotation.
-
-=noweb= blocks are extremely useful for configuration organization and sharing configuration values across files.  The [[https://orgmode.org/manual/Noweb-reference-syntax.html][org documentation]] on this topic is helpful in understanding the different ways you can reference another block in =noweb= style.
-
-* System Installation
-
-Instructions for installing a system from a Guix configuration can be found in the [[file:Systems.org::*System Installation][System Installation]] section of [[file:Systems.org][Systems.org]].
+My former literate configuration ([[file:.archive/README.org][archived here]]) has now been replaced by a Guix Home configuration.  I will document this more completely as time permits.
 
 * Check out my YouTube channel
 
