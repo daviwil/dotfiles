@@ -245,6 +245,19 @@
   (custom-set-faces '(mode-line ((t (:height 0.85))))
                     '(mode-line-inactive ((t (:height 0.85))))))
 
+;;; -- Timers -----
+
+(setup (:pkg tmr))
+
+(defun dw/tmr-mode-line ()
+  (if (not (and (boundp 'tmr--timers)
+                tmr--timers))
+      ""
+    (propertize (format " 🕐 %s: %s"
+                        (tmr--format-remaining (car tmr--timers))
+                        (tmr--timer-description (car tmr--timers)))
+                'tab-bar '(:foreground "orange"))))
+
 ;;; -- Tab Bar Workspaces -----
 
 (setup (:pkg tabspaces :straight t)
@@ -300,7 +313,14 @@
     (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'mode-line)))
 
 (setq tab-bar-close-button-show nil
-      tab-bar-format '(dw/exwm-workspace-icon tab-bar-format-history tab-bar-format-tabs-groups tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
+      tab-bar-format '(dw/exwm-workspace-icon
+                       tab-bar-format-history
+                       tab-bar-format-tabs-groups
+                       tab-bar-separator
+                       dw/tmr-mode-line
+                       tab-bar-separator
+                       tab-bar-format-align-right
+                       tab-bar-format-global))
 
 (with-eval-after-load 'doom-modeline
   (dw/set-tab-bar-faces)
