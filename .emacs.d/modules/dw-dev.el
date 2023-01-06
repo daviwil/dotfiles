@@ -214,8 +214,11 @@
   ;; (setq geiser-repl-default-port 44555) ; For Gambit Scheme
   (setq geiser-default-implementation 'guile)
   (setq geiser-active-implementations '(guile))
-  (setq geiser-repl-default-port 44555) ; For Gambit Scheme
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile))))
+
+(with-eval-after-load 'geiser-guile
+  (add-to-list 'geiser-guile-load-path "~/.dotfiles")
+  (add-to-list 'geiser-guile-load-path "~/Projects/Code/guix"))
 
 ;;; -- Mesche -----
 
