@@ -5,7 +5,7 @@ This repo is the home of my custom system configuration which enables a consiste
 I manage the various configuration files in this repo using a combination of Guix Home and [[https://www.gnu.org/software/stow/][GNU Stow]].  This allows me to set up symlinks for all of my user-level configuraiton using a two commands:
 
 #+BEGIN_SRC sh
-stow .
+stow .files/
 update-home
 #+END_SRC
 

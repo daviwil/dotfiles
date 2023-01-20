@@ -1,5 +1,5 @@
 (specifications->manifest
- '("emacs"
+ '("emacs-next-pgtk"
 
    "emacs-tmr"
    "emacs-buffer-env"

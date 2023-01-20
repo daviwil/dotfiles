@@ -28,10 +28,16 @@
          "herbstluftwm"
          "rofi"
          "polybar"
+         "dunst"
+
+         ;; Sway setup
+         "sway"
+         "waybar"
+         "fuzzel"
+         "gammastep"
 
          ;; General tools
 	       "feh"
-         "dunst"
          "arandr"
          "autorandr"
          "xset"
@@ -43,8 +49,8 @@
          "playerctl"
 
          ;; TODO: Remove when Emacs service is working
-         "emacs"
-	       "emacs-exwm"
+         "emacs-next-pgtk"
+         "emacs-exwm"
 
          ;; Appearance
          "compton"

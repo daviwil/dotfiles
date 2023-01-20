@@ -72,8 +72,8 @@
   (setq use-dialog-box nil)) ;; Disable dialog boxes since they weren't working in Mac OSX
 
 (unless dw/is-termux
-  (set-frame-parameter (selected-frame) 'alpha '(97 . 100))
-  (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
+  (set-frame-parameter (selected-frame) 'alpha-background 90)
+  (add-to-list 'default-frame-alist '(alpha-background 90))
   (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
   (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 

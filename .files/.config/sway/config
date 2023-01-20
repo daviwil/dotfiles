@@ -1,0 +1,147 @@
+# Configure displays
+
+# The annoying thing is that sometimes the display ID changes when hotplugging
+# my Thunderbolt dock...
+set $primary DP-7 DP-8
+set $laptop eDP-1
+
+output $laptop scale 2
+output DP-7 scale 2
+output DP-8 scale 2
+
+output * bg ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg fill
+# output * bg ~/.dotfiles/backgrounds/scott-rodgerson-lRtzEExP0H8-unsplash.jpg fill
+
+input type:keyboard {
+    xkb_layout us,gr
+    xkb_options ctrl:nocaps
+}
+
+set $mod Mod4
+
+font pango:Iosevka Aile 8
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# kill focused window
+bindsym $mod+Shift+q kill
+bindsym $mod+Shift+x exit
+bindsym $mod+Shift+r reload
+
+bindsym $mod+Shift+Return exec foot
+
+# use vim keys for window movement
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move workspace
+bindsym $mod+Mod1+h move workspace to output left
+bindsym $mod+Mod1+l move workspace to output right
+bindsym $mod+Mod1+Left move workspace to output left
+bindsym $mod+Mod1+Right move workspace to output right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left 30 px
+bindsym $mod+Shift+Down move down 30 px
+bindsym $mod+Shift+Up move up 30 px
+bindsym $mod+Shift+Right move right 30 px
+bindsym $mod+Shift+h move left 30 px
+bindsym $mod+Shift+j move down 30 px
+bindsym $mod+Shift+k move up 30 px
+bindsym $mod+Shift+l move right 30 px
+
+# split in horizontal orientation
+bindsym $mod+s split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+# bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+
+# toggle tiling / floating
+bindsym $mod+Shift+f floating toggle
+
+# toggle pinned floating window
+bindsym $mod+Shift+s sticky toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+Control+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# App launcher
+bindsym $mod+space exec fuzzel -w 80 -x 8 -y 8 -r 3 -b 232635ff -t A6Accdff -s A6Accdff -S 232635ff -C c792eacc -m c792eacc -f "Iosevka:weight=light:size=12" --no-fuzzy
+
+# Set defaults
+default_orientation horizontal
+workspace_layout tabbed
+
+# Configure gaps and borders
+default_border pixel 1
+gaps outer 0
+gaps inner 5
+smart_borders off
+hide_edge_borders --i3 none 
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws0 "chat"
+set $ws1 "dev"
+set $ws2 "browser"
+set $ws3 "comm"
+set $ws4 "media"
+set $ws5 "misc"
+
+# Move specific workspaces to outputs
+workspace $ws0 output $laptop
+workspace $ws1 output $primary $laptop
+workspace $ws2 output $primary $laptop
+workspace $ws3 output $laptop
+workspace $ws4 output $laptop
+workspace $ws5 output $laptop
+
+# Switch to dev workspace by default
+workspace $ws1
+
+# Switch to workspace
+bindsym $mod+grave workspace $ws0
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+
+# Move focused container to workspace
+bindsym $mod+Shift+grave move container to workspace $ws0
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+
+# Bind hotkeys for brightness and volume
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+
+# Style the UI
+client.focused #c792eacc #232635dd #ffffffff #ffffffff #c792eacc 
+client.unfocused #c792eacc #1c1f2bef #ffffffff #ffffffff #c792eacc 
+
+# Autostart applications
+exec waybar
+exec dunst
+exec nm-applet
+exec udiskie
+exec emacs
