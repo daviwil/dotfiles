@@ -28,6 +28,7 @@ floating_modifier $mod
 bindsym $mod+Shift+q kill
 bindsym $mod+Shift+x exit
 bindsym $mod+Shift+r reload
+bindsym $mod+r resize
 
 bindsym $mod+Shift+Return exec foot
 
@@ -91,7 +92,7 @@ workspace_layout tabbed
 # Configure gaps and borders
 default_border pixel 1
 gaps outer 0
-gaps inner 5
+gaps inner 4
 smart_borders off
 hide_edge_borders --i3 none 
 

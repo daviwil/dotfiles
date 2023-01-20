@@ -103,7 +103,6 @@ EndSection
   (operating-system
    (host-name "hackstock")
    (timezone "Europe/Athens")
-                                        ;(timezone "America/Los_Angeles")
    (locale "en_US.utf8")
 
    ;; Use non-free Linux and firmware

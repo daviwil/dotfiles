@@ -7,6 +7,7 @@
   #:use-module (gnu home services)
   #:use-module (gnu home services mcron)
   #:use-module (gnu home services shells)
+  #:use-module (gnu home services desktop)
   #:use-module (guix gexp))
 
 (define-public common-home-services
@@ -50,7 +51,22 @@
 
                 ;; Set the SSH authentication socket
                 ;; TODO: Move to a gpg service
-                ("SSH_AUTH_SOCK" . "$(gpgconf --list-dirs agent-ssh-socket)")))))
+                ("SSH_AUTH_SOCK" . "$(gpgconf --list-dirs agent-ssh-socket)")
+
+                ;; Set Wayland-specific environment variables (taken from RDE)
+                ("XDG_CURRENT_DESKTOP" . "sway")
+                ("XDG_SESSION_TYPE" . "wayland")
+                ("RTC_USE_PIPEWIRE" . "true")
+                ("SDL_VIDEODRIVER" . "wayland")
+                ("MOZ_ENABLE_WAYLAND" . "1")
+                ("CLUTTER_BACKEND" . "wayland")
+                ("ELM_ENGINE" . "wayland_egl")
+                ("ECORE_EVAS_ENGINE" . "wayland-egl")
+                ("QT_QPA_PLATFORM" . "wayland-egl")
+                ("_JAVA_AWT_WM_NONREPARENTING" . "1")))))
+
+   ;; Run user dbus session
+   (service home-dbus-service-type)
 
    ;; Set up desktop environment
    (service home-desktop-service-type)
