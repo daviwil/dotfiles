@@ -452,6 +452,15 @@
 (setup (:pkg dired-ranger))
 (setup (:pkg dired-collapse))
 
+(defun dw/dired-mode-hook ()
+  (interactive)
+  ;; (dired-omit-mode 1)
+  (dired-hide-details-mode 1)
+  (unless (or dw/is-termux
+              (s-equals? "/gnu/store/" (expand-file-name default-directory)))
+    (all-the-icons-dired-mode 1))
+  (hl-line-mode 1))
+
 (setup dired
   (setq dired-listing-switches "-agho --group-directories-first"
         dired-omit-files "^\\.[^.].*"
@@ -466,15 +475,7 @@
               (interactive)
               (dired-collapse)))
 
-  (add-hook 'dired-mode-hook
-            (lambda ()
-              (interactive)
-              (dired-omit-mode 1)
-              (dired-hide-details-mode 1)
-              (unless (or dw/is-termux
-                          (s-equals? "/gnu/store/" (expand-file-name default-directory)))
-                (all-the-icons-dired-mode 1))
-              (hl-line-mode 1)))
+  (add-hook 'dired-mode-hook #'dw/dired-mode-hook)
 
   (unless dw/exwm-enabled
     (global-set-key (kbd "s-e") #'dired-jump))
