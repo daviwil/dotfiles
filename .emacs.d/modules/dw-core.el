@@ -73,7 +73,7 @@
 
 (unless dw/is-termux
   (set-frame-parameter (selected-frame) 'alpha-background 90)
-  (add-to-list 'default-frame-alist '(alpha-background 90))
+  (add-to-list 'default-frame-alist '(alpha-background . 90))
   (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
   (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 
