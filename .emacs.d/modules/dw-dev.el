@@ -241,4 +241,12 @@
   (:hook abbrev-mode)
   (:bind "C-c C-c" recompile))
 
+;;; -- Rust ---
+
+(setup rust-mode
+  (require 'rust-mode)
+  (:hook eglot-ensure)
+  (:hook abbrev-mode)
+  (:bind "C-c C-c" recompile))
+
 (provide 'dw-dev)
