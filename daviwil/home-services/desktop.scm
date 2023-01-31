@@ -32,6 +32,7 @@
 
          ;; Sway setup
          "sway"
+         "swayidle"
          "waybar"
          "fuzzel"
          "gammastep"

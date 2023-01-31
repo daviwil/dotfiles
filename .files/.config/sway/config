@@ -140,6 +140,14 @@ bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 client.focused #c792eacc #232635dd #ffffffff #ffffffff #c792eacc 
 client.unfocused #c792eacc #1c1f2bef #ffffffff #ffffffff #c792eacc 
 
+# Set up screen locking
+set $lock 'swaylock -f -i ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg -s fill --font "Iosevka Aile" --indicator-idle-visible'
+exec swayidle -w \
+  timeout 900 $lock \
+  timeout 960 'swaymsg "output * dpms off"' \
+	resume 'swaymsg "output * dpms on"' \
+  before-sleep $lock
+
 # Autostart applications
 exec waybar
 exec dunst

@@ -1,7 +1,9 @@
 (define-module (daviwil systems base)
-  #:use-module (gnu)
   #:use-module (srfi srfi-1)
+  #:use-module (gnu)
+  #:use-module (gnu system)
   #:use-module (gnu system nss)
+  #:use-module (gnu system setuid)
   #:use-module (gnu services pm)
   #:use-module (gnu services ssh)
   #:use-module (gnu services cups)
@@ -140,7 +142,7 @@ EndSection
                  (comment "David Wilson")
                  (group "users")
                  (home-directory "/home/daviwil")
-                 (supplementary-groups '("wheel" ;; sudo
+                 (supplementary-groups '("wheel"  ;; sudo
                                          "netdev" ;; network devices
                                          "kvm"
                                          "tty"
@@ -156,6 +158,16 @@ EndSection
    ;; Add the 'realtime' group
    (groups (cons (user-group (system? #t) (name "realtime"))
                  %base-groups))
+
+   ;; Swaylock should be run as super-user
+   (setuid-programs
+    (append
+     (list (setuid-program
+            (program
+             (file-append
+              (specification->package "swaylock")
+              "/bin/swaylock"))))
+     %setuid-programs))
 
    ;; Install bare-minimum system packages
    (packages (append (map specification->package
