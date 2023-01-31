@@ -36,6 +36,9 @@
          "waybar"
          "fuzzel"
          "gammastep"
+         "xdg-desktop-portal"
+         "xdg-desktop-portal-gtk"
+         "xdg-desktop-portal-wlr"
          "glib:bin"                     ; For gsettings
 
          ;; General tools
