@@ -151,8 +151,8 @@ exec swayidle -w \
 # Autostart applications
 exec waybar
 exec dunst
-exec nm-applet
-exec udiskie
+exec nm-applet --indicator
+exec udiskie -t
 exec emacs
 
 # Set GNOME settings (requires "glib:bin" in Guix)
