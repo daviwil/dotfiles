@@ -35,6 +35,7 @@
          "waybar"
          "fuzzel"
          "gammastep"
+         "glib:bin"                     ; For gsettings
 
          ;; General tools
 	       "feh"
