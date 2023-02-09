@@ -111,7 +111,7 @@ Any configuration that derives from =base-operating-system= must invoke =guix sy
 
 #+begin_src sh
 
-sudo -E guix system -L ~/.dotfiles/.config/guix/systems reconfigure ~/.dotfiles/.config/guix/systems/davinci.scm
+sudo guix system -L ~/.dotfiles/.config/guix/systems reconfigure ~/.dotfiles/.config/guix/systems/davinci.scm
 
 #+end_src
 
