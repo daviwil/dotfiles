@@ -2,12 +2,13 @@
 
 # The annoying thing is that sometimes the display ID changes when hotplugging
 # my Thunderbolt dock...
-set $primary DP-7 DP-8
+set $primary DP-7 DP-8 HDMI-A-1
 set $laptop eDP-1
 
 output $laptop scale 2
 output DP-7 scale 2
 output DP-8 scale 2
+output HDMI-A-1 scale 2
 
 output * bg ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg fill
 # output * bg ~/.dotfiles/backgrounds/scott-rodgerson-lRtzEExP0H8-unsplash.jpg fill
