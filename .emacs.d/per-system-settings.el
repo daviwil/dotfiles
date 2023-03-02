@@ -57,9 +57,9 @@
     
     '((desktop/dpi . 180)
       (desktop/background . "samuel-ferrara-uOi3lg8fGl4-unsplash.jpg")
-      (emacs/default-face-size . 220)
-      (emacs/variable-face-size . 245)
-      (emacs/fixed-face-size . 200)
+      (emacs/default-face-size . 110)
+      (emacs/variable-face-size . 120)
+      (emacs/fixed-face-size . 110)
       (polybar/height . 35)
       (polybar/font-0-size . 18)
       (polybar/font-1-size . 14)

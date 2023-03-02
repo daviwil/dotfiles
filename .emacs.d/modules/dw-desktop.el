@@ -93,7 +93,9 @@
   (exwm/run-in-background "nm-applet")
   (exwm/run-in-background "syncthing-gtk --minimized")
   ;; Athens
-  (exwm/run-in-background "redshift -l 37.983810:23.727539 -t 6500:3500"))
+  ;; (exwm/run-in-background "redshift -l 37.983810:23.727539 -t 6500:3500")
+  ;; Fix -- xgamma -rgamma 0.9 -ggamma 1.0 -bgamma 1.0
+  )
   ;; Seattle
   ;(exwm/run-in-background "redshift -l 47.675510:-122.203362 -t 6500:3500"))
 
