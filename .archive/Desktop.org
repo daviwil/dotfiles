@@ -1588,6 +1588,7 @@ Use FontDownloader to download fonts that are needed for Flatpak applications!
 flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak remote-add --user --if-not-exists flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
 flatpak install --user flathub com.spotify.Client
+flatpak install --user flathub org.mozilla.Firefox
 flatpak install --user flathub com.valvesoftware.Steam
 flatpak install --user flathub com.microsoft.Teams
 flatpak install --user flathub com.discordapp.Discord
