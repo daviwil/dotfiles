@@ -1,3 +1,5 @@
+set $mod Mod4
+
 # Configure displays
 
 # The annoying thing is that sometimes the display ID changes when hotplugging
@@ -17,8 +19,6 @@ input type:keyboard {
     xkb_layout us,gr
     xkb_options ctrl:nocaps
 }
-
-set $mod Mod4
 
 font pango:Iosevka Aile 8
 
@@ -115,7 +115,7 @@ workspace $ws4 output $laptop
 workspace $ws5 output $laptop
 
 # Switch to dev workspace by default
-workspace $ws1
+#workspace $ws1
 
 # Switch to workspace
 bindsym $mod+grave workspace $ws0
@@ -136,6 +136,7 @@ bindsym $mod+Shift+5 move container to workspace $ws5
 # Bind hotkeys for brightness and volume
 bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
 bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym --locked $mod+p exec playerctl play-pause
 
 # Style the UI
 client.focused #c792eacc #232635dd #ffffffff #ffffffff #c792eacc 
