@@ -277,6 +277,8 @@
   ;; Hide full buffer list by default (still available with "b" prefix)
   (consult-customize consult--source-buffer :hidden t :default nil)
 
+  (setq consult-ripgrep-args "rg --null --hidden --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --search-zip .")
+
   ;; Set consult-workspace buffer list
   (defvar consult--source-workspace
     (list :name "Workspace Buffers"
