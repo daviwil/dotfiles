@@ -217,6 +217,12 @@
   (setq geiser-repl-default-port 44555) ; For Gambit Scheme
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile))))
 
+;; This is needed for contributing to Guix source
+(setq user-mail-address "david@daviwil.com")
+(add-hook 'after-save-hook 'copyright-update)
+(setq copyright-names-regexp
+      (format "%s <%s>" user-full-name user-mail-address))
+
 ;;; -- Mesche -----
 
 (setup mesche
