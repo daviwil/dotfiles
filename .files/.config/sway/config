@@ -155,6 +155,7 @@ exec waybar
 exec dunst
 exec nm-applet --indicator
 exec udiskie -t
+exec gammastep-indicator -l 37.983810:23.727539 -t 6500:3500 -b 1.0:0.7
 exec emacs
 
 # Set GNOME settings (requires "glib:bin" in Guix)
