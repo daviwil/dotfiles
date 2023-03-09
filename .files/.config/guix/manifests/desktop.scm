@@ -29,12 +29,7 @@
    "font-ghostscript"
    
    "polybar"
-   
-   "dunst"
-   "libnotify"  ; For notify-send
-   
-   "udiskie"
-   
+
    "mcron"
    
    "vimb"
@@ -56,9 +51,7 @@
    "gst-plugins-bad"
    "gst-plugins-ugly"
    "gst-libav"
-   "intel-vaapi-driver"
-   "libva-utils"
-   
+
    "feh"
    "gimp"
    "scrot"
