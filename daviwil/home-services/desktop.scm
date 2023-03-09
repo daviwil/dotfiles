@@ -1,95 +1,99 @@
 (define-module (daviwil home-services desktop)
   #:use-module (gnu packages)
   #:use-module (gnu packages linux)
+  #:use-module (gnu packages glib)
   #:use-module (daviwil packages fonts)
   #:use-module (gnu services)
   #:use-module (gnu home services)
   #:use-module (gnu home services shepherd)
   #:use-module (guix gexp)
+
   #:export (home-desktop-service-type))
 
 (define (home-desktop-profile-service config)
-  (map specification->package+output
-       '(;; Sway setup
-         "sway"
-         "swayidle"
-         "waybar"
-         "fuzzel"
-         "dunst"
-         "gammastep"
-         "flameshot"
-         "qtwayland"                    ; For flameshot
-	       "dbus"
-	       "feh"
-         ;; "glib:bin"                     ; For gsettings
+  (cons*
+   ;; NOTE: This is a very weird hack to get around an issue where "glib:bin"
+   ;; returns a newer version of glib than what most packages are using via the
+   ;; exported `glib' symbol.  The "bin" output is needed to get the `gsettings'
+   ;; program to control GTK theme settings without a configuration file.
+   (list glib "bin")
+   (map specification->package+output
+        '(;; Sway setup
+          "sway"
+          "swayidle"
+          "waybar"
+          "fuzzel"
+          "dunst"
+          "gammastep"
+          "grimshot" ;; grimshot --notify copy area
+          "feh"
+          "network-manager-applet"
 
-         ;; Flatpak and XDG utilities
-         "flatpak"
-         "xdg-desktop-portal"
-         "xdg-desktop-portal-gtk"
-         "xdg-desktop-portal-wlr"
-         "xdg-utils"      ;; For xdg-open, etc
-         "xdg-dbus-proxy"
-         "shared-mime-info"
+          ;; Flatpak and XDG utilities
+          "flatpak"
+          "xdg-desktop-portal"
+          "xdg-desktop-portal-gtk"
+          "xdg-desktop-portal-wlr"
+          "xdg-utils" ;; For xdg-open, etc
+          "xdg-dbus-proxy"
+          "shared-mime-info"
 
-         ;; TODO: Remove when Emacs service is working
-         "emacs-next-pgtk"
+          ;; TODO: Remove when Emacs service is working
+          "emacs-next-pgtk"
 
-         ;; Appearance
-         "matcha-theme"
-         "papirus-icon-theme"
-         "breeze-icons" ;; For KDE apps
+          ;; Appearance
+          "matcha-theme"
+          "papirus-icon-theme"
+          "breeze-icons" ;; For KDE apps
 
-         ;; Fonts
-         "font-jost"
-         "font-iosevka-aile"
-         "font-jetbrains-mono"
-         "font-google-noto"
-         "font-liberation"
-         "font-awesome"
-         "gucharmap"
-         "fontmanager"
+          ;; Fonts
+          "font-jost"
+          "font-iosevka-aile"
+          "font-jetbrains-mono"
+          "font-google-noto"
+          "font-liberation"
+          "font-awesome"
+          "gucharmap"
+          "fontmanager"
 
-         ;; Browsers
-         "qutebrowser"
+          ;; Browsers
+          "qutebrowser"
 
-         ;; Authentication
-         "password-store"
+          ;; Authentication
+          "password-store"
 
-         ;; Audio devices and media playback
-         "mpv"
-         "mpv-mpris"
-         "youtube-dl"
-         "playerctl"
-         "gstreamer"
-         "gst-plugins-base"
-         "gst-plugins-good"
-         "gst-plugins-bad"
-         "gst-plugins-ugly"
-         "gst-libav"
-         "alsa-utils"
-         "pavucontrol"
+          ;; Audio devices and media playback
+          "mpv"
+          "mpv-mpris"
+          "youtube-dl"
+          "playerctl"
+          "gstreamer"
+          "gst-plugins-base"
+          "gst-plugins-good"
+          "gst-plugins-bad"
+          "gst-plugins-ugly"
+          "gst-libav"
+          "alsa-utils"
+          "pavucontrol"
 
-         ;; Graphics
-         "gimp"
+          ;; Graphics
+          "gimp"
 
-         ;; PDF reader
-         "zathura"
-         "zathura-pdf-mupdf"
+          ;; PDF reader
+          "zathura"
+          "zathura-pdf-mupdf"
 
-         ;; File syncing
-         "syncthing"
-         "syncthing-gtk"
+          ;; File syncing
+          "syncthing"
+          "syncthing-gtk"
 
-         ;; "gtk+:bin"       ;; For gtk-launch
-
-         ;; General utilities
-         "curl"
-         "wget"
-         "openssh"
-         "zip"
-         "unzip"
-         "trash-cli")))
+          ;; General utilities
+          "curl"
+          "wget"
+          "openssh"
+          "zip"
+          "unzip"
+          "trash-cli"))))
 
 (define (home-desktop-shepherd-services config)
   (list
