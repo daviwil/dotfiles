@@ -24,8 +24,6 @@
    "emacs-all-the-icons"
    "emacs-minions"
    
-   "emacs-perspective"
-   
    "emacs-alert"
    
    "emacs-super-save"
@@ -36,35 +34,22 @@
    "emacs-evil-nerd-commenter"
    
    "emacs-ws-butler"
-   
-   "emacs-parinfer-mode"
-   
-   "emacs-origami-el"
-   
+
    "emacs-hydra"
    
    "emacs-vertico"
-   
    "emacs-corfu"
    "emacs-kind-icon"
-   
    "emacs-orderless"
-   
    "emacs-consult"
    "emacs-wgrep"
-   
    "emacs-marginalia"
-   
    "emacs-embark"
-   
-   "emacs-app-launcher"
-   
+
    "emacs-avy"
-   
-   "emacs-default-text-scale"
-   
    "emacs-ace-window"
    
+   "emacs-default-text-scale"
    "emacs-visual-fill-column"
    
    "emacs-password-store"
@@ -77,50 +62,29 @@
    "emacs-openwith"
    
    "emacs-org"
-   
-   "emacs-org-superstar"
-   
+   "emacs-org-modern"
    "emacs-org-pomodoro"
-   
    "emacs-evil-org"
-   
    "emacs-org-make-toc"
-   
-   "emacs-org-caldav"
-   
    "emacs-org-present"
-   
-   ;; "emacs-org-ql"
-   
    "emacs-org-roam"
-   
    "emacs-org-appear"
    
    "emacs-magit"
    "emacs-magit-todos"
-   
-   "emacs-forge"
-   
-   "emacs-magit-todos"
-   
+
+   "git"
+   "git:send-email"
+
    "emacs-git-link"
-   
    "emacs-git-gutter"
    "emacs-git-gutter-fringe"
    
-   "git"
-   "git:send-email"
-   
    "emacs-project"
-   "emacs-projectile"
-   "ripgrep" ;; For counsel-projectile-rg
-   
-   "emacs-lsp-mode"
-   "emacs-lsp-ui"
-   
-   "emacs-eglot"
-   
-   "emacs-dap-mode"
+   "ripgrep" ;; For consult-ripgrep
+
+   ;; TODO: Use the built-in Eglot for now to avoid problems
+   ;; "emacs-eglot"
    
    "emacs-lispy"
    "emacs-lispyville"
@@ -131,9 +95,6 @@
    "emacs-js2-mode"
    "emacs-typescript-mode"
    "emacs-apheleia"
-   
-   "ccls"
-   "emacs-ccls"
    
    "emacs-go-mode"
    
@@ -172,10 +133,7 @@
    "isync"
    "mu"
    "emacs-mu4e-alert"
-   "notmuch"
-   "emacs-notmuch"
-   "emacs-notmuch-maildir"
-   
+
    "ledger"
    ;; "hledger"
    "emacs-ledger-mode"
@@ -197,12 +155,7 @@
    
    "emacs-telega"
    
-   "emacs-erc-image"
-   "emacs-erc-hl-nicks"
-   
    "emacs-elfeed"
-   
-   "emacs-emms"
    
    "emacs-elpher"
    
@@ -214,6 +167,4 @@
    
    "emacs-docker"
    "emacs-docker-tramp"
-   "emacs-dockerfile-mode"
-   
-   ))
+   "emacs-dockerfile-mode"))
