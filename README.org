@@ -2,7 +2,7 @@
 
 This repo is the home of my custom system configuration which enables a consistent computing experience across multiple machines.  These days I primarily use GNU/Linux via the [[https://guix.gnu.org][GNU Guix distribution]].
 
-I manage the various configuration files in this repo using a combination of Guix Home and [[https://www.gnu.org/software/stow/][GNU Stow]].  This allows me to set up symlinks for all of my user-level configuraiton using a two commands:
+I manage the various configuration files in this repo using a combination of Guix Home and [[https://www.gnu.org/software/stow/][GNU Stow]].  This allows me to set up symlinks for all of my user-level configuration using two commands:
 
 #+BEGIN_SRC sh
 stow .files/
