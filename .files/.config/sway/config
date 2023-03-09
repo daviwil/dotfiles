@@ -84,7 +84,7 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # App launcher
-bindsym $mod+space exec fuzzel -w 80 -x 8 -y 8 -r 3 -b 232635ff -t A6Accdff -s A6Accdff -S 232635ff -C c792eacc -m c792eacc -f "Iosevka:weight=light:size=12" --no-fuzzy
+bindsym $mod+space exec fuzzel -w 50 -x 8 -y 8 -r 3 -b 232635ff -t A6Accdff -s A6Accdff -S 232635ff -C c792eacc -m c792eacc -f "Iosevka Aile:weight=light:size=11" --no-fuzzy --icon-theme="Papirus-Dark"
 
 # Set defaults
 default_orientation horizontal
