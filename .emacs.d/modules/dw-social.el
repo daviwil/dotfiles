@@ -52,7 +52,9 @@
 
 (setup (:pkg 0x0 :host gitlab :repo "willvaughn/emacs-0x0"))
 
-(setq rcirc-server-alist '(("crafter.mx" :port 3110 :nick "daviwil" :encryption tls))
+(setq rcirc-server-alist '(("chat.sr.ht" :port 6697 :nick "daviwil" :user-name "daviwil" :encryption tls)
+                           ("chat.sr.ht" :server-alias "libera.chat" :port 6697 :nick "daviwil" :user-name "daviwil/liberachat" :encryption tls)
+                           ("chat.sr.ht" :server-alias "OFTC" :port 6697 :nick "daviwil" :user-name "daviwil/oftc" :encryption tls))
       rcirc-reconnect-delay 5
       rcirc-fill-column 120)
 
