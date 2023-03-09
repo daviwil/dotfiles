@@ -243,6 +243,7 @@
 (setup adl-mode
   (require 'adl-mode)
   (:file-match "\\.cadl\\'")
+  (:file-match "\\.tsp\\'")
   (:hook eglot-ensure)
   (:hook abbrev-mode)
   (:bind "C-c C-c" recompile))
