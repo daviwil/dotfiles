@@ -74,8 +74,7 @@
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes))
 
-;; TODO: Pull from Guix
-(setup (:pkg org-modern :straight t)
+(setup (:pkg org-modern)
   (global-org-modern-mode))
 
 ;; (unless dw/is-termux
