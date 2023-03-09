@@ -1,5 +1,3 @@
-(require 'lsp)
-
 (defvar adl-mode-map
   (let ((map (make-sparse-keymap)))
     map))
