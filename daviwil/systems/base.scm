@@ -4,102 +4,14 @@
   #:use-module (gnu system)
   #:use-module (gnu system nss)
   #:use-module (gnu system setuid)
-  #:use-module (gnu services pm)
-  #:use-module (gnu services ssh)
-  #:use-module (gnu services cups)
-  #:use-module (gnu services guix)
-  #:use-module (gnu services desktop)
-  #:use-module (gnu services docker)
-  #:use-module (gnu services networking)
-  #:use-module (gnu services virtualization)
-  #:use-module (gnu packages wm)
-  #:use-module (gnu packages cups)
-  #:use-module (gnu packages vim)
-  #:use-module (gnu packages gtk)
-  #:use-module (gnu packages xorg)
-  #:use-module (gnu packages emacs)
-  #:use-module (gnu packages file-systems)
-  #:use-module (gnu packages gnome)
-  #:use-module (gnu packages mtools)
-  #:use-module (gnu packages linux)
-  #:use-module (gnu packages audio)
-  #:use-module (gnu packages gnuzilla)
-  #:use-module (gnu packages web-browsers)
-  #:use-module (gnu packages version-control)
-  #:use-module (gnu packages package-management)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd))
 
-(use-service-modules nix desktop networking xorg ssh)
-(use-package-modules certs shells ssh)
+(use-service-modules guix admin sysctl pm nix avahi dbus cups desktop
+                     mcron networking xorg ssh docker audio virtualization)
 
-;; Allow members of the "video" group to change the screen brightness.
-(define %backlight-udev-rule
-  (udev-rule
-   "90-backlight.rules"
-   (string-append "ACTION==\"add\", SUBSYSTEM==\"backlight\", "
-                  "RUN+=\"/run/current-system/profile/bin/chgrp video /sys/class/backlight/%k/brightness\""
-                  "\n"
-                  "ACTION==\"add\", SUBSYSTEM==\"backlight\", "
-                  "RUN+=\"/run/current-system/profile/bin/chmod g+w /sys/class/backlight/%k/brightness\"")))
-
-;; Modify configurations of default %desktop-services
-(define %my-desktop-services
-  (modify-services %desktop-services
-                   ;; Configure the substitute server for the Nonguix repo
-                   (guix-service-type
-                    config =>
-                    (guix-configuration
-                     (inherit config)
-                     (substitute-urls
-                      (append (list "https://substitutes.nonguix.org")
-                              %default-substitute-urls))
-                     (authorized-keys
-                      (append (list (plain-file "nonguix.pub" "(public-key
- (ecc
-  (curve Ed25519)
-  (q #C1FD53E5D4CE971933EC50C9F307AE2171A2D3B52C804642A7A35F84F3A4EA98#)
-  )
- )"))
-                              %default-authorized-guix-keys))))
-
-                   ;; Suspend the machine when the laptop lid is closed
-                   (elogind-service-type config =>
-                                         (elogind-configuration (inherit config)
-                                                                (handle-lid-switch-external-power 'suspend)))
-
-                   ;; Enable backlight control rules for users
-                   (udev-service-type config =>
-                                      (udev-configuration (inherit config)
-                                                          (rules (cons %backlight-udev-rule
-                                                                       (udev-configuration-rules config)))))
-
-                   ;; Add OpenVPN support to NetworkManager
-                   (network-manager-service-type config =>
-                                                 (network-manager-configuration (inherit config)
-                                                                                (vpn-plugins (list network-manager-openvpn))))))
-
-;; Define a libinput configuration that works well for modern touchpads
-(define %xorg-libinput-config
-  "Section \"InputClass\"
-  Identifier \"Touchpads\"
-  Driver \"libinput\"
-  MatchDevicePath \"/dev/input/event*\"
-  MatchIsTouchpad \"on\"
-
-  Option \"Tapping\" \"on\"
-  Option \"TappingDrag\" \"on\"
-  Option \"DisableWhileTyping\" \"on\"
-  Option \"MiddleEmulation\" \"on\"
-  Option \"ScrollMethod\" \"twofinger\"
-EndSection
-Section \"InputClass\"
-  Identifier \"Keyboards\"
-  Driver \"libinput\"
-  MatchDevicePath \"/dev/input/event*\"
-  MatchIsKeyboard \"on\"
-EndSection
-")
+(use-package-modules nfs certs shells ssh linux bash emacs gnome networking
+                     fonts cups file-systems version-control package-management)
 
 (define-public base-operating-system
   (operating-system
@@ -125,7 +37,6 @@ EndSection
                 (bootloader grub-efi-bootloader)
                 (targets '("/boot/efi"))
                 (keyboard-layout keyboard-layout)))
-
 
    ;; Guix doesn't like it when there isn't a file-systems
    ;; entry, so add one that is meant to be overridden
@@ -159,16 +70,6 @@ EndSection
    (groups (cons (user-group (system? #t) (name "realtime"))
                  %base-groups))
 
-   ;; Swaylock should be run as super-user
-   (setuid-programs
-    (append
-     (list (setuid-program
-            (program
-             (file-append
-              (specification->package "swaylock")
-              "/bin/swaylock"))))
-     %setuid-programs))
-
    ;; Install bare-minimum system packages
    (packages (append (map specification->package
                           '("git"
@@ -179,74 +80,151 @@ EndSection
                             "vim"
                             "emacs"
                             "xterm"
+                            "brightnessctl"
                             "bluez"
                             "bluez-alsa"
                             "tlp"
+                            "intel-vaapi-driver"
+                            "libva-utils"
                             "xf86-input-libinput"
                             "nss-certs" ;; SSL root certificates
-                            "gvfs"))     ;; Enable user mounts
+                            "gvfs"))    ;; Enable user mounts
                      %base-packages))
 
-   ;; Use the "desktop" services, which include the X11 log-in service,
-   ;; networking with NetworkManager, and more
-   (services (cons* (service slim-service-type
-                             (slim-configuration
-                              (xorg-configuration
-                               (xorg-configuration
-                                (keyboard-layout keyboard-layout)
-                                (extra-config (list %xorg-libinput-config))))))
+   ;; Configure only the services necessary to run the system
+   (services (append
+              (modify-services %base-services
+               (delete login-service-type)
+               (delete mingetty-service-type)
+               (delete console-font-service-type))
+              (list
+               ;; Configure TTYs and graphical greeter
+               (service console-font-service-type
+                 (map (lambda (tty)
+                        ;; Use a larger font for HIDPI screens
+                        (cons tty (file-append
+                                   font-terminus
+                                   "/share/consolefonts/ter-132n")))
+                      '("tty1" "tty2" "tty3")))
+               (service greetd-service-type
+                        (greetd-configuration
+                         (greeter-supplementary-groups (list "video" "input"))
+                         (terminals
+                          (list
+                           ;; TTY1 is the graphical login screen for Sway
+                           (greetd-terminal-configuration
+                            (terminal-vt "1")
+                            (terminal-switch #t)
+                            (default-session-command (greetd-wlgreet-sway-session
+                                                      (sway-configuration
+                                                       (plain-file "sway-greet.conf"
+                                                                   "output * bg /home/daviwil/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg fill\n")))))
 
-                    ;; Power and thermal management services
-                    (service thermald-service-type)
-                    (service tlp-service-type
-                             (tlp-configuration
-                              (cpu-boost-on-ac? #t)
-                              (wifi-pwr-on-bat? #t)))
+                           ;; Set up remaining TTYs for terminal use
+                           (greetd-terminal-configuration (terminal-vt "2"))
+                           (greetd-terminal-configuration (terminal-vt "3"))))))
 
-                    ;; Enable JACK to enter realtime mode
-                    (pam-limits-service
-                     (list
-                      (pam-limits-entry "@realtime" 'both 'rtprio 99)
-                      (pam-limits-entry "@realtime" 'both 'nice -19)
-                      (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
+               ;; Configure the Guix service and ensure we use Nonguix substitutes
+               (simple-service 'add-nonguix-substitutes
+                               guix-service-type
+                               (guix-extension
+                                (substitute-urls
+                                 (append (list "https://substitutes.nonguix.org")
+                                         %default-substitute-urls))
+                                (authorized-keys
+                                 (append (list (plain-file "nonguix.pub" "(public-key (ecc (curve Ed25519) (q #C1FD53E5D4CE971933EC50C9F307AE2171A2D3B52C804642A7A35F84F3A4EA98#)))"))
+                                         %default-authorized-guix-keys))))
 
-                    ;; Enable /usr/bin/env in shell scripts
-                    (extra-special-file "/usr/bin/env"
-                                        (file-append coreutils "/bin/env"))
+               ;; Set up Polkit to allow `wheel' users to run admin tasks
+               polkit-wheel-service
 
-                    ;; Enable Docker containers and virtual machines
-                    (service docker-service-type)
-                    (service libvirt-service-type
-                             (libvirt-configuration
-                              (unix-sock-group "libvirt")
-                              (tls-port "16555")))
+               ;; Give certain programs super-user access
+               (simple-service 'mount-setuid-helpers
+                               setuid-program-service-type
+                               (map (lambda (program)
+                                      (setuid-program
+                                       (program program)))
+                                    (list (file-append nfs-utils "/sbin/mount.nfs")
+                                          (file-append ntfs-3g "/sbin/mount.ntfs-3g")
+                                          (file-append
+                                           (specification->package "swaylock")
+                                           "/bin/swaylock"))))
 
-                    ;; Enable SSH access
-                    (service openssh-service-type
-                             (openssh-configuration
-                              (openssh openssh-sans-x)
-                              (port-number 2222)))
+               ;; Networking services
+               (service network-manager-service-type
+                        (network-manager-configuration
+                         (vpn-plugins
+                          (list network-manager-openvpn))))
+               (service wpa-supplicant-service-type) ;; Needed by NetworkManager
+               (service modem-manager-service-type)  ;; For cellular modems
+               (service bluetooth-service-type
+                        (bluetooth-configuration
+                         (auto-enable? #t)))
+               (service usb-modeswitch-service-type)
 
-                    ;; Enable the printing service
-                    (service cups-service-type
-                             (cups-configuration
-                              (web-interface? #t)
-                              (extensions
-                               (list cups-filters))))
+               ;; Basic desktop system services (copied from %desktop-services)
+               (service avahi-service-type)
+               (service udisks-service-type)
+               (service upower-service-type)
+               (service cups-pk-helper-service-type)
+               (service geoclue-service-type)
+               (service polkit-service-type)
+               (service elogind-service-type
+                        (elogind-configuration
+                         (handle-lid-switch-external-power 'suspend)))
+               (service dbus-root-service-type)
+               fontconfig-file-system-service ;; Manage the fontconfig cache
 
-                    ;; Add udev rules to enable PipeWire use
-                    (udev-rules-service 'pipewire-add-udev-rules pipewire)
+               ;; Power and thermal management services
+               (service thermald-service-type)
+               (service tlp-service-type
+                        (tlp-configuration
+                         (cpu-boost-on-ac? #t)
+                         (wifi-pwr-on-bat? #t)))
 
-                    ;; Enable the build service for Nix package manager
-                    (service nix-service-type)
+               ;; Enable JACK to enter realtime mode
+               (pam-limits-service
+                (list
+                 (pam-limits-entry "@realtime" 'both 'rtprio 99)
+                 (pam-limits-entry "@realtime" 'both 'nice -19)
+                 (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
 
-                    ;; Enable the bluetooth service
-                    (bluetooth-service #:auto-enable? #t)
+               ;; Enable Docker containers and virtual machines
+               (service docker-service-type)
+               (service libvirt-service-type
+                        (libvirt-configuration
+                         (unix-sock-group "libvirt")
+                         (tls-port "16555")))
 
-                    ;; Remove GDM, we're using SLiM instead
-                    (remove (lambda (service)
-                              (eq? (service-kind service) gdm-service-type))
-                            %my-desktop-services)))
+               ;; Enable SSH access
+               (service openssh-service-type
+                        (openssh-configuration
+                         (openssh openssh-sans-x)
+                         (port-number 2222)))
+
+               ;; Enable printing and scanning
+               (service sane-service-type)
+               (service cups-service-type
+                        (cups-configuration
+                         (web-interface? #t)
+                         (extensions
+                          (list cups-filters))))
+
+               ;; Add udev rules for a few packages
+               (udev-rules-service 'pipewire-add-udev-rules pipewire)
+               (udev-rules-service 'brightnessctl-udev-rules brightnessctl)
+
+               ;; Enable the build service for Nix package manager
+               (service nix-service-type)
+
+               ;; Schedule cron jobs for system tasks
+               (simple-service 'system-cron-jobs
+                               mcron-service-type
+                               (list
+                                ;; Run `guix gc' 5 minutes after midnight every day.
+                                ;; Clean up generations older than 2 months and free
+                                ;; at least 10G of space.
+                                #~(job "5 0 * * *" "guix gc -d 2m -F 10G"))))))
 
    ;; Allow resolution of '.local' host names with mDNS
    (name-service-switch %mdns-host-lookup-nss)))
