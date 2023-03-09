@@ -8,65 +8,85 @@
   #:use-module (guix gexp)
   #:export (home-desktop-service-type))
 
-(define (home-desktop-files-service config)
-  (list `(".xsession" ,(local-file "xsession" #:recursive? #t))))
-
-(define currently-unused
-  '("stumpwm+slynk"
-    "stumpwm:lib"
-    "stumpish"
-    "emacs-stumpwm-mode"
-    "sbcl-stumpwm-swm-gaps"
-    "sbcl-stumpwm-ttf-fonts"
-    "sbcl-stumpwm-stumptray"
-    "sbcl-stumpwm-kbd-layouts"
-    "sbcl"))
-
 (define (home-desktop-profile-service config)
-  (map specification->package
-       '(;; New herbstluft setup
-         "herbstluftwm"
-         "rofi"
-         "polybar"
-         "dunst"
-
-         ;; Sway setup
+  (map specification->package+output
+       '(;; Sway setup
          "sway"
          "swayidle"
          "waybar"
          "fuzzel"
+         "dunst"
          "gammastep"
+         "flameshot"
+         "qtwayland"                    ; For flameshot
+	       "dbus"
+	       "feh"
+         ;; "glib:bin"                     ; For gsettings
+
+         "flatpak"
          "xdg-desktop-portal"
          "xdg-desktop-portal-gtk"
          "xdg-desktop-portal-wlr"
-         "glib:bin"                     ; For gsettings
-
-         ;; General tools
-	       "feh"
-         "arandr"
-         "autorandr"
-         "xset"
-         "xhost"
-         "xss-lock"
-	       "dbus"
-
-         ;; Controlling audio players
-         "playerctl"
+         "xdg-utils"      ;; For xdg-open, etc
+         "xdg-dbus-proxy"
 
          ;; TODO: Remove when Emacs service is working
          "emacs-next-pgtk"
-         "emacs-exwm"
 
          ;; Appearance
-         "compton"
-         "xsettingsd"
          "matcha-theme"
          "papirus-icon-theme"
+         "breeze-icons" ;; For KDE apps
 
          ;; Fonts
          "font-jost"
          "font-iosevka-aile"
-         "font-jetbrains-mono")))
+         "font-jetbrains-mono"
+         "font-google-noto"
+         "font-liberation"
+         "font-awesome"
+         "gucharmap"
+         "fontmanager"
+
+         "mcron"
+
+         "qutebrowser"
+
+         "password-store"
+
+         "alsa-utils"
+         "pavucontrol"
+
+         "mpv"
+         "mpv-mpris"
+         "youtube-dl"
+         "playerctl"
+         "gstreamer"
+         "gst-plugins-base"
+         "gst-plugins-good"
+         "gst-plugins-bad"
+         "gst-plugins-ugly"
+         "gst-libav"
+
+         "gimp"
+
+         "zathura"
+         "zathura-pdf-mupdf"
+
+         "syncthing"
+         "syncthing-gtk"
+
+         "system-config-printer"
+         "gtk+:bin"       ;; For gtk-launch
+         "shared-mime-info"
+
+         "curl"
+         "wget"
+         "virt-manager"
+         "openssh"
+         "zip"
+         "unzip"
+         "trash-cli")))
 
 (define (home-desktop-shepherd-services config)
   (list
@@ -96,9 +116,6 @@
                        (service-extension
                         home-shepherd-service-type
                         home-desktop-shepherd-services)
-                       (service-extension
-                        home-files-service-type
-                        home-desktop-files-service)
                        (service-extension
                         home-environment-variables-service-type
                         home-desktop-environment-variables)))
