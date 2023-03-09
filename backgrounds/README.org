@@ -3,4 +3,5 @@
 This folder contains backgrounds that I enjoy using and their attribution.
 
 - [[./mountains-1412683.jpg][mountains-1412683.jpg]]: From Manjaro's [[https://gitlab.manjaro.org/artwork/wallpapers/wallpapers-2018][wallpapers-2018]] package, licensed [[https://gitlab.manjaro.org/artwork/wallpapers/wallpapers-2018/blob/master/LICENSE][CC0]]
-- [[./samuel-ferrara-uOi3lg8fGl4-unsplash.jpg][samuel-ferrara-uOi3lg8fGl4-unsplash.jpg]] by [[https://unsplash.com/photos/uOi3lg8fGl4][Samuel Ferrara]]  (Unsplash [[https://unsplash.com/license][license]])
+- [[./samuel-ferrara-uOi3lg8fGl4-unsplash.jpg][samuel-ferrara-uOi3lg8fGl4-unsplash.jpg]] by [[https://unsplash.com/photos/uOi3lg8fGl4][Samuel Ferrara]] (Unsplash [[https://unsplash.com/license][license]])
+- [[./scott-rodgerson-lRtzEExP0H8-unsplash.jpg][scott-rodgerson-lRtzEExP0H8-unsplash.jpg]]   by [[https://unsplash.com/photos/lRtzEExP0H8][Scott Rodgerson]] (Unsplash [[https://unsplash.com/license][license]])
