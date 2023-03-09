@@ -23,12 +23,14 @@
 	       "feh"
          ;; "glib:bin"                     ; For gsettings
 
+         ;; Flatpak and XDG utilities
          "flatpak"
          "xdg-desktop-portal"
          "xdg-desktop-portal-gtk"
          "xdg-desktop-portal-wlr"
          "xdg-utils"      ;; For xdg-open, etc
          "xdg-dbus-proxy"
+         "shared-mime-info"
 
          ;; TODO: Remove when Emacs service is working
          "emacs-next-pgtk"
@@ -48,15 +50,13 @@
          "gucharmap"
          "fontmanager"
 
-         "mcron"
-
+         ;; Browsers
          "qutebrowser"
 
+         ;; Authentication
          "password-store"
 
-         "alsa-utils"
-         "pavucontrol"
-
+         ;; Audio devices and media playback
          "mpv"
          "mpv-mpris"
          "youtube-dl"
@@ -67,22 +67,25 @@
          "gst-plugins-bad"
          "gst-plugins-ugly"
          "gst-libav"
+         "alsa-utils"
+         "pavucontrol"
 
+         ;; Graphics
          "gimp"
 
+         ;; PDF reader
          "zathura"
          "zathura-pdf-mupdf"
 
+         ;; File syncing
          "syncthing"
          "syncthing-gtk"
 
-         "system-config-printer"
-         "gtk+:bin"       ;; For gtk-launch
-         "shared-mime-info"
+         ;; "gtk+:bin"       ;; For gtk-launch
 
+         ;; General utilities
          "curl"
          "wget"
-         "virt-manager"
          "openssh"
          "zip"
          "unzip"
