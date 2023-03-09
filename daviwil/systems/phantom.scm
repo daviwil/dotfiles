@@ -12,7 +12,7 @@
 
 (define home
   (home-environment
-   (packages (gather-manifest-packages '(emacs desktop video music)))
+   (packages (gather-manifest-packages '(emacs video)))
    (services (append
               common-home-services
               (list (service home-xsettingsd-service-type

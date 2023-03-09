@@ -15,7 +15,7 @@
 
 (define home
   (home-environment
-   (packages (gather-manifest-packages '(emacs desktop)))
+   (packages (gather-manifest-packages '(emacs)))
    (services (append
               common-home-services
               (list (service home-xsettingsd-service-type

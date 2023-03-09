@@ -15,7 +15,7 @@
 
 (define home
   (home-environment
-   (packages (gather-manifest-packages '(emacs desktop mail music video games)))
+   (packages (gather-manifest-packages '(emacs mail video games)))
    (services (append
               common-home-services
               (list (service home-xsettingsd-service-type
