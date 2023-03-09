@@ -49,7 +49,7 @@
 
     ### Text ###
 
-    font = Iosevka Aile 20
+    font = Iosevka Aile 12
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
