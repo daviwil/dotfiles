@@ -610,6 +610,31 @@
   "fdw" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/Workflow.org"))) :which-key "workflow")
   "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/.config/vimb/config")) :which-key "vimb"))
 
+;;; -- GPT -----
+
+(setup (:pkg gptel :straight t)
+  (setq gptel-model "gpt-4"
+        gptel-playback t))
+
+
+(defun my/copilot-tab ()
+  (interactive)
+  (or (copilot-accept-completion)
+      (indent-for-tab-command)))
+
+(setup (:pkg copilot
+             :host github
+             :repo "zerolfx/copilot.el"
+             :files ("dist" "*.el"))
+
+  (require 'copilot)
+
+  (with-eval-after-load 'copilot
+    (evil-define-key 'insert copilot-mode-map
+      (kbd "<tab>") #'my/copilot-tab))
+
+  (add-hook 'prog-mode-hook 'copilot-mode))
+
 ;;; -- Start the Daemon -----
 
 (server-start)
