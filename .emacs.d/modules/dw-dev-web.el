@@ -1,8 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
-(setup (:pkg typescript-mode)
-  (:file-match "\\.ts\\'")
-  (:hook eglot-ensure)
+(use-package typescript-mode
+  :mode "\\.ts\\'"
+  :config
   (setq typescript-indent-level 2))
 
 (defun dw/set-js-indentation ()
@@ -10,9 +10,9 @@
   (setq-default evil-shift-width js-indent-level)
   (setq-default tab-width 2))
 
-(setup (:pkg js2-mode)
-  (:file-match "\\.jsx?\\'")
-
+(use-package js2-mode
+  :mode "\\.jsx?\\'"
+  :config
   ;; Use js2-mode for Node scripts
   (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
 
@@ -23,32 +23,34 @@
   (add-hook 'js2-mode-hook #'dw/set-js-indentation)
   (add-hook 'json-mode-hook #'dw/set-js-indentation))
 
-(setup (:pkg markdown-mode)
+(use-package markdown-mode
+  :mode "\\.md\\'"
+  :config
   (setq markdown-command "marked")
-  (:file-match "\\.md\\'")
-  (:when-loaded
-    (dolist (face '((markdown-header-face-1 . 1.2)
-                    (markdown-header-face-2 . 1.1)
-                    (markdown-header-face-3 . 1.0)
-                    (markdown-header-face-4 . 1.0)
-                    (markdown-header-face-5 . 1.0)))
-      (set-face-attribute (car face) nil :weight 'normal :height (cdr face)))))
+  (dolist (face '((markdown-header-face-1 . 1.2)
+                  (markdown-header-face-2 . 1.1)
+                  (markdown-header-face-3 . 1.0)
+                  (markdown-header-face-4 . 1.0)
+                  (markdown-header-face-5 . 1.0)))
+      (set-face-attribute (car face) nil :weight 'normal :height (cdr face))))
 
-(setup (:pkg web-mode)
-  (:file-match "(\\.\\(html?\\|ejs\\|tsx\\|jsx\\)\\'")
+(use-package web-mode
+  :mode "(\\.\\(html?\\|ejs\\|tsx\\|jsx\\)\\'"
+  :config
   (setq-default web-mode-code-indent-offset 2)
   (setq-default web-mode-markup-indent-offset 2)
   (setq-default web-mode-attribute-indent-offset 2))
 
 ;; 1. Start the server with `httpd-start'
 ;; 2. Use `impatient-mode' on any buffer
-(setup (:pkg impatient-mode :straight t))
-(setup (:pkg skewer-mode))
+(use-package impatient-mode
+  :ensure t)
+(use-package skewer-mode)
 
 (with-eval-after-load 'simple-httpd
   (add-to-list 'httpd-mime-types '("wasm" . "application/wasm")))
 
-(setup (:pkg yaml-mode)
-  (:file-match "\\.ya?ml\\'"))
+(use-package yaml-mode
+  :mode "\\.ya?ml\\'")
 
 (provide 'dw-dev-web)

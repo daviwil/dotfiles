@@ -1,5 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(setup (:pkg mpv :straight t))
+(use-package mpv :ensure t)
 
 (provide 'dw-media)

@@ -1,42 +1,60 @@
 ;; -*- lexical-binding: t; -*-
 
-(setup (:pkg hydra)
-  (require 'hydra))
+(use-package hydra)
 
-(setup (:pkg vertico)
-  (vertico-mode)
-  (:with-map vertico-map
-    (:bind "C-j" vertico-next
-           "C-k" vertico-previous
-           "C-f" vertico-exit-input))
-  (:with-map minibuffer-local-map
-    (:bind "M-h" vertico-directory-up))
-  (:option vertico-cycle t)
-  (custom-set-faces '(vertico-current ((t (:background "#3a3f5a"))))))
+(use-package vertico
+  :demand t
+  :bind (:map vertico-map
+              ("C-j" . vertico-next)
+              ("C-k" . vertico-previous)
+              ("C-f" . vertico-exit-input)
+              :map minibuffer-local-map
+              ("M-h" . vertico-directory-up))
+  :custom
+  (vertico-cycle t)
 
-(setup (:pkg corfu)
-  (:with-map corfu-map
-    (:bind "C-j" corfu-next
-           "C-k" corfu-previous
-           "TAB" corfu-insert
-           [tab] corfu-insert
-           "C-f" corfu-insert))
-  (:option corfu-cycle t
-           corfu-auto t
-           corfu-preview-current nil
-           corfu-quit-at-boundary t
-           corfu-quit-no-match t)
-  (global-corfu-mode 1))
+  :custom-face
+  (vertico-current ((t (:background "#3a3f5a"))))
 
-(setup (:pkg kind-icon)
-  (:load-after corfu)
-  (:option kind-icon-default-face 'corfu-default)
-  (:when-loaded
-    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)))
+  :config
+  (vertico-mode))
 
-(setup (:pkg orderless)
-  (require 'orderless)
+(use-package corfu
+  :bind (:map corfu-map
+              ("C-j" . corfu-next)
+              ("C-k" . corfu-previous)
+              ("TAB" . corfu-insert)
+              ([tab] . corfu-insert)
+              ("C-f" . corfu-insert))
+  :custom
+  (corfu-cycle t)
+  (corfu-auto t)
+  (corfu-preview-current nil)
+  (corfu-quit-at-boundary t)
+  (corfu-quit-no-match t)
 
+  :config
+  (global-corfu-mode 1)
+
+  (defun corfu-enable-in-minibuffer ()
+    "Enable Corfu in the minibuffer if `completion-at-point' is bound."
+    (when (where-is-internal #'completion-at-point (list (current-local-map)))
+      ;; (setq-local corfu-auto nil) ;; Enable/disable auto completion
+      (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
+                  corfu-popupinfo-delay nil)
+      (corfu-mode 1)))
+
+  (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer))
+
+(use-package kind-icon
+  :after corfu
+  :custom (kind-icon-default-face 'corfu-default)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+(use-package orderless
+  :demand t
+  :config
   (orderless-define-completion-style orderless+initialism
     (orderless-matching-styles '(orderless-initialism
                                  orderless-literal
@@ -51,45 +69,55 @@
            ;(symbol (styles orderless-flex orderless-literal))
            ;(variable (styles orderless+initialism)))))
 
-(setup (:pkg wgrep)
-  (add-hook 'grep-mode-hook #'wgrep-setup))
+(use-package wgrep
+  :after consult
+  :hook (grep-mode . wgrep-setup))
 
-(setup (:pkg consult)
-  (require 'consult)
-  (:also-load wgrep)
-  (:global "C-s" consult-line
-           "C-M-l" consult-imenu)
+(use-package consult
+  :demand t
+  :bind (("C-s" . consult-line)
+         ("C-M-l" . consult-imenu)
+         :map minibuffer-local-map
+         ("C-r" . consult-history))
 
-  (:with-map minibuffer-local-map
-    (:bind "C-r" consult-history))
+  :custom
+  (consult-project-root-function #'dw/get-project-root)
+  (completion-in-region-function #'consult-completion-in-region)
 
+  :config
   (defun dw/get-project-root ()
     (when (fboundp 'projectile-project-root)
-      (projectile-project-root)))
+      (projectile-project-root))))
 
-  (:option consult-project-root-function #'dw/get-project-root
-           completion-in-region-function #'consult-completion-in-region))
+(use-package consult-dir
+  :bind (("C-x C-d" . consult-dir)
+         :map vertico-map
+         ("C-x C-d" . consult-dir)
+         ("C-x C-j" . consult-dir-jump-file))
 
-(setup (:pkg consult-dir)
-  (:global "C-x C-d" consult-dir)
-  (:with-map vertico-map
-    (:bind "C-x C-d" consult-dir
-           "C-x C-j" consult-dir-jump-file))
-  (:option consult-dir-project-list-function nil))
+  :custom
+  (consult-dir-project-list-function nil))
 
-(setup (:pkg marginalia)
-  (:option marginalia-annotators '(marginalia-annotators-heavy
-                                   marginalia-annotators-light
-                                   nil))
+(use-package marginalia
+  :after vertico
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy
+                           marginalia-annotators-light
+                           nil))
+  :config
   (marginalia-mode))
 
-(setup (:pkg embark)
-  (:also-load embark-consult)
-  (:global "C-M-." embark-act)
-  (:with-map minibuffer-local-map
-   (:bind "C-d" embark-act))
+(use-package embark
+  :after vertico
+  :bind (("C-M-." . embark-act)
+         :map minibuffer-local-map
+         ("C-d" . embark-act))
 
+  :config
   ;; Use Embark to show command prefix help
   (setq prefix-help-command #'embark-prefix-help-command))
+
+(use-package embark-consult
+  :after embark)
 
 (provide 'dw-interface)

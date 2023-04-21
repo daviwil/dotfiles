@@ -2,30 +2,33 @@
 
 ;;; -- Paren Matching -----
 
-(setup (:pkg smartparens)
-  (:hook-into prog-mode))
+(use-package smartparens
+  :hook prog-mode)
 
-(setup (:pkg rainbow-delimiters)
-  (:hook-into prog-mode))
+(use-package rainbow-delimiters
+  :hook prog-mode)
 
-(setup (:pkg rainbow-mode)
-  (:hook-into org-mode
-              emacs-lisp-mode
-              web-mode
-              typescript-mode
-              js2-mode))
+(use-package rainbow-mode
+  :hook (org-mode
+         emacs-lisp-mode
+         web-mode
+         typescript-mode
+         js2-mode))
 
 ;;; -- Buffer Environments -----
 
-(setup (:pkg buffer-env)
-  (:option buffer-env-script-name "manifest.scm")
+(use-package buffer-env
+  :custom
+  (buffer-env-script-name "manifest.scm")
+  :config
   (add-hook 'comint-mode-hook #'hack-dir-local-variables-non-file-buffer)
   (add-hook 'hack-local-variables-hook #'buffer-env-update))
 
 ;;; -- M-x compile -----
 
-(setup compile
-  (:option compilation-scroll-output t))
+(use-package compile
+  :custom
+  (compilation-scroll-output t))
 
 (setq compilation-environment '("TERM=xterm-256color"))
 
@@ -65,38 +68,47 @@
     (when tab-index
       (tab-bar-close-tab (1+ tab-index)))))
 
-(setup (:pkg project)
-  (:global "C-M-p" project-find-file)
-  (:with-map project-prefix-map
-    (:bind "k" dw/close-project-tab)
-    (:bind "F" consult-ripgrep))
+(defun dw/project-magit-status ()
+  (interactive)
+  (magit-status (project-root (project-current))))
 
-  (setq project-switch-commands #'magit-status))
+(use-package project
+  :bind (("C-M-p" . project-find-file)
+         :map project-prefix-map
+         ("k" . dw/close-project-tab)
+         ("F" . consult-ripgrep))
+
+  :config
+  (add-to-list 'project-switch-commands '(dw/project-magit-status "Magit" "m"))
+  (add-to-list 'project-switch-commands '(consult-ripgrep "Ripgrep" "F")))
 
 ;;; -- Eglot -----
 
-(setup (:pkg eglot)
-  ;; TODO: Don't load until needed
-  (require 'eglot)
-  (define-key eglot-mode-map (kbd "C-c C-a") #'eglot-code-actions)
-  (define-key eglot-mode-map (kbd "C-c C-r") #'eglot-rename)
+(use-package eglot
+  :bind (:map eglot-mode-map
+         ("C-c C-a" . eglot-code-actions)
+         ("C-c C-r" . eglot-rename))
+  :hook (((c-mode c++-mode) . eglot-ensure)
+         ((js2-mode typescript-mode) . eglot-ensure)
+         (rust-mode . eglot-ensure))
+
+  :config
   (setq eglot-autoshutdown t
         eglot-confirm-server-initiated-edits nil)
   ;; TODO: Is this needed now?
   (add-to-list 'eglot-server-programs
                '((js2-mode typescript-mode) . ("typescript-language-server" "--stdio"))))
 
-(with-eval-after-load 'eglot
-  (add-hook 'c-mode-hook 'eglot-ensure))
-
 ;;; -- Magit -----
 
-(setup (:pkg magit)
-  (:also-load magit-todos)
-  (:global "C-M-;" magit-status)
-  (:option magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+(use-package magit
+  :bind ("C-M-;" . magit-status-here)
+  :custom (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-;; (setup (:pkg magit-todos))
+(use-package magit-todos
+  :after magit
+  :config
+  (magit-todos-mode))
 
 (defhydra dw/smerge-panel ()
   "smerge"
@@ -108,7 +120,8 @@
 
 ;;; -- Git -----
 
-(setup (:pkg git-link)
+(use-package git-link
+  :config
   (setq git-link-open-in-browser t)
   (dw/leader-key-def
     "gL"  'git-link))
@@ -176,37 +189,38 @@
 
 ;;; -- Code Formatting -----
 
-(setup (:pkg apheleia)
-  (apheleia-global-mode +1))
+(use-package apheleia
+  :hook (prog-mode . apheleia-mode))
 
-(setup (:pkg lispy)
-  (:hook-into emacs-lisp-mode scheme-mode))
+(use-package lispy
+  :hook (emacs-lisp-mode scheme-mode))
 
-(setup (:pkg lispyville)
-  (:hook-into lispy-mode)
-  (:when-loaded
-    (lispyville-set-key-theme '(operators c-w additional
-                                additional-movement slurp/barf-cp
-                                prettify))))
+(use-package lispyville
+  :hook (lispy-mode . lispyville-mode)
+  :config
+  (lispyville-set-key-theme '(operators c-w additional
+                                        additional-movement slurp/barf-cp
+                                        prettify)))
 
 ;;; -- Emacs Lisp -----
 
-(setup emacs-lisp-mode
-  (:hook flycheck-mode))
+(use-package emacs-lisp-mode
+  :hook (emacs-lisp-mode . flycheck-mode))
 
 ;;; -- Common Lisp -----
 
-(setup (:pkg sly)
-  (:disabled)
-  (:file-match "\\.lisp\\'"))
+(use-package sly
+  :disabled
+  :mode "\\.lisp\\'")
 
 ;;; -- Scheme -----
 
-;; Include .sld library definition files
-(setup (:pkg scheme-mode)
-  (:file-match "\\.sld\\'"))
+  ;; Include .sld library definition files
+(use-package scheme-mode
+  :mode "\\.sld\\'")
 
-(setup (:pkg geiser)
+(use-package geiser
+  :config
   ;; (setq geiser-default-implementation 'gambit)
   ;; (setq geiser-active-implementations '(gambit guile))
   ;; (setq geiser-implementations-alist '(((regexp "\\.scm$") gambit)
@@ -225,35 +239,31 @@
 
 ;;; -- Mesche -----
 
-(setup mesche
-  (:load-path "~/Projects/Code/mesche/mesche-emacs")
-  (:with-mode mesche-mode
-    (:file-match "\\.msc\\'"))
-  (require 'mesche))
+(use-package mesche
+  :ensure nil
+  :load-path "~/Projects/Code/mesche/mesche-emacs"
+  :mode "\\.msc\\'")
 
 ;;; -- Snippets -----
 
-(setup (:pkg yasnippet)
-  (require 'yasnippet)
-  (add-hook 'prog-mode-hook #'yas-minor-mode)
+(use-package yasnippet
+  :hook (prog-mode . yas-minor-mode)
+  :config
   (yas-reload-all))
 
 ;;; -- Cadl -----
 
-(setup adl-mode
-  (require 'adl-mode)
-  (:file-match "\\.cadl\\'")
-  (:file-match "\\.tsp\\'")
-  (:hook eglot-ensure)
-  (:hook abbrev-mode)
-  (:bind "C-c C-c" recompile))
+(use-package adl-mode
+  :mode "(\\.\\(c?adl\\|tsp\\)\\'"
+  :hook (adl-mode . abbrev-mode)
+  :bind ("C-c C-c" . recompile))
 
 ;;; -- Rust ---
 
-(setup rust-mode
-  (require 'rust-mode)
-  (:hook eglot-ensure)
-  (:hook abbrev-mode)
-  (:bind "C-c C-c" recompile))
+(use-package rust-mode)
+
+;;; -- Zig ---
+
+(use-package zig-mode)
 
 (provide 'dw-dev)

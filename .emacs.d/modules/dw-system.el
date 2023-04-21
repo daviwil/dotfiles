@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(setup (:pkg guix))
+(use-package guix)
 
 (dw/leader-key-def
   "G"  '(:ignore t :which-key "Guix")
@@ -10,9 +10,9 @@
   "Gp" '(guix-packages-by-name :which-key "search packages")
   "GP" '(guix-pull :which-key "pull"))
 
-(setup (:pkg daemons))
+(use-package daemons)
 
-(setup (:pkg pulseaudio-control))
+(use-package pulseaudio-control)
 
 (defun dw/bluetooth-connect-q30 ()
   (interactive)
@@ -26,12 +26,14 @@
   (interactive)
   (start-process-shell-command "bluetoothctl" nil "bluetoothctl -- disconnect"))
 
-(setup proced
+(use-package proced
+  :config
   (setq proced-auto-update-interval 1)
   (add-hook 'proced-mode-hook
             (lambda ()
               (proced-toggle-auto-update 1))))
 
-(setup (:pkg docker))
+(use-package docker
+  :commands docker)
 
 (provide 'dw-system)

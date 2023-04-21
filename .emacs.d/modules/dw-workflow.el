@@ -29,13 +29,9 @@
   (setq corfu-auto nil)
   (setq evil-auto-indent nil))
 
-;; Make sure Straight pulls Org from Guix
-(when dw/is-guix-system
-  (straight-use-package '(org :type built-in)))
-
-(setup (:pkg org)
-  (:also-load org-tempo)
-  (:hook dw/org-mode-setup)
+(use-package org
+  :hook ((org-mode . dw/org-mode-setup))
+  :config
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t
         org-src-fontify-natively t
@@ -74,52 +70,41 @@
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes))
 
-(setup (:pkg org-modern)
-  (global-org-modern-mode))
+(use-package org-modern
+  :hook (org-mode . org-modern-mode))
 
-;; (unless dw/is-termux
-;;   (setup (:pkg org-superstar)
-;;     (:load-after org)
-;;     (:hook-into org-mode)
-;;     (:option org-superstar-remove-leading-stars t
-;;              org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●"))))
-
-;; Replace list hyphen with dot
-;; (font-lock-add-keywords 'org-mode
-;;                         '(("^ *\\([-]\\) "
-;;                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-(setup org-faces
+(use-package org-faces
   ;; Make sure org-indent face is available
-  (:also-load org-indent)
-  (:when-loaded
-    ;; Increase the size of various headings
-    (set-face-attribute 'org-document-title nil :font "Iosevka Aile" :weight 'bold :height 1.3)
+  :after org
+  :config
+  ;; Increase the size of various headings
+  (require 'org-indent)
+  (set-face-attribute 'org-document-title nil :font "Iosevka Aile" :weight 'bold :height 1.3)
 
-    (dolist (face '((org-level-1 . 1.2)
-                    (org-level-2 . 1.1)
-                    (org-level-3 . 1.05)
-                    (org-level-4 . 1.0)
-                    (org-level-5 . 1.1)
-                    (org-level-6 . 1.1)
-                    (org-level-7 . 1.1)
-                    (org-level-8 . 1.1)))
-      (set-face-attribute (car face) nil :font "Iosevka Aile" :weight 'medium :height (cdr face)))
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "Iosevka Aile" :weight 'medium :height (cdr face)))
 
-    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-    (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
-    (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
-    (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
-    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
 
-    ;; Get rid of the background on column views
-    (set-face-attribute 'org-column nil :background nil)
-    (set-face-attribute 'org-column-title nil :background nil)))
+  ;; Get rid of the background on column views
+  (set-face-attribute 'org-column nil :background nil)
+  (set-face-attribute 'org-column-title nil :background nil))
 
 ;; TODO: Others to consider
 ;; '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
@@ -131,19 +116,22 @@
 ;; '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
 ;; This is needed as of Org 9.2
-(setup org-tempo
-  (:when-loaded
-    (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
-    (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-    (add-to-list 'org-structure-template-alist '("li" . "src lisp"))
-    (add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
-    (add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
-    (add-to-list 'org-structure-template-alist '("py" . "src python"))
-    (add-to-list 'org-structure-template-alist '("go" . "src go"))
-    (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
-    (add-to-list 'org-structure-template-alist '("json" . "src json"))))
+(use-package org-tempo
+  :after org
+  :config
+  (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("li" . "src lisp"))
+  (add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
+  (add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python"))
+  (add-to-list 'org-structure-template-alist '("go" . "src go"))
+  (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
+  (add-to-list 'org-structure-template-alist '("json" . "src json")))
 
-(setup (:pkg org-pomodoro)
+(use-package org-pomodoro
+  :commands org-pomodoro
+  :config
   (setq org-pomodoro-start-sound "~/.dotfiles/.emacs.d/sounds/focus_bell.wav")
   (setq org-pomodoro-short-break-sound "~/.dotfiles/.emacs.d/sounds/three_beeps.wav")
   (setq org-pomodoro-long-break-sound "~/.dotfiles/.emacs.d/sounds/three_beeps.wav")
@@ -154,9 +142,11 @@
 
 (require 'org-protocol)
 
-(setup (:pkg evil-org)
-  (:hook-into org-mode org-agenda-mode)
-  (require 'evil-org)
+(use-package evil-org
+  :after (evil org)
+  :hook ((org-mode . evil-org-mode)
+         (org-agenda-mode . evil-org-mode))
+  :config
   (require 'evil-org-agenda)
   (evil-org-set-key-theme '(navigation todo insert textobjects additional))
   (evil-org-agenda-set-keys))
@@ -176,8 +166,8 @@
   "oc"  '(org-capture t :which-key "capture")
   "ox"  '(org-export-dispatch t :which-key "export"))
 
-(setup (:pkg org-make-toc)
-  (:hook-into org-mode))
+(use-package org-make-toc
+  :hook org-mode)
 
 ;; (use-package org-wild-notifier
 ;;   :after org
@@ -265,26 +255,17 @@ _d_: date        ^ ^              ^ ^
   ("e" dw/org-roam-goto-year)
   ("c" nil "cancel"))
 
-(setup (:pkg org-roam)
-  (setq org-roam-v2-ack t)
-  (setq dw/daily-note-filename "%<%Y-%m-%d>.org"
-        dw/daily-note-header "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
-
- (:when-loaded
-    (org-roam-db-autosync-mode)
-    ;; (my/org-roam-refresh-agenda-list)
-    )
-
-  (:option
-   org-roam-directory "~/Notes/Roam/"
-   org-roam-dailies-directory "Journal/"
-   org-roam-completion-everywhere t
-   org-roam-capture-templates
+(use-package org-roam
+  :custom
+  (org-roam-directory "~/Notes/Roam/")
+  (org-roam-dailies-directory "Journal/")
+  (org-roam-completion-everywhere t)
+  (org-roam-capture-templates
    '(("d" "default" plain "%?"
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                          "#+title: ${title}\n")
-      :unnarrowed t))
-   org-roam-dailies-capture-templates
+      :unnarrowed t)))
+  (org-roam-dailies-capture-templates
    `(("d" "default" entry
       "* %?"
       :if-new (file+head ,dw/daily-note-filename
@@ -310,23 +291,29 @@ _d_: date        ^ ^              ^ ^
       :if-new (file+head+olp ,dw/daily-note-filename
                              ,dw/daily-note-header
                              ("Log")))))
-  (:global "C-c n l" org-roam-buffer-toggle
-           "C-c n f" org-roam-node-find
-           "C-c n d" dw/org-roam-jump-menu/body
-           "C-c n c" org-roam-dailies-capture-today
-           "C-c n t" dw/org-roam-capture-task
-           "C-c n g" org-roam-graph)
-  (:with-map org-mode-map
-    (:bind "C-c n i" org-roam-node-insert
-           "C-c n I" org-roam-insert-immediate)))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n d" . dw/org-roam-jump-menu/body)
+         ("C-c n c" . org-roam-dailies-capture-today)
+         ("C-c n t" . dw/org-roam-capture-task)
+         ("C-c n g" . org-roam-graph)
+         :map org-mode-map
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n I" . org-roam-insert-immediate))
 
-(setup (:pkg org-appear)
-  (:hook-into org-mode))
+  :config
+  (setq org-roam-v2-ack t)
+  (setq dw/daily-note-filename "%<%Y-%m-%d>.org"
+        dw/daily-note-header "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
 
-(setup (:pkg denote :straight t)
+  (org-roam-db-autosync-mode))
+
+(use-package org-appear
+  :hook org-mode)
+
+(use-package denote
+  :config
   (setq denote-directory "~/Notes/Denote")
-
-  ;; Top-level keywords
   (setq denote-known-keywords '("journal" "workflow" "daily" "weekly" "monthly"))
 
   ;; Buttonize all denote links in text buffers
@@ -479,26 +466,26 @@ capture was not aborted."
 (add-hook 'org-capture-mode-hook 'dw/on-org-capture)
 
 (setq org-capture-templates
-  `(("t" "Tasks")
-    ("tt" "Task" entry (file ,(dw/org-path "Inbox.org"))
+      `(("t" "Tasks")
+        ("tt" "Task" entry (file ,(dw/org-path "Inbox.org"))
          "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
-    ("ts" "Clocked Entry Subtask" entry (clock)
+        ("ts" "Clocked Entry Subtask" entry (clock)
          "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
-    ("j" "Journal Entries")
-    ("je" "General Entry" entry
+        ("j" "Journal Entries")
+        ("je" "General Entry" entry
          (file+olp+datetree ,(dw/org-path "Journal.org"))
          "\n* %<%I:%M %p> - %^{Title} \n\n%?\n\n"
          :tree-type week
          :clock-in :clock-resume
          :empty-lines 1)
-    ("jt" "Task Entry" entry
+        ("jt" "Task Entry" entry
          (file+olp+datetree ,(dw/org-path "Journal.org"))
          "\n* %<%I:%M %p> - Task Notes: %a\n\n%?\n\n"
          :tree-type week
          :clock-in :clock-resume
          :empty-lines 1)
-    ("jj" "Journal" entry
+        ("jj" "Journal" entry
          (file+olp+datetree ,(dw/org-path "Journal.org"))
          "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
          :tree-type week

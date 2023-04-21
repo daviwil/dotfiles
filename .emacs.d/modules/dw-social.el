@@ -1,7 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
-(setup (:pkg tracking)
-  (require 'tracking)
+(use-package tracking
+  :demand t
+  :config
   (setq tracking-faces-priorities '(all-the-icons-pink
                                     all-the-icons-lgreen
                                     all-the-icons-lblue))
@@ -38,7 +39,9 @@
 
 ;;(advice-add 'exwm-workspace-switch :before #'dw/before-exwm-workspace-switch)
 
-(setup (:pkg telega)
+(use-package telega
+  :commands telega
+  :config
   (setq telega-use-tracking-for '(or unmuted mention)
         telega-completing-read-function #'completing-read
         telega-msg-rainbow-title t
@@ -50,7 +53,11 @@
   "cc" 'dw/connect-irc
   "ca" 'erc-track-switch-buffer)
 
-(setup (:pkg 0x0 :host gitlab :repo "willvaughn/emacs-0x0"))
+(unless (package-installed-p '0x0)
+  (package-vc-install '(0x0 :url "https://gitlab.com/willvaughn/emacs-0x0.git")))
+
+(use-package 0x0
+  :commands (0x0-upload-file 0x0-upload-text))
 
 (setq rcirc-server-alist '(("chat.sr.ht" :port 6697 :nick "daviwil" :user-name "daviwil" :encryption tls)
                            ("chat.sr.ht" :server-alias "libera.chat" :port 6697 :nick "daviwil" :user-name "daviwil/liberachat" :encryption tls)
@@ -60,17 +67,22 @@
 
 (add-hook 'rcirc-mode-hook #'evil-normal-state)
 
-(setup (:pkg srv :straight t))
-(setup (:pkg fsm :straight t)) ;; In Guix
-(setup (:pkg jabber
-             :host nil
-             :repo "https://tildegit.org/wgreenhouse/emacs-jabber"))
+;; (use-package srv :ensure t)
+;; (use-package fsm :ensure t)
+;; In Guix
+;; (setup (:pkg jabber ;;
+;;              :host nil
+;;              :repo "https://tildegit.org/wgreenhouse/emacs-jabber"))
 
-(setup (:pkg mastodon :straight t)
+(use-package mastodon
+  :ensure t
+  :config
   (setq mastodon-instance-url "https://fosstodon.org"
         mastodon-active-user "daviwil"))
 
-(setup (:pkg elfeed)
+(use-package elfeed
+  :commands elfeed
+  :config
   (setq elfeed-feeds
         '("http://ruzkuku.com/all.atom"
           "https://karthinks.com/index.xml"
@@ -85,6 +97,7 @@
           "https://valdyas.org/fading/feed/"
           "https://www.reddit.com/r/emacs/.rss")))
 
-(setup (:pkg elpher))
+(use-package elpher
+  :commands elpher)
 
 (provide 'dw-social)

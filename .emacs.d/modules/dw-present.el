@@ -17,7 +17,8 @@
   (org-appear-mode -1)
   (org-display-inline-images)
   (dw/org-present-prepare-slide)
-  (dw/kill-panel))
+  (when (fboundp 'dw/kill-panel)
+    (dw/kill-panel)))
 
 (defun dw/org-present-quit-hook ()
   (setq-local face-remapping-alist '((default variable-pitch default)))
@@ -25,7 +26,8 @@
   (org-present-small)
   (org-remove-inline-images)
   (org-appear-mode 1)
-  (dw/start-panel))
+  (when (fboundp 'dw/start-panel)
+    (dw/start-panel)))
 
 (defun dw/org-present-prev ()
   (interactive)
@@ -39,12 +41,12 @@
   (when (fboundp 'live-crafter-add-timestamp)
     (live-crafter-add-timestamp (substring-no-properties (org-get-heading t t t t)))))
 
-(setup (:pkg org-present)
-  (:with-map org-present-mode-keymap
-    (:bind "C-c C-j" dw/org-present-next
-           "C-c C-k" dw/org-present-prev))
-  (:hook dw/org-present-hook)
-  (:with-hook org-present-mode-quit-hook
-    (:hook dw/org-present-quit-hook)))
+(use-package org-present
+  :commands org-present
+  :hook ((org-present-mode . dw/org-present-hook)
+         (org-present-mode-quit . dw/org-present-quit-hook))
+  :bind (:map org-present-mode-keymap
+              ("C-c C-j" . dw/org-present-next)
+              ("C-c C-k" . dw/org-present-prev)))
 
 (provide 'dw-present)

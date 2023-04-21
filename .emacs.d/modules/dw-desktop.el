@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(setup (:pkg exwm)
+(use-package exwm
+  :config
   (setq mouse-autoselect-window nil
         focus-follows-mouse t
         exwm-workspace-warp-cursor t
@@ -114,7 +115,8 @@
            (dw/exwm-floating-toggle-pinned))
     ("gsi" (exwm-input-toggle-keyboard))))
 
-(setup exwm
+(use-package exwm
+  :config
   (add-hook 'exwm-mode-hook
             (lambda ()
               (evil-local-set-key 'motion (kbd "C-u") nil)))
@@ -267,13 +269,16 @@
     "s-[" "playerctl previous"
     "s-]" "playerctl next")
 
-  (setup (:pkg desktop-environment)
+  (use-package desktop-environment
+    :config
     (desktop-environment-mode)
-    (:option desktop-environment-brightness-small-increment "2%+"
-             desktop-environment-brightness-small-decrement "2%-"
-             desktop-environment-brightness-normal-increment "5%+"
-             desktop-environment-brightness-normal-decrement "5%-"
-             desktop-environment-screenshot-command "flameshot gui"))
+
+    :custom
+    (desktop-environment-brightness-small-increment "2%+")
+    (desktop-environment-brightness-small-decrement "2%-")
+    (desktop-environment-brightness-normal-increment "5%+")
+    (desktop-environment-brightness-normal-decrement "5%-")
+    (desktop-environment-screenshot-command "flameshot gui"))
 
   ;; This needs a more elegant ASCII banner
   (defhydra hydra-exwm-move-resize (:timeout 4)
@@ -318,7 +323,7 @@
   (exwm-input-set-key (kbd "s-S") 'dw/configure-desktop)
   (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen))
 
-(setup (:pkg app-launcher))
+;; (use-package app-launcher)
 
 ;; Don't let ediff break EXWM, keep it in one frame
 (setq ediff-diff-options "-w"

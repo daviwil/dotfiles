@@ -27,8 +27,8 @@
       url-history-file (expand-file-name "url/history" user-emacs-directory))
 
 ;; Use no-littering to automatically set common paths to the new user-emacs-directory
-(setup (:pkg no-littering)
-  (require 'no-littering))
+(use-package no-littering
+  :demand t)
 
 ;; Keep customization settings in a temporary file (thanks Ambrevar!)
 (setq custom-file
@@ -85,11 +85,14 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-M-u") 'universal-argument)
 
-(setup (:pkg undo-tree)
+(use-package undo-tree
+  :config
   (setq undo-tree-auto-save-history nil)
   (global-undo-tree-mode 1))
 
-(setup (:pkg evil)
+(use-package evil
+  :demand t
+  :init
   ;; Pre-load configuration
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
@@ -99,6 +102,7 @@
   (setq evil-undo-system 'undo-tree)
 
   ;; Activate the Evil
+  :config
   (evil-mode 1)
 
   ;; Set Emacs state modes
@@ -140,16 +144,20 @@
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
 
-(setup (:pkg evil-collection)
+(use-package evil-collection
+  :after evil
+  :custom
+  (evil-collection-outline-bind-tab-p nil)
+  :config
   ;; Is this a bug in evil-collection?
   (setq evil-collection-company-use-tng nil)
-  (:load-after evil
-    (:option evil-collection-outline-bind-tab-p nil
-             (remove evil-collection-mode-list) 'lispy
-             (remove evil-collection-mode-list) 'org-present)
-    (evil-collection-init)))
+  (delete 'lispy evil-collection-mode-list)
+  (delete 'org-present evil-collection-mode-list)
+  (evil-collection-init))
 
-(setup (:pkg general)
+(use-package general
+  :demand t
+  :config
   (general-evil-setup t)
 
   (general-create-definer dw/leader-key-def
@@ -175,20 +183,22 @@
 
 ;;; -- Appearance -----
 
-(setup (:pkg doom-themes))
-(unless dw/is-termux
-  ;; TODO: Move this to a system setting
-  (load-theme
-   (pcase system-name
-     ("acidburn" 'doom-ayu-dark)
-     ("phantom" 'doom-molokai)
-     (_ 'doom-palenight))
-   t)
+(use-package doom-themes
+  :config
+  (unless dw/is-termux
+    ;; TODO: Move this to a system setting
+    (load-theme
+     (pcase system-name
+       ("acidburn" 'doom-ayu-dark)
+       ("phantom" 'doom-molokai)
+       (_ 'doom-palenight))
+     t)
 
-  (doom-themes-visual-bell-config))
+    (doom-themes-visual-bell-config)))
 
 ;; TODO: Do I use this?  Is it needed?
-(setup (:pkg default-text-scale)
+(use-package default-text-scale
+  :config
   (default-text-scale-mode))
 
 ;; Set the font face based on platform
@@ -221,8 +231,8 @@
 
 ;;; -- Mode Line -----
 
-(setup (:pkg minions)
-  (:hook-into doom-modeline-mode))
+(use-package minions
+  :hook doom-modeline-mode)
 
 (defun dw/start-doom-modeline ()
   (require 'doom-modeline)
@@ -236,24 +246,26 @@
     '(objed-state grip debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker))
   (doom-modeline-set-modeline 'default t))
 
-(setup (:pkg doom-modeline)
-  (add-hook 'after-init-hook #'dw/start-doom-modeline)
-  (:option doom-modeline-height 15
-           doom-modeline-bar-width 6
-           doom-modeline-lsp t
-           doom-modeline-github nil
-           doom-modeline-mu4e nil
-           doom-modeline-irc nil
-           doom-modeline-minor-modes t
-           doom-modeline-persp-name nil
-           doom-modeline-buffer-file-name-style 'truncate-except-project
-           doom-modeline-major-mode-icon nil)
-  (custom-set-faces '(mode-line ((t (:height 0.85))))
-                    '(mode-line-inactive ((t (:height 0.85))))))
+(use-package doom-modeline
+  :hook (after-init . dw/start-doom-modeline)
+  :custom
+  (doom-modeline-height 15)
+  (doom-modeline-bar-width 6)
+  (doom-modeline-lsp t)
+  (doom-modeline-github nil)
+  (doom-modeline-mu4e nil)
+  (doom-modeline-irc nil)
+  (doom-modeline-minor-modes t)
+  (doom-modeline-persp-name nil)
+  (doom-modeline-buffer-file-name-style 'truncate-except-project)
+  (doom-modeline-major-mode-icon nil)
+  :custom-face
+  (mode-line ((t (:height 0.85))))
+  (mode-line-inactive ((t (:height 0.85)))))
 
 ;;; -- Timers -----
 
-(setup (:pkg tmr))
+(use-package tmr)
 
 (defun dw/tmr-mode-line ()
   (if (not (and (boundp 'tmr--timers)
@@ -264,9 +276,16 @@
                         (tmr--timer-description (car tmr--timers)))
                 'tab-bar '(:foreground "orange"))))
 
+;;; -- Beframe -----
+
+;; (use-package beframe
+;;   :ensure t)
+
 ;;; -- Tab Bar Workspaces -----
 
-(setup (:pkg tabspaces :straight t)
+(use-package tabspaces
+  :ensure t
+  :config
   (tabspaces-mode 1)
   (setq tabspaces-use-filtered-buffers-as-default t
         tabspaces-default-tab "Main"
@@ -330,24 +349,26 @@
                        tab-bar-format-align-right
                        tab-bar-format-global))
 
-(with-eval-after-load 'doom-modeline
-  (dw/set-tab-bar-faces)
+(defun dw/setup-tab-bar-mode ()
+  (with-eval-after-load 'doom-modeline
+    (dw/set-tab-bar-faces)
 
-  ;; (add-to-list 'global-mode-string '(" " display-time-string))
-  ;; (add-to-list 'global-mode-string '(" " doom-modeline--battery-status))
-  ;; (add-to-list 'global-mode-string '(" " tracking-mode-line-buffers))
+    ;; (add-to-list 'global-mode-string '(" " display-time-string))
+    ;; (add-to-list 'global-mode-string '(" " doom-modeline--battery-status))
+    ;; (add-to-list 'global-mode-string '(" " tracking-mode-line-buffers))
 
-  ;; (display-time-mode 0)
-  ;; (display-battery-mode 0)
+    ;; (display-time-mode 0)
+    ;; (display-battery-mode 0)
 
-  (setq tab-bar-show t)
-  (tab-bar-mode 1)
-  (tab-bar-rename-tab "Main"))
+    (setq tab-bar-show t)
+    (tab-bar-mode 1)
+    (tab-bar-rename-tab "Main")))
 
 ;;; -- Notifications -----
 
-(setup (:pkg alert)
-  (:option alert-default-style 'notifications))
+(use-package alert
+  :custom
+  (alert-default-style 'notifications))
 
 ;;; -- Editing Configuration -----
 
@@ -356,17 +377,16 @@
 
 (setq-default indent-tabs-mode nil)
 
-(setup (:pkg evil-nerd-commenter)
-  (:global "M-/" evilnc-comment-or-uncomment-lines))
+(use-package evil-nerd-commenter
+  :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
-(setup (:pkg ws-butler)
-  (:hook-into text-mode prog-mode))
+(use-package ws-butler
+  :hook (text-mode prog-mode))
 
-(setup (:pkg super-save)
-  (:delay)
-  (:when-loaded
-    (super-save-mode +1)
-    (setq super-save-auto-save-when-idle t)))
+(use-package super-save
+  :config
+  (super-save-mode +1)
+  (setq super-save-auto-save-when-idle t))
 
 ;; Revert Dired and other buffers
 (setq global-auto-revert-non-file-buffers t)
@@ -374,16 +394,20 @@
 ;; Revert buffers when the underlying file has changed
 (global-auto-revert-mode 1)
 
-(setup (:require paren)
+(use-package paren
+  :ensure nil
+  :config
   (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
   (show-paren-mode 1))
 
-(setup (:pkg visual-fill-column)
-  (setq visual-fill-column-width 110
-        visual-fill-column-center-text t)
-  (:hook-into org-mode))
+(use-package visual-fill-column
+  :hook org-mode
+  :custom
+  (visual-fill-column-width 110)
+  (visual-fill-column-center-text t))
 
-(setup (:pkg avy)
+(use-package avy
+  :config
   (dw/leader-key-def
     "j"   '(:ignore t :which-key "jump")
     "jj"  '(avy-goto-char :which-key "jump to char")
@@ -392,17 +416,21 @@
 
 ;;; -- Window Management -----
 
-(setup (:pkg ace-window)
-  (:global "M-o" ace-window)
-  (:option aw-scope 'frame
-           aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
-           aw-minibuffer-flag t)
+(use-package ace-window
+  :bind (("M-o" . ace-window))
+  :custom
+  (aw-scope 'frame)
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (aw-minibuffer-flag t)
+  :config
   (ace-window-display-mode 1))
 
-(setup winner
-  (winner-mode)
-  (define-key evil-window-map "u" 'winner-undo)
-  (define-key evil-window-map "U" 'winner-redo))
+(use-package winner
+  :bind (:map evil-window-map
+              ("u" . winner-undo)
+              ("U" . winner-redo))
+  :config
+  (winner-mode))
 
 ;; (setq display-buffer-base-action
 ;;       '(display-buffer-reuse-mode-window
@@ -419,40 +447,40 @@
       ('exwm-mode 40)
       (_ 15))))
 
-(setup (:pkg popper
-             :host github
-             :repo "karthink/popper"
-             :build (:not autoloads))
-  (:global "C-M-'" popper-toggle-latest
-           "M-'" popper-cycle
-           "C-M-\"" popper-toggle-type)
-  (:option popper-window-height 12
-           ;; (popper-window-height
-           ;; (lambda (window)
-           ;;   (let ((buffer-mode (with-current-buffer (window-buffer window)
-           ;;                        major-mode)))
-           ;;     (message "BUFFER MODE: %s" buffer-mode)
-           ;;     (pcase buffer-mode
-           ;;       ('exwm-mode 40)
-           ;;       ('helpful-mode 20)
-           ;;       ('eshell-mode (progn (message "eshell!") 10))
-           ;;       (_ 15)))))
-           popper-reference-buffers '(eshell-mode
-                                      vterm-mode
-                                      geiser-repl-mode
-                                      help-mode
-                                      grep-mode
-                                      helpful-mode
-                                      compilation-mode))
+(use-package popper
+  :bind (("C-M-'" . popper-toggle-latest)
+         ("M-'" . popper-cycle)
+         ("C-M-\"" . popper-toggle-type))
+  :custom
+  (popper-window-height 12)
+  ;; (popper-window-height
+  ;; (lambda (window)
+  ;;   (let ((buffer-mode (with-current-buffer (window-buffer window)
+  ;;                        major-mode)))
+  ;;     (message "BUFFER MODE: %s" buffer-mode)
+  ;;     (pcase buffer-mode
+  ;;       ('exwm-mode 40)
+  ;;       ('helpful-mode 20)
+  ;;       ('eshell-mode (progn (message "eshell!") 10))
+  ;;       (_ 15)))))
+  (popper-reference-buffers '(eshell-mode
+                              vterm-mode
+                              geiser-repl-mode
+                              help-mode
+                              grep-mode
+                              helpful-mode
+                              compilation-mode))
+  :config
   (require 'popper) ;; Needed because I disabled autoloads
   (popper-mode 1))
 
 ;;; -- Dired -----
 
-(setup (:pkg all-the-icons-dired))
-(setup (:pkg dired-single :straight t))
-(setup (:pkg dired-ranger))
-(setup (:pkg dired-collapse))
+(use-package all-the-icons-dired)
+(use-package dired-single
+  :ensure t)
+(use-package dired-ranger)
+(use-package dired-collapse)
 
 (defun dw/dired-mode-hook ()
   (interactive)
@@ -463,7 +491,8 @@
     (all-the-icons-dired-mode 1))
   (hl-line-mode 1))
 
-(setup dired
+(use-package dired
+  :config
   (setq dired-listing-switches "-agho --group-directories-first"
         dired-omit-files "^\\.[^.].*"
         dired-omit-verbose nil
@@ -490,50 +519,51 @@
     "X" 'dired-ranger-move
     "p" 'dired-ranger-paste))
 
-(setup (:pkg dired-rainbow)
-  (:load-after dired
-   (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
-   (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
-   (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
-   (dired-rainbow-define document "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx"))
-   (dired-rainbow-define markdown "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt"))
-   (dired-rainbow-define database "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc"))
-   (dired-rainbow-define media "#de751f" ("mp3" "mp4" "mkv" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac"))
-   (dired-rainbow-define image "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg"))
-   (dired-rainbow-define log "#c17d11" ("log"))
-   (dired-rainbow-define shell "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim"))
-   (dired-rainbow-define interpreted "#38c172" ("py" "ipynb" "rb" "pl" "t" "msql" "mysql" "pgsql" "sql" "r" "clj" "cljs" "scala" "js"))
-   (dired-rainbow-define compiled "#4dc0b5" ("asm" "cl" "lisp" "el" "c" "h" "c++" "h++" "hpp" "hxx" "m" "cc" "cs" "cp" "cpp" "go" "f" "for" "ftn" "f90" "f95" "f03" "f08" "s" "rs" "hi" "hs" "pyc" ".java"))
-   (dired-rainbow-define executable "#8cc4ff" ("exe" "msi"))
-   (dired-rainbow-define compressed "#51d88a" ("7z" "zip" "bz2" "tgz" "txz" "gz" "xz" "z" "Z" "jar" "war" "ear" "rar" "sar" "xpi" "apk" "xz" "tar"))
-   (dired-rainbow-define packaged "#faad63" ("deb" "rpm" "apk" "jad" "jar" "cab" "pak" "pk3" "vdf" "vpk" "bsp"))
-   (dired-rainbow-define encrypted "#ffed4a" ("gpg" "pgp" "asc" "bfe" "enc" "signature" "sig" "p12" "pem"))
-   (dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf"))
-   (dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak"))
-   (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
-   (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*")))
+(use-package dired-rainbow
+  :after dired
+  :config
+  (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
+  (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
+  (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
+  (dired-rainbow-define document "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx"))
+  (dired-rainbow-define markdown "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt"))
+  (dired-rainbow-define database "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc"))
+  (dired-rainbow-define media "#de751f" ("mp3" "mp4" "mkv" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac"))
+  (dired-rainbow-define image "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg"))
+  (dired-rainbow-define log "#c17d11" ("log"))
+  (dired-rainbow-define shell "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim"))
+  (dired-rainbow-define interpreted "#38c172" ("py" "ipynb" "rb" "pl" "t" "msql" "mysql" "pgsql" "sql" "r" "clj" "cljs" "scala" "js"))
+  (dired-rainbow-define compiled "#4dc0b5" ("asm" "cl" "lisp" "el" "c" "h" "c++" "h++" "hpp" "hxx" "m" "cc" "cs" "cp" "cpp" "go" "f" "for" "ftn" "f90" "f95" "f03" "f08" "s" "rs" "hi" "hs" "pyc" ".java"))
+  (dired-rainbow-define executable "#8cc4ff" ("exe" "msi"))
+  (dired-rainbow-define compressed "#51d88a" ("7z" "zip" "bz2" "tgz" "txz" "gz" "xz" "z" "Z" "jar" "war" "ear" "rar" "sar" "xpi" "apk" "xz" "tar"))
+  (dired-rainbow-define packaged "#faad63" ("deb" "rpm" "apk" "jad" "jar" "cab" "pak" "pk3" "vdf" "vpk" "bsp"))
+  (dired-rainbow-define encrypted "#ffed4a" ("gpg" "pgp" "asc" "bfe" "enc" "signature" "sig" "p12" "pem"))
+  (dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf"))
+  (dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak"))
+  (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
+  (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
-(setup (:pkg openwith)
-  (unless dw/is-termux
-    (require 'openwith)
-    (setq openwith-associations
-          (list
-           (list (openwith-make-extension-regexp
-                  '("mpg" "mpeg" "mp3" "mp4"
-                    "avi" "wmv" "wav" "mov" "flv"
-                    "ogm" "ogg" "mkv"))
-                 "mpv"
-                 '(file))
-           (list (openwith-make-extension-regexp
-                  '("xbm" "pbm" "pgm" "ppm" "pnm"
-                    "png" "gif" "bmp" "tif" "jpeg")) ;; Removed jpg because Telega was
-                 ;; causing feh to be opened...
-                 "feh"
-                 '(file))
-           (list (openwith-make-extension-regexp
-                  '("pdf"))
-                 "zathura"
-                 '(file))))))
+(use-package openwith
+  :unless dw/is-termux
+  :config
+  (setq openwith-associations
+        (list
+         (list (openwith-make-extension-regexp
+                '("mpg" "mpeg" "mp3" "mp4"
+                  "avi" "wmv" "wav" "mov" "flv"
+                  "ogm" "ogg" "mkv"))
+               "mpv"
+               '(file))
+         (list (openwith-make-extension-regexp
+                '("xbm" "pbm" "pgm" "ppm" "pnm"
+                  "png" "gif" "bmp" "tif" "jpeg")) ;; Removed jpg because Telega was
+               ;; causing feh to be opened...
+               "feh"
+               '(file))
+         (list (openwith-make-extension-regexp
+                '("pdf"))
+               "zathura"
+               '(file)))))
 
 ;;; -- World Clock -----
 
@@ -551,7 +581,8 @@
 
 ;;; -- Save Minibuffer History -----
 
-(setup savehist
+(use-package savehist
+  :config
   (setq history-length 25)
   (savehist-mode 1))
 
@@ -562,14 +593,15 @@
 
 ;;; -- Make Help More Helpful -----
 
-(setup (:pkg helpful)
-  (:option counsel-describe-function-function #'helpful-callable
-           counsel-describe-variable-function #'helpful-variable)
-  (:global [remap describe-function] helpful-function
-           [remap describe-symbol] helpful-symbol
-           [remap describe-variable] helpful-variable
-           [remap describe-command] helpful-command
-           [remap describe-key] helpful-key))
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind (([remap describe-function] . helpful-function)
+         ([remap describe-symbol] . helpful-symbol)
+         ([remap describe-variable] . helpful-variable)
+         ([remap describe-command] . helpful-command)
+         ([remap describe-key] . helpful-key)))
 
 ;; Load the info system for info files
 (add-to-list 'auto-mode-alist '("\\.info\\'" . Info-on-current-buffer))
@@ -612,23 +644,27 @@
 
 ;;; -- GPT -----
 
-(setup (:pkg gptel :straight t)
-  (setq gptel-model "gpt-4"
-        gptel-playback t))
-
+(use-package gptel
+  :ensure t
+  :config
+  (setq-default gptel-model "gpt-4"
+                gptel-playback t))
 
 (defun my/copilot-tab ()
   (interactive)
   (or (copilot-accept-completion)
       (indent-for-tab-command)))
 
-(setup (:pkg copilot
-             :host github
-             :repo "zerolfx/copilot.el"
-             :files ("dist" "*.el"))
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
 
-  (require 'copilot)
+(unless (package-installed-p 'copilot)
+  (package-vc-install "https://github.com/zerolfx/copilot.el"))
 
+(use-package copilot
+  :config
   (with-eval-after-load 'copilot
     (evil-define-key 'insert copilot-mode-map
       (kbd "<tab>") #'my/copilot-tab))

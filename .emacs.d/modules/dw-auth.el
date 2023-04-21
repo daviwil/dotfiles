@@ -9,7 +9,8 @@
 
 ;;; -- Password Management -----
 
-(setup (:pkg password-store)
+(use-package password-store
+  :config
   (setq password-store-password-length 12)
   (dw/leader-key-def
     "ap" '(:ignore t :which-key "pass")
@@ -17,11 +18,13 @@
     "api" 'password-store-insert
     "apg" 'password-store-generate))
 
-(setup (:pkg auth-source-pass)
+(use-package auth-source-pass
+  :config
   (auth-source-pass-enable))
 
 ;;; -- OAuth2 -----
 
-(setup (:pkg oauth2 :straight t))
+(use-package oauth2
+  :ensure t)
 
 (provide 'dw-auth)

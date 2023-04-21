@@ -8,6 +8,8 @@
    
    "emacs-exwm"
    "emacs-desktop-environment"
+
+   "emacs-popper"
    
    "emacs-evil"
    "emacs-evil-collection"
@@ -69,6 +71,8 @@
    "emacs-org-present"
    "emacs-org-roam"
    "emacs-org-appear"
+
+   "emacs-denote"
    
    "emacs-magit"
    "emacs-magit-todos"
@@ -99,6 +103,7 @@
    "emacs-go-mode"
    
    "emacs-rust-mode"
+   "emacs-zig-mode"
    
    "emacs-helpful"
    

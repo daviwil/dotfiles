@@ -67,7 +67,7 @@
   (require 'evil-collection-eshell)
   (evil-collection-eshell-setup)
 
-  (setup (:pkg xterm-color))
+  (use-package xterm-color)
 
   (push 'eshell-tramp eshell-modules-list)
   (push 'xterm-color-filter eshell-preoutput-filter-functions)
@@ -112,17 +112,20 @@
         eshell-scroll-to-bottom-on-input t
         eshell-prefer-lisp-functions nil))
 
-(setup eshell
+(use-package eshell
+  :config
   (add-hook 'eshell-first-time-mode-hook #'dw/eshell-configure)
   (setq eshell-directory-name "~/.dotfiles/.emacs.d/eshell/"
         eshell-aliases-file (expand-file-name "~/.dotfiles/.emacs.d/eshell/alias")))
 
-(setup (:pkg eshell-z)
-  (:disabled) ;; Using consult-dir for this now
+(use-package eshell-z
+  :disabled ;; Using consult-dir for this now
   (add-hook 'eshell-mode-hook (lambda () (require 'eshell-z)))
   (add-hook 'eshell-z-change-dir-hook (lambda () (eshell/pushd (eshell/pwd)))))
 
-(setup (:pkg exec-path-from-shell)
+(use-package exec-path-from-shell
+  :demand t
+  :config
   (setq exec-path-from-shell-check-startup-files nil)
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
@@ -140,35 +143,30 @@
   (setq eshell-destroy-buffer-when-process-dies t)
   (setq eshell-visual-commands '("htop" "zsh" "vim")))
 
-(setup (:pkg pcmpl-args)
-  (require 'pcmpl-args))
+(use-package pcmpl-args
+  :demand t
+  :after eshell)
 
-(setup (:pkg eshell-syntax-highlighting)
-  (:load-after eshell
-    (eshell-syntax-highlighting-global-mode +1)))
+(use-package eshell-syntax-highlighting
+  :after eshell
+  :demand t
+  :config
+  (eshell-syntax-highlighting-global-mode +1))
 
 (defun dw/esh-autosuggest-setup ()
   (require 'company)
   (set-face-foreground 'company-preview-common "#4b5668")
   (set-face-background 'company-preview nil))
 
-(setup (:pkg esh-autosuggest)
-  (require 'esh-autosuggest)
-  (setq esh-autosuggest-delay 0.5)
-  (:hook dw/esh-autosuggest-setup)
-  (:hook-into eshell-mode))
+(use-package esh-autosuggest
+  :hook (eshell-mode . esh-autosuggest-mode)
+  :config
+  (setq esh-autosuggest-delay 0.5))
 
-(setup (:pkg eshell-toggle)
-  (:disabled)
-  (:global "C-M-'" eshell-toggle)
-  (:option eshell-toggle-size-fraction 3
-           eshell-toggle-use-projectile-root t
-           eshell-toggle-run-command nil))
-
-(setup (:pkg vterm)
-  (:when-loaded
-   (progn
-     (setq vterm-max-scrollback 10000)
-     (advice-add 'evil-collection-vterm-insert :before #'vterm-reset-cursor-point))))
+(use-package vterm
+  :commands vterm
+  :config
+  (setq vterm-max-scrollback 10000)
+  (advice-add 'evil-collection-vterm-insert :before #'vterm-reset-cursor-point))
 
 (provide 'dw-shell)
