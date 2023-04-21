@@ -319,6 +319,14 @@ _d_: date        ^ ^              ^ ^
   ;; Buttonize all denote links in text buffers
   (add-hook 'find-file-hook #'denote-link-buttonize-buffer))
 
+(use-package consult-notes
+  :ensure t
+  :after denote
+  :custom
+  (consult-notes-denote-display-id nil)
+  :config
+  (consult-notes-denote-mode))
+
 (defun dw/denote-find-daily-log ()
   (interactive)
   (let* ((default-directory denote-directory)
