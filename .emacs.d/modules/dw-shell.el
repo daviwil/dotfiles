@@ -64,9 +64,6 @@
   ;; Make sure magit is loaded
   (require 'magit)
 
-  (require 'evil-collection-eshell)
-  (evil-collection-eshell-setup)
-
   (use-package xterm-color)
 
   (push 'eshell-tramp eshell-modules-list)
@@ -97,9 +94,13 @@
   ;; Initialize the shell history
   (eshell-hist-initialize)
 
-  (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'consult-history)
-  (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
-  (evil-normalize-keymaps)
+  (when (featurep 'evil)
+    (require 'evil-collection-eshell)
+    (evil-collection-eshell-setup)
+
+    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'consult-history)
+    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
+    (evil-normalize-keymaps))
 
   (setenv "PAGER" "cat")
 
@@ -136,8 +137,7 @@
       (call-interactively #'project-eshell)
     (call-interactively #'eshell)))
 
-(dw/leader-key-def
-  "SPC" #'dw/switch-to-eshell)
+(global-set-key (kbd "C-c e") #'dw/switch-to-eshell)
 
 (with-eval-after-load 'esh-opt
   (setq eshell-destroy-buffer-when-process-dies t)
@@ -167,6 +167,7 @@
   :commands vterm
   :config
   (setq vterm-max-scrollback 10000)
-  (advice-add 'evil-collection-vterm-insert :before #'vterm-reset-cursor-point))
+  (when (featurep 'evil)
+    (advice-add 'evil-collection-vterm-insert :before #'vterm-reset-cursor-point)))
 
 (provide 'dw-shell)

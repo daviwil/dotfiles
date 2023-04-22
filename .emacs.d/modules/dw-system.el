@@ -2,13 +2,12 @@
 
 (use-package guix)
 
-(dw/leader-key-def
-  "G"  '(:ignore t :which-key "Guix")
-  "Gg" '(guix :which-key "Guix")
-  "Gi" '(guix-installed-user-packages :which-key "user packages")
-  "GI" '(guix-installed-system-packages :which-key "system packages")
-  "Gp" '(guix-packages-by-name :which-key "search packages")
-  "GP" '(guix-pull :which-key "pull"))
+(define-key* dw/guix-prefix-map
+  "g" 'guix
+  "i" 'guix-installed-user-packages
+  "I" 'guix-installed-system-packages
+  "p" 'guix-packages-by-name
+  "P" 'guix-pull)
 
 (use-package daemons)
 

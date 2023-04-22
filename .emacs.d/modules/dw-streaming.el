@@ -29,9 +29,6 @@
             :internal-border-color "#c792ea"
             :override-parameters '((parent-frame . nil)))))))
 
-(dw/leader-key-def
- "tc" 'dw/toggle-command-window)
-
 (defun dw/keycast-predicate ()
   ;; Don't show keys if we're in the minibuffer
   (not (minibufferp)))

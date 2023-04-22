@@ -117,10 +117,6 @@
 
 (use-package exwm
   :config
-  (add-hook 'exwm-mode-hook
-            (lambda ()
-              (evil-local-set-key 'motion (kbd "C-u") nil)))
-
   ;; Do some post-init setup
   (add-hook 'exwm-init-hook #'dw/exwm-init-hook)
 

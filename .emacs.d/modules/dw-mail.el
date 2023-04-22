@@ -110,12 +110,11 @@
     (interactive)
     (mu4e-headers-search dw/mu4e-inbox-query))
 
-  (dw/leader-key-def
-    "m" '(:ignore t :which-key "mail")
-    "mm" 'mu4e
-    "mc" 'mu4e-compose-new
-    "mi" 'dw/go-to-inbox
-    "ms" 'mu4e-update-mail-and-index)
+  (define-key* dw/mail-prefix-map
+    "m" 'mu4e
+    "c" 'mu4e-compose-new
+    "i" 'dw/go-to-inbox
+    "s" 'mu4e-update-mail-and-index)
 
   ;; Start mu4e in the background so that it syncs mail periodically
   (mu4e t))

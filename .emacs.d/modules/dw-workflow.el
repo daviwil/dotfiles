@@ -57,12 +57,6 @@
   (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-use-outline-path t)
 
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
-
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup)
-
   (org-babel-do-load-languages
     'org-babel-load-languages
     '((emacs-lisp . t)))
@@ -135,36 +129,18 @@
   (setq org-pomodoro-start-sound "~/.dotfiles/.emacs.d/sounds/focus_bell.wav")
   (setq org-pomodoro-short-break-sound "~/.dotfiles/.emacs.d/sounds/three_beeps.wav")
   (setq org-pomodoro-long-break-sound "~/.dotfiles/.emacs.d/sounds/three_beeps.wav")
-  (setq org-pomodoro-finished-sound "~/.dotfiles/.emacs.d/sounds/meditation_bell.wav")
-
-  (dw/leader-key-def
-    "op"  '(org-pomodoro :which-key "pomodoro")))
+  (setq org-pomodoro-finished-sound "~/.dotfiles/.emacs.d/sounds/meditation_bell.wav"))
 
 (require 'org-protocol)
 
-(use-package evil-org
-  :after (evil org)
-  :hook ((org-mode . evil-org-mode)
-         (org-agenda-mode . evil-org-mode))
-  :config
-  (require 'evil-org-agenda)
-  (evil-org-set-key-theme '(navigation todo insert textobjects additional))
-  (evil-org-agenda-set-keys))
-
-(dw/ctrl-c-keys
-  "o"   '(:ignore t :which-key "org mode")
-
-  "oi"  '(:ignore t :which-key "insert")
-  "oil" '(org-insert-link :which-key "insert link")
-
-  "on"  '(org-toggle-narrow-to-subtree :which-key "toggle narrow")
-
-  "os"  '(dw/counsel-rg-org-files :which-key "search notes")
-
-  "oa"  '(org-agenda :which-key "status")
-  "ot"  '(org-todo-list :which-key "todos")
-  "oc"  '(org-capture t :which-key "capture")
-  "ox"  '(org-export-dispatch t :which-key "export"))
+(define-key* dw/org-prefix-map
+  "il" 'org-insert-link
+  "n"  'org-toggle-narrow-to-subtree
+  "s"  'dw/counsel-rg-org-files
+  "a"  'org-agenda
+  "t"  'org-todo-list
+  "c"  'org-capture
+  "x"  'org-export-dispatch)
 
 (use-package org-make-toc
   :hook org-mode)

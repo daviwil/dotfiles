@@ -12,11 +12,10 @@
 (use-package password-store
   :config
   (setq password-store-password-length 12)
-  (dw/leader-key-def
-    "ap" '(:ignore t :which-key "pass")
-    "app" 'password-store-copy
-    "api" 'password-store-insert
-    "apg" 'password-store-generate))
+  (define-key* dw/password-prefix-map
+    "p" 'password-store-copy
+    "i" 'password-store-insert
+    "g" 'password-store-generate))
 
 (use-package auth-source-pass
   :config

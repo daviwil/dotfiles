@@ -47,12 +47,6 @@
         telega-msg-rainbow-title t
         telega-chat-fill-column 75))
 
-(dw/ctrl-c-keys
-  "c"  '(:ignore t :which-key "chat")
-  "cb" 'erc-switch-to-buffer
-  "cc" 'dw/connect-irc
-  "ca" 'erc-track-switch-buffer)
-
 (unless (package-installed-p '0x0)
   (package-vc-install '(0x0 :url "https://gitlab.com/willvaughn/emacs-0x0.git")))
 
@@ -64,8 +58,6 @@
                            ("chat.sr.ht" :server-alias "OFTC" :port 6697 :nick "daviwil" :user-name "daviwil/oftc" :encryption tls))
       rcirc-reconnect-delay 5
       rcirc-fill-column 120)
-
-(add-hook 'rcirc-mode-hook #'evil-normal-state)
 
 ;; (use-package srv :ensure t)
 ;; (use-package fsm :ensure t)

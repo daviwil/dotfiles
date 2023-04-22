@@ -123,8 +123,7 @@
 (use-package git-link
   :config
   (setq git-link-open-in-browser t)
-  (dw/leader-key-def
-    "gL"  'git-link))
+  (define-key dw/git-prefix-map "l" 'git-link))
 
 ;; (setup (:pkg git-gutter :straight git-gutter-fringe)
 ;;   (:hook-into text-mode prog-mode)
@@ -196,6 +195,7 @@
   :hook (emacs-lisp-mode scheme-mode))
 
 (use-package lispyville
+  :if (featurep 'evil)
   :hook (lispy-mode . lispyville-mode)
   :config
   (lispyville-set-key-theme '(operators c-w additional

@@ -20,6 +20,8 @@
 ;; Load pertinent modules
 (require 'dw-package)
 (require 'dw-settings)
+(require 'dw-keys)
+(require 'dw-keys-evil)
 (require 'dw-core)
 (require 'dw-interface)
 (require 'dw-auth)

@@ -83,90 +83,6 @@
 ;;; -- Core Key Bindings and Packages ----
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(global-set-key (kbd "C-M-u") 'universal-argument)
-
-(use-package undo-tree
-  :config
-  (setq undo-tree-auto-save-history nil)
-  (global-undo-tree-mode 1))
-
-(use-package evil
-  :demand t
-  :init
-  ;; Pre-load configuration
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  (setq evil-respect-visual-line-mode t)
-  (setq evil-undo-system 'undo-tree)
-
-  ;; Activate the Evil
-  :config
-  (evil-mode 1)
-
-  ;; Set Emacs state modes
-  (dolist (mode '(custom-mode
-                  eshell-mode
-                  git-rebase-mode
-                  erc-mode
-                  circe-server-mode
-                  circe-chat-mode
-                  circe-query-mode
-                  term-mode))
-    (add-to-list 'evil-emacs-state-modes mode))
-
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-
-  ;; Clear the binding of C-k so that it doesn't conflict with Corfu
-  (define-key evil-insert-state-map (kbd "C-k") nil)
-
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-  (unless dw/is-termux
-    (defun dw/dont-arrow-me-bro ()
-      (interactive)
-      (message "Arrow keys are bad, you know?"))
-
-    ;; Disable arrow keys in normal and visual modes
-    (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
-    (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
-    (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
-    (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
-    (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro))
-
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
-
-(use-package evil-collection
-  :after evil
-  :custom
-  (evil-collection-outline-bind-tab-p nil)
-  :config
-  ;; Is this a bug in evil-collection?
-  (setq evil-collection-company-use-tng nil)
-  (delete 'lispy evil-collection-mode-list)
-  (delete 'org-present evil-collection-mode-list)
-  (evil-collection-init))
-
-(use-package general
-  :demand t
-  :config
-  (general-evil-setup t)
-
-  (general-create-definer dw/leader-key-def
-    :keymaps '(normal insert visual emacs)
-    :prefix "SPC"
-    :global-prefix "C-SPC")
-
-  (general-create-definer dw/ctrl-c-keys
-    :prefix "C-c"))
 
 (column-number-mode)
 
@@ -373,7 +289,6 @@
 ;;; -- Editing Configuration -----
 
 (setq-default tab-width 2)
-(setq-default evil-shift-width tab-width)
 
 (setq-default indent-tabs-mode nil)
 
@@ -407,12 +322,13 @@
   (visual-fill-column-center-text t))
 
 (use-package avy
-  :config
-  (dw/leader-key-def
-    "j"   '(:ignore t :which-key "jump")
-    "jj"  '(avy-goto-char :which-key "jump to char")
-    "jw"  '(avy-goto-word-0 :which-key "jump to word")
-    "jl"  '(avy-goto-line :which-key "jump to line")))
+  :bind (("C-'" . avy-goto-char)
+         ("C-\"" . avy-goto-char-2)
+         ("C-;" . avy-goto-char-timer)
+         ;; ("C-/" . avy-goto-word-1)
+         ("C-?" . avy-goto-word-0)
+         ("C-." . avy-goto-subword-1)
+         ("C-," . avy-goto-subword-0)))
 
 ;;; -- Window Management -----
 
@@ -511,13 +427,14 @@
   (unless dw/exwm-enabled
     (global-set-key (kbd "s-e") #'dired-jump))
 
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-single-up-directory
-    "H" 'dired-omit-mode
-    "l" 'dired-single-buffer
-    "y" 'dired-ranger-copy
-    "X" 'dired-ranger-move
-    "p" 'dired-ranger-paste))
+  (if (featurep 'evil)
+      (evil-collection-define-key 'normal 'dired-mode-map
+                              "h" 'dired-single-up-directory
+                              "H" 'dired-omit-mode
+                              "l" 'dired-single-buffer
+                              "y" 'dired-ranger-copy
+                              "X" 'dired-ranger-move
+                              "p" 'dired-ranger-paste)))
 
 (use-package dired-rainbow
   :after dired
@@ -627,20 +544,14 @@
   (org-show-subtree)
   (forward-line))
 
-(dw/leader-key-def
-  "fn" '((lambda () (interactive) (counsel-find-file "~/Notes/")) :which-key "notes")
-  "fd"  '(:ignore t :which-key "dotfiles")
-  "fdd" '((lambda () (interactive) (find-file "~/.dotfiles/Desktop.org")) :which-key "desktop")
-  "fdc" '((lambda () (interactive) (find-file (expand-file-name (concat  "~/.dotfiles/daviwil/systems/" system-name ".scm")))) :which-key "system config")
-  "fde" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/.emacs.d/init.el"))) :which-key  "edit config")
-  "fdE" '((lambda () (interactive) (dw/org-file-show-headings "~/.dotfiles/Emacs.org")) :which-key "edit config")
-  "fdm" '((lambda () (interactive) (find-file "~/.dotfiles/Mail.org")) :which-key "mail")
-  "fdM" '((lambda () (interactive) (counsel-find-file "~/.dotfiles/.config/guix/manifests/")) :which-key "manifests")
-  "fds" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" "Base Configuration")) :which-key "base system")
-  "fdS" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" system-name)) :which-key "this system")
-  "fdp" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Desktop.org" "Panel via Polybar")) :which-key "polybar")
-  "fdw" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/Workflow.org"))) :which-key "workflow")
-  "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/.config/vimb/config")) :which-key "vimb"))
+(defun dw/edit-emacs-module ()
+  "Launches `counsel-find-file' in the Emacs module directory."
+  (interactive)
+  (let ((default-directory "~/.dotfiles/.emacs.d/modules/"))
+    (call-interactively #'find-file)))
+
+(define-key* dw/files-prefix-map
+  "em" 'dw/edit-emacs-module)
 
 ;;; -- GPT -----
 
@@ -666,8 +577,10 @@
 (use-package copilot
   :config
   (with-eval-after-load 'copilot
-    (evil-define-key 'insert copilot-mode-map
-      (kbd "<tab>") #'my/copilot-tab))
+    (if (featurep 'evil)
+        (evil-define-key 'insert copilot-mode-map
+          (kbd "<tab>") #'my/copilot-tab)
+      (define-key copilot-mode-map (kbd "<tab>") #'my/copilot-tab)))
 
   (add-hook 'prog-mode-hook 'copilot-mode))
 
