@@ -148,7 +148,13 @@
 ;;; -- Mode Line -----
 
 (use-package minions
-  :hook doom-modeline-mode)
+  :hook (doom-modeline-mode mood-line-mode))
+
+(use-package mood-line
+  :config
+  (setq mood-line-glyph-alist mood-line-glyphs-fira-code
+        mood-line-show-encoding-information t)
+  (mood-line-mode))
 
 (defun dw/start-doom-modeline ()
   (require 'doom-modeline)
@@ -163,6 +169,7 @@
   (doom-modeline-set-modeline 'default t))
 
 (use-package doom-modeline
+  :disabled
   :hook (after-init . dw/start-doom-modeline)
   :custom
   (doom-modeline-height 15)
