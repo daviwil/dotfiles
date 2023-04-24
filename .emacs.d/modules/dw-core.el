@@ -2,20 +2,6 @@
 
 (require 'subr-x)
 
-;;; -- System Identification -----
-
-(defvar dw/is-termux
-  (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
-
-(defvar dw/is-guix-system (and (eq system-type 'gnu/linux)
-                               (with-temp-buffer
-                                 (insert-file-contents "/etc/os-release")
-                                 (search-forward "ID=guix" nil t))
-                               t))
-
-(defvar dw/exwm-enabled (and (not dw/is-termux)
-                             (eq window-system 'x)
-                             (seq-contains command-line-args "--use-exwm")))
 
 (defvar dw/mail-enabled (member system-name '("zerocool" "acidburn")))
 (setq dw/mu4e-inbox-query nil)
