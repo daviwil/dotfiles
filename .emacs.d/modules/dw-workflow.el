@@ -96,15 +96,16 @@
 (use-package org-tempo
   :after org
   :config
-  (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
-  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("li" . "src lisp"))
-  (add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
-  (add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
-  (add-to-list 'org-structure-template-alist '("py" . "src python"))
-  (add-to-list 'org-structure-template-alist '("go" . "src go"))
-  (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
-  (add-to-list 'org-structure-template-alist '("json" . "src json")))
+  (dolist (item '(("sh" . "src sh")
+                  ("el" . "src emacs-lisp")
+                  ("li" . "src lisp")
+                  ("sc" . "src scheme")
+                  ("ts" . "src typescript")
+                  ("py" . "src python")
+                  ("go" . "src go")
+                  ("yaml" . "src yaml")
+                  ("json" . "src json")))
+    (add-to-list 'org-structure-template-alist item)))
 
 (use-package org-pomodoro
   :commands org-pomodoro
