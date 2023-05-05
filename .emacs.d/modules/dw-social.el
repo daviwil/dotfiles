@@ -92,4 +92,7 @@
 (use-package elpher
   :commands elpher)
 
+(use-package ement
+  :commands ement-connect)
+
 (provide 'dw-social)
