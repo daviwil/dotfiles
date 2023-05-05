@@ -16,16 +16,8 @@
 (define home
   (home-environment
    (packages (gather-manifest-packages '(emacs mail video games)))
-   (services (append
-              common-home-services
-              (list (service home-xsettingsd-service-type
-                             (home-xsettingsd-configuration
-                              (dpi 180)
-                              (font "Iosevka Aile 11")
-                              (theme "Matcha-dark-azul")
-                              (icon-theme "Papirus-Dark")
-                              (monospace-font "JetBrains Mono 10")))
-                    (service home-pipewire-service-type))))))
+   (services (append common-home-services
+                     (list (service home-pipewire-service-type))))))
 
 (define system
   (operating-system
