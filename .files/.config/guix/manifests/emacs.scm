@@ -9,7 +9,13 @@
    "emacs-exwm"
    "emacs-desktop-environment"
 
+   "emacs-god-mode"
+   "emacs-modalka"
+   "emacs-meow"
+
    "emacs-popper"
+
+   "emacs-ement"
    
    "emacs-evil"
    "emacs-evil-collection"
@@ -21,7 +27,8 @@
    "emacs-spacegray-theme"
    
    "emacs-emojify"
-   
+
+   "emacs-mood-line"
    "emacs-doom-modeline"
    "emacs-all-the-icons"
    "emacs-minions"
@@ -71,7 +78,7 @@
    "emacs-org-present"
    "emacs-org-roam"
    "emacs-org-appear"
-
+   "emacs-htmlize"
    "emacs-denote"
    
    "emacs-magit"
