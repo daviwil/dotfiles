@@ -1,7 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package posframe)
-(use-package command-log-mode :ensure t)
+(use-package command-log-mode
+  :ensure t
+  :disabled t)
 
 (setq dw/command-window-frame nil)
 
