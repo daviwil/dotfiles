@@ -136,8 +136,7 @@
 
 (use-package mood-line
   :config
-  (setq mood-line-glyph-alist mood-line-glyphs-fira-code
-        mood-line-show-encoding-information t)
+  (setq mood-line-glyph-alist mood-line-glyphs-fira-code)
   (mood-line-mode))
 
 (defun dw/start-doom-modeline ()
