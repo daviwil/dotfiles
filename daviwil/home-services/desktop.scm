@@ -29,6 +29,9 @@
           "feh"
           "network-manager-applet"
 
+          ;; Compatibility for older Xorg applications
+          "xorg-server-xwayland"
+
           ;; Flatpak and XDG utilities
           "flatpak"
           "xdg-desktop-portal"
