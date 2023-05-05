@@ -245,7 +245,6 @@ _d_: date        ^ ^              ^ ^
                              ,dw/daily-note-header
                              ("Log")))))
   :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
          ("C-c n d" . dw/org-roam-jump-menu/body)
          ("C-c n c" . org-roam-dailies-capture-today)
          ("C-c n t" . dw/org-roam-capture-task)
