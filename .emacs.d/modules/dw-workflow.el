@@ -9,11 +9,8 @@
           "~/storage/shared/Notes"
         "~/Notes"))
 
-(setq org-agenda-files
-      '("Cadl.org"
-        "Personal.org"
-        "Mesche.org"
-        "SystemCrafters.org"))
+(defvar dw/base-agenda-files '("Schedule.org" "Mesche.org" "SystemCrafters.org")
+  "The base agenda files that will always be included.")
 
 (defun dw/org-path (path)
   (expand-file-name path org-directory))
@@ -263,10 +260,20 @@ _d_: date        ^ ^              ^ ^
 (use-package org-appear
   :hook org-mode)
 
+(defun dw/refresh-agenda-files ()
+  (interactive)
+  (setq org-agenda-files
+        (append (denote-directory-files-matching-regexp "_project")
+                dw/base-agenda-files)))
+
 (use-package denote
+  :demand t
   :config
   (setq denote-directory "~/Notes/Denote")
   (setq denote-known-keywords '("journal" "workflow" "daily" "weekly" "monthly"))
+
+  ;; Refresh agenda files the first time
+  (dw/refresh-agenda-files)
 
   ;; Buttonize all denote links in text buffers
   (add-hook 'find-file-hook #'denote-link-buttonize-buffer))
@@ -277,6 +284,7 @@ _d_: date        ^ ^              ^ ^
   :custom
   (consult-notes-denote-display-id nil)
   :config
+  (consult-notes-org-roam-mode)
   (consult-notes-denote-mode))
 
 (defun dw/denote-find-daily-log ()
