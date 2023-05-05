@@ -18,27 +18,6 @@
 
 (global-set-key (kbd "C-c f") dw/files-prefix-map)
 
-;; -- Org Keymap -----
-
-(defvar dw/org-prefix-map (make-sparse-keymap)
-  "Keymap for Org operations.")
-
-(global-set-key (kbd "C-c o") dw/org-prefix-map)
-
-;; -- Mail Keymap -----
-
-(defvar dw/mail-prefix-map (make-sparse-keymap)
-  "Keymap for mail operations.")
-
-(global-set-key (kbd "C-c m") dw/mail-prefix-map)
-
-;; -- Password Keymap -----
-
-(defvar dw/password-prefix-map (make-sparse-keymap)
-  "Keymap for password operations.")
-
-(global-set-key (kbd "C-c p") dw/password-prefix-map)
-
 ;; -- Git Keymap -----
 
 (defvar dw/git-prefix-map (make-sparse-keymap)

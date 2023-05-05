@@ -68,8 +68,6 @@
 
 ;;; -- Core Key Bindings and Packages ----
 
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
 (column-number-mode)
 
 ;; Enable line numbers for some modes
@@ -316,12 +314,7 @@
 
 (use-package avy
   :bind (("C-'" . avy-goto-char)
-         ("C-\"" . avy-goto-char-2)
-         ("C-;" . avy-goto-char-timer)
-         ;; ("C-/" . avy-goto-word-1)
-         ("C-?" . avy-goto-word-0)
-         ("C-." . avy-goto-subword-1)
-         ("C-," . avy-goto-subword-0)))
+         ("C-;" . avy-goto-word-1)))
 
 ;;; -- Window Management -----
 
@@ -420,14 +413,16 @@
   (unless dw/exwm-enabled
     (global-set-key (kbd "s-e") #'dired-jump))
 
-  (if (featurep 'evil)
-      (evil-collection-define-key 'normal 'dired-mode-map
-                              "h" 'dired-single-up-directory
-                              "H" 'dired-omit-mode
-                              "l" 'dired-single-buffer
-                              "y" 'dired-ranger-copy
-                              "X" 'dired-ranger-move
-                              "p" 'dired-ranger-paste)))
+  (let ((keys '(("h" . dired-single-up-directory)
+                ("H" . dired-omit-mode)
+                ("l" . dired-single-buffer)
+                ("y" . dired-ranger-copy)
+                ("X" . dired-ranger-move)
+                ("p" . dired-ranger-paste))))
+    (dolist (key keys)
+      (if (featurep 'evil)
+          (evil-collection-define-key 'normal 'dired-mode-map (kbd (car key)) (cdr key))
+        (define-key dired-mode-map (kbd (car key)) (cdr key))))))
 
 (use-package dired-rainbow
   :after dired
@@ -537,14 +532,21 @@
   (org-show-subtree)
   (forward-line))
 
+(defun dw/find-dotfiles-file ()
+  "Launches `project-find-file' in the ~/.dotfiles directory."
+  (interactive)
+  (let ((default-directory "~/.dotfiles/.emacs.d/modules/"))
+    (call-interactively #'project-find-file)))
+
 (defun dw/edit-emacs-module ()
   "Launches `counsel-find-file' in the Emacs module directory."
   (interactive)
   (let ((default-directory "~/.dotfiles/.emacs.d/modules/"))
     (call-interactively #'find-file)))
 
-(define-key* dw/files-prefix-map
-  "em" 'dw/edit-emacs-module)
+(use-package emacs
+  :bind (("C-c f d" . dw/find-dotfiles-file)
+         ("C-c f e m" . dw/edit-emacs-module)))
 
 ;;; -- GPT -----
 

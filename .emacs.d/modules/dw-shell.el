@@ -94,13 +94,14 @@
   ;; Initialize the shell history
   (eshell-hist-initialize)
 
-  (when (featurep 'evil)
-    (require 'evil-collection-eshell)
-    (evil-collection-eshell-setup)
-
-    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'consult-history)
-    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
-    (evil-normalize-keymaps))
+  (if (featurep 'evil)
+      (progn
+        (require 'evil-collection-eshell)
+        (evil-collection-eshell-setup)
+        (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'consult-history)
+        (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
+        (evil-normalize-keymaps))
+    (define-key eshell-mode-map (kbd "C-r") 'consult-history))
 
   (setenv "PAGER" "cat")
 

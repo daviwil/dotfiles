@@ -10,12 +10,11 @@
 ;;; -- Password Management -----
 
 (use-package password-store
+  :bind (("C-c p p" . password-store-copy)
+         ("C-c p i" . password-store-insert)
+         ("C-c p g" . password-store-generate))
   :config
-  (setq password-store-password-length 12)
-  (define-key* dw/password-prefix-map
-    "p" 'password-store-copy
-    "i" 'password-store-insert
-    "g" 'password-store-generate))
+  (setq password-store-password-length 12))
 
 (use-package auth-source-pass
   :config

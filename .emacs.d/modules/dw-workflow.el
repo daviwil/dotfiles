@@ -31,6 +31,17 @@
 
 (use-package org
   :hook ((org-mode . dw/org-mode-setup))
+  :bind (("C-c o n" . org-toggle-narrow-to-subtree)
+         ("C-c o a" . org-agenda)
+         ("C-c o t" . (lambda ()
+                        (interactive)
+                        ;; Display tasks after selecting tags to filter by
+                        (org-tags-view t)))
+         ("C-c o c" . 'org-capture)
+         ("C-c o x" . 'org-export-dispatch)
+         :map org-mode-map
+              ("M-n" . org-move-subtree-down)
+              ("M-p" . org-move-subtree-up))
   :config
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t
@@ -45,11 +56,11 @@
         org-capture-bookmark nil)
 
   (setq org-modules
-    '(org-crypt
-        org-habit
-        org-bookmark
-        org-eshell
-        org-irc))
+        '(org-crypt
+          org-habit
+          org-bookmark
+          org-eshell
+          org-irc))
 
   (setq org-refile-targets '((nil :maxlevel . 1)
                              (org-agenda-files :maxlevel . 1)))
@@ -132,15 +143,6 @@
   (setq org-pomodoro-finished-sound "~/.dotfiles/.emacs.d/sounds/meditation_bell.wav"))
 
 (require 'org-protocol)
-
-(define-key* dw/org-prefix-map
-  "il" 'org-insert-link
-  "n"  'org-toggle-narrow-to-subtree
-  "s"  'dw/counsel-rg-org-files
-  "a"  'org-agenda
-  "t"  'org-todo-list
-  "c"  'org-capture
-  "x"  'org-export-dispatch)
 
 (use-package org-make-toc
   :hook org-mode)
@@ -297,7 +299,7 @@ _d_: date        ^ ^              ^ ^
 
 (use-package consult-notes
   :ensure t
-  :after denote
+  :bind (("C-c n f" . consult-notes))
   :custom
   (consult-notes-denote-display-id nil)
   :config
