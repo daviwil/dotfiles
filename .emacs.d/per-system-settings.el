@@ -8,9 +8,9 @@
     
     (when (equal system-name "acidburn")
       '((desktop/dpi . 180)
-        (emacs/default-face-size . 110)
-        (emacs/variable-face-size . 120)
-        (emacs/fixed-face-size . 110)
+        (emacs/default-face-size . 105)
+        (emacs/variable-face-size . 115)
+        (emacs/fixed-face-size . 105)
         (polybar/height . 30)
         (polybar/font-0-size . 16)
         (polybar/font-1-size . 12)
