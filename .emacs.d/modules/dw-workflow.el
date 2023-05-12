@@ -19,12 +19,23 @@
 
 ;; Turn on indentation and auto-fill mode for Org files
 (defun dw/org-mode-setup ()
-  (org-indent-mode)
   (variable-pitch-mode 1)
   (auto-fill-mode 0)
   (visual-line-mode 1)
   (setq corfu-auto nil)
   (setq evil-auto-indent nil))
+
+(defun dw/org-move-done-tasks-to-bottom ()
+  "Sort all tasks in the topmost heading by TODO state."
+  (interactive)
+  (save-excursion
+    (while (org-up-heading-safe))
+    (org-sort-entries nil ?o))
+
+  ;; Reset the view of TODO items
+  (org-overview)
+  (org-show-entry)
+  (org-show-children))
 
 (use-package org
   :hook ((org-mode . dw/org-mode-setup))
@@ -36,6 +47,7 @@
                         (org-tags-view t)))
          ("C-c o c" . 'org-capture)
          ("C-c o x" . 'org-export-dispatch)
+         ("C-c o D" . 'dw/org-move-done-tasks-to-bottom)
          :map org-mode-map
               ("M-n" . org-move-subtree-down)
               ("M-p" . org-move-subtree-up))
@@ -76,11 +88,9 @@
   :hook (org-mode . org-modern-mode))
 
 (use-package org-faces
-  ;; Make sure org-indent face is available
   :after org
   :config
   ;; Increase the size of various headings
-  (require 'org-indent)
   (set-face-attribute 'org-document-title nil :font "Iosevka Aile" :weight 'bold :height 1.3)
   (dolist (face '((org-level-1 . 1.2)
                   (org-level-2 . 1.1)
