@@ -15,6 +15,8 @@ output HDMI-A-1 scale 2
 output * bg ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg fill
 # output * bg ~/.dotfiles/backgrounds/scott-rodgerson-lRtzEExP0H8-unsplash.jpg fill
 
+bindsym $mod+Shift+s exec ~/.bin/toggle-display $primary
+
 input type:keyboard {
     xkb_layout us,gr
     xkb_options ctrl:nocaps
@@ -72,7 +74,7 @@ bindsym $mod+w layout tabbed
 bindsym $mod+Shift+f floating toggle
 
 # toggle pinned floating window
-bindsym $mod+Shift+s sticky toggle
+bindsym $mod+Shift+p sticky toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+Control+space focus mode_toggle
