@@ -1,6 +1,6 @@
 # Open every tab as a new window, Vimb style
-c.tabs.tabs_are_windows = True
-c.tabs.show = "multiple"
+# c.tabs.tabs_are_windows = False
+# c.tabs.show = "multiple"
 c.tabs.last_close = "close"
 
 c.auto_save.session = True
@@ -9,14 +9,14 @@ c.session.lazy_restore = True
 c.content.autoplay = False
 
 # Scale pages and UI better for hidpi
-c.zoom.default = "180%"
+c.zoom.default = "100%"
 c.fonts.hints = "bold 20pt monospace"
 
 # Better default fonts
 c.fonts.web.family.standard = "Bitstream Vera Sans"
 c.fonts.web.family.serif = "Bitstream Vera Serif"
 c.fonts.web.family.sans_serif = "Bitstream Vera Sans"
-c.fonts.web.family.fixed = "Fira Mono"
+c.fonts.web.family.fixed = "JetBrains Mono"
 c.fonts.statusbar = "18pt Iosevka Aile"
 
 # Use dark mode where possible
@@ -29,9 +29,6 @@ c.input.insert_mode.auto_load = True
 
 # Edit fields in Emacs with Ctrl+E
 c.editor.command = ["emacsclient", "+{line}:{column}", "{file}"]
-
-# Ensure fonts work correctly
-c.qt.args = ["disable-seccomp-filter-sandbox"]
 
 # Make Ctrl+g quit everything like in Emacs
 config.bind('<Ctrl-g>', 'leave-mode', mode='insert')
