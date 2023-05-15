@@ -30,6 +30,9 @@ c.input.insert_mode.auto_load = True
 # Edit fields in Emacs with Ctrl+E
 c.editor.command = ["emacsclient", "+{line}:{column}", "{file}"]
 
+# Ensure fonts work correctly
+c.qt.args = ["disable-seccomp-filter-sandbox"]
+
 # Make Ctrl+g quit everything like in Emacs
 config.bind('<Ctrl-g>', 'leave-mode', mode='insert')
 config.bind('<Ctrl-g>', 'leave-mode', mode='command')

@@ -60,6 +60,7 @@
           "fontmanager"
 
           ;; Browsers
+          "qtwayland@5"
           "qutebrowser"
 
           ;; Authentication

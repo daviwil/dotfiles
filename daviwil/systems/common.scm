@@ -32,10 +32,6 @@
                      ;; TODO:  Move this to a different service
                      ;; ("JAVA_HOME" . "$(dirname $(dirname $(readlink $(which java))))")
 
-                     ;; Fix issues with Qutebrowser
-                     ;; TODO: Move this to Qutebrowser service
-                     ("QTWEBENGINE_CHROMIUM_FLAGS" . "--disable-seccomp-filter-sandbox")
-
                      ;; Set the SSH authentication socket
                      ;; TODO: Move to a gpg service
                      ("SSH_AUTH_SOCK" . "$(gpgconf --list-dirs agent-ssh-socket)")
