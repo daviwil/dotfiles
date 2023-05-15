@@ -140,6 +140,10 @@ bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
 bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 bindsym --locked $mod+p exec playerctl play-pause
 
+# Screenshots
+bindsym Print exec grimshot --notify save output
+bindsym Alt+Print exec grimshot --notify save area
+
 # Style the UI
 client.focused #c792eacc #232635dd #ffffffff #ffffffff #c792eacc 
 client.unfocused #c792eacc #1c1f2bef #ffffffff #ffffffff #c792eacc 
@@ -151,6 +155,9 @@ exec swayidle -w \
   timeout 960 'swaymsg "output * dpms off"' \
 	resume 'swaymsg "output * dpms on"' \
   before-sleep $lock
+
+# Window rules
+for_window [title="Firefox — Sharing Indicator"] kill
 
 # Autostart applications
 exec waybar
