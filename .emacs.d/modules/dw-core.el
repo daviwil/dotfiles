@@ -14,14 +14,31 @@
 
 ;; Use no-littering to automatically set common paths to the new user-emacs-directory
 (use-package no-littering
-  :demand t)
+  :demand t
+  :config
+  ;; Set the custom-file to a file that won't be tracked by Git
+  (setq custom-file (if (boundp 'server-socket-dir)
+                        (expand-file-name "custom.el" server-socket-dir)
+                      (no-littering-expand-etc-file-name "custom.el")))
+  (when (file-exists-p custom-file)
+    (load custom-file t))
 
-;; Keep customization settings in a temporary file (thanks Ambrevar!)
-(setq custom-file
-      (if (boundp 'server-socket-dir)
-          (expand-file-name "custom.el" server-socket-dir)
-        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
-(load custom-file t)
+  ;; Don't litter project folders with backup files
+  (let ((backup-dir (no-littering-expand-var-file-name "backup/")))
+    (make-directory backup-dir t)
+    (setq backup-directory-alist
+          `(("\\`/tmp/" . nil)
+            ("\\`/dev/shm/" . nil)
+            ("." . ,backup-dir))))
+
+  ;; Tidy up auto-save files
+  (let ((auto-save-dir (no-littering-expand-var-file-name "auto-save/")))
+    (make-directory auto-save-dir t)
+    (setq auto-save-file-name-transforms
+          `(("\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'"
+             ,(concat temporary-file-directory "\\2") t)
+            ("\\`\\(/tmp\\|/dev/shm\\)\\([^/]*/\\)*\\(.*\\)\\'" "\\3")
+            ("." ,auto-save-dir t)))))
 
 ;;; -- Native Compilation -----
 
