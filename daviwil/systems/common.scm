@@ -1,5 +1,6 @@
 (define-module (daviwil systems common)
   #:use-module (daviwil utils)
+  #:use-module (daviwil home-services emacs)
   #:use-module (daviwil home-services desktop)
   #:use-module (daviwil home-services udiskie)
   #:use-module (gnu services)
@@ -57,6 +58,9 @@
                               "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then\n"
                               "  . /run/current-system/profile/etc/profile.d/nix.sh\n"
                               "fi\n"))))))
+
+   ;; Emacs configuration
+   (service home-emacs-config-service-type)
 
    ;; Run user dbus session
    (service home-dbus-service-type)

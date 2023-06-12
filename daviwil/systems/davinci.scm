@@ -13,7 +13,6 @@
 
 (define home
   (home-environment
-   (packages (gather-manifest-packages '(emacs)))
    (services common-home-services)))
 
 (define system

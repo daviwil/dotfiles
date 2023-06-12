@@ -7,12 +7,11 @@
   #:use-module (daviwil utils)
   #:use-module (daviwil home-services pipewire)
   #:use-module (daviwil home-services xsettingsd)
-  #:use-module (daviwil home-services emacs base)
   #:use-module (daviwil systems common))
 
 (define home
   (home-environment
-   (packages (gather-manifest-packages '(emacs video)))
+   (packages (gather-manifest-packages '(video)))
    (services (append
               common-home-services
               (list (service home-xsettingsd-service-type

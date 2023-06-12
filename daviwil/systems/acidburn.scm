@@ -15,7 +15,7 @@
 
 (define home
   (home-environment
-   (packages (gather-manifest-packages '(emacs mail video games)))
+   (packages (gather-manifest-packages '(mail video games)))
    (services (append common-home-services
                      (list (service home-pipewire-service-type))))))
 
