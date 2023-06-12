@@ -23,7 +23,7 @@
           "swayidle"
           "waybar"
           "fuzzel"
-          "dunst"
+          "mako"
           "gammastep"
           "grimshot" ;; grimshot --notify copy area
           "feh"

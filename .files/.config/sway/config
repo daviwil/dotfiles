@@ -161,7 +161,7 @@ for_window [title="Firefox — Sharing Indicator"] kill
 
 # Autostart applications
 exec waybar
-exec dunst
+exec mako --border-radius=2 --font="Iosevka Aile 10" --max-visible=5 --outer-margin=5 --margin=3 --background="#1c1f26" --border-color="#89AAEB" --border-size=1 --default-timeout=7000
 exec nm-applet --indicator
 exec udiskie -t
 exec gammastep-indicator -l 37.983810:23.727539 -t 6500:3500 -b 1.0:0.7
