@@ -10,14 +10,14 @@ c.content.autoplay = False
 
 # Scale pages and UI better for hidpi
 c.zoom.default = "100%"
-c.fonts.hints = "bold 20pt monospace"
+c.fonts.hints = "bold 12pt monospace"
 
 # Better default fonts
 c.fonts.web.family.standard = "Bitstream Vera Sans"
 c.fonts.web.family.serif = "Bitstream Vera Serif"
 c.fonts.web.family.sans_serif = "Bitstream Vera Sans"
 c.fonts.web.family.fixed = "JetBrains Mono"
-c.fonts.statusbar = "18pt Iosevka Aile"
+c.fonts.statusbar = "12pt Iosevka Aile"
 
 # Use dark mode where possible
 c.colors.webpage.darkmode.enabled = True
