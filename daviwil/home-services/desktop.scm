@@ -106,13 +106,7 @@
     (provision '(syncthing))
     (documentation "Run and control syncthing.")
     (start #~(make-forkexec-constructor '("syncthing" "-no-browser")))
-    (stop #~(make-kill-destructor)))
-   ;; TODO: Make this a separate service or reuse from RDE
-   (shepherd-service
-    (provision '(gpg-agent))
-    (documentation "Run and control gpg-agent.")
-    (start #~(make-system-constructor "gpg-connect-agent /bye"))
-    (stop #~(make-system-destructor "gpgconf --kill gpg-agent")))))
+    (stop #~(make-kill-destructor)))))
 
 (define (home-desktop-environment-variables config)
   '(("_JAVA_AWT_WM_NONREPARENTING" . "1")))

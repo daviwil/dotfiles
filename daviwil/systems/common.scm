@@ -4,8 +4,10 @@
   #:use-module (daviwil home-services desktop)
   #:use-module (daviwil home-services udiskie)
   #:use-module (gnu services)
+  #:use-module (gnu packages gnupg)
   #:use-module (gnu home)
   #:use-module (gnu home services)
+  #:use-module (gnu home services gnupg)
   #:use-module (gnu home services mcron)
   #:use-module (gnu home services shells)
   #:use-module (gnu home services desktop)
@@ -33,10 +35,6 @@
                      ;; TODO:  Move this to a different service
                      ;; ("JAVA_HOME" . "$(dirname $(dirname $(readlink $(which java))))")
 
-                     ;; Set the SSH authentication socket
-                     ;; TODO: Move to a gpg service
-                     ("SSH_AUTH_SOCK" . "$(gpgconf --list-dirs agent-ssh-socket)")
-
                      ;; Set Wayland-specific environment variables (taken from RDE)
                      ("XDG_CURRENT_DESKTOP" . "sway")
                      ("XDG_SESSION_TYPE" . "wayland")
@@ -58,6 +56,17 @@
                               "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then\n"
                               "  . /run/current-system/profile/etc/profile.d/nix.sh\n"
                               "fi\n"))))))
+
+   ;; GnuPG configuration
+   (service home-gpg-agent-service-type
+            (home-gpg-agent-configuration
+             (pinentry-program
+              (file-append pinentry-emacs "/bin/pinentry-emacs"))
+             (ssh-support? #t)
+             (default-cache-ttl 28800)
+             (max-cache-ttl 28800)
+             (default-cache-ttl-ssh 28800)
+             (max-cache-ttl-ssh 28800)))
 
    ;; Emacs configuration
    (service home-emacs-config-service-type)
