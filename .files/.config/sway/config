@@ -7,9 +7,9 @@ set $mod Mod4
 set $primary DP-7 DP-8 HDMI-A-1
 set $laptop eDP-1
 
-output $laptop scale 2
-output DP-7 scale 2
-output DP-8 scale 2
+output $laptop pos 1920 135 scale 2
+output DP-7 pos 0 0 scale 2
+output DP-8 pos 0 0 scale 2
 output HDMI-A-1 scale 2
 
 output * bg ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg fill
@@ -158,6 +158,7 @@ exec swayidle -w \
 
 # Window rules
 for_window [title="Firefox — Sharing Indicator"] kill
+for_window [title=".* - mpv$"] floating enable, sticky enable
 
 # Autostart applications
 exec waybar
