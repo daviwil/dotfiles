@@ -54,7 +54,6 @@
                  (group "users")
                  (home-directory "/home/daviwil")
                  (supplementary-groups '("wheel"  ;; sudo
-                                         "seat"   ;; access to seatd
                                          "netdev" ;; network devices
                                          "kvm"
                                          "tty"
@@ -106,8 +105,8 @@
                (delete mingetty-service-type)
                (delete console-font-service-type))
               (list
-               ;; Seat management
-               (service seatd-service-type)
+               ;; Seat management (can't use seatd because Wireplumber depends on elogind)
+               (service elogind-service-type)
 
                ;; Configure TTYs and graphical greeter
                (service console-font-service-type
