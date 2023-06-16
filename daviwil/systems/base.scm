@@ -10,8 +10,8 @@
 (use-service-modules guix admin sysctl pm nix avahi dbus cups desktop
                      mcron networking xorg ssh docker audio virtualization)
 
-(use-package-modules nfs certs shells ssh linux bash emacs gnome networking
-                     fonts cups file-systems version-control package-management)
+(use-package-modules nfs certs shells ssh linux bash emacs gnome networking wm fonts
+                     cups freedesktop file-systems version-control package-management)
 
 (define-public base-operating-system
   (operating-system
@@ -124,6 +124,14 @@
                            (greetd-terminal-configuration (terminal-vt "2"))
                            (greetd-terminal-configuration (terminal-vt "3"))))))
 
+               ;; Configure swaylock as a setuid program
+               (service screen-locker-service-type
+                        (screen-locker-configuration
+                         (name "swaylock")
+                         (program (file-append swaylock "/bin/swaylock"))
+                         (using-pam? #t)
+                         (using-setuid? #f)))
+
                ;; Configure the Guix service and ensure we use Nonguix substitutes
                (simple-service 'add-nonguix-substitutes
                                guix-service-type
@@ -145,10 +153,7 @@
                                       (setuid-program
                                        (program program)))
                                     (list (file-append nfs-utils "/sbin/mount.nfs")
-                                          (file-append ntfs-3g "/sbin/mount.ntfs-3g")
-                                          (file-append
-                                           (specification->package "swaylock")
-                                           "/bin/swaylock"))))
+                                          (file-append ntfs-3g "/sbin/mount.ntfs-3g"))))
 
                ;; Networking services
                (service network-manager-service-type

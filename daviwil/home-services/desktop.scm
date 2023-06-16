@@ -21,6 +21,7 @@
         '(;; Sway setup
           "sway"
           "swayidle"
+          "swaylock"
           "waybar"
           "fuzzel"
           "mako"
