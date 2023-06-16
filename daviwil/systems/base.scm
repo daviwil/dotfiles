@@ -188,11 +188,11 @@
                          (wifi-pwr-on-bat? #t)))
 
                ;; Enable JACK to enter realtime mode
-               (pam-limits-service
-                (list
-                 (pam-limits-entry "@realtime" 'both 'rtprio 99)
-                 (pam-limits-entry "@realtime" 'both 'nice -19)
-                 (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
+               (service pam-limits-service-type
+                        (list
+                         (pam-limits-entry "@realtime" 'both 'rtprio 99)
+                         (pam-limits-entry "@realtime" 'both 'nice -19)
+                         (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
 
                ;; Enable Docker containers and virtual machines
                (service docker-service-type)
