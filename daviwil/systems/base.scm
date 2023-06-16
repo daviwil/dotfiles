@@ -10,7 +10,7 @@
 (use-service-modules guix admin sysctl pm nix avahi dbus cups desktop
                      mcron networking xorg ssh docker audio virtualization)
 
-(use-package-modules nfs certs shells ssh linux bash emacs gnome networking wm fonts
+(use-package-modules nfs certs shells ssh linux bash emacs gnome networking wm fonts libusb
                      cups freedesktop file-systems version-control package-management)
 
 (define-public base-operating-system
@@ -214,6 +214,15 @@
                          (web-interface? #t)
                          (extensions
                           (list cups-filters))))
+
+               ;; Set up the X11 socket directory for XWayland
+               (service x11-socket-directory-service-type)
+
+               ;; Sync system clock with time servers
+               (service ntp-service-type)
+
+               ;; Add udev rules for MTP (mobile) devices for non-root user access
+               (simple-service 'mtp udev-service-type (list libmtp))
 
                ;; Add udev rules for a few packages
                (udev-rules-service 'pipewire-add-udev-rules pipewire)
