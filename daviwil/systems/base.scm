@@ -54,6 +54,7 @@
                  (group "users")
                  (home-directory "/home/daviwil")
                  (supplementary-groups '("wheel"  ;; sudo
+                                         "seat"   ;; access to seatd
                                          "netdev" ;; network devices
                                          "kvm"
                                          "tty"
@@ -95,9 +96,19 @@
    (services (append
               (modify-services %base-services
                (delete login-service-type)
+               ;; TODO: Multiple removes are necessary right now due to a bug in
+               ;; `modify-services`
+               (delete mingetty-service-type)
+               (delete mingetty-service-type)
+               (delete mingetty-service-type)
+               (delete mingetty-service-type)
+               (delete mingetty-service-type)
                (delete mingetty-service-type)
                (delete console-font-service-type))
               (list
+               ;; Seat management
+               (service seatd-service-type)
+
                ;; Configure TTYs and graphical greeter
                (service console-font-service-type
                  (map (lambda (tty)
@@ -106,6 +117,7 @@
                                    font-terminus
                                    "/share/consolefonts/ter-132n")))
                       '("tty1" "tty2" "tty3")))
+
                (service greetd-service-type
                         (greetd-configuration
                          (greeter-supplementary-groups (list "video" "input"))
@@ -174,9 +186,6 @@
                (service cups-pk-helper-service-type)
                (service geoclue-service-type)
                (service polkit-service-type)
-               (service elogind-service-type
-                        (elogind-configuration
-                         (handle-lid-switch-external-power 'suspend)))
                (service dbus-root-service-type)
                fontconfig-file-system-service ;; Manage the fontconfig cache
 
