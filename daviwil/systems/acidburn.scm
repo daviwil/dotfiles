@@ -16,8 +16,8 @@
 (define home
   (home-environment
    (packages (gather-manifest-packages '(mail video games)))
-   (services (append common-home-services
-                     (list (service home-pipewire-service-type))))))
+   (services (cons* (service home-pipewire-service-type)
+                    common-home-services))))
 
 (define system
   (operating-system

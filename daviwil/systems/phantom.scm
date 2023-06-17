@@ -12,12 +12,12 @@
 (define home
   (home-environment
    (packages (gather-manifest-packages '(video)))
-   (services (append
-              common-home-services
-              (list (service home-xsettingsd-service-type
+   (services (cons*
+              (service home-xsettingsd-service-type
                              (home-xsettingsd-configuration
                               (dpi 140)))
-                    (service home-pipewire-service-type))))))
+              (service home-pipewire-service-type)
+              common-home-services))))
 
 (define system
   (operating-system

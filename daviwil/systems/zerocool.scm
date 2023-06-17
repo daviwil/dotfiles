@@ -15,12 +15,12 @@
 
 (define home
   (home-environment
-   (services (append
-              common-home-services
-              (list (service home-xsettingsd-service-type
-                             (home-xsettingsd-configuration
-                              (dpi 180)))
-                    (service home-pipewire-service-type))))))
+   (services (cons*
+              (service home-xsettingsd-service-type
+                       (home-xsettingsd-configuration
+                        (dpi 180)))
+              (service home-pipewire-service-type)
+              common-home-services))))
 
 (define system
   (operating-system
