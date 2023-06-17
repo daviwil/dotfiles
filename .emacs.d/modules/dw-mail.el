@@ -3,11 +3,11 @@
 (use-package mu4e
   ;:defer 20 ; Wait until 20 seconds after startup
   :defer t
+  :bind (("C-c m m" . mu4e)
+         ("C-c m c" . 'mu4e-compose-new)
+         ("C-c m i" . 'dw/go-to-inbox)
+         ("C-c m s" . 'mu4e-update-mail-and-index))
   :config
-
-  ;; Load org-mode integration
-  (require 'org-mu4e)
-
   ;; Refresh mail using isync every 10 minutes
   (setq mu4e-update-interval (* 10 60))
   (setq mu4e-get-mail-command "mbsync -a")
@@ -26,24 +26,13 @@
   (setq mu4e-contexts
         `(,(make-mu4e-context
             :name "Fastmail"
-            :match-func (lambda (msg) (when msg
-                                        (string-prefix-p "/Fastmail" (mu4e-message-field msg :maildir))))
-            :vars '(
-                    (user-full-name . "David Wilson")
+            :vars '((user-full-name . "David Wilson")
                     (user-mail-address . "david@daviwil.com")
-                    (mu4e-sent-folder . "/Fastmail/Sent Items")
-                    (mu4e-trash-folder . "/Fastmail/Trash")
-                    (mu4e-drafts-folder . "/Fastmail/Drafts")
-                    (mu4e-refile-folder . "/Fastmail/Archive")
-                    (mu4e-sent-messages-behavior . sent)))
-          ,(make-mu4e-context
-            :name "Personal"
-            :match-func (lambda (msg) (when msg
-                                        (string-prefix-p "/Personal" (mu4e-message-field msg :maildir))))
-            :vars '(
-                    (mu4e-sent-folder . "/Personal/Sent")
-                    (mu4e-trash-folder . "/Personal/Deleted")
-                    (mu4e-refile-folder . "/Personal/Archive")))))
+                    (mu4e-sent-folder . "/Sent Items")
+                    (mu4e-trash-folder . "/Trash")
+                    (mu4e-drafts-folder . "/Drafts")
+                    (mu4e-refile-folder . "/Archive")
+                    (mu4e-sent-messages-behavior . sent)))))
   (setq mu4e-context-policy 'pick-first)
 
   ;; Prevent mu4e from permanently deleting trashed items
@@ -90,31 +79,25 @@
   ;; then, when you want archive some messages, move them to
   ;; the 'All Mail' folder by pressing ``ma''.
   (setq mu4e-maildir-shortcuts
-        '(("/Fastmail/INBOX" . ?i)
-          ("/Fastmail/Lists/*" . ?l)
-          ("/Fastmail/Sent Mail" . ?s)
-          ("/Fastmail/Trash" . ?t)))
+        '(("/INBOX" . ?i)
+          ("/Lists/*" . ?l)
+          ("/Sent Items" . ?s)
+          ("/Trash" . ?t)))
 
   (add-to-list 'mu4e-bookmarks
                '(:name "All Inboxes"
-                       :query "maildir:/Fastmail/INBOX OR maildir:/Personal/Inbox"
+                       :query "maildir:/INBOX"
                        :key ?i))
 
   ;; don't keep message buffers around
   (setq message-kill-buffer-on-exit t)
 
   (setq dw/mu4e-inbox-query
-        "(maildir:/Personal/Inbox OR maildir:/Fastmail/INBOX) AND flag:unread")
+        "(maildir:/INBOX) AND flag:unread")
 
   (defun dw/go-to-inbox ()
     (interactive)
     (mu4e-headers-search dw/mu4e-inbox-query))
-
-  (define-key* dw/mail-prefix-map
-    "m" 'mu4e
-    "c" 'mu4e-compose-new
-    "i" 'dw/go-to-inbox
-    "s" 'mu4e-update-mail-and-index)
 
   ;; Start mu4e in the background so that it syncs mail periodically
   (mu4e t))
@@ -123,7 +106,9 @@
   :after mu4e
   :config
   ;; Show unread emails from all inboxes
-  (setq mu4e-alert-interesting-mail-query dw/mu4e-inbox-query)
+  (setq mu4e-alert-interesting-mail-query
+        (concat dw/mu4e-inbox-query
+                " date:30M..now"))
 
   ;; Show notifications for mails already notified
   (setq mu4e-alert-notify-repeated-mails nil)
