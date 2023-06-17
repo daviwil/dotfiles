@@ -263,7 +263,9 @@
     (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'mode-line)))
 
 (setq tab-bar-close-button-show nil
-      tab-bar-format '(dw/exwm-workspace-icon
+      tab-bar-auto-width nil
+      tab-bar-format '(tab-bar-format-menu-bar
+                       dw/exwm-workspace-icon
                        tab-bar-format-history
                        tab-bar-format-tabs-groups
                        tab-bar-separator
