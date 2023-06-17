@@ -38,7 +38,7 @@
   (org-show-children))
 
 (use-package org
-  :hook ((org-mode . dw/org-mode-setup))
+  :hook (org-mode . dw/org-mode-setup)
   :bind (("C-c o n" . org-toggle-narrow-to-subtree)
          ("C-c o a" . org-agenda)
          ("C-c o t" . (lambda ()
@@ -128,7 +128,7 @@
 (require 'org-protocol)
 
 (use-package org-make-toc
-  :hook org-mode)
+  :hook (org-mode . org-make-toc))
 
 ;; (use-package org-wild-notifier
 ;;   :after org
@@ -269,7 +269,7 @@ _d_: date        ^ ^              ^ ^
   (org-roam-db-autosync-mode))
 
 (use-package org-appear
-  :hook org-mode)
+  :hook (org-mode . org-appear-mode))
 
 (defun dw/refresh-agenda-files ()
   (interactive)

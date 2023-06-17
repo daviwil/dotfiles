@@ -149,7 +149,7 @@
 ;;; -- Mode Line -----
 
 (use-package minions
-  :hook (doom-modeline-mode mood-line-mode))
+  :hook ((doom-modeline-mode mood-line-mode) . minions-mode))
 
 (use-package mood-line
   :config
@@ -303,7 +303,7 @@
   :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
 (use-package ws-butler
-  :hook (text-mode prog-mode))
+  :hook ((text-mode prog-mode) . ws-butler-mode))
 
 (use-package super-save
   :config
@@ -323,7 +323,7 @@
   (show-paren-mode 1))
 
 (use-package visual-fill-column
-  :hook org-mode
+  :hook (org-mode . visual-fill-column-mode)
   :custom
   (visual-fill-column-width 110)
   (visual-fill-column-center-text t))

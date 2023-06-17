@@ -3,10 +3,10 @@
 ;;; -- Paren Matching -----
 
 (use-package smartparens
-  :hook prog-mode)
+  :hook (prog-mode . smartparens-mode))
 
 (use-package rainbow-delimiters
-  :hook prog-mode)
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package rainbow-mode
   :hook (org-mode
@@ -202,6 +202,11 @@
                                         additional-movement slurp/barf-cp
                                         prettify)))
 
+;;; -- Text Files -----
+
+(use-package text-mode
+  :hook (text-mode . display-fill-column-indicator-mode))
+
 ;;; -- Emacs Lisp -----
 
 (use-package emacs-lisp-mode
@@ -254,7 +259,7 @@
 ;;; -- Cadl -----
 
 (use-package adl-mode
-  :mode "(\\.\\(c?adl\\|tsp\\)\\'"
+  :mode "\\.\\(cadl\\|tsp\\)\\'"
   :hook (adl-mode . abbrev-mode)
   :bind ("C-c C-c" . recompile))
 
