@@ -233,7 +233,6 @@
   ;; (setq geiser-repl-default-port 44555) ; For Gambit Scheme
   (setq geiser-default-implementation 'guile)
   (setq geiser-active-implementations '(guile))
-  (setq geiser-repl-default-port 44555) ; For Gambit Scheme
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile))))
 
 ;; This is needed for contributing to Guix source
