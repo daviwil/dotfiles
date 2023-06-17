@@ -93,6 +93,27 @@
   :commands elpher)
 
 (use-package ement
-  :commands ement-connect)
+  :commands ement-connect
+  :custom
+  (ement-sessions-file "~/.cache/ement.el")
+  (ement-room-list-default-keys
+   '(;; Group all invitations (this group will appear first since the rooms are
+     ;; already sorted first).
+     ((membership :status 'invite))
+
+     ;; Group all left rooms (this group will appear last, because the rooms are already
+     ;; sorted last).
+     ((membership :status 'leave))
+
+     ;; Group all favorite rooms, which are already sorted first.
+     (favourite)
+
+     ;; Group all low-priority rooms, which are already sorted last.
+     (low-priority)
+
+     ;; Group other rooms which are unread.
+     (unread)
+     (people)
+     freshness)))
 
 (provide 'dw-social)
