@@ -55,7 +55,14 @@
                               ;; Load the Nix profile
                               "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then\n"
                               "  . /run/current-system/profile/etc/profile.d/nix.sh\n"
-                              "fi\n"))))))
+                              "fi\n"))))
+             (bashrc
+              `(,(local-file "../files/bash-prompt")))))
+
+   ;; Place other files
+   (simple-service 'profile-files-service
+                   home-files-service-type
+                   (list `(".inputrc" ,(local-file "../files/inputrc"))))
 
    ;; GnuPG configuration
    (service home-gpg-agent-service-type
