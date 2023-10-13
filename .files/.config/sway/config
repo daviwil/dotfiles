@@ -172,3 +172,6 @@ exec emacs
 exec gsettings set org.gnome.desktop.interface gtk-theme "Matcha-dark-azul"
 exec gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 exec gsettings set org.gnome.desktop.interface font-name "Iosevka Aile 11"
+
+# Update DBUS activation records to ensure Flatpak apps work
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
