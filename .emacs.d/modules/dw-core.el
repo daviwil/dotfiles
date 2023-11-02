@@ -199,6 +199,22 @@
                         (tmr--timer-description (car tmr--timers)))
                 'tab-bar '(:foreground "orange"))))
 
+(defun dw/waybar-timer-status ()
+  "Return a string for timer status to be shown in Waybar."
+  (let ((completed-timers (seq-filter #'stringp
+                                      (mapcar (lambda (t)
+                                                (if (tmr--timer-finishedp t)
+                                                    "🍅"
+                                                  nil))
+                                              tmr--timers))))
+    (if (not (and (boundp 'tmr--timers) tmr--timers))
+        ""
+      (concat
+       (string-join completed-timers " ")
+       (format " · 🕐 %s: %s"
+               (tmr--format-remaining (car tmr--timers))
+               (tmr--timer-description (car tmr--timers)))))))
+
 ;;; -- Beframe -----
 
 ;; (use-package beframe

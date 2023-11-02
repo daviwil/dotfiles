@@ -4,7 +4,8 @@
     "height": 15,
 
     "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-right": ["tray", "cpu", "battery", "clock"],
+    "modules-center": ["timer"],
+    "modules-right": ["wireplumber", "tray", "cpu", "battery", "clock"],
     "sway/mode": {
         "format": " {}"
     },
@@ -28,24 +29,29 @@
         },
         "tooltip": false
     },
-    "pulseaudio": {
-        "format": "{icon}",
-        "format-alt": "{volume} {icon}",
-        "format-alt-click": "click-right",
-        "format-muted": "",
-        "format-icons": {
-            "phone": [" ", " ", " ", " "],
-            "default": ["", "", "", ""]
-        },
-        "scroll-step": 10,
+    "wireplumber": {
+        "format": "{volume}% {icon}",
+        "format-muted": "",
         "on-click": "pavucontrol",
-        "tooltip": false
+        "format-icons": ["", "", ""]
+    },
+    "jack": {
+        "format": "DSP {}%",
+        "format-xrun": "{xruns} xruns",
+        "format-disconnected": "DSP off",
+        "realtime": true
     },
     "custom/spotify": {
         "interval": 1,
         "return-type": "json",
         "exec": "~/.config/waybar/modules/spotify.sh",
         "exec-if": "pgrep spotify",
+        "escape": true
+    },
+    "timer": {
+        "interval": 1,
+        "exec": "~/.config/waybar/timer.sh",
+        "exec-if": "pgrep emacs",
         "escape": true
     },
     "idle_inhibitor": {
