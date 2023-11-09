@@ -32,6 +32,7 @@
             ("." . ,backup-dir))))
 
   ;; Tidy up auto-save files
+  (setq auto-save-default nil)
   (let ((auto-save-dir (no-littering-expand-var-file-name "auto-save/")))
     (make-directory auto-save-dir t)
     (setq auto-save-file-name-transforms
