@@ -1,44 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package tracking
-  :demand t
-  :config
-  (setq tracking-faces-priorities '(all-the-icons-pink
-                                    all-the-icons-lgreen
-                                    all-the-icons-lblue))
-  (setq tracking-frame-behavior nil
-        tracking-shorten-buffer-names-p nil)
-  (tracking-mode 1))
-
-;; Add faces for specific people in the modeline.  There must
-;; be a better way to do this.
-(defun dw/around-tracking-add-buffer (original-func buffer &optional faces)
-  (let* ((name (buffer-name buffer))
-         (face (cond ((s-contains? "Maria" name) '(all-the-icons-pink))
-                     ((s-contains? "Alex " name) '(all-the-icons-lgreen))
-                     ((s-contains? "Steve" name) '(all-the-icons-lblue))))
-         (result (apply original-func buffer (list face))))
-    (when dw/exwm-enabled
-      (dw/update-polybar-telegram))
-    result))
-
-(defun dw/after-tracking-remove-buffer (buffer)
-  (when dw/exwm-enabled
-    (dw/update-polybar-telegram)))
-
-;;(advice-add 'tracking-add-buffer :around #'dw/around-tracking-add-buffer)
-;;(advice-add 'tracking-remove-buffer :after #'dw/after-tracking-remove-buffer)
-;;(advice-remove 'tracking-remove-buffer #'dw/around-tracking-remove-buffer)
-
-;; Advise exwm-workspace-switch so that we can more reliably clear tracking buffers
-;; NOTE: This is a hack and I hate it.  It'd be great to find a better solution.
-(defun dw/before-exwm-workspace-switch (frame-or-index &optional force)
-  (when (fboundp 'tracking-remove-visible-buffers)
-    (when (eq exwm-workspace-current-index 0)
-      (tracking-remove-visible-buffers))))
-
-;;(advice-add 'exwm-workspace-switch :before #'dw/before-exwm-workspace-switch)
-
 (use-package telega
   :commands telega
   :config
@@ -53,18 +14,37 @@
 (use-package 0x0
   :commands (0x0-upload-file 0x0-upload-text))
 
-(setq rcirc-server-alist '(("chat.sr.ht" :port 6697 :nick "daviwil" :user-name "daviwil" :encryption tls)
-                           ("chat.sr.ht" :server-alias "libera.chat" :port 6697 :nick "daviwil" :user-name "daviwil/liberachat" :encryption tls)
-                           ("chat.sr.ht" :server-alias "OFTC" :port 6697 :nick "daviwil" :user-name "daviwil/oftc" :encryption tls))
-      rcirc-reconnect-delay 5
-      rcirc-fill-column 120)
+(use-package rcirc
+  :ensure nil
+  :custom
+  (rcirc-default-nick "daviwil")
+  (rcirc-default-user-name "daviwil")
+  (rcirc-default-full-name "David Wilson")
+  (rcirc-default-quit-reason "Hey, who put that C-x C-c there?")
+  (rcirc-default-part-reason "Probably killed the channel buffer by accident...")
+  (rcirc-server-alist `(("chat.sr.ht"
+           :port 6697
+           :encryption tls
+           :user-name "daviwil/irc.libera.chat@emacs"
+           :password ,(password-store-get "IRC/chat.sr.ht"))))
+                                        ;'(("irc.libera.chat" :port 6697 :nick "daviwil" :user-name "daviwil" :encryption tls))
+  (rcirc-reconnect-delay 5)
+  (rcirc-fill-column 120)
+  (rcirc-track-ignore-server-buffer-flag t)
 
-;; (use-package srv :ensure t)
-;; (use-package fsm :ensure t)
-;; In Guix
-;; (setup (:pkg jabber ;;
-;;              :host nil
-;;              :repo "https://tildegit.org/wgreenhouse/emacs-jabber"))
+  :config
+  ;; Annoy me, please
+  (rcirc-track-minor-mode 1)
+
+  ;; See: https://idiomdrottning.org/rcirc-soju
+  (defun-rcirc-command detach (channel)
+    "Detach channel to soju."
+    (interactive "sPart channel: ")
+    (let ((channel (if (> (length channel) 0) channel target)))
+      (rcirc-send-privmsg
+       process "BouncerServ"
+       (format
+        "channel update %s -detached true -reattach-on highlight" channel)))))
 
 (use-package mastodon
   :ensure t
