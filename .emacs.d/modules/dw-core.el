@@ -123,8 +123,8 @@
 (pcase system-type
   ((or 'gnu/linux 'windows-nt 'cygwin)
    (set-face-attribute 'default nil
-                       :font "JetBrains Mono"
-                       :weight 'light
+                       :font "Iosevka ss08"
+                       :weight 'normal
                        :height (dw/system-settings-get 'emacs/default-face-size)))
   ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170)))
 

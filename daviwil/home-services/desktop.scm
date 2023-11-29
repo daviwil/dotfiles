@@ -52,9 +52,11 @@
 
           ;; Fonts
           "font-jost"
+          "font-iosevka-ss08"
           "font-iosevka-aile"
           "font-jetbrains-mono"
           "font-google-noto"
+          "font-google-noto-emoji"
           "font-liberation"
           "font-awesome"
           "gucharmap"

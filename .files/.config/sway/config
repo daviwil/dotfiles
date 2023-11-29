@@ -22,7 +22,7 @@ input type:keyboard {
     xkb_options ctrl:nocaps
 }
 
-font pango:Iosevka Aile 8
+font pango:Iosevka ss08 8
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -86,7 +86,7 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # App launcher
-bindsym $mod+space exec fuzzel -w 50 -x 8 -y 8 -r 3 -b 232635ff -t A6Accdff -s A6Accdff -S 232635ff -C c792eacc -m c792eacc -f "Iosevka Aile:weight=light:size=11" --no-fuzzy --icon-theme="Papirus-Dark"
+bindsym $mod+space exec fuzzel -w 50 -x 8 -y 8 -r 3 -b 232635ff -t A6Accdff -s A6Accdff -S 232635ff -C c792eacc -m c792eacc -f "Iosevka ss08:weight=light:size=11" --no-fuzzy --icon-theme="Papirus-Dark"
 
 # Set defaults
 default_orientation horizontal
@@ -149,7 +149,7 @@ client.focused #c792eacc #232635dd #ffffffff #ffffffff #c792eacc
 client.unfocused #c792eacc #1c1f2bef #ffffffff #ffffffff #c792eacc 
 
 # Set up screen locking
-set $lock 'swaylock -f -i ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg -s fill --font "Iosevka Aile" --indicator-idle-visible'
+set $lock 'swaylock -f -i ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg -s fill --font "Iosevka ss08" --indicator-idle-visible'
 exec swayidle -w \
   timeout 900 $lock \
   timeout 960 'swaymsg "output * dpms off"' \
@@ -162,7 +162,7 @@ for_window [title=".* - mpv$"] floating enable, sticky enable
 
 # Autostart applications
 exec waybar
-exec mako --border-radius=2 --font="Iosevka Aile 10" --max-visible=5 --outer-margin=5 --margin=3 --background="#1c1f26" --border-color="#89AAEB" --border-size=1 --default-timeout=7000
+exec mako --border-radius=2 --font="Iosevka ss08 10" --max-visible=5 --outer-margin=5 --margin=3 --background="#1c1f26" --border-color="#89AAEB" --border-size=1 --default-timeout=7000
 exec nm-applet --indicator
 exec udiskie -t
 exec gammastep-indicator -l 37.983810:23.727539 -t 6500:3500 -b 1.0:0.7

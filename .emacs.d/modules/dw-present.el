@@ -6,7 +6,7 @@
   (org-show-children))
 
 (defun dw/org-present-hook ()
-  (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
+  (setq-local face-remapping-alist '((default (:height 1.5) default)
                                      (header-line (:height 4.5) variable-pitch)
                                      (org-document-title (:height 1.75) org-document-title)
                                      (org-code (:height 1.55) org-code)
@@ -21,7 +21,7 @@
     (dw/kill-panel)))
 
 (defun dw/org-present-quit-hook ()
-  (setq-local face-remapping-alist '((default variable-pitch default)))
+  (setq-local face-remapping-alist nil)
   (setq header-line-format nil)
   (org-present-small)
   (org-remove-inline-images)
