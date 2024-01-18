@@ -24,6 +24,7 @@
 
              "emacs-tmr"
              "emacs-buffer-env"
+             "emacs-beframe"
 
              "emacs-no-littering"
 
@@ -43,6 +44,9 @@
              "emacs-undo-tree"
 
              "emacs-general"
+
+             "emacs-lua-mode"
+             "emacs-fennel-mode"
 
              "emacs-doom-themes"
              "emacs-spacegray-theme"
