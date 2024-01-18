@@ -7,7 +7,7 @@
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd))
 
-(use-service-modules guix admin sysctl pm nix avahi dbus cups desktop
+(use-service-modules guix admin sysctl pm nix avahi dbus cups desktop linux
                      mcron networking xorg ssh docker audio virtualization)
 
 (use-package-modules nfs certs shells ssh linux bash emacs gnome networking wm fonts libusb
@@ -93,13 +93,6 @@
    (services (append
               (modify-services %base-services
                (delete login-service-type)
-               ;; TODO: Multiple removes are necessary right now due to a bug in
-               ;; `modify-services`
-               (delete mingetty-service-type)
-               (delete mingetty-service-type)
-               (delete mingetty-service-type)
-               (delete mingetty-service-type)
-               (delete mingetty-service-type)
                (delete mingetty-service-type)
                (delete console-font-service-type))
               (list
@@ -201,6 +194,16 @@
                          (pam-limits-entry "@realtime" 'both 'rtprio 99)
                          (pam-limits-entry "@realtime" 'both 'nice -19)
                          (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
+
+               ;; Configure v4l2loopback module for virtual cameras
+               ;; See also: https://stackoverflow.com/a/66072635
+               ;;           https://github.com/umlaeute/v4l2loopback
+               ;; (service kernel-module-loader-service-type '("v4l2loopback"))
+               ;; (simple-service 'v4l2loopback-config etc-service-type
+               ;;                 (list `("modprobe.d/v4l2loopback.conf"
+               ;;                         ,(plain-file "v4l2loopback.conf"
+               ;;                                      "options v4l2loopback devices=1 video_nr=2 exclusive_caps=1 card_label=\"OBS Virtual Camera\""))))
+
 
                ;; Enable Docker containers and virtual machines
                (service docker-service-type)
