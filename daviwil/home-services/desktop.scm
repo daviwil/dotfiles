@@ -71,7 +71,7 @@
 
           ;; Audio devices and media playback
           "mpv"
-          "mpv-mpris"
+          ;; "mpv-mpris"
           "youtube-dl"
           "playerctl"
           "gstreamer"
