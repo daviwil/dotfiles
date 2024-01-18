@@ -81,6 +81,7 @@
 (use-package live-crafter
   :requires (mpv)
   :commands (live-crafter-start-music
+             live-crafter-start-chat
              live-crafter-start-streaming))
 
 (provide 'dw-streaming)
