@@ -205,6 +205,7 @@
 ;;; -- Text Files -----
 
 (use-package text-mode
+  :ensure nil
   :hook (text-mode . display-fill-column-indicator-mode))
 
 ;;; -- Emacs Lisp -----
@@ -222,6 +223,7 @@
 
   ;; Include .sld library definition files
 (use-package scheme-mode
+  :ensure nil
   :mode "\\.sld\\'")
 
 (use-package geiser
@@ -255,9 +257,10 @@
   :config
   (yas-reload-all))
 
-;;; -- Cadl -----
+;;; -- TypeSpec -----
 
 (use-package adl-mode
+  :ensure nil
   :mode "\\.\\(cadl\\|tsp\\)\\'"
   :hook (adl-mode . abbrev-mode)
   :bind ("C-c C-c" . recompile))

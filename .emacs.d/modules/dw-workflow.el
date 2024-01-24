@@ -88,6 +88,7 @@
   :hook (org-mode . org-modern-mode))
 
 (use-package org-faces
+  :ensure nil
   :after org
   :config
   ;; Increase the size of various headings
@@ -104,6 +105,7 @@
 
 ;; This is needed as of Org 9.2
 (use-package org-tempo
+  :ensure nil
   :after org
   :config
   (dolist (item '(("sh" . "src sh")

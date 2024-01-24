@@ -429,6 +429,7 @@
   (hl-line-mode 1))
 
 (use-package dired
+  :ensure nil
   :config
   (setq dired-listing-switches "-agho --group-directories-first"
         dired-omit-files "^\\.[^.].*"
