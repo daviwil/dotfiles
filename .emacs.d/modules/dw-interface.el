@@ -4,6 +4,7 @@
 
 (use-package vertico
   :demand t
+  :requires (vertico vertico-directory)
   :bind (:map vertico-map
               ("C-j" . vertico-next)
               ("C-k" . vertico-previous)
