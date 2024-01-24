@@ -9,7 +9,7 @@
         telega-chat-fill-column 75))
 
 (unless (package-installed-p '0x0)
-  (package-vc-install '(0x0 :url "https://gitlab.com/willvaughn/emacs-0x0.git")))
+  (package-vc-install '(0x0 :url "https://git.sr.ht/~willvaughn/emacs-0x0")))
 
 (use-package 0x0
   :commands (0x0-upload-file 0x0-upload-text))
