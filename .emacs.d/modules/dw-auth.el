@@ -2,10 +2,12 @@
 
 ;;; -- Use Emacs for Pinentry -----
 
-(unless (or dw/is-termux
-            (eq system-type 'windows-nt))
-  (setq epa-pinentry-mode 'loopback)
-  (pinentry-start))
+(use-package pinentry
+  :config
+  (unless (or dw/is-termux
+              (eq system-type 'windows-nt))
+    (setq epa-pinentry-mode 'loopback)
+    (pinentry-start)))
 
 ;;; -- Password Management -----
 
