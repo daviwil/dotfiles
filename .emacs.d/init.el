@@ -50,7 +50,6 @@
 (require 'dw-social)
 (require 'dw-media)
 (require 'dw-present)
-(require 'dw-streaming)
 (require 'dw-system)
 
 (when (string= system-name "acidburn")
