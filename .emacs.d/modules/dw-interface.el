@@ -4,7 +4,6 @@
 
 (use-package vertico
   :demand t
-  :requires (vertico vertico-directory)
   :bind (:map vertico-map
               ("C-j" . vertico-next)
               ("C-k" . vertico-previous)
@@ -18,6 +17,7 @@
   (vertico-current ((t (:background "#3a3f5a"))))
 
   :config
+  (require 'vertico-directory)
   (vertico-mode))
 
 (use-package corfu
