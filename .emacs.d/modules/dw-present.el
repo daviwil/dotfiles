@@ -9,9 +9,10 @@
   (setq-local face-remapping-alist '((default (:height 1.5) default)
                                      (header-line (:height 4.5) variable-pitch)
                                      (org-document-title (:height 1.75) org-document-title)
-                                     (org-code (:height 1.55) org-code)
-                                     (org-verbatim (:height 1.55) org-verbatim)
-                                     (org-block (:height 1.25) org-block)
+                                     ;; These were needed before the Wayland transition
+                                     ;; (org-code (:height 1.55) org-code)
+                                     ;; (org-verbatim (:height 1.55) org-verbatim)
+                                     ;; (org-block (:height 1.1) org-block)
                                      (org-block-begin-line (:height 0.7) org-block)))
   (setq header-line-format " ")
   (org-appear-mode -1)
