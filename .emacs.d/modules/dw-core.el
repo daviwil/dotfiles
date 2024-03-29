@@ -30,6 +30,8 @@
             ("\\`/dev/shm/" . nil)
             ("." . ,backup-dir))))
 
+  (setq auto-save-default nil)
+
   ;; Tidy up auto-save files
   (setq auto-save-default nil)
   (let ((auto-save-dir (no-littering-expand-var-file-name "auto-save/")))
@@ -70,8 +72,8 @@
 (unless dw/is-termux
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
   (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-  (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-  (setq scroll-step 1) ;; keyboard scroll one line at a time
+  (setq mouse-wheel-follow-mouse 't)       ;; scroll window under mouse
+  (setq scroll-step 1)                     ;; keyboard scroll one line at a time
   (setq use-dialog-box nil)) ;; Disable dialog boxes since they weren't working in Mac OSX
 
 (unless dw/is-termux
@@ -427,17 +429,14 @@
 ;;; -- Dired -----
 
 (use-package all-the-icons-dired)
-(use-package dired-single
-  :ensure t)
 (use-package dired-ranger)
-(use-package dired-collapse)
 
 (defun dw/dired-mode-hook ()
   (interactive)
   ;; (dired-omit-mode 1)
   (dired-hide-details-mode 1)
   (unless (or dw/is-termux
-              (s-equals? "/gnu/store/" (expand-file-name default-directory)))
+              (string-equal "/gnu/store/" (expand-file-name default-directory)))
     (all-the-icons-dired-mode 1))
   (hl-line-mode 1))
 
@@ -447,31 +446,17 @@
   (setq dired-listing-switches "-agho --group-directories-first"
         dired-omit-files "^\\.[^.].*"
         dired-omit-verbose nil
+        dired-dwim-target 'dired-dwim-target-next
         dired-hide-details-hide-symlink-targets nil
+        dired-kill-when-opening-new-dired-buffer t
         delete-by-moving-to-trash t)
 
   (autoload 'dired-omit-mode "dired-x")
 
-  (add-hook 'dired-load-hook
-            (lambda ()
-              (interactive)
-              (dired-collapse)))
-
   (add-hook 'dired-mode-hook #'dw/dired-mode-hook)
 
   (unless dw/exwm-enabled
-    (global-set-key (kbd "s-e") #'dired-jump))
-
-  (let ((keys '(("h" . dired-single-up-directory)
-                ("H" . dired-omit-mode)
-                ("l" . dired-single-buffer)
-                ("y" . dired-ranger-copy)
-                ("X" . dired-ranger-move)
-                ("p" . dired-ranger-paste))))
-    (dolist (key keys)
-      (if (featurep 'evil)
-          (evil-collection-define-key 'normal 'dired-mode-map (kbd (car key)) (cdr key))
-        (define-key dired-mode-map (kbd (car key)) (cdr key))))))
+    (global-set-key (kbd "s-e") #'dired-jump)))
 
 (use-package dired-rainbow
   :after dired
@@ -522,14 +507,14 @@
 ;;; -- World Clock -----
 
 (setq display-time-world-list
-  '(("Etc/UTC" "UTC")
-    ("Europe/Athens" "Athens")
-    ("America/Los_Angeles" "Seattle")
-    ("America/Denver" "Denver")
-    ("America/New_York" "New York")
-    ("Pacific/Auckland" "Auckland")
-    ("Asia/Shanghai" "Shanghai")
-    ("Asia/Kolkata" "Hyderabad")))
+      '(("Etc/UTC" "UTC")
+        ("Europe/Athens" "Athens")
+        ("America/Los_Angeles" "Seattle")
+        ("America/Denver" "Denver")
+        ("America/New_York" "New York")
+        ("Pacific/Auckland" "Auckland")
+        ("Asia/Shanghai" "Shanghai")
+        ("Asia/Kolkata" "Hyderabad")))
 
 (setq display-time-world-time-format "%a, %d %b %I:%M %p %Z")
 

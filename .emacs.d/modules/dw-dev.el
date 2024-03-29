@@ -88,8 +88,8 @@
 
 (use-package eglot
   :bind (:map eglot-mode-map
-         ("C-c C-a" . eglot-code-actions)
-         ("C-c C-r" . eglot-rename))
+              ("C-c C-a" . eglot-code-actions)
+              ("C-c C-r" . eglot-rename))
   :hook (((c-mode c++-mode) . eglot-ensure)
          ((js2-mode typescript-mode) . eglot-ensure)
          (rust-mode . eglot-ensure))
@@ -194,10 +194,12 @@
   :hook (prog-mode . apheleia-mode))
 
 (use-package lispy
+  :disabled t
   :hook (emacs-lisp-mode scheme-mode))
 
 (use-package lispyville
-  :if (featurep 'evil)
+  :if (and (boundp 'evil) evil-mode)
+  :disabled t
   :hook (lispy-mode . lispyville-mode)
   :config
   (lispyville-set-key-theme '(operators c-w additional
