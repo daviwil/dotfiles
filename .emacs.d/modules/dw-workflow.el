@@ -20,6 +20,7 @@
 ;; Turn on indentation and auto-fill mode for Org files
 (defun dw/org-mode-setup ()
   ;; (variable-pitch-mode 1)
+  (org-indent-mode 1)
   (auto-fill-mode 0)
   (visual-line-mode 1)
   (setq corfu-auto nil)
@@ -49,8 +50,8 @@
          ("C-c o x" . 'org-export-dispatch)
          ("C-c o D" . 'dw/org-move-done-tasks-to-bottom)
          :map org-mode-map
-              ("M-n" . org-move-subtree-down)
-              ("M-p" . org-move-subtree-up))
+         ("M-n" . org-move-subtree-down)
+         ("M-p" . org-move-subtree-up))
   :config
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t

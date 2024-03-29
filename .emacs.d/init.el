@@ -23,7 +23,7 @@
   (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
 
 (defvar dw/is-guix-system (and (eq system-type 'gnu/linux)
-			       (file-exists-p "/etc/os-release")
+			                         (file-exists-p "/etc/os-release")
                                (with-temp-buffer
                                  (insert-file-contents "/etc/os-release")
                                  (search-forward "ID=guix" nil t))
@@ -37,7 +37,16 @@
 (require 'dw-package)
 (require 'dw-settings)
 (require 'dw-keys)
-(require 'dw-keys-evil)
+;;(require 'dw-keys-evil)
+
+;; TODO: Remove the training wheels
+(global-set-key (kbd "<escape>")
+                (lambda ()
+                  (interactive)
+                  ;; Ding the visual bell
+                  (ding)
+                  (message "ESC IS BANNED.")))
+
 ;;(require 'dw-keys-god)
 ;;(require 'dw-keys-meow)
 (require 'dw-core)

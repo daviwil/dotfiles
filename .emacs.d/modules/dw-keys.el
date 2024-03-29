@@ -32,4 +32,8 @@
 
 (global-set-key (kbd "C-c G") dw/guix-prefix-map)
 
+;; -- Movement Map -----
+
+(repeat-mode 1)
+
 (provide 'dw-keys)

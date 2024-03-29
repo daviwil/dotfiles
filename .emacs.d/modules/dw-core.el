@@ -2,7 +2,6 @@
 
 (require 'subr-x)
 
-
 (defvar dw/mail-enabled (member system-name '("zerocool" "acidburn")))
 (setq dw/mu4e-inbox-query nil)
 
@@ -349,7 +348,21 @@
 
 (use-package avy
   :bind (("C-'" . avy-goto-char)
-         ("C-;" . avy-goto-word-1)))
+         ("C-;" . avy-goto-char-timer))
+  :custom
+  (avy-timeout-seconds 0.3)
+  (avy-single-candidate-jump nil)
+  :config
+  (defun dw/avy-action-embark (pt)
+    (unwind-protect
+        (save-excursion
+          (goto-char pt)
+          (embark-act))
+      (select-window
+       (cdr (ring-ref avy-ring 0))))
+    t)
+
+  (setf (alist-get ?. avy-dispatch-alist) 'dw/avy-action-embark))
 
 ;;; -- Window Management -----
 
@@ -610,10 +623,12 @@
   (with-eval-after-load 'copilot
     (if (featurep 'evil)
         (evil-define-key 'insert copilot-mode-map
-          (kbd "<tab>") #'my/copilot-tab)
-      (define-key copilot-mode-map (kbd "<tab>") #'my/copilot-tab)))
+                         (kbd "<tab>") #'my/copilot-tab)
+      (define-key copilot-mode-map (kbd "<tab>") #'my/copilot-tab))))
 
-  (add-hook 'prog-mode-hook 'copilot-mode))
+;;; -- Foot Support -----
+
+(add-to-list 'term-file-aliases '("foot" . "xterm"))
 
 ;;; -- Start the Daemon -----
 

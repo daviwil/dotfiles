@@ -3,7 +3,9 @@
 ;;; -- Paren Matching -----
 
 (use-package smartparens
-  :hook (prog-mode . smartparens-mode))
+  :hook (prog-mode . smartparens-mode)
+  :config
+  (sp-use-smartparens-bindings))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
