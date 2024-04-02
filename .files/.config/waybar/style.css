@@ -1,15 +1,15 @@
 * {
   border: none;
   border-radius: 0;
-  font-family: Iosevka ss08;
-  font-size: 13px;
+  font-family: JetBrains Mono;
+  font-size: 12px;
   box-shadow: none;
   text-shadow: none;
   transition-duration: 0s;
 }
 
 window.eDP-1 * {
-  font-size: 11px;
+  font-size: 10px;
 }
 
 window {

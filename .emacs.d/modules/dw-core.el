@@ -52,7 +52,6 @@
 
 ;;; -- Basic Emacs Settings -----
 
-;; Thanks, but no thanks
 (setq inhibit-startup-message t)
 
 (unless dw/is-termux
@@ -63,10 +62,8 @@
 
 (menu-bar-mode -1)            ; Disable the menu bar
 
-;; TODO: Mode this to another section
 (setq-default fill-column 80)
 
-;; Set up the visible bell
 (setq visible-bell t)
 
 (unless dw/is-termux
@@ -95,7 +92,6 @@
                 conf-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 1))))
 
-
 (setq large-file-warning-threshold nil)
 (setq vc-follow-symlinks t)
 (setq ad-redefinition-action 'accept)
@@ -121,13 +117,10 @@
   (default-text-scale-mode))
 
 ;; Set the font face based on platform
-(pcase system-type
-  ((or 'gnu/linux 'windows-nt 'cygwin)
-   (set-face-attribute 'default nil
-                       :font "Iosevka ss08"
-                       :weight 'normal
-                       :height (dw/system-settings-get 'emacs/default-face-size)))
-  ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170)))
+(set-face-attribute 'default nil
+                    :font "JetBrains Mono"
+                    :weight 'normal
+                    :height (dw/system-settings-get 'emacs/default-face-size))
 
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil
@@ -137,7 +130,6 @@
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil
-                    ;; :font "Cantarell"
                     :font "Iosevka Aile"
                     :height (dw/system-settings-get 'emacs/variable-face-size)
                     :weight 'light)
@@ -201,59 +193,40 @@
                         (tmr--timer-description (car tmr--timers)))
                 'tab-bar '(:foreground "orange"))))
 
-(defun dw/waybar-timer-status ()
-  "Return a string for timer status to be shown in Waybar."
-  (let ((completed-timers (seq-filter #'stringp
-                                      (mapcar (lambda (t)
-                                                (if (tmr--timer-finishedp t)
-                                                    "🍅"
-                                                  nil))
-                                              tmr--timers))))
-    (if (not (and (boundp 'tmr--timers) tmr--timers))
-        ""
-      (concat
-       (string-join completed-timers " ")
-       (format " · 🕐 %s: %s"
-               (tmr--format-remaining (car tmr--timers))
-               (tmr--timer-description (car tmr--timers)))))))
-
 ;;; -- Beframe -----
 
-;; (use-package beframe
-;;   :ensure t)
+(use-package beframe
+  :ensure t)
 
-;;; -- Tab Bar Workspaces -----
-
-(use-package tabspaces
-  :ensure t
-  :config
-  (tabspaces-mode 1)
-  (setq tabspaces-use-filtered-buffers-as-default t
-        tabspaces-default-tab "Main"
-        tabspaces-remove-to-default t
-        tabspaces-include-buffers '("*scratch*")))
+(defvar consult-buffer-sources)
+(declare-function consult--buffer-state "consult")
 
 (with-eval-after-load 'consult
+  (defface beframe-buffer
+    '((t :inherit font-lock-string-face))
+    "Face for `consult' framed buffers.")
+
+  (defun my-beframe-buffer-names-sorted (&optional frame)
+    "Return the list of buffers from `beframe-buffer-names' sorted by visibility.
+With optional argument FRAME, return the list of buffers of FRAME."
+    (beframe-buffer-names frame :sort #'beframe-buffer-sort-visibility))
+
   ;; Hide full buffer list by default (still available with "b" prefix)
   (consult-customize consult--source-buffer :hidden t :default nil)
 
-  (setq consult-ripgrep-args "rg --null --hidden --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --search-zip .")
+  (defvar beframe-consult-source
+    `( :name     "Frame-specific buffers (current frame)"
+       :narrow   ?F
+       :category buffer
+       :history  beframe-history
+       :items    ,#'my-beframe-buffer-names-sorted
+       :action   ,#'switch-to-buffer
+       :state    ,#'consult--buffer-state))
 
-  ;; Set consult-workspace buffer list
-  (defvar consult--source-workspace
-    (list :name "Workspace Buffers"
-          :narrow ?w
-          :history 'buffer-name-history
-          :category 'buffer
-          :state #'consult--buffer-state
-          :default t
-          :items (lambda () (consult--buffer-query
-                             :predicate #'tabspaces--local-buffer-p
-                             :sort 'visibility
-                             :as #'buffer-name)))
+  (add-to-list 'consult-buffer-sources 'beframe-consult-source))
 
-    "Set workspace buffer list for consult-buffer.")
-  (add-to-list 'consult-buffer-sources 'consult--source-workspace))
+
+;;   (setq consult-ripgrep-args "rg --null --hidden --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --search-zip .")
 
 (defun dw/switch-tab-buffer (&optional arg)
   (interactive "P")
@@ -311,16 +284,12 @@
 
 (use-package alert
   :custom
-  (alert-default-style 'notifications))
+  (alert-default-style (if dw/is-termux 'termux 'notifications)))
 
 ;;; -- Editing Configuration -----
 
-(setq-default tab-width 2)
-
-(setq-default indent-tabs-mode nil)
-
-(use-package evil-nerd-commenter
-  :bind ("M-/" . evilnc-comment-or-uncomment-lines))
+(setq-default tab-width 2
+              indent-tabs-mode nil)
 
 (use-package ws-butler
   :hook ((text-mode prog-mode) . ws-butler-mode))
@@ -378,9 +347,6 @@
   (ace-window-display-mode 1))
 
 (use-package winner
-  :bind (:map evil-window-map
-              ("u" . winner-undo)
-              ("U" . winner-redo))
   :config
   (winner-mode))
 
@@ -405,16 +371,6 @@
          ("C-M-\"" . popper-toggle-type))
   :custom
   (popper-window-height 12)
-  ;; (popper-window-height
-  ;; (lambda (window)
-  ;;   (let ((buffer-mode (with-current-buffer (window-buffer window)
-  ;;                        major-mode)))
-  ;;     (message "BUFFER MODE: %s" buffer-mode)
-  ;;     (pcase buffer-mode
-  ;;       ('exwm-mode 40)
-  ;;       ('helpful-mode 20)
-  ;;       ('eshell-mode (progn (message "eshell!") 10))
-  ;;       (_ 15)))))
   (popper-reference-buffers '(eshell-mode
                               vterm-mode
                               geiser-repl-mode

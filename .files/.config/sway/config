@@ -4,10 +4,12 @@ set $mod Mod4
 
 # The annoying thing is that sometimes the display ID changes when hotplugging
 # my Thunderbolt dock...
-set $primary DP-7 DP-8 HDMI-A-1
+set $primary DP-2 DP-3 DP-7 DP-8 HDMI-A-1
 set $laptop eDP-1
 
 output $laptop pos 1920 135 scale 2
+output DP-2 pos 0 0 scale 2
+output DP-3 pos 0 0 scale 2
 output DP-7 pos 0 0 scale 2
 output DP-8 pos 0 0 scale 2
 output HDMI-A-1 scale 2
@@ -22,71 +24,40 @@ input type:keyboard {
     xkb_options ctrl:nocaps
 }
 
-font pango:Iosevka ss08 8
+font pango:JetBrains Mono 7
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# kill focused window
 bindsym $mod+Shift+q kill
 bindsym $mod+Shift+x exit
 bindsym $mod+Shift+r reload
-bindsym $mod+r resize
-
 bindsym $mod+Shift+Return exec foot
 
-# use vim keys for window movement
 bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-# move workspace
+# Move workspace to display
 bindsym $mod+Mod1+h move workspace to output left
 bindsym $mod+Mod1+l move workspace to output right
 bindsym $mod+Mod1+Left move workspace to output left
 bindsym $mod+Mod1+Right move workspace to output right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left 30 px
-bindsym $mod+Shift+Down move down 30 px
-bindsym $mod+Shift+Up move up 30 px
-bindsym $mod+Shift+Right move right 30 px
 bindsym $mod+Shift+h move left 30 px
 bindsym $mod+Shift+j move down 30 px
 bindsym $mod+Shift+k move up 30 px
 bindsym $mod+Shift+l move right 30 px
 
-# split in horizontal orientation
-bindsym $mod+s split h
-
-# split in vertical orientation
-bindsym $mod+v split v
-
-# enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
-
-# change container layout (stacked, tabbed, toggle split)
-# bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-
-# toggle tiling / floating
 bindsym $mod+Shift+f floating toggle
-
-# toggle pinned floating window
 bindsym $mod+Shift+p sticky toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+Control+space focus mode_toggle
 
-# focus the parent container
-bindsym $mod+a focus parent
-
-# focus the child container
-#bindsym $mod+d focus child
-
 # App launcher
-bindsym $mod+space exec fuzzel -w 50 -x 8 -y 8 -r 3 -b 232635ff -t A6Accdff -s A6Accdff -S 232635ff -C c792eacc -m c792eacc -f "Iosevka ss08:weight=light:size=11" --no-fuzzy --icon-theme="Papirus-Dark"
+bindsym $mod+space exec fuzzel -w 50 -x 8 -y 8 -r 3 -b 232635ff -t A6Accdff -s A6Accdff -S 232635ff -C c792eacc -m c792eacc -f "JetBrains Mono:weight=light:size=10" --no-fuzzy --icon-theme="Papirus-Dark"
 
 # Set defaults
 default_orientation horizontal
@@ -149,7 +120,7 @@ client.focused #c792eacc #232635dd #ffffffff #ffffffff #c792eacc
 client.unfocused #c792eacc #1c1f2bef #ffffffff #ffffffff #c792eacc 
 
 # Set up screen locking
-set $lock 'swaylock -f -i ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg -s fill --font "Iosevka ss08" --indicator-idle-visible'
+set $lock 'swaylock -f -i ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg -s fill --font "JetBrains Mono" --indicator-idle-visible'
 exec swayidle -w \
   timeout 900 $lock \
   timeout 960 'swaymsg "output * dpms off"' \
@@ -160,9 +131,28 @@ exec swayidle -w \
 for_window [title="Firefox — Sharing Indicator"] kill
 for_window [title=".* - mpv$"] floating enable, sticky enable
 
+bar {
+    position top
+    mode hide
+    font pango:JetBrains Mono 8
+    icon_theme "Papirus-Dark"
+
+    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+
+    tray_bindsym button1 Activate
+    tray_bindsym button2 ContextMenu
+
+
+    colors {
+        statusline #ffffff
+        background #323232CC
+        inactive_workspace #323232 #323232CC #5c5c5c
+    }
+}
+
 # Autostart applications
-exec waybar
-exec mako --border-radius=2 --font="Iosevka ss08 10" --max-visible=5 --outer-margin=5 --margin=3 --background="#1c1f26" --border-color="#89AAEB" --border-size=1 --default-timeout=7000
+#exec waybar
+exec mako --border-radius=2 --font="JetBrains Mono 8" --max-visible=5 --outer-margin=5 --margin=3 --background="#1c1f26" --border-color="#89AAEB" --border-size=1 --default-timeout=7000
 exec nm-applet --indicator
 exec udiskie -t
 exec gammastep-indicator -l 37.983810:23.727539 -t 6500:3500 -b 1.0:0.7
