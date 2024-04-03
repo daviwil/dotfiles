@@ -65,10 +65,7 @@
         completion-category-defaults nil
         orderless-matching-styles '(orderless-literal orderless-regexp)
         completion-category-overrides
-         '((file (styles partial-completion)))))
-           ;(command (styles orderless+initialism))
-           ;(symbol (styles orderless-flex orderless-literal))
-           ;(variable (styles orderless+initialism)))))
+        '((file (styles partial-completion)))))
 
 (use-package wgrep
   :after consult
@@ -111,11 +108,19 @@
 
 (use-package embark
   :after vertico
-  :bind (("C-M-." . embark-act)
+  :bind (("C-." . embark-act)
+         ("M-." . embark-dwim)
          :map minibuffer-local-map
-         ("C-d" . embark-act))
+         ("C-d" . embark-act)
+         :map embark-region-map
+         ("D" . denote-region))
 
   :config
+  ;; Remove the mixed indicator to prevent the popup from being displayed
+  ;; automatically
+  (delete #'embark-mixed-indicator embark-indicators)
+  (add-to-list 'embark-indicators 'embark-minimal-indicator)
+
   ;; Use Embark to show command prefix help
   (setq prefix-help-command #'embark-prefix-help-command))
 

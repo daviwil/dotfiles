@@ -84,6 +84,8 @@
 
 ;;; -- Core Key Bindings and Packages ----
 
+(repeat-mode 1)
+
 (column-number-mode)
 
 ;; Enable line numbers for some modes
@@ -142,43 +144,36 @@
 
 ;;; -- Mode Line -----
 
+(setq-default mode-line-format
+              '("%e" "  "
+                (:propertize
+                 ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote))
+                mode-line-frame-identification
+                mode-line-buffer-identification
+                "   "
+                mode-line-position
+                mode-line-format-right-align
+                (vc-mode vc-mode)
+                "  "
+                mode-line-modes
+                mode-line-misc-info
+                "  ")
+              mode-line-percent-position nil
+              mode-line-buffer-identification '(" %b")
+              mode-line-position-column-line-format '(" %l:%c"))
+
+(advice-add 'enable-theme
+            :after
+            (lambda (_theme)
+              ;; Increase the height of the mode line
+              (set-face-attribute 'mode-line nil
+                                  :box `(:line-width 2 :color ,(face-attribute 'mode-line :background)))
+              (set-face-attribute 'mode-line-inactive nil
+                                  :box `(:line-width 2 :color ,(face-attribute 'mode-line-inactive :background)))))
+
 (use-package minions
-  :hook ((doom-modeline-mode mood-line-mode) . minions-mode))
-
-(use-package mood-line
-  :config
-  (setq mood-line-glyph-alist mood-line-glyphs-fira-code)
-  (mood-line-mode))
-
-(defun dw/start-doom-modeline ()
-  (require 'doom-modeline)
-
-  ;; Start it
-  (doom-modeline-mode 1)
-
-  ;; Customize the default modeline
-  (doom-modeline-def-modeline 'default
-    '(bar window-number modals matches buffer-info remote-host buffer-position word-count parrot selection-info)
-    '(objed-state grip debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker))
-  (doom-modeline-set-modeline 'default t))
-
-(use-package doom-modeline
-  :disabled
-  :hook (after-init . dw/start-doom-modeline)
-  :custom
-  (doom-modeline-height 15)
-  (doom-modeline-bar-width 6)
-  (doom-modeline-lsp t)
-  (doom-modeline-github nil)
-  (doom-modeline-mu4e nil)
-  (doom-modeline-irc nil)
-  (doom-modeline-minor-modes t)
-  (doom-modeline-persp-name nil)
-  (doom-modeline-buffer-file-name-style 'truncate-except-project)
-  (doom-modeline-major-mode-icon nil)
-  :custom-face
-  (mode-line ((t (:height 0.85))))
-  (mode-line-inactive ((t (:height 0.85)))))
+  :init
+  (minions-mode))
 
 ;;; -- Timers -----
 
@@ -196,7 +191,9 @@
 ;;; -- Beframe -----
 
 (use-package beframe
-  :ensure t)
+  :ensure t
+  :init
+  (beframe-mode))
 
 (defvar consult-buffer-sources)
 (declare-function consult--buffer-state "consult")
@@ -206,7 +203,7 @@
     '((t :inherit font-lock-string-face))
     "Face for `consult' framed buffers.")
 
-  (defun my-beframe-buffer-names-sorted (&optional frame)
+  (defun dw/beframe-buffer-names-sorted (&optional frame)
     "Return the list of buffers from `beframe-buffer-names' sorted by visibility.
 With optional argument FRAME, return the list of buffers of FRAME."
     (beframe-buffer-names frame :sort #'beframe-buffer-sort-visibility))
@@ -219,12 +216,11 @@ With optional argument FRAME, return the list of buffers of FRAME."
        :narrow   ?F
        :category buffer
        :history  beframe-history
-       :items    ,#'my-beframe-buffer-names-sorted
+       :items    ,#'dw/beframe-buffer-names-sorted
        :action   ,#'switch-to-buffer
        :state    ,#'consult--buffer-state))
 
   (add-to-list 'consult-buffer-sources 'beframe-consult-source))
-
 
 ;;   (setq consult-ripgrep-args "rg --null --hidden --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --search-zip .")
 
@@ -236,22 +232,10 @@ With optional argument FRAME, return the list of buffers of FRAME."
    (t (call-interactively #'consult-buffer))))
 
 (global-set-key (kbd "C-M-j") #'consult-buffer)
-(global-set-key (kbd "C-M-k") #'tab-bar-switch-to-tab)
-(global-set-key (kbd "C-M-n") #'tab-bar-switch-to-next-tab)
-
-(defun dw/exwm-workspace-icon ()
-  (when dw/exwm-enabled
-    (format " %s" (pcase exwm-workspace-current-index
-                    (0 "💬")
-                    (1 "💻")
-                    (2 "🏄")
-                    (3 "📬")
-                    (4 "📸")))))
 
 (defun dw/set-tab-bar-faces ()
-  (let ((color (face-attribute 'doom-modeline-bar :background nil t)))
-    (set-face-attribute 'tab-bar-tab nil :foreground nil :background nil :weight 'semi-bold :underline `(:color ,color) :inherit nil)
-    (set-face-attribute 'tab-bar nil :font "Iosevka Aile" :foreground nil :inherit 'mode-line)))
+  (set-face-attribute 'tab-bar-tab nil :foreground "white" :background nil :weight 'semi-bold :inherit nil)
+  (set-face-attribute 'tab-bar nil :font "JetBrains Mono" :foreground "white" :inherit 'mode-line))
 
 (setq tab-bar-close-button-show nil
       tab-bar-auto-width nil
@@ -266,19 +250,14 @@ With optional argument FRAME, return the list of buffers of FRAME."
                        tab-bar-format-global))
 
 (defun dw/setup-tab-bar-mode ()
-  (with-eval-after-load 'doom-modeline
-    (dw/set-tab-bar-faces)
+  (dw/set-tab-bar-faces)
 
-    ;; (add-to-list 'global-mode-string '(" " display-time-string))
-    ;; (add-to-list 'global-mode-string '(" " doom-modeline--battery-status))
-    ;; (add-to-list 'global-mode-string '(" " tracking-mode-line-buffers))
+  (add-to-list 'global-mode-string '(" " display-time-string))
+  ;; (add-to-list 'global-mode-string '(" " tracking-mode-line-buffers))
 
-    ;; (display-time-mode 0)
-    ;; (display-battery-mode 0)
-
-    (setq tab-bar-show t)
-    (tab-bar-mode 1)
-    (tab-bar-rename-tab "Main")))
+  (setq tab-bar-show t)
+  (tab-bar-mode 1)
+  (tab-bar-rename-tab "Main"))
 
 ;;; -- Notifications -----
 
@@ -297,7 +276,10 @@ With optional argument FRAME, return the list of buffers of FRAME."
 (use-package super-save
   :config
   (super-save-mode +1)
-  (setq super-save-auto-save-when-idle t))
+  (setq super-save-auto-save-when-idle t)
+  ;; (add-to-list 'super-save-predicates (lambda ()
+  ;;                                       (not (eq major-mode 'mu4e-compose-mode))))
+  )
 
 ;; Revert Dired and other buffers
 (setq global-auto-revert-non-file-buffers t)
@@ -342,9 +324,7 @@ With optional argument FRAME, return the list of buffers of FRAME."
   :custom
   (aw-scope 'frame)
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  (aw-minibuffer-flag t)
-  :config
-  (ace-window-display-mode 1))
+  (aw-minibuffer-flag t))
 
 (use-package winner
   :config
@@ -414,52 +394,6 @@ With optional argument FRAME, return the list of buffers of FRAME."
   (unless dw/exwm-enabled
     (global-set-key (kbd "s-e") #'dired-jump)))
 
-(use-package dired-rainbow
-  :after dired
-  :config
-  (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
-  (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
-  (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
-  (dired-rainbow-define document "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx"))
-  (dired-rainbow-define markdown "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt"))
-  (dired-rainbow-define database "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc"))
-  (dired-rainbow-define media "#de751f" ("mp3" "mp4" "mkv" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac"))
-  (dired-rainbow-define image "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg"))
-  (dired-rainbow-define log "#c17d11" ("log"))
-  (dired-rainbow-define shell "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim"))
-  (dired-rainbow-define interpreted "#38c172" ("py" "ipynb" "rb" "pl" "t" "msql" "mysql" "pgsql" "sql" "r" "clj" "cljs" "scala" "js"))
-  (dired-rainbow-define compiled "#4dc0b5" ("asm" "cl" "lisp" "el" "c" "h" "c++" "h++" "hpp" "hxx" "m" "cc" "cs" "cp" "cpp" "go" "f" "for" "ftn" "f90" "f95" "f03" "f08" "s" "rs" "hi" "hs" "pyc" ".java"))
-  (dired-rainbow-define executable "#8cc4ff" ("exe" "msi"))
-  (dired-rainbow-define compressed "#51d88a" ("7z" "zip" "bz2" "tgz" "txz" "gz" "xz" "z" "Z" "jar" "war" "ear" "rar" "sar" "xpi" "apk" "xz" "tar"))
-  (dired-rainbow-define packaged "#faad63" ("deb" "rpm" "apk" "jad" "jar" "cab" "pak" "pk3" "vdf" "vpk" "bsp"))
-  (dired-rainbow-define encrypted "#ffed4a" ("gpg" "pgp" "asc" "bfe" "enc" "signature" "sig" "p12" "pem"))
-  (dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf"))
-  (dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak"))
-  (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
-  (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
-
-(use-package openwith
-  :unless dw/is-termux
-  :config
-  (setq openwith-associations
-        (list
-         (list (openwith-make-extension-regexp
-                '("mpg" "mpeg" "mp3" "mp4"
-                  "avi" "wmv" "wav" "mov" "flv"
-                  "ogm" "ogg" "mkv"))
-               "mpv"
-               '(file))
-         (list (openwith-make-extension-regexp
-                '("xbm" "pbm" "pgm" "ppm" "pnm"
-                  "png" "gif" "bmp" "tif" "jpeg")) ;; Removed jpg because Telega was
-               ;; causing feh to be opened...
-               "feh"
-               '(file))
-         (list (openwith-make-extension-regexp
-                '("pdf"))
-               "zathura"
-               '(file)))))
-
 ;;; -- World Clock -----
 
 (setq display-time-world-list
@@ -481,11 +415,6 @@ With optional argument FRAME, return the list of buffers of FRAME."
   (setq history-length 25)
   (savehist-mode 1))
 
-;; Individual history elements can be configured separately
-;;(put 'minibuffer-history 'history-length 25)
-;;(put 'evil-ex-history 'history-length 50)
-;;(put 'kill-ring 'history-length 25))
-
 ;;; -- Make Help More Helpful -----
 
 (use-package helpful
@@ -501,50 +430,7 @@ With optional argument FRAME, return the list of buffers of FRAME."
 ;; Load the info system for info files
 (add-to-list 'auto-mode-alist '("\\.info\\'" . Info-on-current-buffer))
 
-;;; -- Convenience Key Bindings ----
-
-(defun dw/org-file-jump-to-heading (org-file heading-title)
-  (interactive)
-  (find-file (expand-file-name org-file))
-  (goto-char (point-min))
-  (search-forward (concat "* " heading-title))
-  (org-overview)
-  (org-reveal)
-  (org-show-subtree)
-  (forward-line))
-
-(defun dw/org-file-show-headings (org-file)
-  (interactive)
-  (find-file (expand-file-name org-file))
-  (counsel-org-goto)
-  (org-overview)
-  (org-reveal)
-  (org-show-subtree)
-  (forward-line))
-
-(defun dw/find-dotfiles-file ()
-  "Launches `project-find-file' in the ~/.dotfiles directory."
-  (interactive)
-  (let ((default-directory "~/.dotfiles/.emacs.d/modules/"))
-    (call-interactively #'project-find-file)))
-
-(defun dw/edit-emacs-module ()
-  "Launches `counsel-find-file' in the Emacs module directory."
-  (interactive)
-  (let ((default-directory "~/.dotfiles/.emacs.d/modules/"))
-    (call-interactively #'find-file)))
-
-(use-package emacs
-  :bind (("C-c f d" . dw/find-dotfiles-file)
-         ("C-c f e m" . dw/edit-emacs-module)))
-
-;;; -- GPT -----
-
-(use-package gptel
-  :ensure t
-  :config
-  (setq-default gptel-model "gpt-4"
-                gptel-playback t))
+;;; -- AI -----
 
 (defun my/copilot-tab ()
   (interactive)

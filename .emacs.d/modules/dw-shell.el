@@ -26,7 +26,7 @@
          (git-output (shell-command-to-string "git rev-parse --show-toplevel"))
          (has-path (not (string-match "^fatal" git-output))))
     (if (not has-path)
-      (abbreviate-file-name current-path)
+        (abbreviate-file-name current-path)
       (string-remove-prefix (file-name-directory git-output) current-path))))
 
 ;; This prompt function mostly replicates my custom zsh prompt setup
@@ -53,12 +53,6 @@
          (propertize "\n#" 'face `(:foreground "red2"))
        (propertize "\nλ" 'face `(:foreground "#aece4a")))
      (propertize " " 'face `(:foreground "white")))))
-
-(unless dw/is-termux
-  (add-hook 'eshell-banner-load-hook
-            (lambda ()
-               (setq eshell-banner-message
-                     (concat "\n" (propertize " " 'display (create-image "~/.dotfiles/.emacs.d/images/flux_banner.png" 'png nil :scale 0.2 :align-to "center")) "\n\n")))))
 
 (defun dw/eshell-configure ()
   ;; Make sure magit is loaded
@@ -163,6 +157,15 @@
   :hook (eshell-mode . esh-autosuggest-mode)
   :config
   (setq esh-autosuggest-delay 0.5))
+
+(use-package eat
+  :custom
+  (eat-kill-buffer-on-exit t)
+  (eat-enable-shell-prompt-annotation nil)
+  :config
+  (eat-eshell-mode)
+  (eat-eshell-visual-command-mode)
+  (setq eshell-visual-commands '()))
 
 (use-package vterm
   :commands vterm

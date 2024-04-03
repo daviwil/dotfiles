@@ -21,10 +21,7 @@
 
 (use-package buffer-env
   :custom
-  (buffer-env-script-name "manifest.scm")
-  :config
-  (add-hook 'comint-mode-hook #'hack-dir-local-variables-non-file-buffer)
-  (add-hook 'hack-local-variables-hook #'buffer-env-update))
+  (buffer-env-script-name "manifest.scm"))
 
 ;;; -- M-x compile -----
 
@@ -34,10 +31,10 @@
 
 (setq compilation-environment '("TERM=xterm-256color"))
 
-(defun my/advice-compilation-filter (f proc string)
+(defun dw/advice-compilation-filter (f proc string)
   (funcall f proc (xterm-color-filter string)))
 
-(advice-add 'compilation-filter :around #'my/advice-compilation-filter)
+(advice-add 'compilation-filter :around #'dw/advice-compilation-filter)
 
 (defun dw/auto-recompile-buffer ()
   (interactive)
@@ -208,9 +205,13 @@
 
 ;;; -- Text Files -----
 
+(defun dw/display-column-indicator-in-text-mode ()
+  (when (equal major-mode #'text-mode)
+    (display-fill-column-indicator-mode)))
+
 (use-package text-mode
   :ensure nil
-  :hook (text-mode . display-fill-column-indicator-mode))
+  :hook (text-mode . dw/display-column-indicator-in-text-mode))
 
 ;;; -- Emacs Lisp -----
 
@@ -225,7 +226,7 @@
 
 ;;; -- Scheme -----
 
-  ;; Include .sld library definition files
+;; Include .sld library definition files
 (use-package scheme-mode
   :ensure nil
   :mode "\\.sld\\'")
@@ -240,6 +241,10 @@
   (setq geiser-default-implementation 'guile)
   (setq geiser-active-implementations '(guile))
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile))))
+
+;; (with-eval-after-load 'geiser-guile
+;;   ;; (add-to-list 'geiser-guile-load-path "~/.dotfiles")
+;;   (add-to-list 'geiser-guile-load-path "~/Projects/Code/guix"))
 
 ;; This is needed for contributing to Guix source
 (setq user-mail-address "david@daviwil.com")

@@ -7,14 +7,18 @@
          ("C-c m c" . 'mu4e-compose-new)
          ("C-c m i" . 'dw/go-to-inbox)
          ("C-c m s" . 'mu4e-update-mail-and-index))
+  :hook ((mu4e-compose-mode . turn-off-auto-fill)
+         (mu4e-compose-mode . turn-off-auto-fill)
+         )
   :config
   ;; Refresh mail using isync every 10 minutes
-  (setq mu4e-update-interval (* 10 60))
+  ;; NOTE: Trying to refresh mail manually now to increase focus
+  ;(setq mu4e-update-interval (* 10 60))
   (setq mu4e-get-mail-command "mbsync -a")
   (setq mu4e-maildir "~/Mail")
 
   ;; Use Ivy for mu4e completions (maildir folders, etc)
-  (setq mu4e-completing-read-function #'ivy-completing-read)
+  (setq mu4e-completing-read-function #'completing-read)
 
   ;; Make sure that moving a message (like to Trash) causes the
   ;; message to get a new file name.  This helps to avoid the
@@ -80,6 +84,7 @@
   ;; the 'All Mail' folder by pressing ``ma''.
   (setq mu4e-maildir-shortcuts
         '(("/INBOX" . ?i)
+          ("/Archive" . ?a)
           ("/Lists/*" . ?l)
           ("/Sent Items" . ?s)
           ("/Trash" . ?t)))

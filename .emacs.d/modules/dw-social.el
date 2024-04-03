@@ -23,10 +23,10 @@
   (rcirc-default-quit-reason "Hey, who put that C-x C-c there?")
   (rcirc-default-part-reason "Probably killed the channel buffer by accident...")
   (rcirc-server-alist `(("chat.sr.ht"
-           :port 6697
-           :encryption tls
-           :user-name "daviwil/irc.libera.chat@emacs"
-           :password ,(password-store-get "IRC/chat.sr.ht"))))
+                         :port 6697
+                         :encryption tls
+                         :user-name "daviwil/irc.libera.chat@emacs"
+                         :password ,(password-store-get "IRC/chat.sr.ht"))))
                                         ;'(("irc.libera.chat" :port 6697 :nick "daviwil" :user-name "daviwil" :encryption tls))
   (rcirc-reconnect-delay 5)
   (rcirc-fill-column 120)
@@ -57,6 +57,8 @@
   :config
   (setq elfeed-feeds
         '("http://ruzkuku.com/all.atom"
+          "https://systemcrafters.net/rss/news.xml"
+          "https://codeberg.org/SystemCrafters/crafted-guix.rss"
           "https://karthinks.com/index.xml"
           "https://shom.dev/index.xml"
           "https://blog.benoitj.ca/posts/index.xml"
@@ -75,6 +77,7 @@
 (use-package ement
   :commands ement-connect
   :custom
+  (ement-notify-dbus-p nil) ;; Turn off notifications
   (ement-sessions-file "~/.cache/ement.el")
   (ement-room-list-default-keys
    '(;; Group all invitations (this group will appear first since the rooms are
@@ -95,5 +98,23 @@
      (unread)
      (people)
      freshness)))
+
+(use-package newsticker
+  :ensure nil
+  :defer 5
+  :config
+  (setq newsticker-ticker-period 360
+        newsticker-scroll-smoothly nil
+        newsticker-ticker-interval 5
+        newsticker-url-list
+        '(("Emacs News" "https://sachachua.com/blog/feed/")
+          ("David Thompson" "https://dthompson.us/feed.xml")
+          ("Spritely Institute" "https://spritely.institute/feed.xml")
+          ("guix-devel" "https://yhetil.org/guix-devel/new.atom")
+          ("help-guix" "https://yhetil.org/guix-user/new.atom")
+          ("guile-devel" "https://yhetil.org/guile-devel/new.atom")
+          ("emacs-devel" "https://yhetil.org/emacs-devel/new.atom"))))
+                                        ;(newsticker-start t)
+                                        ;(newsticker-start-ticker))
 
 (provide 'dw-social)

@@ -9,7 +9,7 @@
           "~/storage/shared/Notes"
         "~/Notes"))
 
-(defvar dw/base-agenda-files '("Schedule.org" "Mesche.org" "SystemCrafters.org")
+(defvar dw/base-agenda-files '("Inbox.org" "Schedule.org" "Mesche.org" "SystemCrafters.org")
   "The base agenda files that will always be included.")
 
 (defun dw/org-path (path)
@@ -37,6 +37,13 @@
   (org-overview)
   (org-show-entry)
   (org-show-children))
+
+(defun dw/org-todo-state-change-hook ()
+  (when (string= org-state "DONE")
+    (dw/org-move-done-tasks-to-bottom)))
+
+;; NOTE: This seems to run before log entry is added so the log gets added to the parent heading...
+                                        ;(add-hook 'org-after-todo-state-change-hook 'dw/org-todo-state-change-hook)
 
 (use-package org
   :hook (org-mode . dw/org-mode-setup)
@@ -73,15 +80,17 @@
           org-irc))
 
   (setq org-refile-targets '((nil :maxlevel . 1)
-                             (org-agenda-files :maxlevel . 1)))
+                             (org-agenda-files :maxlevel . 1))
+        ;; Refile items to the top of parent heading
+        org-reverse-note-order t)
 
   (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-use-outline-path t)
 
   (org-babel-do-load-languages
-    'org-babel-load-languages
-    '((emacs-lisp . t)))
-      ;(ledger . t))) -- Not working right now
+   'org-babel-load-languages
+   '((emacs-lisp . t)))
+                                        ;(ledger . t))) -- Not working right now
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes))
 
@@ -93,7 +102,7 @@
   :after org
   :config
   ;; Increase the size of various headings
-  (set-face-attribute 'org-document-title nil :font "Iosevka ss08" :weight 'bold :height 1.3)
+  (set-face-attribute 'org-document-title nil :font "JetBrains Mono" :weight 'bold :height 1.3)
   (dolist (face '((org-level-1 . 1.2)
                   (org-level-2 . 1.1)
                   (org-level-3 . 1.05)
@@ -102,7 +111,7 @@
                   (org-level-6 . 1.1)
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "Iosevka ss08" :weight 'medium :height (cdr face))))
+    (set-face-attribute (car face) nil :font "JetBrains Mono" :weight 'medium :height (cdr face))))
 
 ;; This is needed as of Org 9.2
 (use-package org-tempo
@@ -282,12 +291,17 @@ _d_: date        ^ ^              ^ ^
 
 (use-package denote
   :demand t
+  :custom
+  (denote-rename-buffer-format "Denote: %t (%k)")
   :config
   (setq denote-directory "~/Notes/Denote")
   (setq denote-known-keywords '("journal" "workflow" "daily" "weekly" "monthly"))
 
   ;; Refresh agenda files the first time
   (dw/refresh-agenda-files)
+
+  ;; Rename buffers with the note name
+  (denote-rename-buffer-mode 1)
 
   ;; Buttonize all denote links in text buffers
   (add-hook 'find-file-hook #'denote-link-buttonize-buffer))
@@ -304,7 +318,7 @@ _d_: date        ^ ^              ^ ^
 (defun dw/denote-find-daily-log ()
   (interactive)
   (let* ((default-directory denote-directory)
-         (existing-file (denote--directory-files-matching-regexp (format-time-string "^%Y%m%d.*_daily"))))
+         (existing-file (denote-directory-files-matching-regexp (format-time-string "^%Y%m%d.*_daily"))))
     (if existing-file
         (find-file (expand-file-name (car existing-file)))
       ;; TODO: Initialize with daily note format
@@ -370,24 +384,62 @@ capture was not aborted."
   )
 
 (setq org-todo-keywords
-  '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-    (sequence "|" "WAIT(w)" "BACK(b)")))
+      '((sequence "TODO(t)" "|" "DONE(d!)")
+        (sequence "GOAL(G)" "PROJ(P)" "|" "DONE(d!)")
+        (sequence  "PLAN(p)" "REVIEW(r)" "|" "WAIT(w)" "BACK(b)")))
 
 ;; TODO: org-todo-keyword-faces
 (setq org-todo-keyword-faces
-  '(("NEXT" . (:foreground "orange red" :weight bold))
-    ("WAIT" . (:foreground "HotPink2" :weight bold))
-    ("BACK" . (:foreground "MediumPurple3" :weight bold))))
+      '(("GOAL" . (:foreground "orange red" :weight bold))
+        ("WAIT" . (:foreground "HotPink2" :weight bold))
+        ("BACK" . (:foreground "MediumPurple3" :weight bold))))
+
+(setq org-modern-todo-faces
+      '(("GOAL"
+         :background "orange red"
+         :foreground "white")
+        ("PROJ"
+         :background "gold"
+         :foreground "black")))
 
 ;; Configure common tags
-(setq org-tag-alist
-  '((:startgroup)
-     ; Put mutually exclusive tags here
-     (:endgroup)
-     ("@home" . ?H)
-     ("@work" . ?W)
-     ("batch" . ?b)
-     ("followup" . ?f)))
+(setq-default org-tag-alist
+              '((:startgroup)
+                ("Areas")
+                (:grouptags)
+                ("@home" . ?H)
+                ("@work" . ?W)
+                (:endgroup)
+
+                (:startgrouptag . nil)
+                ("Contexts")
+                (:grouptags)
+                ("@computer" . ?C)
+                ("@mobile" . ?M)
+                ("@calls" . ?A)
+                ("@errands" . ?E)
+                (:endgrouptag)
+
+                ;; Task Types
+                (:startgrouptag . nil)
+                ("Types")
+                (:grouptags)
+                ("@easy" . ?e)
+                ("@hacking" . ?h)
+                ("@writing" . ?w)
+                ("@creative" . ?v)
+                ("@accounting" . ?a)
+                ("@email" . ?m)
+                (:endgrouptag)
+
+                ;; Workflow states
+                (:startgroup . nil)
+                ("States")
+                (:grouptags)
+                ("@plan" . ?p)
+                ("@review" . ?r)
+                ("@followup" . ?f)
+                (:endgroup)))
 
 (setq org-agenda-window-setup 'current-window)
 (setq org-agenda-span 'day)
@@ -404,11 +456,9 @@ capture was not aborted."
          ((agenda "" ((org-deadline-warning-days 7)))
           (tags-todo "+PRIORITY=\"A\""
                      ((org-agenda-overriding-header "High Priority")))
-          (tags-todo "+followup" ((org-agenda-overriding-header "Needs Follow Up")))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "Next Actions")
-                 (org-agenda-max-todos nil)))
-          ))
+          (todo "*" ((org-agenda-files '("~/Notes/Inbox.org"))
+                     (org-agenda-overriding-header "Unfiled Inbox Tasks")))
+          (tags-todo "+@followup" ((org-agenda-overriding-header "Needs Follow Up")))))
 
         ("n" "Next Tasks"
          ((agenda "" ((org-deadline-warning-days 7)))
@@ -427,12 +477,12 @@ capture was not aborted."
   "Gets the journal file name for today's date"
   (interactive)
   (let* ((journal-file-name
-           (expand-file-name
-             (format-time-string "%Y/%Y-%2m-%B.org")
-             (dw/org-path "Journal/")))
+          (expand-file-name
+           (format-time-string "%Y/%Y-%2m-%B.org")
+           (dw/org-path "Journal/")))
          (journal-year-dir (file-name-directory journal-file-name)))
     (if (not (file-directory-p journal-year-dir))
-      (make-directory journal-year-dir))
+        (make-directory journal-year-dir))
     journal-file-name))
 
 
@@ -472,7 +522,59 @@ capture was not aborted."
          "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
          :tree-type week
          :clock-in :clock-resume
-         :empty-lines 1)))
+         :empty-lines 1)
+
+        ("m" "Metrics Capture")
+        ("mw" "Weight" table-line (file+headline "~/Notes/Metrics.org" "Weight")
+         "| %U | %^{Weight} | %^{Notes} |"
+         :immediate-finish t
+         :jump-to-captured t)
+        ("mp" "Blood Pressure" table-line (file+headline "~/Notes/Metrics.org" "Blood Pressure")
+         "| %U | %^{Systolic} | %^{Diastolic} | %^{BPM} | %^{Stress 1-5}"
+         :immediate-finish t
+         :jump-to-captured t)))
+
+(string-split "| [2023-11-28 Tue 21:09] |      135 |        87 |  74 |            2 |" "|" t "[ ]*")
+
+(defun dw/extract-bp-numbers-csv ()
+  (interactive)
+  (with-temp-file "bp-csv"
+    (let* ((region (buffer-substring-no-properties (mark) (point))))
+      (dolist (line (string-split region "\n" t "[ ]*"))
+        (message "LINE: %s" line)
+        (let ((parts (string-split line "|" t "[ ]*")))
+          (insert (format "%s,%s,%s,%s,%s\n"
+                          (nth 1 parts)
+                          (nth 2 parts)
+                          (nth 3 parts)
+                          (nth 4 parts)
+                          (nth 5 parts))))))))
+
+(defun dw/extract-bp-numbers ()
+  (interactive)
+  (let* ((region (buffer-substring-no-properties (mark) (point)))
+         (matched? (string-match (rx (and "|"
+                                          (zero-or-more blank)
+                                          (group (one-or-more digit))
+                                          (zero-or-more blank)
+                                          "|"
+                                          (zero-or-more blank)
+                                          (group (one-or-more digit))
+                                          (zero-or-more blank)
+                                          "|"
+                                          (zero-or-more blank)
+                                          (group (one-or-more digit))
+                                          (zero-or-more blank)))
+                                 region)))
+                                        ;(message region)
+    (if matched? (with-temp-buffer
+                   (insert
+                    (format "%s/%s, %s bpm"
+                            (match-string 1 region)
+                            (match-string 2 region)
+                            (match-string 3 region)))
+                   (clipboard-kill-region (point-min) (point-max)))
+      (message "NO MATCH"))))
 
 ;; Override some modes which derive from the above
 (dolist (mode '(org-mode-hook))

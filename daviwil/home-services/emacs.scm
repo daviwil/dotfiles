@@ -32,12 +32,13 @@
              "emacs-desktop-environment"
 
              "emacs-god-mode"
-             "emacs-modalka"
-             "emacs-meow"
 
              "emacs-popper"
 
+             "emacs-mpv"
+
              "emacs-ement"
+             "emacs-circe"
 
              "emacs-evil"
              "emacs-evil-collection"
@@ -54,8 +55,6 @@
              "emacs-emojify"
 
              "emacs-mood-line"
-             "emacs-doom-modeline"
-             "emacs-all-the-icons"
              "emacs-minions"
 
              "emacs-alert"
@@ -89,11 +88,8 @@
              "emacs-password-store"
              "emacs-auth-source-pass"
 
-             ;; "emacs-dired-single"
              "emacs-dired-hacks"
              "emacs-all-the-icons-dired"
-
-             "emacs-openwith"
 
              "emacs-org"
              "emacs-org-modern"
@@ -103,6 +99,7 @@
              "emacs-org-present"
              "emacs-org-roam"
              "emacs-org-appear"
+             "emacs-org-ql"
              "emacs-htmlize"
              "emacs-denote"
 
