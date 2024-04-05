@@ -1,7 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package mu4e
-  ;:defer 20 ; Wait until 20 seconds after startup
+  :ensure nil ; Installed via distro package manager
+  ;;:defer 20 ; Wait until 20 seconds after startup
   :defer t
   :bind (("C-c m m" . mu4e)
          ("C-c m c" . 'mu4e-compose-new)
@@ -13,7 +14,7 @@
   :config
   ;; Refresh mail using isync every 10 minutes
   ;; NOTE: Trying to refresh mail manually now to increase focus
-  ;(setq mu4e-update-interval (* 10 60))
+  ;;(setq mu4e-update-interval (* 10 60))
   (setq mu4e-get-mail-command "mbsync -a")
   (setq mu4e-maildir "~/Mail")
 
@@ -55,7 +56,7 @@
                  :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
                  :action (lambda (docid msg target)
                            (mu4e--server-move docid
-                                           (mu4e--mark-check-target target) "-N"))))
+                                              (mu4e--mark-check-target target) "-N"))))
 
   ;; Display options
   (setq mu4e-view-show-images t)
