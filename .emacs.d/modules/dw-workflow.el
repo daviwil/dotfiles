@@ -301,6 +301,7 @@ _d_: date        ^ ^              ^ ^
   (dw/refresh-agenda-files)
 
   ;; Rename buffers with the note name
+  (require 'denote-rename-buffer)
   (denote-rename-buffer-mode 1)
 
   ;; Buttonize all denote links in text buffers
