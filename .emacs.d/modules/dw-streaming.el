@@ -13,23 +13,23 @@
       (progn
         (posframe-delete-frame clm/command-log-buffer)
         (setq dw/command-window-frame nil))
-      (progn
-        (global-command-log-mode t)
-        (with-current-buffer
+    (progn
+      (global-command-log-mode t)
+      (with-current-buffer
           (setq clm/command-log-buffer
                 (get-buffer-create " *command-log*"))
-          (text-scale-set -1))
-        (setq dw/command-window-frame
-          (posframe-show
-            clm/command-log-buffer
-            :position `(,(- (x-display-pixel-width) 590) . 15)
-            :width 38
-            :height 5
-            :min-width 38
-            :min-height 5
-            :internal-border-width 2
-            :internal-border-color "#c792ea"
-            :override-parameters '((parent-frame . nil)))))))
+        (text-scale-set -1))
+      (setq dw/command-window-frame
+            (posframe-show
+             clm/command-log-buffer
+             :position `(,(- (x-display-pixel-width) 590) . 15)
+             :width 38
+             :height 5
+             :min-width 38
+             :min-height 5
+             :internal-border-width 2
+             :internal-border-color "#c792ea"
+             :override-parameters '((parent-frame . nil)))))))
 
 (defun dw/keycast-predicate ()
   ;; Don't show keys if we're in the minibuffer
@@ -57,7 +57,12 @@
             (lambda ()
               (add-to-list 'global-mode-string '("" mode-line-keycast "       ")))))
 
+(unless (or dw/is-guix-system
+            (package-installed-p 'obs-websocket))
+  (package-vc-install '(obs-websocket :url "https://github.com/sachac/obs-websocket-el")))
+
 (use-package obs-websocket
+  :ensure nil
   :commands obs-websocket-connect
   :bind ("s-s" . dw/stream-keys/body)
   :config
