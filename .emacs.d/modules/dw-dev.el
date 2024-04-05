@@ -217,8 +217,7 @@
 
 ;;; -- Emacs Lisp -----
 
-(use-package emacs-lisp-mode
-  :hook (emacs-lisp-mode . flycheck-mode))
+(add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
 
 ;;; -- Common Lisp -----
 
