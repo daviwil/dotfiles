@@ -6,6 +6,9 @@
 .emacs.d/straight/repos/
 .emacs.d/straight/build-cache.el
 
+; No more OBS config in the repo
+.files/.config/obs-studio
+
 ; Fonts
 
 fonts/.uuid
