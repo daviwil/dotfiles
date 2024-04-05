@@ -15,7 +15,6 @@ output DP-8 pos 0 0 scale 2
 output HDMI-A-1 scale 2
 
 output * bg ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg fill
-# output * bg ~/.dotfiles/backgrounds/scott-rodgerson-lRtzEExP0H8-unsplash.jpg fill
 
 bindsym $mod+Shift+s exec ~/.bin/toggle-display $primary
 
@@ -162,6 +161,9 @@ exec emacs
 exec gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
 exec gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 exec gsettings set org.gnome.desktop.interface font-name "Iosevka Aile 11"
+
+# Load system-specific configuration
+include "~/.config/sway/systems/$(hostname)"
 
 # Update DBUS activation records to ensure Flatpak apps work
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
