@@ -159,7 +159,7 @@ exec gammastep-indicator -l 37.983810:23.727539 -t 6500:3500 -b 1.0:0.7
 exec emacs
 
 # Set GNOME settings (requires "glib:bin" in Guix)
-exec gsettings set org.gnome.desktop.interface gtk-theme "Matcha-dark-azul"
+exec gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
 exec gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 exec gsettings set org.gnome.desktop.interface font-name "Iosevka Aile 11"
 
