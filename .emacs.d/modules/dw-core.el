@@ -369,7 +369,6 @@ With optional argument FRAME, return the list of buffers of FRAME."
 
 (defun dw/dired-mode-hook ()
   (interactive)
-  ;; (dired-omit-mode 1)
   (dired-hide-details-mode 1)
   (unless (or dw/is-termux
               (string-equal "/gnu/store/" (expand-file-name default-directory)))
@@ -378,6 +377,9 @@ With optional argument FRAME, return the list of buffers of FRAME."
 
 (use-package dired
   :ensure nil
+  :bind (:map dired-mode-map
+              ("b" . dired-up-directory)
+              ("H" . dired-hide-details-mode))
   :config
   (setq dired-listing-switches "-agho --group-directories-first"
         dired-omit-files "^\\.[^.].*"
@@ -386,8 +388,6 @@ With optional argument FRAME, return the list of buffers of FRAME."
         dired-hide-details-hide-symlink-targets nil
         dired-kill-when-opening-new-dired-buffer t
         delete-by-moving-to-trash t)
-
-  (autoload 'dired-omit-mode "dired-x")
 
   (add-hook 'dired-mode-hook #'dw/dired-mode-hook)
 
