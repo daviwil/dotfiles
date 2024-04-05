@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(use-package tracking)
+
 (use-package telega
   :commands telega
   :config
