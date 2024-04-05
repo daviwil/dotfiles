@@ -139,8 +139,8 @@
 
 (require 'org-protocol)
 
-(use-package org-make-toc
-  :hook (org-mode . org-make-toc))
+;; (use-package org-make-toc
+;;   :hook (org-mode . org-make-toc))
 
 ;; (use-package org-wild-notifier
 ;;   :after org
