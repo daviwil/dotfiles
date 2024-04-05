@@ -54,11 +54,11 @@
        (propertize "\nλ" 'face `(:foreground "#aece4a")))
      (propertize " " 'face `(:foreground "white")))))
 
+(use-package xterm-color)
+
 (defun dw/eshell-configure ()
   ;; Make sure magit is loaded
   (require 'magit)
-
-  (use-package xterm-color)
 
   (push 'eshell-tramp eshell-modules-list)
   (push 'xterm-color-filter eshell-preoutput-filter-functions)
