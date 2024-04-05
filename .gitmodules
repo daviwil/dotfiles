@@ -1,3 +1,0 @@
-[submodule ".files/.config/emacs"]
-	path = .files/.config/emacs
-	url = https://github.com/plexus/chemacs2
