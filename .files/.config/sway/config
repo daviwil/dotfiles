@@ -165,3 +165,6 @@ exec gsettings set org.gnome.desktop.interface font-name "Iosevka Aile 11"
 
 # Update DBUS activation records to ensure Flatpak apps work
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+# Start pipewire
+exec pipewire
