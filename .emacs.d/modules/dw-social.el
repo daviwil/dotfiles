@@ -8,7 +8,10 @@
   (setq telega-use-tracking-for '(or unmuted mention)
         telega-completing-read-function #'completing-read
         telega-msg-rainbow-title t
-        telega-chat-fill-column 75))
+        telega-chat-fill-column 75)
+
+  (when (eq dw/current-distro 'void)
+    (setq telega-server-libs-prefix "/usr")))
 
 (unless (package-installed-p '0x0)
   (package-vc-install '(0x0 :url "https://git.sr.ht/~willvaughn/emacs-0x0")))
