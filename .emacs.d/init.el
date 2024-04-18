@@ -3,13 +3,28 @@
 ;; Add configuration modules to load path
 (add-to-list 'load-path '"~/.dotfiles/.emacs.d/modules")
 
+
+(defvar dw/fixed-pitch-font "JetBrains Mono"
+  "The font used for `default' and `fixed-pitch' faces.")
+
+(defvar dw/fixed-pitch-size 102)
+
+(defvar dw/variable-pitch-font "Zen Kaku Gothic New"
+  "The font used for `variable-pitch' face.")
+
+(defvar dw/variable-pitch-size 120)
+
+(defvar dw/org-heading-font "Alatsi"
+  "The font used for Org Mode headings.")
+
+
 ;;; -- System Identification -----
 
 (defvar dw/is-termux
   (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
 
 (defvar dw/is-guix-system (and (eq system-type 'gnu/linux)
-			                         (file-exists-p "/etc/os-release")
+                               (file-exists-p "/etc/os-release")
                                (with-temp-buffer
                                  (insert-file-contents "/etc/os-release")
                                  (search-forward "ID=guix" nil t))

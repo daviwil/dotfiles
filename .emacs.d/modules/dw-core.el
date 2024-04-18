@@ -1,7 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(require 'subr-x)
-
 (defvar dw/mail-enabled (member system-name '("zerocool" "acidburn")))
 (setq dw/mu4e-inbox-query nil)
 
@@ -107,6 +105,7 @@
     (load-theme
      (pcase system-name
        ("acidburn" 'doom-ayu-dark)
+       ;; ("acidburn" 'doom-palenight)
        ("phantom" 'doom-molokai)
        (_ 'doom-palenight))
      t)
@@ -130,11 +129,13 @@
                     :weight 'light
                     :height (dw/system-settings-get 'emacs/fixed-face-size))
 
+(defvar dw/org-heading-font "Iosevka Aile")
+
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil
-                    :font "Iosevka Aile"
-                    :height (dw/system-settings-get 'emacs/variable-face-size)
-                    :weight 'light)
+                    :font dw/variable-pitch-font
+                    :height 120
+                    :weight 'normal)
 
 (setq display-time-format "%l:%M %p %b %d W%U"
       display-time-load-average-threshold 0.0)
