@@ -8,6 +8,7 @@ set $primary DP-2 DP-3 DP-7 DP-8 HDMI-A-1
 set $laptop eDP-1
 
 output $laptop pos 1920 135 scale 2
+#output DP-2 res 2560x1440@59.951hz pos 0 0 scale 2
 output DP-2 pos 0 0 scale 2
 output DP-3 pos 0 0 scale 2
 output DP-7 pos 0 0 scale 2
@@ -65,29 +66,25 @@ workspace_layout tabbed
 # Configure gaps and borders
 default_border pixel 1
 gaps outer 0
-gaps inner 4
+gaps inner 6
 smart_borders off
 hide_edge_borders --i3 none 
 
-# Define names for default workspaces for which we configure key bindings later on.
-# We use variables to avoid repeating the names in multiple places.
-set $ws0 "chat"
-set $ws1 "dev"
-set $ws2 "browser"
-set $ws3 "comm"
-set $ws4 "media"
-set $ws5 "misc"
+# Define variables for workspace numbers
+set $ws0 0
+set $ws1 1
+set $ws2 2
+set $ws3 3
+set $ws4 4
+set $ws5 5
 
 # Move specific workspaces to outputs
 workspace $ws0 output $laptop
-workspace $ws1 output $primary $laptop
 workspace $ws2 output $primary $laptop
 workspace $ws3 output $laptop
 workspace $ws4 output $laptop
 workspace $ws5 output $laptop
-
-# Switch to dev workspace by default
-#workspace $ws1
+workspace $ws1 output $primary $laptop # Set ws 1 last to land there on startup
 
 # Switch to workspace
 bindsym $mod+grave workspace $ws0
@@ -114,9 +111,12 @@ bindsym --locked $mod+p exec playerctl play-pause
 bindsym Print exec grimshot --notify save output
 bindsym Alt+Print exec grimshot --notify save area
 
+set $bgcolor #232635dd
+set $bordercolor #c792eacc
+
 # Style the UI
-client.focused #c792eacc #232635dd #ffffffff #ffffffff #c792eacc 
-client.unfocused #c792eacc #1c1f2bef #ffffffff #ffffffff #c792eacc 
+client.focused $bordercolor $bgcolor #ffffffff #ffffffff #c792eacc 
+client.unfocused $bordercolor #1c1f2bef #ffffffff #ffffffff #c792eacc 
 
 # Set up screen locking
 set $lock 'swaylock -f -i ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg -s fill --font "JetBrains Mono" --indicator-idle-visible'
@@ -136,7 +136,7 @@ bar {
     font pango:JetBrains Mono 8
     icon_theme "Papirus-Dark"
 
-    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+    status_command while date +'%Y-%m-%d %I:%M:%S %p W%U'; do sleep 1; done
 
     tray_bindsym button1 Activate
     tray_bindsym button2 ContextMenu
@@ -144,8 +144,8 @@ bar {
 
     colors {
         statusline #ffffff
-        background #323232CC
-        inactive_workspace #323232 #323232CC #5c5c5c
+        background $bgcolor
+        inactive_workspace #1c1f2bef #323232CC #5c5c5c
     }
 }
 
