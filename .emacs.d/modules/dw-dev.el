@@ -217,7 +217,7 @@
 
 ;;; -- Emacs Lisp -----
 
-(add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
+(add-hook 'emacs-lisp-mode-hook #'flymake-mode)
 
 ;;; -- Common Lisp -----
 
@@ -275,12 +275,18 @@
   :hook (adl-mode . abbrev-mode)
   :bind ("C-c C-c" . recompile))
 
-;;; -- Rust ---
+;;; -- Rust -----
 
-(use-package rust-mode)
+(use-package rust-mode
+  :disabled)
 
-;;; -- Zig ---
+;;; -- Zig -----
 
-(use-package zig-mode)
+(use-package zig-mode
+  :disabled)
+
+;;; -- Lua -----
+
+(use-package lua-mode)
 
 (provide 'dw-dev)
