@@ -2,6 +2,18 @@
 
 (use-package hydra)
 
+(use-package icomplete
+  :disabled
+  :ensure nil
+  :custom
+  (icomplete-scroll t)
+  (icomplete-show-matches-on-no-input t)
+  (icomplete-vertical-prospects-height 1)
+  (icomplete-compute-delay 0.05)
+
+  :init
+  (icomplete-vertical-mode 1))
+
 (use-package vertico
   :demand t
   :bind (:map vertico-map
