@@ -125,6 +125,8 @@
                   ("ts" . "src typescript")
                   ("py" . "src python")
                   ("go" . "src go")
+                  ("einit" . "src emacs-lisp :tangle ~/.config/emacs/init.el :mkdirp yes")
+                  ("emodule" . "src emacs-lisp :tangle ~/.config/emacs/modules/dw-MODULE.el :mkdirp yes")
                   ("yaml" . "src yaml")
                   ("json" . "src json")))
     (add-to-list 'org-structure-template-alist item)))
