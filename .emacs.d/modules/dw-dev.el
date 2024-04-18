@@ -243,6 +243,12 @@
   (setq geiser-active-implementations '(guile))
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile))))
 
+(use-package geiser-guile
+  :after geiser
+  :config
+  (when (eq dw/current-distro 'void)
+    (setq geiser-guile-binary "guile3")))
+
 ;; (with-eval-after-load 'geiser-guile
 ;;   ;; (add-to-list 'geiser-guile-load-path "~/.dotfiles")
 ;;   (add-to-list 'geiser-guile-load-path "~/Projects/Code/guix"))

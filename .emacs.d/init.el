@@ -23,12 +23,16 @@
 (defvar dw/is-termux
   (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
 
-(defvar dw/is-guix-system (and (eq system-type 'gnu/linux)
-                               (file-exists-p "/etc/os-release")
-                               (with-temp-buffer
-                                 (insert-file-contents "/etc/os-release")
-                                 (search-forward "ID=guix" nil t))
-                               t))
+(defvar dw/current-distro (or (and (eq system-type 'gnu/linux)
+                                   (file-exists-p "/etc/os-release")
+                                   (with-temp-buffer
+                                     (insert-file-contents "/etc/os-release")
+                                     (search-forward-regexp "^ID=\"\\(.*\\)\"$")
+                                     (intern (or (match-string 1)
+                                                 "unknown"))))
+                              'unknown))
+
+(defvar dw/is-guix-system (eql dw/current-distro 'guix))
 
 (defvar dw/exwm-enabled (and (not dw/is-termux)
                              (eq window-system 'x)
