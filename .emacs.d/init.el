@@ -27,7 +27,7 @@
                                    (file-exists-p "/etc/os-release")
                                    (with-temp-buffer
                                      (insert-file-contents "/etc/os-release")
-                                     (search-forward-regexp "^ID=\"\\(.*\\)\"$")
+                                     (search-forward-regexp "^ID=\"?\\(.*\\)\"?$")
                                      (intern (or (match-string 1)
                                                  "unknown"))))
                               'unknown))
