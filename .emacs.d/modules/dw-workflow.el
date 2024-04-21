@@ -302,8 +302,14 @@ _d_: date        ^ ^              ^ ^
   ;; Refresh agenda files the first time
   (dw/refresh-agenda-files)
 
+  ;; This madness is necessary in the short term because of how 'denote-rename-buffer
+  ;; was named in Denote 2.2.0 (at least in the package that Guix includes)
+  (or (and (featurep 'denote-rename-buffer-with-title)
+           (require 'denote-rename-buffer-with-title))
+      (and (featurep 'denote-rename-buffer)
+           (require 'denote-rename-buffer)))
+
   ;; Rename buffers with the note name
-  (require 'denote-rename-buffer)
   (denote-rename-buffer-mode 1)
 
   ;; Buttonize all denote links in text buffers
