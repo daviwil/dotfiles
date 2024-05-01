@@ -7,6 +7,7 @@
   #:use-module (gnu packages gnupg)
   #:use-module (gnu home)
   #:use-module (gnu home services)
+  #:use-module (gnu home services pm)
   #:use-module (gnu home services gnupg)
   #:use-module (gnu home services mcron)
   #:use-module (gnu home services shells)
@@ -96,6 +97,9 @@
 
    ;; File synchronization
    (service home-syncthing-service-type)
+
+   ;; Monitor battery levels
+   (service home-batsignal-service-type)
 
    ;; Udiskie for auto-mounting devices
    (service home-udiskie-service-type)))
