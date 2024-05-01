@@ -21,7 +21,7 @@ set download-path=~/Downloads
 set input-autohide=true
 
 # Set the default zoom
-set default-zoom=160
+set default-zoom=100
 
 # Hint sites to use dark themes
 set dark-mode=on
