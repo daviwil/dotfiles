@@ -66,6 +66,7 @@
           ;; Browsers
           "qtwayland@5"
           "qutebrowser"
+          "vimb"
 
           ;; Authentication
           "password-store"
