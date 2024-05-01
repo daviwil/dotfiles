@@ -48,6 +48,8 @@
           "matcha-theme"
           "papirus-icon-theme"
           "breeze-icons" ;; For KDE apps
+          "gnome-themes-extra"
+          "adwaita-icon-theme"
 
           ;; Fonts
           "font-jost"
