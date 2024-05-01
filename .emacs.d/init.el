@@ -9,12 +9,12 @@
 
 (defvar dw/fixed-pitch-size 102)
 
-(defvar dw/variable-pitch-font "Zen Kaku Gothic New"
+(defvar dw/variable-pitch-font "Iosevka Aile"
   "The font used for `variable-pitch' face.")
 
 (defvar dw/variable-pitch-size 120)
 
-(defvar dw/org-heading-font "Alatsi"
+(defvar dw/org-heading-font "Iosevka Aile"
   "The font used for Org Mode headings.")
 
 
