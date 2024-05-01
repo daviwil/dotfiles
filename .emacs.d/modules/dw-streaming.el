@@ -81,7 +81,7 @@
 (use-package a)
 
 (unless (package-installed-p 'live-crafter)
-  (package-vc-install '(live-crafter :url "https://github.com/SystemCrafters/live-crafter")))
+  (package-vc-install '(live-crafter :url "https://codeberg.org/SystemCrafters/live-crafter")))
 
 (use-package live-crafter
   :requires (mpv)
