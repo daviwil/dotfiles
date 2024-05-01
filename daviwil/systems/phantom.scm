@@ -3,11 +3,11 @@
   #:use-module (gnu)
   #:use-module (gnu home)
   #:use-module (gnu home services)
+  #:use-module (gnu home services sound)
   #:use-module (gnu packages file-systems)
   #:use-module (daviwil utils)
-  #:use-module (daviwil home-services pipewire)
-  #:use-module (daviwil home-services xsettingsd)
-  #:use-module (daviwil systems common))
+  #:use-module (daviwil systems common)
+  #:use-module (daviwil home-services xsettingsd))
 
 (define home
   (home-environment
