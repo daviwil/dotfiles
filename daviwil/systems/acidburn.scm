@@ -7,6 +7,7 @@
   #:use-module (gnu home services sound)
   #:use-module (gnu packages file-systems)
   #:use-module (gnu services)
+  #:use-module (gnu services docker)
   #:use-module (gnu system)
   #:use-module (gnu system uuid)
   #:use-module (gnu system file-systems)
@@ -43,7 +44,23 @@
                    (device "/dev/nvme0n1p1")
                    (mount-point "/boot/efi")
                    (type "vfat"))
-                  %base-file-systems))))
+                  %base-file-systems))
+
+   (services (cons*
+              (service oci-container-service-type
+                       (list
+                        (oci-container-configuration
+                         (image "jellyfin/jellyfin")
+                         (provision "jellyfin")
+                         (network "host")
+                         (ports
+                          '(("8096" . "8096")))
+                         (volumes
+                          '("jellyfin-config:/config"
+                            "jellyfin-cache:/cache"
+                            "/home/daviwil/Media:/media")))))
+
+              (operating-system-user-services base-operating-system)))))
 
 ;; Return home or system config based on environment variable
 (if (getenv "RUNNING_GUIX_HOME") home system)
