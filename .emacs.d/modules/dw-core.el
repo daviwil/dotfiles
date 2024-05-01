@@ -431,29 +431,6 @@ With optional argument FRAME, return the list of buffers of FRAME."
 ;; Load the info system for info files
 (add-to-list 'auto-mode-alist '("\\.info\\'" . Info-on-current-buffer))
 
-;;; -- AI -----
-
-(defun my/copilot-tab ()
-  (interactive)
-  (or (copilot-accept-completion)
-      (indent-for-tab-command)))
-
-(use-package editorconfig
-  :ensure t
-  :config
-  (editorconfig-mode 1))
-
-(unless (package-installed-p 'copilot)
-  (package-vc-install "https://github.com/zerolfx/copilot.el"))
-
-(use-package copilot
-  :config
-  (with-eval-after-load 'copilot
-    (if (featurep 'evil)
-        (evil-define-key 'insert copilot-mode-map
-                         (kbd "<tab>") #'my/copilot-tab)
-      (define-key copilot-mode-map (kbd "<tab>") #'my/copilot-tab))))
-
 ;;; -- Foot Support -----
 
 (add-to-list 'term-file-aliases '("foot" . "xterm"))
