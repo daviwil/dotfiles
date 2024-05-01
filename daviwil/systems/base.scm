@@ -85,7 +85,6 @@
                             "intel-vaapi-driver"
                             "libva-utils"
                             "xf86-input-libinput"
-                            "nss-certs" ;; SSL root certificates
                             "gvfs"))    ;; Enable user mounts
                      %base-packages))
 
