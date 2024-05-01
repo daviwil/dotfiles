@@ -141,7 +141,6 @@ bar {
     tray_bindsym button1 Activate
     tray_bindsym button2 ContextMenu
 
-
     colors {
         statusline #ffffff
         background $bgcolor
@@ -150,7 +149,6 @@ bar {
 }
 
 # Autostart applications
-#exec waybar
 exec mako --border-radius=2 --font="JetBrains Mono 8" --max-visible=5 --outer-margin=5 --margin=3 --background="#1c1f26" --border-color="#89AAEB" --border-size=1 --default-timeout=7000
 exec nm-applet --indicator
 exec udiskie -t
@@ -168,5 +166,5 @@ include "~/.config/sway/systems/$(hostname)"
 # Update DBUS activation records to ensure Flatpak apps work
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
-# Start pipewire
-exec pipewire
+# Start pipewire (Only needed on Void)
+#exec pipewire
