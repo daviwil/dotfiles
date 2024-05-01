@@ -10,16 +10,8 @@
 
   #:export (home-emacs-config-service-type))
 
-(define transform
-  (options->transformation
-   ;; 0.0.9 is too old for the mu4e fix
-   ;; also, adopt the new ement.el bindings
-   '((with-commit . "emacs-evil-collection=97a57c91d200a278d0bf91199e2eae45f7d875b0"))))
-
 (define (home-emacs-config-profile-service config)
-  (map (lambda (package-name)
-         (transform
-          (specification->package+output package-name)))
+  (map specification->package+output
        (list "emacs-next-pgtk"
 
              "emacs-tmr"
