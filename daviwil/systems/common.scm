@@ -11,6 +11,7 @@
   #:use-module (gnu home services mcron)
   #:use-module (gnu home services shells)
   #:use-module (gnu home services desktop)
+  #:use-module (gnu home services syncthing)
   #:use-module (guix gexp))
 
 (define-public common-home-services
@@ -92,6 +93,9 @@
                #~(job
                   '(next-hour (range 0 24 4))
                   "~/.dotfiles/.bin/sync-passwords")))))
+
+   ;; File synchronization
+   (service home-syncthing-service-type)
 
    ;; Udiskie for auto-mounting devices
    (service home-udiskie-service-type)))

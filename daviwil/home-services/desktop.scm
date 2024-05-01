@@ -5,7 +5,6 @@
   #:use-module (daviwil packages fonts)
   #:use-module (gnu services)
   #:use-module (gnu home services)
-  #:use-module (gnu home services shepherd)
   #:use-module (guix gexp)
 
   #:export (home-desktop-service-type))
@@ -91,7 +90,6 @@
           "zathura-pdf-mupdf"
 
           ;; File syncing
-          "syncthing"
           "syncthing-gtk"
 
           ;; General utilities
@@ -101,15 +99,6 @@
           "zip"
           "unzip"
           "trash-cli"))))
-
-(define (home-desktop-shepherd-services config)
-  (list
-   ;; TODO: Use built-in syncthing service
-   (shepherd-service
-    (provision '(syncthing))
-    (documentation "Run and control syncthing.")
-    (start #~(make-forkexec-constructor '("syncthing" "-no-browser")))
-    (stop #~(make-kill-destructor)))))
 
 (define (home-desktop-environment-variables config)
   '(("_JAVA_AWT_WM_NONREPARENTING" . "1")))
@@ -121,9 +110,6 @@
                  (list (service-extension
                         home-profile-service-type
                         home-desktop-profile-service)
-                       (service-extension
-                        home-shepherd-service-type
-                        home-desktop-shepherd-services)
                        (service-extension
                         home-environment-variables-service-type
                         home-desktop-environment-variables)))
