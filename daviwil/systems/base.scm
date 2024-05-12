@@ -11,8 +11,9 @@
 (use-service-modules guix admin sysctl pm nix avahi dbus cups desktop linux
                      mcron networking xorg ssh docker audio virtualization)
 
-(use-package-modules nfs certs shells ssh linux bash emacs gnome networking wm fonts libusb
-                     cups freedesktop file-systems version-control package-management)
+(use-package-modules audio video nfs certs shells ssh linux bash emacs gnome
+                     networking wm fonts libusb cups freedesktop file-systems
+                     version-control package-management vim)
 
 (define-public base-operating-system
   (operating-system
@@ -72,22 +73,20 @@
                  %base-groups))
 
    ;; Install bare-minimum system packages
-   (packages (append (map specification->package
-                          '("git"
-                            "ntfs-3g"
-                            "exfat-utils"
-                            "fuse-exfat"
-                            "stow"
-                            "vim"
-                            "emacs-no-x-toolkit"
-                            "brightnessctl"
-                            "bluez"
-                            "bluez-alsa"
-                            "intel-vaapi-driver"
-                            "libva-utils"
-                            "xf86-input-libinput"
-                            "gvfs"))    ;; Enable user mounts
-                     %base-packages))
+   (packages (cons* bluez
+                    bluez-alsa
+                    brightnessctl
+                    emacs-no-x-toolkit
+                    exfat-utils
+                    fuse-exfat
+                    git
+                    gvfs    ;; Enable user mounts
+                    intel-vaapi-driver
+                    libva-utils
+                    ntfs-3g
+                    stow
+                    vim
+                    %base-packages))
 
    ;; Configure only the services necessary to run the system
    (services (append
@@ -303,22 +302,20 @@
                  %base-groups))
 
    ;; Install bare-minimum system packages
-   (packages (append (map specification->package
-                          '("git"
-                            "ntfs-3g"
-                            "exfat-utils"
-                            "fuse-exfat"
-                            "stow"
-                            "vim"
-                            "emacs-no-x-toolkit"
-                            "brightnessctl"
-                            "bluez"
-                            "bluez-alsa"
-                            "intel-vaapi-driver"
-                            "libva-utils"
-                            "xf86-input-libinput"
-                            "gvfs"))    ;; Enable user mounts
-                     %base-packages))
+   (packages (cons* bluez
+                    bluez-alsa
+                    brightnessctl
+                    emacs-no-x-toolkit
+                    exfat-utils
+                    fuse-exfat
+                    git
+                    gvfs    ;; Enable user mounts
+                    intel-vaapi-driver
+                    libva-utils
+                    ntfs-3g
+                    stow
+                    vim
+                    %base-packages))
 
    ;; Configure only the services necessary to run the system
    (services (append
@@ -348,17 +345,9 @@
                          (greeter-supplementary-groups (list "video" "input"))
                          (terminals
                           (list
-                           ;; TTY1 is the graphical login screen for Sway
                            (greetd-terminal-configuration
                             (terminal-vt "1")
-                            (terminal-switch #t)
-                            ;; (default-session-command (greetd-wlgreet-sway-session
-                            ;;                           (sway-configuration
-                            ;;                            (plain-file "sway-greet.conf"
-                            ;;                                        "output * bg /home/daviwil/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg fill\n"))))
-                            )
-
-                           ;; Set up remaining TTYs for terminal use
+                            (terminal-switch #t))
                            (greetd-terminal-configuration (terminal-vt "2"))
                            (greetd-terminal-configuration (terminal-vt "3"))))))
 
@@ -433,11 +422,11 @@
                ;; Configure v4l2loopback module for virtual cameras
                ;; See also: https://stackoverflow.com/a/66072635
                ;;           https://github.com/umlaeute/v4l2loopback
-               ;; (service kernel-module-loader-service-type '("v4l2loopback"))
-               ;; (simple-service 'v4l2loopback-config etc-service-type
-               ;;                 (list `("modprobe.d/v4l2loopback.conf"
-               ;;                         ,(plain-file "v4l2loopback.conf"
-               ;;                                      "options v4l2loopback devices=1 video_nr=2 exclusive_caps=1 card_label=\"OBS Virtual Camera\""))))
+               (service kernel-module-loader-service-type '("v4l2loopback"))
+               (simple-service 'v4l2loopback-config etc-service-type
+                               (list `("modprobe.d/v4l2loopback.conf"
+                                       ,(plain-file "v4l2loopback.conf"
+                                                    "options v4l2loopback devices=1 video_nr=2 exclusive_caps=1 card_label=\"OBS Virtual Camera\""))))
 
 
                ;; Enable Docker containers and virtual machines
@@ -487,4 +476,4 @@
                                 #~(job "5 0 * * *" "guix gc -d 2m -F 10G"))))))
 
    ;; Allow resolution of '.local' host names with mDNS
-   (name-service-switch %mdns-host-lookup-nss))))
+   (name-service-switch %mdns-host-lookup-nss)))
