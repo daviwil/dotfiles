@@ -3,6 +3,7 @@
   #:use-module (daviwil systems base)
   #:use-module (daviwil systems common)
   #:use-module (daviwil home-services xsettingsd)
+  #:use-module (gnu)
   #:use-module (gnu home)
   #:use-module (gnu home services sound)
   #:use-module (gnu packages file-systems)
@@ -14,19 +15,24 @@
   #:use-module (gnu system mapped-devices)
   #:use-module (nongnu packages linux))
 
-(define home
-  (home-environment
-   (packages (gather-manifest-packages '(mail video games)))
-   (services (cons* (service home-pipewire-service-type)
-                    common-home-services))))
+(system-config
+ #:home
+ (home-environment
+  (packages (gather-manifest-packages '(mail video games)))
+  (services (cons* (service home-pipewire-service-type)
+                   common-home-services)))
 
-(define system
-  (operating-system
-   (inherit base-operating-system)
+ #:system
+ (operating-system
    (host-name "acidburn")
 
    ;; Add sof-firmware drivers for audio on ThinkPad X1 Nano
    (firmware (list linux-firmware sof-firmware))
+
+   (bootloader (bootloader-configuration
+                (bootloader grub-efi-bootloader)
+                (targets '("/boot/efi"))
+                (keyboard-layout keyboard-layout)))
 
    (mapped-devices
     (list (mapped-device
@@ -61,6 +67,3 @@
                             "/home/daviwil/Media:/media")))))
 
               (operating-system-user-services base-operating-system)))))
-
-;; Return home or system config based on environment variable
-(if (getenv "RUNNING_GUIX_HOME") home system)
