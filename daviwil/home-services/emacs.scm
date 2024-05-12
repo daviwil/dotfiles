@@ -10,8 +10,15 @@
 
   #:export (home-emacs-config-service-type))
 
+(define transform
+  (options->transformation
+   ;; 2.3.0 does not include the `box :style none` fix
+   '((with-commit . "emacs-doom-themes=3b2422b208d28e8734b300cd3cc6a7f4af5eba55"))))
+
 (define (home-emacs-config-profile-service config)
-  (map specification->package+output
+  (map (lambda (package-name)
+         (transform
+          (specification->package+output package-name)))
        (list "emacs-next-pgtk"
 
              "emacs-tmr"
