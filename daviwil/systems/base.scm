@@ -5,6 +5,7 @@
   #:use-module (gnu system nss)
   #:use-module (gnu system setuid)
   #:use-module (nongnu packages linux)
+  #:use-module (nongnu packages video)
   #:use-module (nongnu system linux-initrd)
   #:export (system-config))
 
@@ -81,7 +82,7 @@
                     fuse-exfat
                     git
                     gvfs    ;; Enable user mounts
-                    intel-vaapi-driver
+                    intel-media-driver/nonfree
                     libva-utils
                     ntfs-3g
                     stow
@@ -310,7 +311,7 @@
                     fuse-exfat
                     git
                     gvfs    ;; Enable user mounts
-                    intel-vaapi-driver
+                    intel-media-driver/nonfree
                     libva-utils
                     ntfs-3g
                     stow
