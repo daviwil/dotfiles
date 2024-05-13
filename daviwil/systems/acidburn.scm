@@ -2,7 +2,7 @@
   #:use-module (daviwil utils)
   #:use-module (daviwil systems base)
   #:use-module (daviwil systems common)
-  #:use-module (daviwil home-services xsettingsd)
+  #:use-module (daviwil home-services streaming)
   #:use-module (gnu)
   #:use-module (gnu home)
   #:use-module (gnu home services sound)
@@ -20,6 +20,7 @@
  (home-environment
   (packages (gather-manifest-packages '(mail video games)))
   (services (cons* (service home-pipewire-service-type)
+                   (service home-streaming-service-type)
                    common-home-services)))
 
  #:system
