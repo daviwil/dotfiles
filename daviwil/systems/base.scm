@@ -324,6 +324,7 @@
                (delete login-service-type)
                (delete mingetty-service-type)
                (delete console-font-service-type))
+              (operating-system-user-services system)
               (list
                ;; Set up my home configuration
                (service guix-home-service-type

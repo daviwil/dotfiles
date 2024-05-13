@@ -52,7 +52,7 @@
                    (type "vfat"))
                   %base-file-systems))
 
-   (services (cons*
+   (services (list
               (service oci-container-service-type
                        (list
                         (oci-container-configuration
@@ -64,6 +64,4 @@
                          (volumes
                           '("jellyfin-config:/config"
                             "jellyfin-cache:/cache"
-                            "/home/daviwil/Media:/media")))))
-
-              (operating-system-user-services base-operating-system)))))
+                            "/home/daviwil/Media:/media")))))))))
