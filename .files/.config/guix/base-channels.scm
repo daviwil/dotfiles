@@ -1,9 +1,4 @@
-;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
-
 (list (channel
-       (name 'channel-x)
-       (url "https://github.com/daviwil/channel-x"))
-      (channel
        (name 'nonguix)
        (url "https://gitlab.com/nonguix/nonguix")
        (introduction
