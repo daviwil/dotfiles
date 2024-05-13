@@ -57,6 +57,11 @@
                               ;; Load the Nix profile
                               "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then\n"
                               "  . /run/current-system/profile/etc/profile.d/nix.sh\n"
+                              "fi\n"))
+                ,(plain-file "bash-sway-login"
+                             (string-append
+                              "if [ -z \"$WAYLAND_DISPLAY\" ] && [ \"$XDG_VTNR\" -eq 1 ]; then\n"
+                              "  exec sway\n"
                               "fi\n"))))
              (bashrc
               `(,(local-file "../files/bash-prompt")))))
