@@ -1,18 +1,21 @@
 (define-module (daviwil systems phantom)
-  #:use-module (daviwil systems base)
   #:use-module (gnu)
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services sound)
   #:use-module (gnu packages file-systems)
   #:use-module (daviwil utils)
-  #:use-module (daviwil systems common))
+  #:use-module (daviwil systems base)
+  #:use-module (daviwil systems common)
+  #:use-module (daviwil home-services video)
+  #:use-module (daviwil home-services streaming))
 
 (system-config
  #:home
  (home-environment
-  (packages (gather-manifest-packages '(video)))
   (services (cons* (service home-pipewire-service-type)
+                   (service home-streaming-service-type)
+                   (service home-video-service-type)
                    common-home-services)))
 
  #:system
@@ -40,4 +43,4 @@
                     (device "/dev/nvme0n1p1")
                     (mount-point "/boot/efi")
                     (type "vfat"))
-                  %base-file-systems)))
+                  %base-file-systems))))
