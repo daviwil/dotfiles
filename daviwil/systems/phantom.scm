@@ -6,23 +6,23 @@
   #:use-module (gnu home services sound)
   #:use-module (gnu packages file-systems)
   #:use-module (daviwil utils)
-  #:use-module (daviwil systems common)
-  #:use-module (daviwil home-services xsettingsd))
+  #:use-module (daviwil systems common))
 
-(define home
-  (home-environment
-   (packages (gather-manifest-packages '(video)))
-   (services (cons*
-              (service home-xsettingsd-service-type
-                             (home-xsettingsd-configuration
-                              (dpi 140)))
-              (service home-pipewire-service-type)
-              common-home-services))))
+(system-config
+ #:home
+ (home-environment
+  (packages (gather-manifest-packages '(video)))
+  (services (cons* (service home-pipewire-service-type)
+                   common-home-services)))
 
-(define system
-  (operating-system
-   (inherit base-operating-system)
+ #:system
+ (operating-system
    (host-name "phantom")
+
+   (bootloader (bootloader-configuration
+                (bootloader grub-efi-bootloader)
+                (targets '("/boot/efi"))
+                (keyboard-layout keyboard-layout)))
 
    (mapped-devices
     (list (mapped-device
@@ -32,15 +32,12 @@
 
    (file-systems (cons*
                   (file-system
-                   (device (file-system-label "system-root"))
-                   (mount-point "/")
-                   (type "ext4")
-                   (dependencies mapped-devices))
+                    (device (file-system-label "system-root"))
+                    (mount-point "/")
+                    (type "ext4")
+                    (dependencies mapped-devices))
                   (file-system
-                   (device "/dev/nvme0n1p1")
-                   (mount-point "/boot/efi")
-                   (type "vfat"))
-                  %base-file-systems))))
-
-;; Return home or system config based on environment variable
-(if (getenv "RUNNING_GUIX_HOME") home system)
+                    (device "/dev/nvme0n1p1")
+                    (mount-point "/boot/efi")
+                    (type "vfat"))
+                  %base-file-systems)))
