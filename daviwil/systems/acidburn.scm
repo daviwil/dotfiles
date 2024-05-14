@@ -2,6 +2,7 @@
   #:use-module (daviwil utils)
   #:use-module (daviwil systems base)
   #:use-module (daviwil systems common)
+  #:use-module (daviwil home-services games)
   #:use-module (daviwil home-services video)
   #:use-module (daviwil home-services streaming)
   #:use-module (gnu)
@@ -19,10 +20,11 @@
 (system-config
  #:home
  (home-environment
-  (packages (gather-manifest-packages '(mail games)))
+  (packages (gather-manifest-packages '(mail)))
   (services (cons* (service home-pipewire-service-type)
                    (service home-video-service-type)
                    (service home-streaming-service-type)
+                   (service home-games-service-type)
                    common-home-services)))
 
  #:system
