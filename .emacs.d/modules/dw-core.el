@@ -105,7 +105,6 @@
     (load-theme
      (pcase system-name
        ("acidburn" 'doom-ayu-dark)
-       ;; ("acidburn" 'doom-palenight)
        ("phantom" 'doom-molokai)
        (_ 'doom-palenight))
      t)
@@ -140,8 +139,18 @@
 (setq display-time-format "%l:%M %p %b %d W%U"
       display-time-load-average-threshold 0.0)
 
-;; You must run (all-the-icons-install-fonts) one time after
-;; installing this package!
+(defun dw/activate-theme-tweaks (_theme)
+  ;; Increase the height of the mode line
+  (set-face-attribute 'mode-line nil
+                      :box `(:line-width 2 :color ,(face-attribute 'mode-line :background)))
+  (set-face-attribute 'mode-line-inactive nil
+                      :box `(:line-width 2 :color ,(face-attribute 'mode-line-inactive :background)))
+
+  ;; Fix tab bar faces
+  (set-face-attribute 'tab-bar nil :foreground (face-attribute 'mode-line :foreground))
+  (set-face-attribute 'tab-bar-tab nil :weight 'bold))
+
+(advice-add 'enable-theme :after #'dw/activate-theme-tweaks)
 
 ;;; -- Mode Line -----
 
@@ -162,15 +171,6 @@
               mode-line-percent-position nil
               mode-line-buffer-identification '(" %b")
               mode-line-position-column-line-format '(" %l:%c"))
-
-(advice-add 'enable-theme
-            :after
-            (lambda (_theme)
-              ;; Increase the height of the mode line
-              (set-face-attribute 'mode-line nil
-                                  :box `(:line-width 2 :color ,(face-attribute 'mode-line :background)))
-              (set-face-attribute 'mode-line-inactive nil
-                                  :box `(:line-width 2 :color ,(face-attribute 'mode-line-inactive :background)))))
 
 (use-package minions
   :init
@@ -234,10 +234,6 @@ With optional argument FRAME, return the list of buffers of FRAME."
 
 (global-set-key (kbd "C-M-j") #'consult-buffer)
 
-(defun dw/set-tab-bar-faces ()
-  (set-face-attribute 'tab-bar-tab nil :foreground "white" :background nil :weight 'semi-bold :inherit nil)
-  (set-face-attribute 'tab-bar nil :font "JetBrains Mono" :foreground "white" :inherit 'mode-line))
-
 (setq tab-bar-close-button-show nil
       tab-bar-auto-width nil
       tab-bar-format '(tab-bar-format-menu-bar
@@ -251,8 +247,6 @@ With optional argument FRAME, return the list of buffers of FRAME."
                        tab-bar-format-global))
 
 (defun dw/setup-tab-bar-mode ()
-  (dw/set-tab-bar-faces)
-
   (add-to-list 'global-mode-string '(" " display-time-string))
   ;; (add-to-list 'global-mode-string '(" " tracking-mode-line-buffers))
 
