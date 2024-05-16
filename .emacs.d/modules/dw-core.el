@@ -254,6 +254,9 @@ With optional argument FRAME, return the list of buffers of FRAME."
   (tab-bar-mode 1)
   (tab-bar-rename-tab "Main"))
 
+(global-set-key (kbd "s-[") #'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "s-]") #'tab-bar-switch-to-next-tab)
+
 ;;; -- Notifications -----
 
 (use-package alert
