@@ -87,6 +87,7 @@
   :demand t
   :bind (("C-s" . consult-line)
          ("C-M-l" . consult-imenu)
+         ("C-M-j" . consult-buffer)
          ("C-x C-b" . consult-buffer)
          :map minibuffer-local-map
          ("C-r" . consult-history))

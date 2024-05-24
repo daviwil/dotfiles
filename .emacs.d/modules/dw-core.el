@@ -225,6 +225,8 @@ With optional argument FRAME, return the list of buffers of FRAME."
 
 ;;   (setq consult-ripgrep-args "rg --null --hidden --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --search-zip .")
 
+;; -- Tab Bar -----
+
 (defun dw/switch-tab-buffer (&optional arg)
   (interactive "P")
   (cond
@@ -232,30 +234,32 @@ With optional argument FRAME, return the list of buffers of FRAME."
    ((project-current) (call-interactively #'project-switch-to-buffer))
    (t (call-interactively #'consult-buffer))))
 
-(global-set-key (kbd "C-M-j") #'consult-buffer)
+(use-package tab-bar
+  :ensure nil
+  :bind (("s-[" . tab-bar-switch-to-prev-tab)
+         ("s-]" . tab-bar-switch-to-next-tab)
+         ("s-{" . (lambda ()
+                    (interactive)
+                    (tab-move -1)))
+         ("s-}" . (lambda ()
+                    (interactive)
+                    (tab-move 1))))
+  :custom
+  (tab-bar-show t)
+  (tab-bar-close-button-show nil)
+  (tab-bar-auto-width nil)
+  (tab-bar-format '(tab-bar-format-menu-bar
+                    dw/exwm-workspace-icon
+                    tab-bar-format-tabs-groups
+                    tab-bar-separator
+                    dw/tmr-mode-line
+                    tab-bar-separator
+                    tab-bar-format-align-right
+                    tab-bar-format-global))
 
-(setq tab-bar-close-button-show nil
-      tab-bar-auto-width nil
-      tab-bar-format '(tab-bar-format-menu-bar
-                       dw/exwm-workspace-icon
-                       tab-bar-format-history
-                       tab-bar-format-tabs-groups
-                       tab-bar-separator
-                       dw/tmr-mode-line
-                       tab-bar-separator
-                       tab-bar-format-align-right
-                       tab-bar-format-global))
-
-(defun dw/setup-tab-bar-mode ()
-  (add-to-list 'global-mode-string '(" " display-time-string))
-  ;; (add-to-list 'global-mode-string '(" " tracking-mode-line-buffers))
-
-  (setq tab-bar-show t)
-  (tab-bar-mode 1)
-  (tab-bar-rename-tab "Main"))
-
-(global-set-key (kbd "s-[") #'tab-bar-switch-to-prev-tab)
-(global-set-key (kbd "s-]") #'tab-bar-switch-to-next-tab)
+  ;; Like winner-mode for tabs
+  (tab-bar-history-mode 1)
+  (tab-bar-mode 1))
 
 ;;; -- Notifications -----
 
