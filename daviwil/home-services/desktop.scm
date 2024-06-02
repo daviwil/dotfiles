@@ -1,20 +1,15 @@
 (define-module (daviwil home-services desktop)
+  #:use-module (daviwil packages fonts)
+  #:use-module (gnu home services)
   #:use-module (gnu packages)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages glib)
-  #:use-module (daviwil packages fonts)
   #:use-module (gnu services)
-  #:use-module (gnu home services)
   #:use-module (guix gexp)
-
   #:export (home-desktop-service-type))
 
 (define (home-desktop-profile-service config)
   (cons*
-   ;; NOTE: This is a very weird hack to get around an issue where "glib:bin"
-   ;; returns a newer version of glib than what most packages are using via the
-   ;; exported `glib' symbol.  The "bin" output is needed to get the `gsettings'
-   ;; program to control GTK theme settings without a configuration file.
    (list glib "bin")
    (map specification->package+output
         '(;; Sway setup
@@ -26,7 +21,6 @@
           "mako"
           "gammastep"
           "grimshot" ;; grimshot --notify copy area
-          "feh"
           "network-manager-applet"
 
           ;; Compatibility for older Xorg applications
@@ -40,9 +34,6 @@
           "xdg-utils" ;; For xdg-open, etc
           "xdg-dbus-proxy"
           "shared-mime-info"
-
-          ;; TODO: Remove when Emacs service is working
-          "emacs-next-pgtk"
 
           ;; Appearance
           "matcha-theme"
@@ -60,8 +51,6 @@
           "font-google-noto-emoji"
           "font-liberation"
           "font-awesome"
-          "gucharmap"
-          "fontmanager"
 
           ;; Browsers
           "qtwayland@5"
@@ -73,7 +62,7 @@
 
           ;; Audio devices and media playback
           "mpv"
-          ;; "mpv-mpris"
+          "mpv-mpris"
           "youtube-dl"
           "playerctl"
           "gstreamer"
