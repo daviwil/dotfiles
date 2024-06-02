@@ -3,7 +3,6 @@
   #:use-module (gnu packages)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz)
-  #:use-module (gnu packages finance)
   #:use-module (gnu packages gnupg)
   #:use-module (gnu packages mail)
   #:use-module (gnu packages version-control)
@@ -29,11 +28,6 @@
    emacs-beframe
 
    emacs-no-littering
-
-   emacs-exwm
-   emacs-desktop-environment
-
-   emacs-god-mode
 
    emacs-popper
 
@@ -80,7 +74,6 @@
    emacs-password-store
    emacs-auth-source-pass
 
-   emacs-dired-hacks
    emacs-all-the-icons-dired
 
    emacs-org
@@ -107,20 +100,17 @@
                                         ;emacs-project
    ripgrep ;; For consult-ripgrep
 
-   emacs-lispy
-   emacs-lispyville
-
-   emacs-sly
-   emacs-sly-asdf
+   ;emacs-sly
+   ;emacs-sly-asdf
 
    emacs-js2-mode
    emacs-typescript-mode
    emacs-apheleia
 
-   emacs-go-mode
+   ;emacs-go-mode
 
-   emacs-rust-mode
-   emacs-zig-mode
+   ;emacs-rust-mode
+   ;emacs-zig-mode
 
    emacs-helpful
 
@@ -157,12 +147,8 @@
    mu
    emacs-mu4e-alert
 
-   ledger
-   ;; hledger
-   emacs-ledger-mode
 
    emacs-eat
-   emacs-eshell-z
    emacs-esh-autosuggest
    emacs-xterm-color
    emacs-exec-path-from-shell
@@ -181,8 +167,6 @@
 
    emacs-elfeed
 
-   emacs-elpher
-
    emacs-guix
 
    emacs-daemons
@@ -190,7 +174,6 @@
    emacs-pulseaudio-control
 
    emacs-docker
-   emacs-docker-tramp
    emacs-dockerfile-mode))
 
 (define home-emacs-config-service-type

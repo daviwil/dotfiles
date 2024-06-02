@@ -80,10 +80,11 @@
 (use-package request)
 (use-package a)
 
-(unless (package-installed-p 'live-crafter)
-  (package-vc-install '(live-crafter :url "https://codeberg.org/SystemCrafters/live-crafter")))
+;; (unless (package-installed-p 'live-crafter)
+;;   (package-vc-install '(live-crafter :url "https://codeberg.org/SystemCrafters/live-crafter")))
 
 (use-package live-crafter
+  :ensure nil
   :requires (mpv)
   :commands (live-crafter-start-music
              live-crafter-start-chat

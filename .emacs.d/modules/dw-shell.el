@@ -114,11 +114,6 @@
   (setq eshell-directory-name "~/.dotfiles/.emacs.d/eshell/"
         eshell-aliases-file (expand-file-name "~/.dotfiles/.emacs.d/eshell/alias")))
 
-(use-package eshell-z
-  :disabled ;; Using consult-dir for this now
-  (add-hook 'eshell-mode-hook (lambda () (require 'eshell-z)))
-  (add-hook 'eshell-z-change-dir-hook (lambda () (eshell/pushd (eshell/pwd)))))
-
 (use-package exec-path-from-shell
   :demand t
   :config

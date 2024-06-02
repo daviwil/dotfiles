@@ -76,9 +76,6 @@
           "https://valdyas.org/fading/feed/"
           "https://www.reddit.com/r/emacs/.rss")))
 
-(use-package elpher
-  :commands elpher)
-
 (use-package ement
   :commands ement-connect
   :custom
