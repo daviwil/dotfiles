@@ -9,7 +9,7 @@
           "~/storage/shared/Notes"
         "~/Notes"))
 
-(defvar dw/base-agenda-files '("Inbox.org" "Schedule.org" "Mesche.org" "SystemCrafters.org")
+(defvar dw/base-agenda-files '("Inbox.org" "Schedule.org") ;; "Mesche.org" "SystemCrafters.org")
   "The base agenda files that will always be included.")
 
 (defun dw/org-path (path)
@@ -288,29 +288,39 @@ _d_: date        ^ ^              ^ ^
 (defun dw/refresh-agenda-files ()
   (interactive)
   (setq org-agenda-files
-        (append (denote-directory-files-matching-regexp "_project")
+        (append (denote-directory-files-matching-regexp "_pra")
                 dw/base-agenda-files)))
 
 (use-package denote
   :demand t
+  :bind (("C-c n l" . denote-link-or-create)
+         ("C-c n o" . denote-open-or-create)
+         ("C-c n r" . denote-rename-file-using-front-matter))
   :custom
+  (denote-directory "~/Notes/Denote")
   (denote-rename-buffer-format "Denote: %t (%k)")
+  (denote-infer-keywords nil)
+  (denote-known-keywords
+   '("pra" "prb" "prc"
+     "ply" "plm" "plw"
+     "kh" "ht" "kp" "kl" "ka" "kap"
+     "kcp" "kca" "kcc"
+     "kra" "krb" "krv"
+     "rn"))
   :config
-  (setq denote-directory "~/Notes/Denote")
-  (setq denote-known-keywords '("journal" "workflow" "daily" "weekly" "monthly"))
 
   ;; Refresh agenda files the first time
   (dw/refresh-agenda-files)
 
-  ;; This madness is necessary in the short term because of how 'denote-rename-buffer
-  ;; was named in Denote 2.2.0 (at least in the package that Guix includes)
-  (or (and (featurep 'denote-rename-buffer-with-title)
-           (require 'denote-rename-buffer-with-title))
-      (and (featurep 'denote-rename-buffer)
-           (require 'denote-rename-buffer)))
+  (require 'denote-rename-buffer)
+  (require 'denote-org-extras)
 
   ;; Rename buffers with the note name
   (denote-rename-buffer-mode 1)
+
+  ;; Update agenda files after notes are created or renamed
+  (add-hook 'denote-after-rename-file-hook #'dw/refresh-agenda-files)
+  (add-hook 'denote-after-new-note-hook #'dw/refresh-agenda-files)
 
   ;; Buttonize all denote links in text buffers
   (add-hook 'find-file-hook #'denote-link-buttonize-buffer))
