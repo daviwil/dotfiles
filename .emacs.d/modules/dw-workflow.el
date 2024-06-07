@@ -266,14 +266,14 @@ _d_: date        ^ ^              ^ ^
       :if-new (file+head+olp ,dw/daily-note-filename
                              ,dw/daily-note-header
                              ("Log")))))
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n d" . dw/org-roam-jump-menu/body)
-         ("C-c n c" . org-roam-dailies-capture-today)
-         ("C-c n t" . dw/org-roam-capture-task)
-         ("C-c n g" . org-roam-graph)
-         :map org-mode-map
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n I" . org-roam-insert-immediate))
+  ;; :bind (("C-c n l" . org-roam-buffer-toggle)
+  ;;        ("C-c n d" . dw/org-roam-jump-menu/body)
+  ;;        ("C-c n c" . org-roam-dailies-capture-today)
+  ;;        ("C-c n t" . dw/org-roam-capture-task)
+  ;;        ("C-c n g" . org-roam-graph)
+  ;;        :map org-mode-map
+  ;;        ("C-c n i" . org-roam-node-insert)
+  ;;        ("C-c n I" . org-roam-insert-immediate))
 
   :config
   (setq org-roam-v2-ack t)
