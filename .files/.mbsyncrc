@@ -20,11 +20,11 @@ SubFolders Verbatim
 
 # Connect the remote and the local maildir
 Channel fastmail
-Master :fastmail-remote:
-Slave :fastmail-local:
-Patterns * !"Archive/*"
+Far :fastmail-remote:
+Near :fastmail-local:
+Patterns *
 Expunge None
 CopyArrivalDate yes
 Sync All
-Create Slave
+Create Near
 SyncState *
