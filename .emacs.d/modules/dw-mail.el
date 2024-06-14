@@ -33,10 +33,10 @@
             :name "Fastmail"
             :vars '((user-full-name . "David Wilson")
                     (user-mail-address . "david@daviwil.com")
-                    (mu4e-sent-folder . "/Sent Items")
-                    (mu4e-trash-folder . "/Trash")
-                    (mu4e-drafts-folder . "/Drafts")
-                    (mu4e-refile-folder . "/Archive")
+                    (mu4e-sent-folder . "/Fastmail/Sent Items")
+                    (mu4e-trash-folder . "/Fastmail/Trash")
+                    (mu4e-drafts-folder . "/Fastmail/Drafts")
+                    (mu4e-refile-folder . "/Fastmail/Archive")
                     (mu4e-sent-messages-behavior . sent)))))
   (setq mu4e-context-policy 'pick-first)
 
@@ -48,15 +48,14 @@
       (let ((last (nthcdr (1- nth) list)))
         (setcdr last (cddr last))
         list)))
-  (setq mu4e-marks (remove-nth-element 5 mu4e-marks))
-  (add-to-list 'mu4e-marks
-               '(trash
-                 :char ("d" . "▼")
-                 :prompt "dtrash"
-                 :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
-                 :action (lambda (docid msg target)
-                           (mu4e--server-move docid
-                                              (mu4e--mark-check-target target) "-N"))))
+
+  (setf (alist-get 'trash mu4e-marks)
+        '(:char ("d" . "▼")
+                :prompt "dtrash"
+                :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
+                :action (lambda (docid msg target)
+                          (mu4e--server-move docid
+                                             (mu4e--mark-check-target target) "-N"))))
 
   ;; Display options
   (setq mu4e-view-show-images t)
@@ -84,22 +83,22 @@
   ;; then, when you want archive some messages, move them to
   ;; the 'All Mail' folder by pressing ``ma''.
   (setq mu4e-maildir-shortcuts
-        '(("/INBOX" . ?i)
-          ("/Archive" . ?a)
-          ("/Lists/*" . ?l)
-          ("/Sent Items" . ?s)
-          ("/Trash" . ?t)))
+        '(("/Fastmail/INBOX" . ?i)
+          ("/Fastmail/Archive" . ?a)
+          ("/Fastmail/Lists/*" . ?l)
+          ("/Fastmail/Sent Items" . ?s)
+          ("/Fastmail/Trash" . ?t)))
 
   (add-to-list 'mu4e-bookmarks
                '(:name "All Inboxes"
-                       :query "maildir:/INBOX"
+                       :query "maildir:/Fastmail/INBOX"
                        :key ?i))
 
   ;; don't keep message buffers around
   (setq message-kill-buffer-on-exit t)
 
   (setq dw/mu4e-inbox-query
-        "(maildir:/INBOX) AND flag:unread")
+        "(maildir:/Fastmail/INBOX) AND flag:unread")
 
   (defun dw/go-to-inbox ()
     (interactive)
