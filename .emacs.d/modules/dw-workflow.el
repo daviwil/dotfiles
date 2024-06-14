@@ -291,6 +291,24 @@ _d_: date        ^ ^              ^ ^
         (append (denote-directory-files-matching-regexp "_pra")
                 dw/base-agenda-files)))
 
+(defun dw/insert-topic-links ()
+  (interactive)
+  (let* ((topics (mapcar (lambda (file)
+                           (cons (denote-retrieve-front-matter-title-value file 'org)
+                                 (denote-retrieve-filename-identifier file)))
+                         (denote-directory-files-matching-regexp "_kt")))
+         (selected (completing-read-multiple "Select topics: " topics nil t)))
+    (insert (string-join (mapcar (lambda (topic)
+                                   (format "[[denote:%s][%s]]"
+                                           (alist-get topic
+                                                      topics
+                                                      nil
+                                                      nil
+                                                      #'string=)
+                                           topic))
+                                 selected)
+                         " "))))
+
 (use-package denote
   :demand t
   :bind (("C-c n l" . denote-link-or-create)
@@ -303,7 +321,7 @@ _d_: date        ^ ^              ^ ^
   (denote-known-keywords
    '("pra" "prb" "prc"
      "ply" "plm" "plw"
-     "kh" "ht" "kp" "kl" "ka" "kap"
+     "kt" "ke" "kp" "kl" "ka" "kap"
      "kcp" "kca" "kcc"
      "kra" "krb" "krv"
      "rn"))
