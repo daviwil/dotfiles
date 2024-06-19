@@ -487,6 +487,24 @@ capture was not aborted."
 (setq org-log-into-drawer t)
 
 (setq org-columns-default-format "%20CATEGORY(Category) %65ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
+;; Customize category display to improve Denote file appearance
+(defun dw/workflow--get-agenda-category ()
+  (if-let ((category (or (and (buffer-file-name)
+                              (denote-retrieve-filename-title (buffer-file-name)))
+                         (org-get-category))))
+      (truncate-string-to-width
+       category
+       25
+       nil
+       ?\s
+       "...")
+    ""))
+
+(setf (alist-get 'todo org-agenda-prefix-format)
+      " %i %-12:(dw/workflow--get-agenda-category)")
+
+(setf (alist-get 'agenda org-agenda-prefix-format)
+      " %i %-26:(dw/workflow--get-agenda-category)%?-13t% s")
 
 (setq org-agenda-custom-commands
       `(("d" "Dashboard"
