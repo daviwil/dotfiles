@@ -467,6 +467,7 @@ capture was not aborted."
                 ("@creative" . ?v)
                 ("@accounting" . ?a)
                 ("@email" . ?m)
+                ("@system" . ?s)
                 (:endgrouptag)
 
                 ;; Workflow states
@@ -486,7 +487,9 @@ capture was not aborted."
 (setq org-log-done 'time)
 (setq org-log-into-drawer t)
 
-(setq org-columns-default-format "%20CATEGORY(Category) %65ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
+;; Only make context tags inheritable (what about noexport?)
+(setq org-use-tag-inheritance "^@")
+
 ;; Customize category display to improve Denote file appearance
 (defun dw/workflow--get-agenda-category ()
   (if-let ((category (or (and (buffer-file-name)
@@ -514,6 +517,9 @@ capture was not aborted."
           (todo "*" ((org-agenda-files '("~/Notes/Inbox.org"))
                      (org-agenda-overriding-header "Unfiled Inbox Tasks")))
           (tags-todo "+@followup" ((org-agenda-overriding-header "Needs Follow Up")))))
+
+        ("u" tags-todo "+ALLTAGS=\"\""
+         ((org-agenda-overriding-header "Untagged Tasks")))
 
         ("n" "Next Tasks"
          ((agenda "" ((org-deadline-warning-days 7)))
