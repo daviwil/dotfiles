@@ -206,6 +206,7 @@
 
 
                ;; Enable Docker containers and virtual machines
+               (service containerd-service-type)
                (service docker-service-type)
                (service libvirt-service-type
                         (libvirt-configuration
@@ -432,6 +433,7 @@
 
 
                ;; Enable Docker containers and virtual machines
+               (service containerd-service-type)
                (service docker-service-type)
                (service libvirt-service-type
                         (libvirt-configuration
