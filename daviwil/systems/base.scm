@@ -281,6 +281,14 @@
                 (targets '("/boot/efi"))
                 (keyboard-layout keyboard-layout)))
 
+   ;; Set up swap space
+   ;; NOTE: Create it first -
+   ;;   sudo dd if=/dev/zero of=/swapfile bs=1MiB count=10240
+   ;;   sudo mkswap /swapfile
+   ;;   sudo chmod 600 /swapfile
+   (swap-devices (list (swap-space
+                        (target "/swapfile"))))
+
    (users (cons (user-account
                  (name "daviwil")
                  (comment "David Wilson")
