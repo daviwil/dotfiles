@@ -1,0 +1,520 @@
+#+title: Emacs Configuration
+#+property: header-args :mkdirp yes
+
+* Preface
+
+Welcome to the latest iteration of my Emacs configuration!  I'm not sure how many times I've rewritten my Emacs configuration over the years (it's probably less than you think), but I'm approaching this one with some specific goals and use cases in mind.
+
+Here's an attempt to explain what I'm trying to accomplish this time:
+
+** Goals
+
+I have specific goals for this configuration which I hope will satisfy some use cases I have in mind and also inspire other people to experiment with their own ideas:
+
+- The base configuration is *terminal-first*, meaning that everything I add there must provide a good experience for Emacs in the terminal.
+
+- =init.el= itself should have no external package dependencies (if possible) and I should be able to drop it on any machine using =curl= and have a comfortable environment ready to go immediately.
+
+- Additional functionality will be introduced using optional configuration modules which are only loaded on specific machines.
+
+- Use built-in Emacs functionality as much as I can, only pull in community packages for critical workflows.
+
+- Avoid special convenience key bindings; stay as close to "vanilla" as I can.
+
+** Why?
+
+This particular set of goals may seem surprising, so I'd like to provide some rationale.  I'm not attempting this because I think it's somehow better to be minimalistic.  I am trying to address specific use cases that I have instead of trying to come up with a generic configuration structure.  What I do here may not be right for you!
+
+I've described in a few previous live streams how I feel that it's important I understand fundamental Emacs functionality and key bindings so that I can teach them effectively.  I really want to give the best advice to someone on what options they have available for their workflow and I can't do that if I don't understand the tools that Emacs provides by default.
+
+Also, I think there is some value in writing your own Emacs Lisp code for certain things that may be provided by community packages.  Why depend on a small package with configuration options to suit many users when you could just write something similar for yourself that is tailored specifically to your needs?
+
+There is probably more to say here that I haven't thought of yet; please feel free to ask me any questions you have on IRC, the [[https://forum.systemcrafters.net][forum]], or via email (my first name at systemcrafters.net).
+
+** Built-in vs Community Packages
+
+A short list of features I'm trying to stick with this time before reaching for community packages:
+
+- Use =icomplete-vertical-mode= or =fido-vertical-mode= instead of Vertico.  Vertico is amazing, but I want to know what the actual pain points of the built-in solutions are before I resort to using something that is not built in.
+
+- Get used to the built-in =completion-styles= before I try pulling in =orderless=.  =orderless= is excellent but I honestly have not experimented enough with the built-in styles to see if I can get around well enough with them.
+
+- Use =vc-mode= instead of Magit as long as I can.  =vc-mode= is nowhere near as polished as Magit, by any means.  However, I should be able to do many of the same operations I accomplish with Magit (aside from interactive rebase?).  I want to test the limits of =vc-mode= before I pull in Magit, and even then, I may only use Magit for specific tasks that =vc-mode= is not good at.
+
+- Try to avoid using =consult= for as long as I can.  =consult-line= is pretty useful, but =isearch= is mostly fine and I haven't even tried to configure it to be nicer yet.  The one thing I *will* miss from =consult= is =consult-ripgrep=, but I need to see if there's a way to use =ripgrep= directly with Emacs' existing =grep= functionality.
+
+- Try to avoid using "workspace" packages like =beframe= or =tabspaces=.  There must be other useful ways to manage buffers that don't require forcing per-project isolation.  There's already =C-x p b= (=project-switch-to-buffer=) that could take care of 80% of my needs.  I also haven't experimented enough with =ibuffer= for mass buffer management to clean up those that I don't need any more in my current session.
+
+- No configuration helpers other than =use-package= since it's now built in with Emacs 30.  There are also new keymap macros like [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Creating-Keymaps.html#index-define_002dkeymap][define-keymap]] which remove the need for packages like =general.el=, etc.
+
+** Back to Literate Configuration
+
+You may have realized that I am back to using a literate Emacs configuration with Org Babel.  I've actually been planning to do this for a while but never got around to it until now.
+
+I had a couple of reasons for abandoning my old literate configuration which I described in the original Emacs From Scratch series:
+
+- Tangling config changes after syncing from my dotfiles can be a pain
+- I wanted to treat my configuration as real code instead of code blocks in an Org
+  file
+
+After spending over a year with my Emacs config as plain =.el= files, I feel like I'm missing the convenience of one big file that contains everything in one place.  Sure, I can move around pretty quickly in my dotfiles repo using =C-x p f= (=project-find-file=), but half the time I forget which file some aspect of my Emacs config lives in.
+
+Also, as many have noticed, the [[https://config.daviwil.com][website where I publish my configuration]] has been down for almost as long as I haven't been using a literate config due to DNS changes at SourceHut.  I've been thinking about how I can get a website back up for my config again and tried a few different options, but going back to literate just feels like the most appropriate solution for now.
+
+Lastly, I think a literate config is superior because it enables one to write real prose to explain their configuration and the rationale for why they do things a certain way.  I wouldn't have bothered to write this many paragraphs as a comment in an Emacs Lisp file.  People can learn from reading about how you use Emacs, it's a benefit to the community!
+
+* Base Configuration
+
+The standard =init.el= file is shared between all machines that use this configuration.  It is intended that file can be copied directly onto a new machine to get a convenient working environment up and running quickly.
+
+Additional functionality is loaded from module files which are defined in sections later in this document.
+
+I've structured all of this in a very concise way because much of it doesn't need explanation if you've been using Emacs for a while.
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+
+  ;; -*- lexical-binding: t; -*-
+
+  ;;; This file is generated from the Emacs.org file in my dotfiles repository!
+
+  ;;; ----- Basic Configuration -----
+
+  ;; Core settings
+  (setq ;; Flash the UI instead of beeping
+        visible-bell t
+
+        ;; Yes, this is Emacs
+        inhibit-startup-message t
+
+        ;; Don't warn on large files
+        large-file-warning-threshold nil
+
+        ;; Follow symlinks to VC-controlled files without warning
+        vc-follow-symlinks t
+
+        ;; Don't warn on advice
+        ad-redefinition-action 'accept
+
+        ;; Revert Dired and other buffers
+        global-auto-revert-non-file-buffers t)
+
+  ;; Core modes
+  (repeat-mode 1)                ;; Enable repeating key maps
+  (menu-bar-mode 0)              ;; Hide the menu bar
+  (tool-bar-mode 0)              ;; Hide the tool bar
+  (savehist-mode 1)              ;; Save minibuffer history
+  (scroll-bar-mode 0)            ;; Hide the scroll bar
+  (xterm-mouse-mode 1)           ;; Enable mouse events in terminal Emacs
+  (display-time-mode 1)          ;; Display time in mode line / tab bar
+  (fido-vertical-mode 1)         ;; Improved vertical minibuffer completions
+  (column-number-mode 1)         ;; Show column number on mode line
+  (tab-bar-history-mode 1)       ;; Remember previous tab window configurations
+  (auto-save-visited-mode 1)     ;; Auto-save files at an interval
+  (global-visual-line-mode 1)    ;; Visually wrap long lines in all buffers
+  (global-auto-revert-mode 1)    ;; Refresh buffers with changed local files
+
+  ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
+  (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+        url-history-file (expand-file-name "url/history" user-emacs-directory))
+
+  ;; Display line numbers in programming modes
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
+  ;; Make icomplete slightly more convenient
+  (keymap-set icomplete-fido-mode-map "M-h" 'icomplete-fido-backward-updir)
+  (keymap-set icomplete-fido-mode-map "TAB" 'icomplete-force-complete)
+
+  ;; Delete trailing whitespace before saving buffers
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+  ;; Instruct auto-save-mode to save to the current file, not a backup file
+  (setq auto-save-default nil)
+
+  ;; No backup files, please
+  (setq make-backup-files nil)
+
+  ;; Automatically install packages but don't load them until requested
+  (setq use-package-always-ensure t
+        use-package-always-defer t)
+
+  ;; Make it easy to cycle through previous items in the mark ring
+  (setq set-mark-command-repeat-pop t)
+
+  ;; Match completion substrings that may be out of order
+  (defun dw/override-fido-completion-styles ()
+    (setq-local completion-styles '(substring partial-completion emacs22)))
+
+  (add-hook 'icomplete-minibuffer-setup-hook 'dw/override-fido-completion-styles)
+
+#+end_src
+
+** Configuration Management
+
+This section is currently under development as I figure out the best pattern to use for providing customization "knobs" on the base configuration.
+
+For now, the idea is that I provide variables and functions that can be called in machine-specific configuration files (named with the =system-name=) to customize basic configuration details and load extension modules that are needed for each machine.
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+
+  ;;; ----- Configuration Management -----
+
+  (defvar dw/use-config-modules '()
+    "A list of module symbols to load once init.el is finished.")
+
+  ;; Add configuration modules to load path
+  (add-to-list 'load-path '"~/.dotfiles/.files/.config/emacs/modules")
+
+  ;; Load system-specific configuration
+  (let ((config-path
+         (format "~/.dotfiles/.files/.config/emacs/systems/%s.el" system-name)))
+    (if (file-exists-p config-path)
+        (load-file config-path)
+      (message "No per-system configuration found for %s!" system-name)))
+
+#+end_src
+
+** Appearance
+
+I prefer to use terminals that support the full range of colors so that themes like =ef-themes= can have an equivalent appearance to graphical Emacs.
+
+However, setting a background color in an Emacs theme generally defeats any transparency settings of the terminals I've used so I've added the =dw/clear-background-color= function to clear the background color after a theme gets applied.
+
+I may switch to using a highly-customized =modus-vivendi= here if I can figure out the write combination of colors to approximate the usual =doom-palenight= theme that I use on System Crafters videos and streams.
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+
+  ;;; ----- Appearance -----
+
+  (defun dw/clear-background-color (&optional frame)
+    (or frame (setq frame (selected-frame)))
+    "unsets the background color in terminal mode"
+    (unless (display-graphic-p frame)
+      (set-face-background 'default "unspecified-bg" frame)))
+
+  ;; Clear the background color for transparent terminals
+  (unless (display-graphic-p)
+    (add-hook 'after-make-frame-functions 'dw/clear-background-color)
+    (add-hook 'window-setup-hook 'dw/clear-background-color)
+    (add-hook 'ef-themes-post-load-hook 'dw/clear-background-color))
+
+  ;; Set preferred themes
+  (use-package ef-themes
+    :custom (ef-themes-to-toggle '(ef-dream ef-owl))
+    :config
+    (ef-themes-select 'ef-dream))
+
+  ;; Make vertical window separators look nicer in terminal Emacs
+  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+
+  ;; Clean up the mode line
+  (setq-default mode-line-format
+                '("%e" "  "
+                  (:propertize
+                   ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote))
+                  mode-line-frame-identification
+                  mode-line-buffer-identification
+  		"   "
+                  mode-line-position
+                  mode-line-format-right-align
+                  "  "
+  		(project-mode-line project-mode-line-format)
+  		" "
+  		(vc-mode vc-mode)
+  		"  "
+                  mode-line-modes
+                  mode-line-misc-info
+                  "  ")
+  	      project-mode-line t
+                mode-line-buffer-identification '(" %b")
+                mode-line-position-column-line-format '(" %l:%c"))
+
+#+end_src
+
+*** Tab Bar Appearance
+
+Tweak the tab bar to remove some unnecessary elements and shift the =global-mode-string= there.
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+
+  ;; Move global mode string to the tab-bar and hide tab close buttons
+  (setq tab-bar-close-button-show nil
+        tab-bar-format '(tab-bar-format-menu-bar
+  		       tab-bar-format-tabs-groups
+  		       tab-bar-separator
+  		       tab-bar-format-align-right
+  		       tab-bar-format-global))
+
+  ;; Turn on the tab-bar
+  (tab-bar-mode 1)
+
+#+end_src
+
+*** Display Time and World Clock
+
+Time is relative, OK?
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+
+  ;; Customize time display
+  (setq display-time-load-average nil
+        display-time-format "%l:%M %p %b %d W%U"
+        display-time-world-time-format "%a, %d %b %I:%M %p %Z"
+        display-time-world-list
+        '(("Etc/UTC" "UTC")
+  	("Europe/Athens" "Athens")
+  	("America/Los_Angeles" "Seattle")
+  	("America/Denver" "Denver")
+  	("America/New_York" "New York")
+  	("Pacific/Auckland" "Auckland")
+  	("Asia/Shanghai" "Shanghai")
+  	("Asia/Kolkata" "Hyderabad")))
+
+#+end_src
+
+** Essential Org Mode Configuration
+
+Here are the most important Org Mode settings that enable me to edit files comfortably, especially my literate configuration files.
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+
+  ;;; ---- Essential Org Mode Configuration -----
+
+  ;; Indent org-mode buffers for readability
+  (add-hook 'org-mode-hook #'org-indent-mode)
+
+  ;; Use org-tempo
+  (use-package org-tempo
+    :ensure nil
+    :demand t
+    :config
+    (dolist (item '(("sh" . "src sh")
+                    ("el" . "src emacs-lisp")
+                    ("li" . "src lisp")
+                    ("sc" . "src scheme")
+                    ("ts" . "src typescript")
+                    ("py" . "src python")
+                    ("yaml" . "src yaml")
+                    ("json" . "src json")))
+      (add-to-list 'org-structure-template-alist item)))
+
+#+end_src
+
+*** Document Centering
+
+I previously used =visual-fill-column-mode= for this functionality but decided to write my own minimal implementation so that I could avoid installing a MELPA package.
+
+Works pretty well, but I'm not fully convinced this needs to be in =init.el=.  It certainly does make the writing experience more pleasant but may not be critical for minimal config deployments.
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+
+  ;;; ----- Document Centering -----
+
+  (defvar center-document-desired-width 90
+    "The desired width of a document centered in the window.")
+
+  (defun center-document--adjust-margins ()
+    ;; Reset margins first before recalculating
+    (set-window-parameter nil 'min-margins nil)
+    (set-window-margins nil nil)
+
+    ;; Adjust margins if the mode is on
+    (when center-document-mode
+      (let ((margin-width (max 0
+  			     (truncate
+  			      (/ (- (window-width)
+  				    center-document-desired-width)
+  				 2.0)))))
+        (when (> margin-width 0)
+  	(set-window-parameter nil 'min-margins '(0 . 0))
+  	(set-window-margins nil margin-width margin-width)))))
+
+  (define-minor-mode center-document-mode
+    "Toggle centered text layout in the current buffer."
+    :lighter " Centered"
+    :group 'editing
+    (if center-document-mode
+        (add-hook 'window-configuration-change-hook #'center-document--adjust-margins 'append 'local)
+      (remove-hook 'window-configuration-change-hook #'center-document--adjust-margins 'local))
+    (center-document--adjust-margins))
+
+  (add-hook 'org-mode-hook #'center-document-mode)
+#+end_src
+
+** Dired
+
+Dired doesn't need much configuration, but the following just ensures that Dired buffers are organized in a way that makes sense to me, are free from unneeded information (at first), and doesn't leave a ton of buffers open as I move around.
+
+I also add a binding for =b= to =dired-up-directory= because it seems very strange to me that they have =f= bound to =dired-find-file= without =b= moving in the "opposite" direction.
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+
+  (defun dw/dired-mode-hook ()
+    (interactive)
+    (dired-hide-details-mode 1)
+    (hl-line-mode 1))
+
+  (use-package dired
+    :ensure nil
+    :bind (:map dired-mode-map
+                ("b" . dired-up-directory))
+    :config
+    (setq dired-listing-switches "-agho --group-directories-first"
+          dired-omit-files "^\\.[^.].*"
+          dired-omit-verbose nil
+          dired-dwim-target 'dired-dwim-target-next
+          dired-hide-details-hide-symlink-targets nil
+          dired-kill-when-opening-new-dired-buffer t
+          delete-by-moving-to-trash t)
+
+    (add-hook 'dired-mode-hook #'dw/dired-mode-hook))
+
+#+end_src
+
+** Authentication Helpers
+
+I use GPG primarily when authenticating with Git remotes or opening =pass= entries.  =pinentry= is the tool that enables me to prompt for my GPG passphrase inside of Emacs.
+
+TODO: I'd prefer to avoid installing =pinentry= at this phase so that absolutely no package installations are required in the base =init.el= file.
+
+=auth-source-pass= enables the use of =pass= entries for automatically loading credentials for certain things like my IRC bouncer password.
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+
+  ;; Use `pass` as an auth-source
+  ;;(auth-source-pass-enable)
+
+  ;; Enable GPG passphrase entry
+  (use-package pinentry)
+
+#+end_src
+
+** Finalization
+
+At the end of =init.el=, we finalize any configuration settings that may have been applied at the per-system level.  This includes loading any configuration modules that are requested.
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+
+  ;; Load requested configuration modules
+  (dolist (module dw/use-config-modules)
+    (require module))
+
+#+end_src
+
+* Modules
+
+The following sections contain optional modules that will be loaded on a per-system basis depending on whether the specified features are needed.
+
+** =dw-present= - Presentations and Live Streaming
+
+I'm planning to develop a new presentation configuration using Prot's Logos package because it's a bit more flexible and will enable me to treat code files as presentations in addition to Org files and pretty much any other type of file that has syntax that can be interpreted as a page marker (like a comment string).
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/modules/dw-present.el
+
+  ;; -*- lexical-binding: t; -*-
+
+  (use-package logos
+    :bind (([remap narrow-to-region] . logos-narrow-dwim)
+  	 ([remap forward-page] . logos-forward-page-dwim)
+           ([remap backward-page] . logos-backward-page-dwim))
+    :custom
+    (logos-outlines-are-pages t))
+
+  (provide 'dw-present)
+
+#+end_src
+
+** =dw-irc= - IRC Configuration
+
+I prefer =rcirc= as my default IRC client, it's simple and gets the job done.  Right now I'm using the hosted Soju bouncer on =chat.sr.ht= but hopefully I'll move to something self-hosted soon.
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/modules/dw-irc.el
+
+  ;; -*- lexical-binding: t; -*-
+
+  (use-package rcirc
+    :ensure nil
+    :custom
+    (rcirc-default-nick "daviwil")
+    (rcirc-default-user-name "daviwil")
+    (rcirc-default-full-name "David Wilson")
+    (rcirc-server-alist `(("chat.sr.ht"
+                           :port 6697
+                           :encryption tls
+                           :user-name "daviwil/irc.libera.chat@emacs")))
+
+    (rcirc-reconnect-delay 5)
+    (rcirc-fill-column 120)
+    (rcirc-track-ignore-server-buffer-flag t)
+
+    :config
+    ;; Annoy me, please
+    (rcirc-track-minor-mode 1)
+
+    ;; See: https://idiomdrottning.org/rcirc-soju
+    (defun-rcirc-command detach (channel)
+      "Detach channel to soju."
+      (interactive "sPart channel: ")
+      (let ((channel (if (> (length channel) 0) channel target)))
+        (rcirc-send-privmsg
+         process "BouncerServ"
+         (format
+          "channel update %s -detached true -reattach-on highlight" channel)))))
+
+  (provide 'dw-irc)
+
+#+end_src
+
+** =dw-0x0= - A simple interface to 0x0.st
+
+The =0x0.el= package is really useful and I used it for a long time.  However, it's currently only on MELPA and I really only use a couple of the functions it provides.
+
+Here's my own minimal implementation from scratch, please feel free to copy into your own config!
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/modules/dw-0x0.el
+
+  ;; -*- lexical-binding: t; -*-
+
+  (defun dw/0x0-upload-text ()
+    (interactive)
+    (let* ((contents (if (use-region-p)
+  		       (buffer-substring-no-properties (region-beginning) (region-end))
+  		     (buffer-string)))
+  	 (temp-file (make-temp-file "0x0" nil ".txt" contents)))
+      (message "Sending %s to 0x0.st..." temp-file)
+      (let ((url (string-trim-right
+  		(shell-command-to-string
+  		 (format "curl -s -F'file=@%s' https://0x0.st" temp-file)))))
+        (message "The URL is %s" url)
+        (kill-new url)
+        (delete-file temp-file))))
+
+  (defun dw/0x0-upload-file (file-path)
+    (interactive "fSelect a file to upload: ")
+    (message "Sending %s to 0x0.st..." file-path)
+    (let ((url (string-trim-right
+  	      (shell-command-to-string
+  	       (format "curl -s -F'file=@%s' https://0x0.st" (expand-file-name file-path))))))
+      (message "The URL is %s" url)
+      (kill-new url)))
+
+#+end_src
+
+* Machine-Specific Settings
+
+This section contains settings that are specific to various systems, particularly to choose extension modules to be loaded on top of the base configuration.
+
+** phantom
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/systems/phantom.el
+
+  (setq dw/use-config-modules '(dw-irc dw-present))
+
+#+end_src
+
+** daviwil-x1e
+
+#+begin_src emacs-lisp :tangle .files/.config/emacs/systems/daviwil-x1e.el
+
+  (setq dw/use-config-modules '(dw-irc dw-present))
+
+#+end_src
