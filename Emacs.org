@@ -51,7 +51,7 @@ A short list of features I'm trying to stick with this time before reaching for 
 
 You may have realized that I am back to using a literate Emacs configuration with Org Babel.  I've actually been planning to do this for a while but never got around to it until now.
 
-I had a couple of reasons for abandoning my old literate configuration which I described in the original Emacs From Scratch series:
+I had a couple of reasons for abandoning my old literate configuration:
 
 - Tangling config changes after syncing from my dotfiles can be a pain
 - I wanted to treat my configuration as real code instead of code blocks in an Org
@@ -63,6 +63,22 @@ Also, as many have noticed, the [[https://config.daviwil.com][website where I pu
 
 Lastly, I think a literate config is superior because it enables one to write real prose to explain their configuration and the rationale for why they do things a certain way.  I wouldn't have bothered to write this many paragraphs as a comment in an Emacs Lisp file.  People can learn from reading about how you use Emacs, it's a benefit to the community!
 
+* Installation
+
+To set up this configuration on a new machine, there are two options:
+
+- Download =emacs/init.el= into your home folder as =.emacs=
+- *OR* Clone the whole =dotfiles= repo to =~/.dotfiles= and run the following commands:
+
+#+begin_src sh
+
+  mkdir ~/emacs.d
+  ln -sf ~/.dotfiles/emacs/init.el ~/.emacs.d/
+
+#+end_src
+
+We don't actually symlink the whole =~/.dotfiles/emacs= folder to =~/.emacs.d= to prevent Emacs from dumping runtime files and ELPA packages into the dotfiles repository!
+
 * Base Configuration
 
 The standard =init.el= file is shared between all machines that use this configuration.  It is intended that file can be copied directly onto a new machine to get a convenient working environment up and running quickly.
@@ -71,7 +87,7 @@ Additional functionality is loaded from module files which are defined in sectio
 
 I've structured all of this in a very concise way because much of it doesn't need explanation if you've been using Emacs for a while.
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+#+begin_src emacs-lisp :tangle emacs/init.el
 
   ;; -*- lexical-binding: t; -*-
 
@@ -86,6 +102,15 @@ I've structured all of this in a very concise way because much of it doesn't nee
         ;; Yes, this is Emacs
         inhibit-startup-message t
 
+        ;; Instruct auto-save-mode to save to the current file, not a backup file
+        auto-save-default nil
+
+        ;; No backup files, please
+        make-backup-files nil
+
+        ;; Make it easy to cycle through previous items in the mark ring
+        set-mark-command-repeat-pop t
+
         ;; Don't warn on large files
         large-file-warning-threshold nil
 
@@ -96,7 +121,10 @@ I've structured all of this in a very concise way because much of it doesn't nee
         ad-redefinition-action 'accept
 
         ;; Revert Dired and other buffers
-        global-auto-revert-non-file-buffers t)
+        global-auto-revert-non-file-buffers t
+
+        ;; Silence compiler warnings as they can be pretty disruptive
+        native-comp-async-report-warnings-errors nil)
 
   ;; Core modes
   (repeat-mode 1)                ;; Enable repeating key maps
@@ -113,10 +141,6 @@ I've structured all of this in a very concise way because much of it doesn't nee
   (global-visual-line-mode 1)    ;; Visually wrap long lines in all buffers
   (global-auto-revert-mode 1)    ;; Refresh buffers with changed local files
 
-  ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
-  (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
-        url-history-file (expand-file-name "url/history" user-emacs-directory))
-
   ;; Display line numbers in programming modes
   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
@@ -127,18 +151,14 @@ I've structured all of this in a very concise way because much of it doesn't nee
   ;; Delete trailing whitespace before saving buffers
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-  ;; Instruct auto-save-mode to save to the current file, not a backup file
-  (setq auto-save-default nil)
-
-  ;; No backup files, please
-  (setq make-backup-files nil)
-
   ;; Automatically install packages but don't load them until requested
   (setq use-package-always-ensure t
         use-package-always-defer t)
 
-  ;; Make it easy to cycle through previous items in the mark ring
-  (setq set-mark-command-repeat-pop t)
+  ;; Move customization settings out of init.el
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (when (file-exists-p custom-file)
+    (load custom-file t))
 
   ;; Match completion substrings that may be out of order
   (defun dw/override-fido-completion-styles ()
@@ -154,7 +174,7 @@ This section is currently under development as I figure out the best pattern to 
 
 For now, the idea is that I provide variables and functions that can be called in machine-specific configuration files (named with the =system-name=) to customize basic configuration details and load extension modules that are needed for each machine.
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+#+begin_src emacs-lisp :tangle emacs/init.el
 
   ;;; ----- Configuration Management -----
 
@@ -162,11 +182,11 @@ For now, the idea is that I provide variables and functions that can be called i
     "A list of module symbols to load once init.el is finished.")
 
   ;; Add configuration modules to load path
-  (add-to-list 'load-path '"~/.dotfiles/.files/.config/emacs/modules")
+  (add-to-list 'load-path '"~/.dotfiles/emacs/modules")
 
   ;; Load system-specific configuration
   (let ((config-path
-         (format "~/.dotfiles/.files/.config/emacs/systems/%s.el" system-name)))
+         (format "~/.dotfiles/emacs/systems/%s.el" system-name)))
     (if (file-exists-p config-path)
         (load-file config-path)
       (message "No per-system configuration found for %s!" system-name)))
@@ -181,7 +201,7 @@ However, setting a background color in an Emacs theme generally defeats any tran
 
 I may switch to using a highly-customized =modus-vivendi= here if I can figure out the write combination of colors to approximate the usual =doom-palenight= theme that I use on System Crafters videos and streams.
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+#+begin_src emacs-lisp :tangle emacs/init.el
 
   ;;; ----- Appearance -----
 
@@ -199,6 +219,7 @@ I may switch to using a highly-customized =modus-vivendi= here if I can figure o
 
   ;; Set preferred themes
   (use-package ef-themes
+    :demand t
     :custom (ef-themes-to-toggle '(ef-dream ef-owl))
     :config
     (ef-themes-select 'ef-dream))
@@ -234,7 +255,7 @@ I may switch to using a highly-customized =modus-vivendi= here if I can figure o
 
 Tweak the tab bar to remove some unnecessary elements and shift the =global-mode-string= there.
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+#+begin_src emacs-lisp :tangle emacs/init.el
 
   ;; Move global mode string to the tab-bar and hide tab close buttons
   (setq tab-bar-close-button-show nil
@@ -253,7 +274,7 @@ Tweak the tab bar to remove some unnecessary elements and shift the =global-mode
 
 Time is relative, OK?
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+#+begin_src emacs-lisp :tangle emacs/init.el
 
   ;; Customize time display
   (setq display-time-load-average nil
@@ -275,7 +296,7 @@ Time is relative, OK?
 
 Here are the most important Org Mode settings that enable me to edit files comfortably, especially my literate configuration files.
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+#+begin_src emacs-lisp :tangle emacs/init.el
 
   ;;; ---- Essential Org Mode Configuration -----
 
@@ -305,7 +326,7 @@ I previously used =visual-fill-column-mode= for this functionality but decided t
 
 Works pretty well, but I'm not fully convinced this needs to be in =init.el=.  It certainly does make the writing experience more pleasant but may not be critical for minimal config deployments.
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+#+begin_src emacs-lisp :tangle emacs/init.el
 
   ;;; ----- Document Centering -----
 
@@ -346,7 +367,7 @@ Dired doesn't need much configuration, but the following just ensures that Dired
 
 I also add a binding for =b= to =dired-up-directory= because it seems very strange to me that they have =f= bound to =dired-find-file= without =b= moving in the "opposite" direction.
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+#+begin_src emacs-lisp :tangle emacs/init.el
 
   (defun dw/dired-mode-hook ()
     (interactive)
@@ -358,7 +379,7 @@ I also add a binding for =b= to =dired-up-directory= because it seems very stran
     :bind (:map dired-mode-map
                 ("b" . dired-up-directory))
     :config
-    (setq dired-listing-switches "-agho --group-directories-first"
+    (setq dired-listing-switches "-alv --group-directories-first"
           dired-omit-files "^\\.[^.].*"
           dired-omit-verbose nil
           dired-dwim-target 'dired-dwim-target-next
@@ -378,7 +399,7 @@ TODO: I'd prefer to avoid installing =pinentry= at this phase so that absolutely
 
 =auth-source-pass= enables the use of =pass= entries for automatically loading credentials for certain things like my IRC bouncer password.
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+#+begin_src emacs-lisp :tangle emacs/init.el
 
   ;; Use `pass` as an auth-source
   ;;(auth-source-pass-enable)
@@ -392,7 +413,7 @@ TODO: I'd prefer to avoid installing =pinentry= at this phase so that absolutely
 
 At the end of =init.el=, we finalize any configuration settings that may have been applied at the per-system level.  This includes loading any configuration modules that are requested.
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/init.el
+#+begin_src emacs-lisp :tangle emacs/init.el
 
   ;; Load requested configuration modules
   (dolist (module dw/use-config-modules)
@@ -408,7 +429,7 @@ The following sections contain optional modules that will be loaded on a per-sys
 
 I'm planning to develop a new presentation configuration using Prot's Logos package because it's a bit more flexible and will enable me to treat code files as presentations in addition to Org files and pretty much any other type of file that has syntax that can be interpreted as a page marker (like a comment string).
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/modules/dw-present.el
+#+begin_src emacs-lisp :tangle emacs/modules/dw-present.el
 
   ;; -*- lexical-binding: t; -*-
 
@@ -427,7 +448,7 @@ I'm planning to develop a new presentation configuration using Prot's Logos pack
 
 I prefer =rcirc= as my default IRC client, it's simple and gets the job done.  Right now I'm using the hosted Soju bouncer on =chat.sr.ht= but hopefully I'll move to something self-hosted soon.
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/modules/dw-irc.el
+#+begin_src emacs-lisp :tangle emacs/modules/dw-irc.el
 
   ;; -*- lexical-binding: t; -*-
 
@@ -470,7 +491,7 @@ The =0x0.el= package is really useful and I used it for a long time.  However, i
 
 Here's my own minimal implementation from scratch, please feel free to copy into your own config!
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/modules/dw-0x0.el
+#+begin_src emacs-lisp :tangle emacs/modules/dw-0x0.el
 
   ;; -*- lexical-binding: t; -*-
 
@@ -505,7 +526,7 @@ This section contains settings that are specific to various systems, particularl
 
 ** phantom
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/systems/phantom.el
+#+begin_src emacs-lisp :tangle emacs/systems/phantom.el
 
   (setq dw/use-config-modules '(dw-irc dw-present))
 
@@ -513,7 +534,7 @@ This section contains settings that are specific to various systems, particularl
 
 ** daviwil-x1e
 
-#+begin_src emacs-lisp :tangle .files/.config/emacs/systems/daviwil-x1e.el
+#+begin_src emacs-lisp :tangle emacs/systems/daviwil-x1e.el
 
   (setq dw/use-config-modules '(dw-irc dw-present))
 

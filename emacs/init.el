@@ -11,6 +11,15 @@
       ;; Yes, this is Emacs
       inhibit-startup-message t
 
+      ;; Instruct auto-save-mode to save to the current file, not a backup file
+      auto-save-default nil
+
+      ;; No backup files, please
+      make-backup-files nil
+
+      ;; Make it easy to cycle through previous items in the mark ring
+      set-mark-command-repeat-pop t
+
       ;; Don't warn on large files
       large-file-warning-threshold nil
 
@@ -21,7 +30,10 @@
       ad-redefinition-action 'accept
 
       ;; Revert Dired and other buffers
-      global-auto-revert-non-file-buffers t)
+      global-auto-revert-non-file-buffers t
+
+      ;; Silence compiler warnings as they can be pretty disruptive
+      native-comp-async-report-warnings-errors nil)
 
 ;; Core modes
 (repeat-mode 1)                ;; Enable repeating key maps
@@ -38,10 +50,6 @@
 (global-visual-line-mode 1)    ;; Visually wrap long lines in all buffers
 (global-auto-revert-mode 1)    ;; Refresh buffers with changed local files
 
-;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
-(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
-      url-history-file (expand-file-name "url/history" user-emacs-directory))
-
 ;; Display line numbers in programming modes
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
@@ -52,18 +60,14 @@
 ;; Delete trailing whitespace before saving buffers
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; Instruct auto-save-mode to save to the current file, not a backup file
-(setq auto-save-default nil)
-
-;; No backup files, please
-(setq make-backup-files nil)
-
 ;; Automatically install packages but don't load them until requested
 (setq use-package-always-ensure t
       use-package-always-defer t)
 
-;; Make it easy to cycle through previous items in the mark ring
-(setq set-mark-command-repeat-pop t)
+;; Move customization settings out of init.el
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file t))
 
 ;; Match completion substrings that may be out of order
 (defun dw/override-fido-completion-styles ()
@@ -77,11 +81,11 @@
   "A list of module symbols to load once init.el is finished.")
 
 ;; Add configuration modules to load path
-(add-to-list 'load-path '"~/.dotfiles/.files/.config/emacs/modules")
+(add-to-list 'load-path '"~/.dotfiles/emacs/modules")
 
 ;; Load system-specific configuration
 (let ((config-path
-       (format "~/.dotfiles/.files/.config/emacs/systems/%s.el" system-name)))
+       (format "~/.dotfiles/emacs/systems/%s.el" system-name)))
   (if (file-exists-p config-path)
       (load-file config-path)
     (message "No per-system configuration found for %s!" system-name)))
@@ -102,6 +106,7 @@
 
 ;; Set preferred themes
 (use-package ef-themes
+  :demand t
   :custom (ef-themes-to-toggle '(ef-dream ef-owl))
   :config
   (ef-themes-select 'ef-dream))
@@ -218,7 +223,7 @@
   :bind (:map dired-mode-map
               ("b" . dired-up-directory))
   :config
-  (setq dired-listing-switches "-agho --group-directories-first"
+  (setq dired-listing-switches "-alv --group-directories-first"
         dired-omit-files "^\\.[^.].*"
         dired-omit-verbose nil
         dired-dwim-target 'dired-dwim-target-next
