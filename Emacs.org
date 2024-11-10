@@ -5,11 +5,9 @@
 
 Welcome to the latest iteration of my Emacs configuration!  I'm not sure how many times I've rewritten my Emacs configuration over the years (it's probably less than you think), but I'm approaching this one with some specific goals and use cases in mind.
 
-Here's an attempt to explain what I'm trying to accomplish this time:
-
 ** Goals
 
-I have specific goals for this configuration which I hope will satisfy some use cases I have in mind and also inspire other people to experiment with their own ideas:
+I have specific goals for this configuration which I hope will serve some personal use cases and also inspire other people to experiment with their own ideas:
 
 - The base configuration is *terminal-first*, meaning that everything I add there must provide a good experience for Emacs in the terminal.
 
@@ -292,13 +290,63 @@ Time is relative, OK?
 
 #+end_src
 
+** Send Special Buffers to a Popup Window
+
+Here's another minimal implementation of a package I commonly use called [[https://github.com/karthink/popper][popper.el]].  The goal here is to automatically place a specific set of buffers into a popup window at the bottom of the frame and make that window togglable with a key binding.
+
+I don't currently support buffer cycling like =popper= does but I don't /think/ I used it that much to begin with.
+
+#+begin_src emacs-lisp :tangle emacs/init.el
+
+  ;; ----- Special Buffers as Popup Window -----
+
+  (setq dw/display-buffer-popup-rule
+        '("\\*\\(shell\\|.*term\\|.*eshell\\|help\\|compilation\\).*\\*"
+          (display-buffer-reuse-window display-buffer-in-side-window)
+          (side . bottom)		         ; Popups go at the bottom
+          (slot . 0)		         ; Use the first slot at the bottom
+  	(post-command-select-window . t) ; Select the window upon display
+          (window-height . 0.3)))	         ; 30% of the frame height
+
+  (setq display-buffer-alist (list dw/display-buffer-popup-rule))
+
+  (defun dw/toggle-popup-window ()
+    (interactive)
+    (if-let ((popup-window
+  	    (get-window-with-predicate
+  	     (lambda (window)
+  	       (eq (window-parameter window 'window-side)
+  		   'bottom)))))
+
+        ;; Focus the window if it is not selected, otherwise close it
+        (if (eq popup-window (selected-window))
+  	  (delete-window popup-window)
+  	(select-window popup-window))
+
+      ;; Find the most recent buffer that matches the rule and show it
+      (if-let ((popup-buffer
+  	      (seq-find (lambda (buffer)
+  			  (buffer-match-p (car dw/display-buffer-popup-rule)
+  					  (buffer-name buffer)))
+  			(if (project-current)
+  			    (project-buffers (project-current))
+  			  (buffer-list (selected-frame))))))
+  	(display-buffer popup-buffer (cdr dw/display-buffer-popup-rule))
+        (message "No popup buffers found."))))
+
+  ;; TODO: This binding may need to change
+  (keymap-global-set "C-c p" #'dw/toggle-popup-window)
+
+
+#+end_src
+
 ** Essential Org Mode Configuration
 
 Here are the most important Org Mode settings that enable me to edit files comfortably, especially my literate configuration files.
 
 #+begin_src emacs-lisp :tangle emacs/init.el
 
-  ;;; ---- Essential Org Mode Configuration -----
+  ;;; ----- Essential Org Mode Configuration -----
 
   ;; Indent org-mode buffers for readability
   (add-hook 'org-mode-hook #'org-indent-mode)
@@ -359,6 +407,7 @@ Works pretty well, but I'm not fully convinced this needs to be in =init.el=.  I
     (center-document--adjust-margins))
 
   (add-hook 'org-mode-hook #'center-document-mode)
+
 #+end_src
 
 ** Dired

@@ -161,6 +161,43 @@
 	("Asia/Shanghai" "Shanghai")
 	("Asia/Kolkata" "Hyderabad")))
 
+(setq dw/display-buffer-popup-rule
+      '("\\*\\(shell\\|.*term\\|.*eshell\\|help\\|compilation\\).*\\*"
+        (display-buffer-reuse-window display-buffer-in-side-window)
+        (side . bottom)		         ; Popups go at the bottom
+        (slot . 0)		         ; Use the first slot at the bottom
+	(post-command-select-window . t) ; Select the window upon display
+        (window-height . 0.3)))	         ; 30% of the frame height
+
+(setq display-buffer-alist (list dw/display-buffer-popup-rule))
+
+(defun dw/toggle-popup-window ()
+  (interactive)
+  (if-let ((popup-window
+	    (get-window-with-predicate
+	     (lambda (window)
+	       (eq (window-parameter window 'window-side)
+		   'bottom)))))
+
+      ;; Focus the window if it is not selected, otherwise close it
+      (if (eq popup-window (selected-window))
+	  (delete-window popup-window)
+	(select-window popup-window))
+
+    ;; Find the most recent buffer that matches the rule and show it
+    (if-let ((popup-buffer
+	      (seq-find (lambda (buffer)
+			  (buffer-match-p (car dw/display-buffer-popup-rule)
+					  (buffer-name buffer)))
+			(if (project-current)
+			    (project-buffers (project-current))
+			  (buffer-list (selected-frame))))))
+	(display-buffer popup-buffer (cdr dw/display-buffer-popup-rule))
+      (message "No popup buffers found."))))
+
+;; TODO: This binding may need to change
+(keymap-global-set "C-c p" #'dw/toggle-popup-window)
+
 ;;; ---- Essential Org Mode Configuration -----
 
 ;; Indent org-mode buffers for readability
