@@ -201,7 +201,7 @@ I prefer to use terminals that support the full range of colors so that themes l
 
 However, setting a background color in an Emacs theme generally defeats any transparency settings of the terminals I've used so I've added the =dw/clear-background-color= function to clear the background color after a theme gets applied.
 
-I may switch to using a highly-customized =modus-vivendi= here if I can figure out the write combination of colors to approximate the usual =doom-palenight= theme that I use on System Crafters videos and streams.
+I may switch to using a highly-customized =modus-vivendi= here if I can figure out the right combination of colors to approximate the usual =doom-palenight= theme that I use on System Crafters videos and streams.
 
 #+begin_src emacs-lisp :tangle emacs/init.el
 
