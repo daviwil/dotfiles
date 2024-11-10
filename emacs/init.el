@@ -50,6 +50,10 @@
 (global-visual-line-mode 1)    ;; Visually wrap long lines in all buffers
 (global-auto-revert-mode 1)    ;; Refresh buffers with changed local files
 
+;; Tabs to spaces
+(setq-default indent-tabs-mode nil
+	            tab-width 2)
+
 ;; Display line numbers in programming modes
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
@@ -121,28 +125,28 @@
                  ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote))
                 mode-line-frame-identification
                 mode-line-buffer-identification
-		"   "
+                "   "
                 mode-line-position
                 mode-line-format-right-align
                 "  "
-		(project-mode-line project-mode-line-format)
-		" "
-		(vc-mode vc-mode)
-		"  "
+                (project-mode-line project-mode-line-format)
+                " "
+                (vc-mode vc-mode)
+                "  "
                 mode-line-modes
                 mode-line-misc-info
                 "  ")
-	      project-mode-line t
+              project-mode-line t
               mode-line-buffer-identification '(" %b")
               mode-line-position-column-line-format '(" %l:%c"))
 
 ;; Move global mode string to the tab-bar and hide tab close buttons
 (setq tab-bar-close-button-show nil
       tab-bar-format '(tab-bar-format-menu-bar
-		       tab-bar-format-tabs-groups
-		       tab-bar-separator
-		       tab-bar-format-align-right
-		       tab-bar-format-global))
+                       tab-bar-format-tabs-groups
+                       tab-bar-separator
+                       tab-bar-format-align-right
+                       tab-bar-format-global))
 
 ;; Turn on the tab-bar
 (tab-bar-mode 1)
@@ -153,13 +157,15 @@
       display-time-world-time-format "%a, %d %b %I:%M %p %Z"
       display-time-world-list
       '(("Etc/UTC" "UTC")
-	("Europe/Athens" "Athens")
-	("America/Los_Angeles" "Seattle")
-	("America/Denver" "Denver")
-	("America/New_York" "New York")
-	("Pacific/Auckland" "Auckland")
-	("Asia/Shanghai" "Shanghai")
-	("Asia/Kolkata" "Hyderabad")))
+        ("Europe/Athens" "Athens")
+        ("America/Los_Angeles" "Seattle")
+        ("America/Denver" "Denver")
+        ("America/New_York" "New York")
+        ("Pacific/Auckland" "Auckland")
+        ("Asia/Shanghai" "Shanghai")
+        ("Asia/Kolkata" "Hyderabad")))
+
+;; ----- Special Buffers as Popup Window -----
 
 (setq dw/display-buffer-popup-rule
       '("\\*\\(shell\\|.*term\\|.*eshell\\|help\\|compilation\\).*\\*"
@@ -198,7 +204,7 @@
 ;; TODO: This binding may need to change
 (keymap-global-set "C-c p" #'dw/toggle-popup-window)
 
-;;; ---- Essential Org Mode Configuration -----
+;;; ----- Essential Org Mode Configuration -----
 
 ;; Indent org-mode buffers for readability
 (add-hook 'org-mode-hook #'org-indent-mode)
