@@ -22,3 +22,5 @@
 	       (format "curl -s -F'file=@%s' https://0x0.st" (expand-file-name file-path))))))
     (message "The URL is %s" url)
     (kill-new url)))
+
+(provide 'dw-0x0)
