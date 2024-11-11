@@ -481,6 +481,158 @@ At the end of =init.el=, we finalize any configuration settings that may have be
 
 The following sections contain optional modules that will be loaded on a per-system basis depending on whether the specified features are needed.
 
+** =dw-writing= - Writing Tools
+
+I use [[https://protesilaos.com/emacs/denote][Denote]] as my primary tool for writing in Emacs.  It enables me to write whatever I need very efficiently without thinking too much about where the information belongs.
+
+I also use it as the core for my personal productivity system which revolves largely around Denote-managed Org Mode notes with special file-level tags.
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-writing.el
+
+  ;; -*- lexical-binding: t; -*-
+
+  (use-package denote
+    :demand t
+    :bind (("C-c n l" . denote-link-or-create)
+           ("C-c n o" . denote-open-or-create)
+           ("C-c n r" . denote-rename-file-using-front-matter))
+    :custom
+    (denote-directory "~/Notes/Denote")
+    (denote-rename-buffer-format "Denote: %t (%k)")
+    (denote-infer-keywords nil)
+    (denote-known-keywords
+     '("pra" "prb" "prc"
+       "ply" "plm" "plw"
+       "kt" "ke" "kp" "kl" "ka" "kap"
+       "kcp" "kca" "kcc"
+       "kra" "krb" "krv"
+       "rn"))
+
+    :config
+
+    (require 'denote-rename-buffer)
+    (require 'denote-org-extras)
+
+    ;; Rename buffers with the note name
+    (denote-rename-buffer-mode 1)
+
+    ;; Buttonize all denote links in text buffers
+    (add-hook 'find-file-hook #'denote-link-buttonize-buffer))
+
+  (defun dw/setup-markdown-mode ()
+    (center-document-mode 1)
+    (display-line-numbers-mode 0))
+
+  (use-package markdown-mode
+    :config
+    (setq markdown-command "marked")
+    (add-hook 'markdown-mode-hook #'dw/setup-markdown-mode)
+    (dolist (face '((markdown-header-face-1 . 1.2)
+                    (markdown-header-face-2 . 1.1)
+                    (markdown-header-face-3 . 1.0)
+                    (markdown-header-face-4 . 1.0)
+                    (markdown-header-face-5 . 1.0)))
+      (set-face-attribute (car face) nil :weight 'normal :height (cdr face))))
+
+  (provide 'dw-writing)
+
+#+end_src
+
+** =dw-workflow= - Workflow, Task, and Project Management
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-workflow.el
+
+  ;; -*- lexical-binding: t; -*-
+
+  ;;; ----- TODO Configuration -----
+
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d!)")))
+
+  (setq org-todo-keyword-faces
+        '(("GOAL" . (:foreground "orange red" :weight bold))
+          ("WAIT" . (:foreground "HotPink2" :weight bold))
+          ("BACK" . (:foreground "MediumPurple3" :weight bold))))
+
+  ;;; ----- Context Tags -----
+
+  (setq-default org-tag-alist
+                '((:startgroup)
+                  ("Areas")
+                  (:grouptags)
+                  ("@home" . ?H)
+                  ("@work" . ?W)
+                  (:endgroup)
+
+                  (:startgrouptag . nil)
+                  ("Contexts")
+                  (:grouptags)
+                  ("@computer" . ?C)
+                  ("@mobile" . ?M)
+                  ("@calls" . ?A)
+                  ("@errands" . ?E)
+                  (:endgrouptag)
+
+                  ;; Task Types
+                  (:startgrouptag . nil)
+                  ("Types")
+                  (:grouptags)
+                  ("@easy" . ?e)
+                  ("@hacking" . ?h)
+                  ("@writing" . ?w)
+                  ("@creative" . ?v)
+                  ("@accounting" . ?a)
+                  ("@email" . ?m)
+                  ("@system" . ?s)
+                  (:endgrouptag)
+
+                  ;; Workflow states
+                  (:startgroup . nil)
+                  ("States")
+                  (:grouptags)
+                  ("@plan" . ?p)
+                  ("@review" . ?r)
+                  ("@followup" . ?f)
+                  (:endgroup)))
+
+
+  ;; Only make context tags inheritable (what about noexport?)
+  (setq org-use-tag-inheritance "^@")
+
+  ;;; ----- Agenda Configuration -----
+
+  (defvar dw/base-agenda-files '("Inbox.org" "Schedule.org")
+    "The base agenda files that will always be included.")
+
+  (setq org-agenda-span 'day
+        org-agenda-start-with-log-mode t
+        org-agenda-files dw/base-agenda-files
+        org-agenda-window-setup 'current-window)
+
+  ;; Make done tasks show up in the agenda log
+  (setq org-log-done 'time
+        org-log-into-drawer t)
+
+  ;;; ----- Denote Integration -----
+
+  (defun dw/refresh-agenda-files ()
+    (interactive)
+    (setq org-agenda-files
+          (append (denote-directory-files "_pra")
+                  dw/base-agenda-files)))
+
+  (with-eval-after-load 'denote
+    ;; Refresh agenda files the first time
+    (dw/refresh-agenda-files)
+
+    ;; Update agenda files after notes are created or renamed
+    (add-hook 'denote-after-rename-file-hook #'dw/refresh-agenda-files)
+    (add-hook 'denote-after-new-note-hook #'dw/refresh-agenda-files))
+
+  (provide 'dw-workflow)
+
+#+end_src
+
 ** =dw-present= - Presentations and Live Streaming
 
 I'm planning to develop a new presentation configuration using Prot's Logos package because it's a bit more flexible and will enable me to treat code files as presentations in addition to Org files and pretty much any other type of file that has syntax that can be interpreted as a page marker (like a comment string).
@@ -541,7 +693,7 @@ I prefer =rcirc= as my default IRC client, it's simple and gets the job done.  R
 
 #+end_src
 
-** =dw-0x0= - A simple interface to 0x0.st
+** =dw-0x0= - Share Text and Files with 0x0.st
 
 The =0x0.el= package is really useful and I used it for a long time.  However, it's currently only on MELPA and I really only use a couple of the functions it provides.
 
@@ -578,6 +730,25 @@ Here's my own minimal implementation from scratch, please feel free to copy into
 
 #+end_src
 
+** =dw-desktop= - Desktop Environment Utilities
+
+When used as part of a desktop environment, here are some packages that will make it easier for Emacs to drive most of the experience.
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-desktop.el
+
+  ;; -*- lexical-binding: t; -*-
+
+  (use-package bluetooth)
+
+  ;; Control NetworkManager via nmcli
+  (use-package nm
+    :vc (:url "https://github.com/Kodkollektivet/emacs-nm"
+         :rev :newest))
+
+  (provide 'dw-desktop)
+
+#+end_src
+
 * Machine-Specific Settings
 
 This section contains settings that are specific to various systems, particularly to choose extension modules to be loaded on top of the base configuration.
@@ -586,7 +757,12 @@ This section contains settings that are specific to various systems, particularl
 
 #+begin_src emacs-lisp :tangle emacs/systems/phantom.el
 
-  (setq dw/use-config-modules '(dw-irc dw-present dw-0x0))
+  (setq dw/use-config-modules '(dw-irc
+                                dw-present
+                                dw-0x0
+                                dw-writing
+                                dw-workflow
+                                dw-desktop))
 
 #+end_src
 
@@ -594,6 +770,10 @@ This section contains settings that are specific to various systems, particularl
 
 #+begin_src emacs-lisp :tangle emacs/systems/daviwil-x1e.el
 
-  (setq dw/use-config-modules '(dw-irc dw-present dw-0x0))
+  (setq dw/use-config-modules '(dw-irc
+                                dw-present
+                                dw-0x0
+                                dw-writing
+                                dw-workflow))
 
 #+end_src
