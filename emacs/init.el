@@ -84,6 +84,14 @@
 (defvar dw/use-config-modules '()
   "A list of module symbols to load once init.el is finished.")
 
+(defvar dw/common-config-modules '(dw-auth
+                                   dw-irc
+                                   dw-present
+                                   dw-0x0
+                                   dw-writing
+                                   dw-workflow)
+  "Configuration modules most commonly used across my machines.")
+
 ;; Add configuration modules to load path
 (add-to-list 'load-path '"~/.dotfiles/emacs/modules")
 
@@ -266,6 +274,8 @@
 
 (add-hook 'org-mode-hook #'center-document-mode)
 
+;;; ----- Dired -----
+
 (defun dw/dired-mode-hook ()
   (interactive)
   (dired-hide-details-mode 1)
@@ -286,11 +296,7 @@
 
   (add-hook 'dired-mode-hook #'dw/dired-mode-hook))
 
-;; Use `pass` as an auth-source
-;;(auth-source-pass-enable)
-
-;; Enable GPG passphrase entry
-(use-package pinentry)
+;;; ----- Finalization
 
 ;; Load requested configuration modules
 (dolist (module dw/use-config-modules)

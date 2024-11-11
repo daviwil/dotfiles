@@ -77,7 +77,7 @@ To set up this configuration on a new machine, there are two options:
 
 We don't actually symlink the whole =~/.dotfiles/emacs= folder to =~/.emacs.d= to prevent Emacs from dumping runtime files and ELPA packages into the dotfiles repository!
 
-* Base Configuration
+* =init.el= - Base Configuration
 
 The standard =init.el= file is shared between all machines that use this configuration.  It is intended that file can be copied directly onto a new machine to get a convenient working environment up and running quickly.
 
@@ -182,6 +182,14 @@ For now, the idea is that I provide variables and functions that can be called i
 
   (defvar dw/use-config-modules '()
     "A list of module symbols to load once init.el is finished.")
+
+  (defvar dw/common-config-modules '(dw-auth
+                                     dw-irc
+                                     dw-present
+                                     dw-0x0
+                                     dw-writing
+                                     dw-workflow)
+    "Configuration modules most commonly used across my machines.")
 
   ;; Add configuration modules to load path
   (add-to-list 'load-path '"~/.dotfiles/emacs/modules")
@@ -432,6 +440,8 @@ I also add a binding for =b= to =dired-up-directory= because it seems very stran
 
 #+begin_src emacs-lisp :tangle emacs/init.el
 
+  ;;; ----- Dired -----
+
   (defun dw/dired-mode-hook ()
     (interactive)
     (dired-hide-details-mode 1)
@@ -454,29 +464,13 @@ I also add a binding for =b= to =dired-up-directory= because it seems very stran
 
 #+end_src
 
-** Authentication Helpers
-
-I use GPG primarily when authenticating with Git remotes or opening =pass= entries.  =pinentry= is the tool that enables me to prompt for my GPG passphrase inside of Emacs.
-
-TODO: I'd prefer to avoid installing =pinentry= at this phase so that absolutely no package installations are required in the base =init.el= file.
-
-=auth-source-pass= enables the use of =pass= entries for automatically loading credentials for certain things like my IRC bouncer password.
-
-#+begin_src emacs-lisp :tangle emacs/init.el
-
-  ;; Use `pass` as an auth-source
-  ;;(auth-source-pass-enable)
-
-  ;; Enable GPG passphrase entry
-  (use-package pinentry)
-
-#+end_src
-
 ** Finalization
 
 At the end of =init.el=, we finalize any configuration settings that may have been applied at the per-system level.  This includes loading any configuration modules that are requested.
 
 #+begin_src emacs-lisp :tangle emacs/init.el
+
+  ;;; ----- Finalization
 
   ;; Load requested configuration modules
   (dolist (module dw/use-config-modules)
@@ -524,7 +518,7 @@ I also use it as the core for my personal productivity system which revolves lar
     (denote-rename-buffer-mode 1)
 
     ;; Buttonize all denote links in text buffers
-    (add-hook 'find-file-hook #'denote-link-buttonize-buffer))
+    (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe))
 
   (defun dw/setup-markdown-mode ()
     (center-document-mode 1)
@@ -756,6 +750,26 @@ When used as part of a desktop environment, here are some packages that will mak
 
 #+end_src
 
+** =dw-auth= - Authentication Utilities
+
+I use GPG primarily when authenticating with Git remotes or opening =pass= entries.  =pinentry= is the tool that enables me to prompt for my GPG passphrase inside of Emacs.
+
+=auth-source-pass= enables the use of =pass= entries for automatically loading credentials for certain things like my IRC bouncer password.
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-auth.el
+
+  ;; -*- lexical-binding: t; -*-
+
+  ;; Use `pass` as an auth-source
+  ;;(auth-source-pass-enable)
+
+  ;; Enable GPG passphrase entry
+  (use-package pinentry)
+
+  (provide 'dw-auth)
+
+#+end_src
+
 * Machine-Specific Settings
 
 This section contains settings that are specific to various systems, particularly to choose extension modules to be loaded on top of the base configuration.
@@ -764,12 +778,9 @@ This section contains settings that are specific to various systems, particularl
 
 #+begin_src emacs-lisp :tangle emacs/systems/phantom.el
 
-  (setq dw/use-config-modules '(dw-irc
-                                dw-present
-                                dw-0x0
-                                dw-writing
-                                dw-workflow
-                                dw-desktop))
+  (setq dw/use-config-modules
+        (append dw/common-config-modules
+                '(dw-desktop)))
 
 #+end_src
 
@@ -777,10 +788,6 @@ This section contains settings that are specific to various systems, particularl
 
 #+begin_src emacs-lisp :tangle emacs/systems/daviwil-x1e.el
 
-  (setq dw/use-config-modules '(dw-irc
-                                dw-present
-                                dw-0x0
-                                dw-writing
-                                dw-workflow))
+  (setq dw/use-config-modules dw/common-config-modules)
 
 #+end_src

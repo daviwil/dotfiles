@@ -26,7 +26,7 @@
   (denote-rename-buffer-mode 1)
 
   ;; Buttonize all denote links in text buffers
-  (add-hook 'find-file-hook #'denote-link-buttonize-buffer))
+  (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe))
 
 (defun dw/setup-markdown-mode ()
   (center-document-mode 1)
