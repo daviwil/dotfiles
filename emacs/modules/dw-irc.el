@@ -12,7 +12,7 @@
                          :user-name "daviwil/irc.libera.chat@emacs")))
 
   (rcirc-reconnect-delay 5)
-  (rcirc-fill-column 120)
+  (rcirc-fill-column 90)
   (rcirc-track-ignore-server-buffer-flag t)
 
   :config

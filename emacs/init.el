@@ -176,7 +176,7 @@
 ;; ----- Special Buffers as Popup Window -----
 
 (setq display-buffer-alist
-      '(("\\*\\(shell\\|.*term\\|.*eshell\\|help\\|compilation\\|Async Shell Command\\).*\\*"
+      '(("\\*\\(shell\\|.*term\\|.*eshell\\|help\\|compilation\\|Async Shell Command\\|Occur\\|xref\\).*\\*"
         (display-buffer-reuse-window display-buffer-in-side-window)
         (side . bottom)                  ; Popups go at the bottom
         (slot . 0)                       ; Use the first slot at the bottom
@@ -214,6 +214,7 @@
 
 ;; TODO: This binding may need to change
 (keymap-global-set "C-c p" #'dw/toggle-popup-window)
+(keymap-set term-raw-map "C-c p" #'dw/toggle-popup-window)
 
 ;;; ----- Essential Org Mode Configuration -----
 
@@ -224,6 +225,12 @@
 
 ;; Indent org-mode buffers for readability
 (add-hook 'org-mode-hook #'org-indent-mode)
+
+;; Set up Org Babel languages
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (shell . t)))
 
 ;; Use org-tempo
 (use-package org-tempo
@@ -274,6 +281,8 @@
 
 (add-hook 'org-mode-hook #'center-document-mode)
 
+;; Coming soon.
+
 ;;; ----- Dired -----
 
 (defun dw/dired-mode-hook ()
@@ -295,6 +304,10 @@
         delete-by-moving-to-trash t)
 
   (add-hook 'dired-mode-hook #'dw/dired-mode-hook))
+
+;; Make sure ripgrep is used everywhere
+(setq xref-search-program 'ripgrep
+      grep-command "rg -nS --noheading")
 
 ;;; ----- Finalization
 

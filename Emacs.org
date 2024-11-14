@@ -313,7 +313,7 @@ I don't currently support buffer cycling like =popper= does but I don't /think/ 
   ;; ----- Special Buffers as Popup Window -----
 
   (setq display-buffer-alist
-        '(("\\*\\(shell\\|.*term\\|.*eshell\\|help\\|compilation\\|Async Shell Command\\).*\\*"
+        '(("\\*\\(shell\\|.*term\\|.*eshell\\|help\\|compilation\\|Async Shell Command\\|Occur\\|xref\\).*\\*"
           (display-buffer-reuse-window display-buffer-in-side-window)
           (side . bottom)                  ; Popups go at the bottom
           (slot . 0)                       ; Use the first slot at the bottom
@@ -351,7 +351,7 @@ I don't currently support buffer cycling like =popper= does but I don't /think/ 
 
   ;; TODO: This binding may need to change
   (keymap-global-set "C-c p" #'dw/toggle-popup-window)
-
+  (keymap-set term-raw-map "C-c p" #'dw/toggle-popup-window)
 
 #+end_src
 
@@ -370,6 +370,12 @@ Here are the most important Org Mode settings that enable me to edit files comfo
 
   ;; Indent org-mode buffers for readability
   (add-hook 'org-mode-hook #'org-indent-mode)
+
+  ;; Set up Org Babel languages
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (shell . t)))
 
   ;; Use org-tempo
   (use-package org-tempo
@@ -432,6 +438,16 @@ Works pretty well, but I'm not fully convinced this needs to be in =init.el=.  I
 
 #+end_src
 
+** Shells
+
+This is a configuration for Emacs' built in shells, =term= / =ansi-term= and =eshell=.
+
+#+begin_src emacs-lisp :tangle emacs/init.el
+
+  ;; Coming soon.
+
+#+end_src
+
 ** Dired
 
 Dired doesn't need much configuration, but the following just ensures that Dired buffers are organized in a way that makes sense to me, are free from unneeded information (at first), and doesn't leave a ton of buffers open as I move around.
@@ -461,6 +477,18 @@ I also add a binding for =b= to =dired-up-directory= because it seems very stran
           delete-by-moving-to-trash t)
 
     (add-hook 'dired-mode-hook #'dw/dired-mode-hook))
+
+#+end_src
+
+** Searching
+
+I search through files *a lot*.  Here are some tweaks to make that experience a bit faster and more convenient:
+
+#+begin_src emacs-lisp :tangle emacs/init.el
+
+  ;; Make sure ripgrep is used everywhere
+  (setq xref-search-program 'ripgrep
+        grep-command "rg -nS --noheading")
 
 #+end_src
 
@@ -642,12 +670,43 @@ I'm planning to develop a new presentation configuration using Prot's Logos pack
 
   ;; -*- lexical-binding: t; -*-
 
+  (defun dw/present-prepare-slide ()
+    (when (and logos-focus-mode
+               (derived-mode-p 'org-mode))
+      (org-overview)
+      (org-show-entry)
+      (org-show-children)))
+
+  (defun dw/present-toggle ()
+    "Configures the buffer for a presentation."
+    (interactive)
+    (if logos-focus-mode
+        (progn
+          (setq-local face-remapping-alist nil)
+          (widen)
+          (logos-focus-mode 0))
+
+      (setq-local face-remapping-alist '((default (:height 1.5) default)
+                                         (org-document-title (:height 1.75) org-document-title)
+                                         (org-block-begin-line (:height 0.7) org-block)))
+
+      ;; Narrow the buffer and start focus mode
+      (logos-narrow-dwim)
+      (logos-focus-mode 1)
+
+      ;; Prepare the slide
+      (dw/present-prepare-slide)))
+
   (use-package logos
     :bind (([remap narrow-to-region] . logos-narrow-dwim)
-  	 ([remap forward-page] . logos-forward-page-dwim)
+  	       ([remap forward-page] . logos-forward-page-dwim)
            ([remap backward-page] . logos-backward-page-dwim))
     :custom
-    (logos-outlines-are-pages t))
+    (logos-outlines-are-pages t)
+    (logos-scroll-lock t)
+    :config
+    (setf (alist-get 'org-mode logos-outline-regexp-alist) "^\\*\\{1,2\\} +")
+    (add-hook 'logos-page-motion-hook #'dw/present-prepare-slide))
 
   (provide 'dw-present)
 
@@ -673,7 +732,7 @@ I prefer =rcirc= as my default IRC client, it's simple and gets the job done.  R
                            :user-name "daviwil/irc.libera.chat@emacs")))
 
     (rcirc-reconnect-delay 5)
-    (rcirc-fill-column 120)
+    (rcirc-fill-column 90)
     (rcirc-track-ignore-server-buffer-flag t)
 
     :config
