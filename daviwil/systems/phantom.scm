@@ -40,7 +40,7 @@
 
    (mapped-devices
     (list (mapped-device
-           (source (uuid "091b8ad5-efb3-4c5b-8370-7db99c404a30"))
+           (source (uuid "cee84d1e-3918-4148-9aac-ecd4dd1fd04f"))
            (target "system-root")
            (type luks-device-mapping))))
 
