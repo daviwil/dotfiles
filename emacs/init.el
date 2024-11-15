@@ -104,10 +104,17 @@
 
 ;;; ----- Appearance -----
 
+(defun dw/set-terminal-title (title)
+  (send-string-to-terminal (format "\e]0;%s\a" title)))
+
 (defun dw/clear-background-color (&optional frame)
   (or frame (setq frame (selected-frame)))
   "unsets the background color in terminal mode"
   (unless (display-graphic-p frame)
+    ;; Set the terminal to a transparent version of the background color
+    (send-string-to-terminal
+     (format "\033]11;[90]%s\033\\"
+         (face-attribute 'default :background)))
     (set-face-background 'default "unspecified-bg" frame)))
 
 ;; Clear the background color for transparent terminals
@@ -214,7 +221,8 @@
 
 ;; TODO: This binding may need to change
 (keymap-global-set "C-c p" #'dw/toggle-popup-window)
-(keymap-set term-raw-map "C-c p" #'dw/toggle-popup-window)
+(with-eval-after-load 'term
+  (keymap-set term-raw-map "C-c p" #'dw/toggle-popup-window))
 
 ;;; ----- Essential Org Mode Configuration -----
 

@@ -215,10 +215,17 @@ I may switch to using a highly-customized =modus-vivendi= here if I can figure o
 
   ;;; ----- Appearance -----
 
+  (defun dw/set-terminal-title (title)
+    (send-string-to-terminal (format "\e]0;%s\a" title)))
+
   (defun dw/clear-background-color (&optional frame)
     (or frame (setq frame (selected-frame)))
     "unsets the background color in terminal mode"
     (unless (display-graphic-p frame)
+      ;; Set the terminal to a transparent version of the background color
+      (send-string-to-terminal
+       (format "\033]11;[90]%s\033\\"
+           (face-attribute 'default :background)))
       (set-face-background 'default "unspecified-bg" frame)))
 
   ;; Clear the background color for transparent terminals
@@ -351,7 +358,8 @@ I don't currently support buffer cycling like =popper= does but I don't /think/ 
 
   ;; TODO: This binding may need to change
   (keymap-global-set "C-c p" #'dw/toggle-popup-window)
-  (keymap-set term-raw-map "C-c p" #'dw/toggle-popup-window)
+  (with-eval-after-load 'term
+    (keymap-set term-raw-map "C-c p" #'dw/toggle-popup-window))
 
 #+end_src
 
@@ -797,6 +805,13 @@ When used as part of a desktop environment, here are some packages that will mak
 #+begin_src emacs-lisp :tangle emacs/modules/dw-desktop.el
 
   ;; -*- lexical-binding: t; -*-
+
+  ;; Integrate with the system clipboard
+  (unless (display-graphic-p)
+    (use-package xclip
+      :demand t
+      :config
+      (xclip-mode 1)))
 
   (use-package bluetooth)
 
