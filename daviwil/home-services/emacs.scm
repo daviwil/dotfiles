@@ -17,10 +17,8 @@
 
 (define (home-emacs-config-profile-service config)
   (list
-   ((options->transformation
-     ;; 2.3.0 does not include the `box :style none` fix
-     '((with-commit . "emacs-doom-themes=3b2422b208d28e8734b300cd3cc6a7f4af5eba55")))
-    emacs-doom-themes)
+   emacs-doom-themes
+   emacs-ef-themes
 
    emacs-next-pgtk
    emacs-tmr

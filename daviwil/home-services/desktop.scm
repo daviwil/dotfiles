@@ -9,16 +9,17 @@
 
 (use-package-modules compression curl fonts freedesktop gimp glib gnome gnome-xyz
                      gstreamer kde-frameworks linux music package-management
-                     password-utils pdf pulseaudio shellutils ssh syncthing video
-                     web-browsers wget wm xdisorg xorg)
+                     password-utils pdf pulseaudio shellutils ssh syncthing terminals
+                     video web-browsers wget wm xdisorg xorg)
 
 (define (home-desktop-profile-service config)
   (list sway
         swayidle
         swaylock
-        waybar
         fuzzel
+        wl-clipboard
         mako
+        foot
         gammastep
         grimshot ;; grimshot --notify copy area
         network-manager-applet
@@ -47,6 +48,7 @@
         font-jost
         font-iosevka-ss08
         font-iosevka-aile
+        font-microsoft-cascadia
         font-jetbrains-mono
         font-google-noto
         font-google-noto-emoji
