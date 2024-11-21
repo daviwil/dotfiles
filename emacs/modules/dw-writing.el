@@ -6,7 +6,7 @@
          ("C-c n o" . denote-open-or-create)
          ("C-c n r" . denote-rename-file-using-front-matter))
   :custom
-  (denote-directory "~/Notes/Denote")
+  (denote-directory "~/Notes")
   (denote-rename-buffer-format "Denote: %t (%k)")
   (denote-infer-keywords nil)
   (denote-known-keywords

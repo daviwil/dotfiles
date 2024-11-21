@@ -55,6 +55,14 @@
 ;; Only make context tags inheritable (what about noexport?)
 (setq org-use-tag-inheritance "^@")
 
+;;; ----- Time Tracking -----
+
+;; Clock in on the current task when setting a timer
+(add-hook 'org-timer-set-hook #'org-clock-in)
+
+;; Clock out of the current task when the timer is complete
+(add-hook 'org-timer-done-hook #'org-clock-out)
+
 ;;; ----- Agenda Configuration -----
 
 (defvar dw/base-agenda-files '("Inbox.org" "Schedule.org")
@@ -77,7 +85,19 @@
         (append (denote-directory-files "_pra")
                 dw/base-agenda-files)))
 
+(defun dw/goto-weekly-note ()
+  (interactive)
+  (let* ((note-title (format-time-string "%Y-W%V"))
+         (existing-notes
+          (denote-directory-files (format "-%s" note-title) nil t)))
+    (if existing-notes
+        (find-file (car existing-notes))
+      (denote note-title '("plw")))))
+
 (with-eval-after-load 'denote
+  ;; Quick access commands
+  (keymap-set global-map "C-c n w" #'dw/goto-weekly-note)
+
   ;; Refresh agenda files the first time
   (dw/refresh-agenda-files)
 
