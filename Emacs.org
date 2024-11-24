@@ -881,6 +881,36 @@ Here's my own minimal implementation from scratch, please feel free to copy into
 
 #+end_src
 
+** =dw-telegram= - telega.el configuration
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-telegram.el
+
+  ;; -*- lexical-binding: t; -*-
+
+  (use-package tracking
+    :demand t)
+
+  (use-package telega
+    :commands telega
+    :config
+    (setq telega-use-tracking-for '(or unmuted mention)
+          telega-completing-read-function #'completing-read
+          telega-msg-rainbow-title t
+          telega-chat-fill-column 75)
+
+    ;; Show notifications in the mode line
+    (add-hook 'telega-load-hook #'telega-mode-line-hook)
+
+    ;; Disable chat buffer auto-fill
+    (add-hook 'telega-chat-mode-hook #'telega-chat-auto-fill-mode)
+
+    (when (eq dw/current-distro 'void)
+      (setq telega-server-libs-prefix "/usr")))
+
+  (provide 'dw-telegram)
+
+#+end_src
+
 ** =dw-desktop= - Desktop Environment Utilities
 
 When used as part of a desktop environment, here are some packages that will make it easier for Emacs to drive most of the experience.
@@ -934,6 +964,17 @@ I use GPG primarily when authenticating with Git remotes or opening =pass= entri
 * Machine-Specific Settings
 
 This section contains settings that are specific to various systems, particularly to choose extension modules to be loaded on top of the base configuration.
+
+** zerocool
+
+#+begin_src emacs-lisp :tangle emacs/systems/zerocool.el
+
+  (setq dw/use-config-modules
+        (append dw/common-config-modules
+                '(dw-desktop
+                  dw-telegram)))
+
+#+end_src
 
 ** phantom
 
