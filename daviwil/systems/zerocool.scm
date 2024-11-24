@@ -2,40 +2,57 @@
   #:use-module (daviwil utils)
   #:use-module (daviwil systems base)
   #:use-module (daviwil systems common)
-  #:use-module (daviwil home-services xsettingsd)
+  #:use-module (daviwil home-services audio)
+  #:use-module (daviwil home-services games)
+  #:use-module (daviwil home-services video)
+  #:use-module (daviwil home-services finance)
+  #:use-module (daviwil home-services streaming)
+  #:use-module (gnu)
   #:use-module (gnu home)
   #:use-module (gnu home services sound)
   #:use-module (gnu packages file-systems)
   #:use-module (gnu services)
+  #:use-module (gnu services docker)
   #:use-module (gnu system)
   #:use-module (gnu system uuid)
   #:use-module (gnu system file-systems)
   #:use-module (gnu system mapped-devices)
   #:use-module (nongnu packages linux))
 
-(define home
-  (home-environment
-   (services (cons*
-              (service home-xsettingsd-service-type
-                       (home-xsettingsd-configuration
-                        (dpi 180)))
-              (service home-pipewire-service-type)
-              common-home-services))))
 
-(define system
-  (operating-system
-   (inherit base-operating-system)
+(system-config
+ #:home
+ (home-environment
+  (services (cons* (service home-pipewire-service-type)
+                   (service home-video-service-type)
+                   (service home-audio-service-type)
+                   (service home-finance-service-type)
+                   (service home-streaming-service-type)
+                   (service home-games-service-type)
+                   common-home-services)))
+
+ #:system
+ (operating-system
    (host-name "zerocool")
+
+   (firmware (list linux-firmware
+                   sof-firmware
+                   radeon-firmware))
+
+   (bootloader (bootloader-configuration
+                (bootloader grub-efi-bootloader)
+                (targets '("/boot/efi"))
+                (keyboard-layout keyboard-layout)))
 
    (mapped-devices
     (list (mapped-device
-           (source (uuid "fd247c70-2dc6-48c5-872a-9bd0042a1869"))
+           (source (uuid "cd03bf08-abcc-4037-8876-73ce1ae341cf"))
            (target "system-root")
            (type luks-device-mapping))))
 
    (file-systems (cons*
                   (file-system
-                   (device "/dev/mapper/system-root")
+                   (device (file-system-label "system-root"))
                    (mount-point "/")
                    (type "ext4")
                    (dependencies mapped-devices))
@@ -43,7 +60,6 @@
                    (device "/dev/nvme0n1p1")
                    (mount-point "/boot/efi")
                    (type "vfat"))
-                  %base-file-systems))))
+                  %base-file-systems))
 
-;; Return home or system config based on environment variable
-(if (getenv "RUNNING_GUIX_HOME") home system)
+   (services (list))))
