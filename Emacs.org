@@ -77,13 +77,15 @@ To set up this configuration on a new machine, there are two options:
 
 We don't actually symlink the whole =~/.dotfiles/emacs= folder to =~/.emacs.d= to prevent Emacs from dumping runtime files and ELPA packages into the dotfiles repository!
 
-* =init.el= - Base Configuration
+* =init.el=
 
 The standard =init.el= file is shared between all machines that use this configuration.  It is intended that file can be copied directly onto a new machine to get a convenient working environment up and running quickly.
 
 Additional functionality is loaded from module files which are defined in sections later in this document.
 
 I've structured all of this in a very concise way because much of it doesn't need explanation if you've been using Emacs for a while.
+
+** Base Configuration
 
 #+begin_src emacs-lisp :tangle emacs/init.el
 
@@ -153,10 +155,6 @@ I've structured all of this in a very concise way because much of it doesn't nee
   ;; Delete trailing whitespace before saving buffers
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-  ;; Automatically install packages but don't load them until requested
-  (setq use-package-always-ensure t
-        use-package-always-defer t)
-
   ;; Move customization settings out of init.el
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
@@ -167,6 +165,45 @@ I've structured all of this in a very concise way because much of it doesn't nee
     (setq-local completion-styles '(substring partial-completion emacs22)))
 
   (add-hook 'icomplete-minibuffer-setup-hook 'dw/override-fido-completion-styles)
+
+#+end_src
+
+** System Identification
+
+I often need to modify behavior based on the type of system Emacs is running on, especially if it's running on Guix.
+
+#+begin_src emacs-lisp :tangle emacs/init.el
+
+  ;;; ----- System Identification -----
+
+  (defvar dw/is-termux
+    (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
+
+  (defvar dw/current-distro (or (and (eq system-type 'gnu/linux)
+                                     (file-exists-p "/etc/os-release")
+                                     (with-temp-buffer
+                                       (insert-file-contents "/etc/os-release")
+                                       (search-forward-regexp "^ID=\"?\\(.*\\)\"?$")
+                                       (intern (or (match-string 1)
+                                                   "unknown"))))
+                                'unknown))
+
+  (defvar dw/is-guix-system (eql dw/current-distro 'guix))
+
+#+end_src
+
+** Package Management
+
+Customize package management based on the type of system Emacs is running on.
+
+#+begin_src emacs-lisp :tangle emacs/init.el
+
+  ;;; ----- Package Management -----
+
+  ;; Automatically install packages (when not on Guix) but don't load
+  ;; them until requested
+  (setq use-package-always-ensure (not dw/is-guix-system)
+        use-package-always-defer t)
 
 #+end_src
 
@@ -219,6 +256,7 @@ I may switch to using a highly-customized =modus-vivendi= here if I can figure o
     (send-string-to-terminal (format "\e]0;%s\a" title)))
 
   (defun dw/clear-background-color (&optional frame)
+    (interactive)
     (or frame (setq frame (selected-frame)))
     "unsets the background color in terminal mode"
     (unless (display-graphic-p frame)
@@ -234,12 +272,18 @@ I may switch to using a highly-customized =modus-vivendi= here if I can figure o
     (add-hook 'window-setup-hook 'dw/clear-background-color)
     (add-hook 'ef-themes-post-load-hook 'dw/clear-background-color))
 
-  ;; Set preferred themes
-  (use-package ef-themes
-    :demand t
-    :custom (ef-themes-to-toggle '(ef-dream ef-owl))
-    :config
-    (ef-themes-select 'ef-dream))
+  (use-package modus-themes
+    :ensure nil
+    :custom
+    (modus-themes-italic-constructs t)
+    (modus-themes-bold-constructs t)
+    (modus-themes-common-palette-overrides
+        `((bg-mode-line-active bg-lavender)
+          (fg-mode-line-active fg-main)
+          (border-mode-line-active bg-magenta-warmer)))
+    :init
+    (load-theme 'modus-vivendi-tinted t)
+    (add-hook 'modus-themes-after-load-theme-hook #'dw/clear-background-color))
 
   ;; Make vertical window separators look nicer in terminal Emacs
   (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
@@ -276,6 +320,7 @@ Tweak the tab bar to remove some unnecessary elements and shift the =global-mode
 
   ;; Move global mode string to the tab-bar and hide tab close buttons
   (setq tab-bar-close-button-show nil
+        tab-bar-separator " "
         tab-bar-format '(tab-bar-format-menu-bar
                          tab-bar-format-tabs-groups
                          tab-bar-separator
@@ -485,6 +530,24 @@ I also add a binding for =b= to =dired-up-directory= because it seems very stran
           delete-by-moving-to-trash t)
 
     (add-hook 'dired-mode-hook #'dw/dired-mode-hook))
+
+#+end_src
+
+** Proced
+
+The built-in =proced= package is quite useful for producing a list of all running processes.  It's basically like having =top= built in to Emacs.
+
+This configuration makes the =proced= buffer update automatically on an interval so that you can watch process activity as it changes.
+
+#+begin_src emacs-lisp
+
+  (use-package proced
+    :ensure nil
+    :config
+    (setq proced-auto-update-interval 1)
+    (add-hook 'proced-mode-hook
+              (lambda ()
+                (proced-toggle-auto-update 1))))
 
 #+end_src
 

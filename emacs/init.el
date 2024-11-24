@@ -64,10 +64,6 @@
 ;; Delete trailing whitespace before saving buffers
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; Automatically install packages but don't load them until requested
-(setq use-package-always-ensure t
-      use-package-always-defer t)
-
 ;; Move customization settings out of init.el
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
@@ -78,6 +74,29 @@
   (setq-local completion-styles '(substring partial-completion emacs22)))
 
 (add-hook 'icomplete-minibuffer-setup-hook 'dw/override-fido-completion-styles)
+
+;;; ----- System Identification -----
+
+(defvar dw/is-termux
+  (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
+
+(defvar dw/current-distro (or (and (eq system-type 'gnu/linux)
+                                   (file-exists-p "/etc/os-release")
+                                   (with-temp-buffer
+                                     (insert-file-contents "/etc/os-release")
+                                     (search-forward-regexp "^ID=\"?\\(.*\\)\"?$")
+                                     (intern (or (match-string 1)
+                                                 "unknown"))))
+                              'unknown))
+
+(defvar dw/is-guix-system (eql dw/current-distro 'guix))
+
+;;; ----- Package Management -----
+
+;; Automatically install packages (when not on Guix) but don't load
+;; them until requested
+(setq use-package-always-ensure (not dw/is-guix-system)
+      use-package-always-defer t)
 
 ;;; ----- Configuration Management -----
 
@@ -108,6 +127,7 @@
   (send-string-to-terminal (format "\e]0;%s\a" title)))
 
 (defun dw/clear-background-color (&optional frame)
+  (interactive)
   (or frame (setq frame (selected-frame)))
   "unsets the background color in terminal mode"
   (unless (display-graphic-p frame)
@@ -123,12 +143,18 @@
   (add-hook 'window-setup-hook 'dw/clear-background-color)
   (add-hook 'ef-themes-post-load-hook 'dw/clear-background-color))
 
-;; Set preferred themes
-(use-package ef-themes
-  :demand t
-  :custom (ef-themes-to-toggle '(ef-dream ef-owl))
-  :config
-  (ef-themes-select 'ef-dream))
+(use-package modus-themes
+  :ensure nil
+  :custom
+  (modus-themes-italic-constructs t)
+  (modus-themes-bold-constructs t)
+  (modus-themes-common-palette-overrides
+      `((bg-mode-line-active bg-lavender)
+        (fg-mode-line-active fg-main)
+        (border-mode-line-active bg-magenta-warmer)))
+  :init
+  (load-theme 'modus-vivendi-tinted t)
+  (add-hook 'modus-themes-after-load-theme-hook #'dw/clear-background-color))
 
 ;; Make vertical window separators look nicer in terminal Emacs
 (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
@@ -157,6 +183,7 @@
 
 ;; Move global mode string to the tab-bar and hide tab close buttons
 (setq tab-bar-close-button-show nil
+      tab-bar-separator " "
       tab-bar-format '(tab-bar-format-menu-bar
                        tab-bar-format-tabs-groups
                        tab-bar-separator
