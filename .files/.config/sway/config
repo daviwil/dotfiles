@@ -24,15 +24,25 @@ input type:keyboard {
     xkb_options ctrl:nocaps
 }
 
+input type:touchpad {
+    dwt enabled
+    tap enabled
+    middle_emulation enabled
+}
+
 font pango:JetBrains Mono 7
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+set $foot_cmd foot -f "JetBrains Mono:size=14"
+set $emacs_frame_cmd $foot_cmd emacsclient -a '' -t
+
 bindsym $mod+Shift+q kill
 bindsym $mod+Shift+x exit
 bindsym $mod+Shift+r reload
-bindsym $mod+Shift+Return exec foot
+bindsym $mod+Shift+e exec $emacs_frame_cmd
+bindsym $mod+Shift+Return exec $foot_cmd
 
 bindsym $mod+h focus left
 bindsym $mod+l focus right
@@ -68,7 +78,7 @@ default_border pixel 1
 gaps outer 0
 gaps inner 6
 smart_borders off
-hide_edge_borders --i3 none 
+hide_edge_borders --i3 none
 
 # Define variables for workspace numbers
 set $ws0 0
@@ -115,8 +125,8 @@ set $bgcolor #232635dd
 set $bordercolor #c792eacc
 
 # Style the UI
-client.focused $bordercolor $bgcolor #ffffffff #ffffffff #c792eacc 
-client.unfocused $bordercolor #1c1f2bef #ffffffff #ffffffff #c792eacc 
+client.focused $bordercolor $bgcolor #ffffffff #ffffffff #c792eacc
+client.unfocused $bordercolor #1c1f2bef #ffffffff #ffffffff #c792eacc
 
 # Set up screen locking
 set $lock 'swaylock -f -i ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg -s fill --font "JetBrains Mono" --indicator-idle-visible'
@@ -153,7 +163,7 @@ exec mako --border-radius=2 --font="JetBrains Mono 8" --max-visible=5 --outer-ma
 exec nm-applet --indicator
 exec udiskie -t
 exec gammastep-indicator -l 37.983810:23.727539 -t 6500:3500 -b 1.0:0.7
-exec emacs
+exec $foot_cmd emacs -nw
 
 # Set GNOME settings (requires "glib:bin" in Guix)
 exec gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
@@ -165,6 +175,3 @@ include "~/.config/sway/systems/$(hostname)"
 
 # Update DBUS activation records to ensure Flatpak apps work
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-
-# Start pipewire (Only needed on Void)
-#exec pipewire
