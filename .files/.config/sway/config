@@ -67,7 +67,7 @@ bindsym $mod+Shift+p sticky toggle
 bindsym $mod+Control+space focus mode_toggle
 
 # App launcher
-bindsym $mod+space exec fuzzel -w 50 -x 8 -y 8 -r 3 -b 232635ff -t A6Accdff -s A6Accdff -S 232635ff -C c792eacc -m c792eacc -f "JetBrains Mono:weight=light:size=10" --icon-theme="Papirus-Dark"
+bindsym $mod+space exec fuzzel -w 50 -x 8 -y 8 -r 3 -b 232635ff -t A6Accdff -s A6Accdff -S 232635ff -C c792eacc -m c792eacc -f "JetBrains Mono:weight=light:size=10" --icon-theme="Papirus-Dark" --no-exit-on-keyboard-focus-loss
 
 # Set defaults
 default_orientation horizontal
