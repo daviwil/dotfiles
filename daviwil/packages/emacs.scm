@@ -1,9 +1,28 @@
 (define-module (daviwil packages emacs)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (guix packages)
+  #:use-module (guix download)
   #:use-module (guix git-download)
   #:use-module (guix build-system emacs)
   #:use-module ((guix licenses) #:prefix license:))
+
+(define-public dw-emacs-howm
+  (package
+    (name "emacs-howm")
+    (version "1.5.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (string-append "https://stable.melpa.org/packages/howm-" version
+                           ".tar"))
+       (sha256
+        (base32 "0jkraz1spw0s7wq7d2n40ap9bk6ilmb2664c26chnmjp254p5a7a"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/kaorahi/howm")
+    (synopsis "Wiki-like note-taking tool")
+    (description
+     "See README. HOWM is acronym of \"Hitori Otegaru Wiki Modoki\".")
+    (license #f)))
 
 (define-public emacs-obs-websocket-el
   (let ((commit "ce6be2a417705098e26c76122eff2a0261f57d42")

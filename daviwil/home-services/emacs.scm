@@ -25,9 +25,7 @@
    emacs-buffer-env
    emacs-beframe
 
-   emacs-no-littering
-
-   emacs-popper
+   emacs-bluetooth
 
    emacs-mpv
 
@@ -67,23 +65,22 @@
    emacs-ace-window
 
    emacs-default-text-scale
-   emacs-visual-fill-column
 
    emacs-password-store
    emacs-auth-source-pass
 
-   emacs-all-the-icons-dired
+   emacs-xclip
 
    emacs-org
    emacs-org-modern
    emacs-org-pomodoro
    emacs-org-make-toc
-   emacs-org-present
    emacs-org-roam
-   emacs-org-appear
    emacs-org-ql
    emacs-htmlize
    emacs-denote
+   emacs-logos
+   dw-emacs-howm
 
    emacs-magit
    emacs-magit-todos
@@ -95,7 +92,6 @@
    emacs-git-gutter
    emacs-git-gutter-fringe
 
-                                        ;emacs-project
    ripgrep ;; For consult-ripgrep
 
    ;emacs-sly
@@ -114,6 +110,7 @@
 
    emacs-geiser
 
+   emacs-orgalist
    emacs-markdown-mode
 
    emacs-web-mode
@@ -145,7 +142,6 @@
    mu
    emacs-mu4e-alert
 
-
    emacs-eat
    emacs-esh-autosuggest
    emacs-xterm-color
@@ -154,8 +150,6 @@
    emacs-pcmpl-args
 
    emacs-eshell-syntax-highlighting
-
-   emacs-eshell-toggle
 
    emacs-vterm
 
