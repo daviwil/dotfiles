@@ -1,6 +1,11 @@
 #+title: Emacs Configuration
 #+property: header-args :mkdirp yes
 
+19:12 <alternateved> couple of helpful settings:
+19:12 <alternateved> (completions-format 'one-column)
+19:13 <alternateved> (completions-max-height 20)
+19:13 <alternateved> (completion-auto-select 'second-tab)
+
 * Preface
 
 Welcome to the latest iteration of my Emacs configuration!  I'm not sure how many times I've rewritten my Emacs configuration over the years (it's probably less than you think), but I'm approaching this one with some specific goals and use cases in mind.
@@ -36,7 +41,7 @@ A short list of features I'm trying to stick with this time before reaching for 
 - Use =icomplete-vertical-mode= or =fido-vertical-mode= instead of Vertico.  Vertico is amazing, but I want to know what the actual pain points of the built-in solutions are before I resort to using something that is not built in.
 
 - Get used to the built-in =completion-styles= before I try pulling in =orderless=.  =orderless= is excellent but I honestly have not experimented enough with the built-in styles to see if I can get around well enough with them.
-
+p
 - Use =vc-mode= instead of Magit as long as I can.  =vc-mode= is nowhere near as polished as Magit, by any means.  However, I should be able to do many of the same operations I accomplish with Magit (aside from interactive rebase?).  I want to test the limits of =vc-mode= before I pull in Magit, and even then, I may only use Magit for specific tasks that =vc-mode= is not good at.
 
 - Try to avoid using =consult= for as long as I can.  =consult-line= is pretty useful, but =isearch= is mostly fine and I haven't even tried to configure it to be nicer yet.  The one thing I *will* miss from =consult= is =consult-ripgrep=, but I need to see if there's a way to use =ripgrep= directly with Emacs' existing =grep= functionality.
@@ -250,104 +255,131 @@ I may switch to using a highly-customized =modus-vivendi= here if I can figure o
 
 #+begin_src emacs-lisp :tangle emacs/init.el
 
-  ;;; ----- Appearance -----
+      ;;; ----- Appearance -----
 
-  (defun dw/set-terminal-title (title)
-    (send-string-to-terminal (format "\e]0;%s\a" title)))
+      (defun dw/set-terminal-title (title)
+        (send-string-to-terminal (format "\e]0;%s\a" title)))
 
-  (defun dw/clear-background-color (&optional frame)
-    (interactive)
-    (or frame (setq frame (selected-frame)))
-    "unsets the background color in terminal mode"
-    (unless (display-graphic-p frame)
-      ;; Set the terminal to a transparent version of the background color
-      (send-string-to-terminal
-       (format "\033]11;[90]%s\033\\"
-           (face-attribute 'default :background)))
-      (set-face-background 'default "unspecified-bg" frame)))
+      (defun dw/clear-background-color (&optional frame)
+        (interactive)
+        (or frame (setq frame (selected-frame)))
+        "unsets the background color in terminal mode"
+        (unless (display-graphic-p frame)
+          ;; Set the terminal to a transparent version of the background color
+          (send-string-to-terminal
+           (format "\033]11;[90]%s\033\\"
+               (face-attribute 'default :background)))
+          (set-face-background 'default "unspecified-bg" frame)))
 
-  ;; Clear the background color for transparent terminals
-  (unless (display-graphic-p)
-    (add-hook 'after-make-frame-functions 'dw/clear-background-color)
-    (add-hook 'window-setup-hook 'dw/clear-background-color)
-    (add-hook 'ef-themes-post-load-hook 'dw/clear-background-color))
+      ;; Clear the background color for transparent terminals
+      (unless (display-graphic-p)
+        (add-hook 'after-make-frame-functions 'dw/clear-background-color)
+        (add-hook 'window-setup-hook 'dw/clear-background-color)
+        (add-hook 'ef-themes-post-load-hook 'dw/clear-background-color))
 
-  (use-package modus-themes
-    :ensure nil
-    :demand t
-    :custom
-    (modus-themes-italic-constructs t)
-    (modus-themes-bold-constructs t)
-    (modus-themes-common-palette-overrides
-     `((bg-main "#292D3E")
-       (bg-active bg-main)
-       (fg-main "#EEFFFF")
-       (fg-active fg-main)
-       (fg-mode-line-active "#A6Accd")
-       (bg-mode-line-active "#232635")
-       (fg-mode-line-inactive "#676E95")
-       (bg-mode-line-inactive "#282c3d")
-       (bg-tab-bar      "#242837")
-       (bg-tab-current  bg-main)
-       (bg-tab-other    bg-active)
-       (fg-prompt "#c792ea")
-       (bg-prompt unspecified)
-       (bg-hover-secondary "#676E95")
-       (bg-completion "#2f447f")
-       (fg-completion white)
-       (bg-region "#3C435E")
-       (fg-region white)
+      (when (display-graphic-p)
+        (set-face-attribute 'default nil
+                            :font "JetBrains Mono"
+                            :weight 'normal
+                            :height 140)
 
-       (fg-heading-0 "#82aaff")
-       (fg-heading-1 "#82aaff")
-       (fg-heading-2 "#c792ea")
-       (fg-heading-3 "#bb80b3")
-       (fg-heading-4 "#a1bfff")
+        ;; Set the fixed pitch face
+        (set-face-attribute 'fixed-pitch nil
+                            :font "JetBrains Mono"
+                            :weight 'normal
+                            :height 140)
 
-       (fg-prose-verbatim "#c3e88d")
-       (bg-prose-block-contents "#232635")
-       (fg-prose-block-delimiter "#676E95")
-       (bg-prose-block-delimiter bg-prose-block-contents)
+        ;; Set the variable pitch face
+        (set-face-attribute 'variable-pitch nil
+                            :font "Iosevka Aile"
+                            :height 120
+                            :weight 'normal)
 
-       (accent-1 "#79a8ff")
+        ;; Make frames transparent
+        (set-frame-parameter (selected-frame) 'alpha-background 93)
+        (add-to-list 'default-frame-alist '(alpha-background . 93))
+        (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+        (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 
-       (keyword "#89DDFF")
-       (builtin "#82aaff")
-       (comment "#676E95")
-       (string "#c3e88d")
-       (fnname "#82aaff")
-       (type "#c792ea")
-       (variable "#ffcb6b")
-       (docstring "#8d92af")
-       (constant "#f78c6c")))
-    :init
-    (load-theme 'modus-vivendi-tinted t)
-    (add-hook 'modus-themes-after-load-theme-hook #'dw/clear-background-color))
+      (use-package modus-themes
+        :ensure nil
+        :demand t
+        :custom
+        (modus-themes-italic-constructs t)
+        (modus-themes-bold-constructs t)
+        (modus-themes-common-palette-overrides
+         `((bg-main "#292D3E")
+           (bg-active bg-main)
+           (fg-main "#EEFFFF")
+           (fg-active fg-main)
+           (fringe unspecified)
+           (border-mode-line-active unspecified)
+           (border-mode-line-inactive unspecified)
+           (fg-mode-line-active "#A6Accd")
+           (bg-mode-line-active "#232635")
+           (fg-mode-line-inactive "#676E95")
+           (bg-mode-line-inactive "#282c3d")
+           (bg-tab-bar      "#242837")
+           (bg-tab-current  bg-main)
+           (bg-tab-other    bg-active)
+           (fg-prompt "#c792ea")
+           (bg-prompt unspecified)
+           (bg-hover-secondary "#676E95")
+           (bg-completion "#2f447f")
+           (fg-completion white)
+           (bg-region "#3C435E")
+           (fg-region white)
 
-  ;; Make vertical window separators look nicer in terminal Emacs
-  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+           (fg-heading-0 "#82aaff")
+           (fg-heading-1 "#82aaff")
+           (fg-heading-2 "#c792ea")
+           (fg-heading-3 "#bb80b3")
+           (fg-heading-4 "#a1bfff")
 
-  ;; Clean up the mode line
-  (setq-default mode-line-format
-                '("%e" "  "
-                  (:propertize
-                   ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote))
-                  mode-line-frame-identification
-                  mode-line-buffer-identification
-                  "   "
-                  mode-line-position
-                  mode-line-format-right-align
-                  "  "
-                  (project-mode-line project-mode-line-format)
-                  " "
-                  (vc-mode vc-mode)
-                  "  "
-                  mode-line-modes
-                  mode-line-misc-info
-                  "  ")
-                project-mode-line t
-                mode-line-buffer-identification '(" %b")
-                mode-line-position-column-line-format '(" %l:%c"))
+           (fg-prose-verbatim "#c3e88d")
+           (bg-prose-block-contents "#232635")
+           (fg-prose-block-delimiter "#676E95")
+           (bg-prose-block-delimiter bg-prose-block-contents)
+
+           (accent-1 "#79a8ff")
+
+           (keyword "#89DDFF")
+           (builtin "#82aaff")
+           (comment "#676E95")
+           (string "#c3e88d")
+           (fnname "#82aaff")
+           (type "#c792ea")
+           (variable "#ffcb6b")
+           (docstring "#8d92af")
+           (constant "#f78c6c")))
+        :init
+        (load-theme 'modus-vivendi-tinted t)
+        (add-hook 'modus-themes-after-load-theme-hook #'dw/clear-background-color))
+
+      ;; Make vertical window separators look nicer in terminal Emacs
+      (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+
+      ;; Clean up the mode line
+      (setq-default mode-line-format
+                    '("%e" "  "
+                      (:propertize
+                       ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote))
+                      mode-line-frame-identification
+                      mode-line-buffer-identification
+                      "   "
+                      mode-line-position
+                      mode-line-format-right-align
+                      "  "
+                      (project-mode-line project-mode-line-format)
+                      " "
+                      (vc-mode vc-mode)
+                      "  "
+                      mode-line-modes
+                      mode-line-misc-info
+                      "  ")
+                    project-mode-line t
+                    mode-line-buffer-identification '(" %b")
+                    mode-line-position-column-line-format '(" %l:%c"))
 
 #+end_src
 
@@ -672,6 +704,22 @@ I also use it as the core for my personal productivity system which revolves lar
                     (markdown-header-face-4 . 1.0)
                     (markdown-header-face-5 . 1.0)))
       (set-face-attribute (car face) nil :weight 'normal :height (cdr face))))
+
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
+  (use-package howm
+    :init
+    (setq howm-directory "~/Howm")
+    (setq howm-home-directory howm-directory)
+    ;(setq howm-file-name-format "%Y-%m-%d-%H%M%S.org")
+    ;(setq howm-view-title-header "*")
+    ;(setq howm-dtime-format "<%Y-%m-%d %a %H:%M>")
+    (setq howm-file-name-format "%Y-%m-%d-%H%M%S.md")
+    (setq howm-view-title-header "#")
+    (setq howm-prefix (kbd "C-c ;"))
+    :bind*
+    ;; Conveniently open the Howm menu with "C-c ; ;".
+    ("C-c ; ;" . howm-menu))
 
   (provide 'dw-writing)
 

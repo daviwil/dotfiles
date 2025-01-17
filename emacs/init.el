@@ -143,15 +143,81 @@
   (add-hook 'window-setup-hook 'dw/clear-background-color)
   (add-hook 'ef-themes-post-load-hook 'dw/clear-background-color))
 
+(when (display-graphic-p)
+  (set-face-attribute 'default nil
+                      :font "JetBrains Mono"
+                      :weight 'normal
+                      :height 140)
+
+  ;; Set the fixed pitch face
+  (set-face-attribute 'fixed-pitch nil
+                      :font "JetBrains Mono"
+                      :weight 'normal
+                      :height 140)
+
+  ;; Set the variable pitch face
+  (set-face-attribute 'variable-pitch nil
+                      :font "Iosevka Aile"
+                      :height 120
+                      :weight 'normal)
+
+  ;; Make frames transparent
+  (set-frame-parameter (selected-frame) 'alpha-background 93)
+  (add-to-list 'default-frame-alist '(alpha-background . 93))
+  (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+  (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+
 (use-package modus-themes
   :ensure nil
+  :demand t
   :custom
   (modus-themes-italic-constructs t)
   (modus-themes-bold-constructs t)
   (modus-themes-common-palette-overrides
-      `((bg-mode-line-active bg-lavender)
-        (fg-mode-line-active fg-main)
-        (border-mode-line-active bg-magenta-warmer)))
+   `((bg-main "#292D3E")
+     (bg-active bg-main)
+     (fg-main "#EEFFFF")
+     (fg-active fg-main)
+     (fringe unspecified)
+     (border-mode-line-active unspecified)
+     (border-mode-line-inactive unspecified)
+     (fg-mode-line-active "#A6Accd")
+     (bg-mode-line-active "#232635")
+     (fg-mode-line-inactive "#676E95")
+     (bg-mode-line-inactive "#282c3d")
+     (bg-tab-bar      "#242837")
+     (bg-tab-current  bg-main)
+     (bg-tab-other    bg-active)
+     (fg-prompt "#c792ea")
+     (bg-prompt unspecified)
+     (bg-hover-secondary "#676E95")
+     (bg-completion "#2f447f")
+     (fg-completion white)
+     (bg-region "#3C435E")
+     (fg-region white)
+
+     (fg-heading-0 "#82aaff")
+     (fg-heading-1 "#82aaff")
+     (fg-heading-2 "#c792ea")
+     (fg-heading-3 "#bb80b3")
+     (fg-heading-4 "#a1bfff")
+
+     (fg-prose-verbatim "#c3e88d")
+     (bg-prose-block-contents "#232635")
+     (fg-prose-block-delimiter "#676E95")
+     (bg-prose-block-delimiter bg-prose-block-contents)
+
+     (accent-1 "#79a8ff")
+
+     (keyword "#89DDFF")
+     (builtin "#82aaff")
+     (comment "#676E95")
+     (string "#c3e88d")
+     (fnname "#82aaff")
+     (type "#c792ea")
+     (variable "#ffcb6b")
+     (docstring "#8d92af")
+     (constant "#f78c6c")))
   :init
   (load-theme 'modus-vivendi-tinted t)
   (add-hook 'modus-themes-after-load-theme-hook #'dw/clear-background-color))
