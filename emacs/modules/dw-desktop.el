@@ -8,6 +8,7 @@
     (xclip-mode 1)))
 
 (use-package bluetooth)
+;;  :commands (bluetooth-list-devices))
 
 ;; Control NetworkManager via nmcli
 (use-package nm

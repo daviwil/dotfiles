@@ -5,10 +5,7 @@
 ;;; ----- Basic Configuration -----
 
 ;; Core settings
-(setq ;; Flash the UI instead of beeping
-      visible-bell t
-
-      ;; Yes, this is Emacs
+(setq ;; Yes, this is Emacs
       inhibit-startup-message t
 
       ;; Instruct auto-save-mode to save to the current file, not a backup file
@@ -381,6 +378,8 @@
   (center-document--adjust-margins))
 
 (add-hook 'org-mode-hook #'center-document-mode)
+(add-hook 'markdown-mode-hook #'center-document-mode)
+(add-hook 'text-mode-hook #'center-document-mode)
 
 ;; Coming soon.
 
