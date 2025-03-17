@@ -77,6 +77,14 @@
 (setq org-log-done 'time
       org-log-into-drawer t)
 
+;;; ----- Capture Templates -----
+
+(setq org-capture-templates
+      '(("t" "Task" entry (file+datetree+olp "~/Notes/2025-Notes.org" "Tasks")
+         "* TODO %?\n  %i\n  %a")
+        ("e" "Entry" entry (file+olp+datetree "~/Notes/2025-Notes.org" "Entries")
+         "* %?\nEntered on %U\n  %i\n  %a")))
+
 ;;; ----- Denote Integration -----
 
 (defun dw/refresh-agenda-files ()

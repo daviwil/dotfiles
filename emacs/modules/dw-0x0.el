@@ -19,7 +19,7 @@
   (message "Sending %s to 0x0.st..." file-path)
   (let ((url (string-trim-right
 	      (shell-command-to-string
-	       (format "curl -s -F'file=@%s' -F'expires=2' https://0x0.st" (expand-file-name file-path))))))
+	       (format "curl -s -F'file=@%s' https://0x0.st" (expand-file-name file-path))))))
     (message "The URL is %s" url)
     (kill-new url)))
 
