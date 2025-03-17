@@ -164,9 +164,31 @@ I've structured all of this in a very concise way because much of it doesn't nee
 
   ;; Match completion substrings that may be out of order
   (defun dw/override-fido-completion-styles ()
-    (setq-local completion-styles '(substring partial-completion emacs22)))
+    (setq-local completion-styles '(basic substring partial-completion emacs22)))
 
   (add-hook 'icomplete-minibuffer-setup-hook 'dw/override-fido-completion-styles)
+
+  (setopt completions-detailed t
+          completions-format 'vertical
+          completion-auto-select t)
+
+  (setopt tab-always-indent 'complete
+          completion-styles '(basic partial-completion substring flex)
+          completion-ignore-case t
+          read-buffer-completion-ignore-case t
+          read-file-name-completion-ignore-case t
+          completion-flex-nospace t
+          completion-show-help nil
+          completions-detailed t
+          completions-group t
+          completion-auto-help 'visible
+          completion-auto-select 'second-tab
+          completions-header-format nil
+          completions-format 'vertical  ;'one-column
+          completions-max-height 10)
+
+  (keymap-set minibuffer-local-map "C-p" #'minibuffer-previous-completion)
+  (keymap-set minibuffer-local-map "C-n" #'minibuffer-next-completion)
 
 #+end_src
 
@@ -1132,27 +1154,31 @@ This module uses =xterm-color= to improve ANSI escape handling in eshell and =M-
 
 #+begin_src emacs-lisp :tangle emacs/modules/dw-system.el
 
-    ;; -*- lexical-binding: t; -*-
-    (use-package xterm-color
-      :demand t
-      :config
-      ;; Enable ANSI escape handling in eshell
-      (with-eval-after-load 'eshell
-        (add-hook 'eshell-before-prompt-hook
-                  (lambda ()
-                    (setq xterm-color-preserve-properties t)))
+  ;; -*- lexical-binding: t; -*-
+  (use-package xterm-color
+    :demand t
+    :config
+    ;; Enable ANSI escape handling in eshell
+    (with-eval-after-load 'eshell
+      (add-hook 'eshell-before-prompt-hook
+                (lambda ()
+                  (setq xterm-color-preserve-properties t)))
 
-        (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
-        (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
-        (setenv "TERM" "xterm-256color"))
+      (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+      (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
+      (setenv "TERM" "xterm-256color"))
 
-      ;; Enable ANSI escape handling in M-x compile
-      (setq compilation-environment '("TERM=xterm-256color"))
+    ;; Enable ANSI escape handling in M-x compile
+    (setq compilation-environment '("TERM=xterm-256color"))
 
-      (defun dw/advice-compilation-filter (f proc string)
-        (funcall f proc (xterm-color-filter string)))
+    (defun dw/advice-compilation-filter (f proc string)
+      (funcall f proc (xterm-color-filter string)))
 
-      (advice-add 'compilation-filter :around #'dw/advice-compilation-filter))
+    (advice-add 'compilation-filter :around #'dw/advice-compilation-filter))
+
+  (use-package eat
+    :config
+    (add-hook 'eshell-load-hook #'eat-eshell-mode))
 
 #+end_src
 

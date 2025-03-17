@@ -68,9 +68,31 @@
 
 ;; Match completion substrings that may be out of order
 (defun dw/override-fido-completion-styles ()
-  (setq-local completion-styles '(substring partial-completion emacs22)))
+  (setq-local completion-styles '(basic substring partial-completion emacs22)))
 
 (add-hook 'icomplete-minibuffer-setup-hook 'dw/override-fido-completion-styles)
+
+(setopt completions-detailed t
+        completions-format 'vertical
+        completion-auto-select t)
+
+(setopt tab-always-indent 'complete
+        completion-styles '(basic partial-completion substring flex)
+        completion-ignore-case t
+        read-buffer-completion-ignore-case t
+        read-file-name-completion-ignore-case t
+        completion-flex-nospace t
+        completion-show-help nil
+        completions-detailed t
+        completions-group t
+        completion-auto-help 'visible
+        completion-auto-select 'second-tab
+        completions-header-format nil
+        completions-format 'vertical  ;'one-column
+        completions-max-height 10)
+
+(keymap-set minibuffer-local-map "C-p" #'minibuffer-previous-completion)
+(keymap-set minibuffer-local-map "C-n" #'minibuffer-next-completion)
 
 ;;; ----- System Identification -----
 
