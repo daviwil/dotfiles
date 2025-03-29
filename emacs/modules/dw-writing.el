@@ -28,6 +28,11 @@
   ;; Buttonize all denote links in text buffers
   (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe))
 
+(use-package consult-notes
+  :commands (consult-notes)
+  :config
+  (consult-notes-denote-mode 1))
+
 (defun dw/setup-markdown-mode ()
   (center-document-mode 1)
   (display-line-numbers-mode 0))
