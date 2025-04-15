@@ -78,7 +78,6 @@
    (packages (cons* bluez
                     bluez-alsa
                     brightnessctl
-                    emacs-no-x-toolkit
                     exfat-utils
                     fuse-exfat
                     git
@@ -317,7 +316,6 @@
    (packages (cons* bluez
                     bluez-alsa
                     brightnessctl
-                    emacs-no-x-toolkit
                     exfat-utils
                     fuse-exfat
                     git
