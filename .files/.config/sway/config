@@ -139,6 +139,7 @@ exec swayidle -w \
 # Window rules
 for_window [title="Firefox — Sharing Indicator"] kill
 for_window [title=".* - mpv$"] floating enable, sticky enable
+for_window [app_id="org.mozilla.firefox"] inhibit_idle fullscreen
 
 bar {
     position top
