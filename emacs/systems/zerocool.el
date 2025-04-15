@@ -2,4 +2,5 @@
  (append dw/common-config-modules
          '(dw-desktop
            dw-system
-           dw-telegram)))
+           dw-telegram
+           dw-mail)))
