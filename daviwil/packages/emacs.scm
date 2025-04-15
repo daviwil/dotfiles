@@ -48,3 +48,29 @@
 It enables you to remotely control your streaming or recording session from
 Emacs!")
       (license license:gpl3+))))
+
+(define-public emacs-consult-notes
+  (let ((commit "7c9cd970c75fae9a6140ca1beefed9532d8e1b96")
+        (revision "0"))
+    (package
+      (name "emacs-consult-notes")
+      (version (git-version "0.1" revision commit))
+      (source
+       (origin
+         (uri (git-reference
+               (url "https://github.com/mclear-tools/consult-notes")
+               (commit commit)))
+         (method git-fetch)
+         (sha256
+          (base32 "1lccpnqqaai6vsjn9v65xhpzs0bmhrsyflaxg3n3iszigmsxrfaz"))
+         (file-name (git-file-name name version))))
+      (build-system emacs-build-system)
+      (propagated-inputs
+       (list emacs-consult
+             emacs-dash
+             emacs-s))
+      (home-page "https://github.com/mclear-tools/consult-notes")
+      (synopsis "Use Consult to search notes in Emacs")
+      (description
+       "consult-notes is a package for easily selecting notes via consult. It’s most basic use is to integrate directories of files (notes) and to provide easy narrowing via consult. But notes can be in principle added from any source that can be integrated with consult.")
+      (license license:gpl3+))))
