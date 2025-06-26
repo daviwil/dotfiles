@@ -1008,6 +1008,37 @@ I also use it as the core for my personal productivity system which revolves lar
 
 #+end_src
 
+** =dw-develop= - Programming Configuration
+
+*** Language Servers
+
+Eglot is the way.
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-develop.el
+
+  (use-package eglot
+    :ensure nil
+    :hook ((js-mode
+            typescript-mode) . eglot-ensure))
+
+#+end_src
+
+*** JavaScript / TypeScript
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-develop.el
+
+  (use-package js-mode
+    :ensure nil
+    :config
+    (setq-default js-indent-level 2))
+
+  (use-package typescript-mode
+    :ensure nil
+    :config
+    (setq-default typescript-indent-level 2))
+
+#+end_src
+
 ** =dw-present= - Presentations and Live Streaming
 
 I'm planning to develop a new presentation configuration using Prot's Logos package because it's a bit more flexible and will enable me to treat code files as presentations in addition to Org files and pretty much any other type of file that has syntax that can be interpreted as a page marker (like a comment string).
