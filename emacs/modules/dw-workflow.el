@@ -68,7 +68,8 @@
 (defvar dw/base-agenda-files '("Inbox.org" "Schedule.org")
   "The base agenda files that will always be included.")
 
-(setq org-agenda-span 'day
+(setq org-directory "~/Notes"
+      org-agenda-span 'day
       org-agenda-start-with-log-mode t
       org-agenda-files dw/base-agenda-files
       org-agenda-window-setup 'current-window)
@@ -76,6 +77,12 @@
 ;; Make done tasks show up in the agenda log
 (setq org-log-done 'time
       org-log-into-drawer t)
+
+(defvar-keymap dw/org-key-map
+  :doc "Personal Org Mode key bindings"
+  "a" #'org-agenda)
+
+(keymap-set global-map "C-c o" dw/org-key-map)
 
 ;;; ----- Capture Templates -----
 
