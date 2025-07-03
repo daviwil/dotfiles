@@ -97,6 +97,7 @@ workspace $ws5 output $laptop
 workspace $ws1 output $primary $laptop # Set ws 1 last to land there on startup
 
 # Switch to workspace
+bindsym $mod+escape workspace $ws0
 bindsym $mod+grave workspace $ws0
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
@@ -105,6 +106,7 @@ bindsym $mod+4 workspace $ws4
 bindsym $mod+5 workspace $ws5
 
 # Move focused container to workspace
+bindsym $mod+Shift+escape move container to workspace $ws0
 bindsym $mod+Shift+grave move container to workspace $ws0
 bindsym $mod+Shift+1 move container to workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2
