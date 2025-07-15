@@ -790,10 +790,6 @@ I also use it as the core for my personal productivity system which revolves lar
        "rn"))
 
     :config
-
-    (require 'denote-rename-buffer)
-    (require 'denote-org-extras)
-
     ;; Rename buffers with the note name
     (denote-rename-buffer-mode 1)
 
@@ -801,6 +797,7 @@ I also use it as the core for my personal productivity system which revolves lar
     (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe))
 
   (use-package consult-notes
+    :ensure nil
     :commands (consult-notes)
     :config
     (consult-notes-denote-mode 1))
@@ -834,6 +831,7 @@ I also use it as the core for my personal productivity system which revolves lar
       (howm-mode-set-buffer-name)))
 
   (use-package howm
+    :ensure nil
     :bind* ("C-c ; ;" . howm-menu)
     :init
     (setq howm-prefix (kbd "C-c ;")
@@ -1017,6 +1015,36 @@ I also use it as the core for my personal productivity system which revolves lar
 
 ** =dw-develop= - Programming Configuration
 
+*** Project Management
+
+I'm leveraging the built-in =project.el= package to manage the tasks I perform around the projects I'm working on.
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-develop.el
+
+  (use-package project
+    :ensure nil
+    :custom
+    (project-switch-use-entire-map t))
+
+  (defun dw/project-compilation-buffer-name-function (name-of-mode)
+    (format "*compilation: %s*" (project-name (project-current))))
+
+  (setq project-compilation-buffer-name-function 'dw/project-compilation-buffer-name-function)
+
+#+end_src
+
+*** Code Formatting
+
+#+begin_src emacs-lisp
+
+  (use-package apheleia
+    :vc (:url "https://github.com/radian-software/apheleia"
+              :rev "v4.4.1")
+    :init
+    (apheleia-global-mode 1))
+
+#+end_src
+
 *** Language Servers
 
 Eglot is the way.
@@ -1040,9 +1068,25 @@ Eglot is the way.
     (setq-default js-indent-level 2))
 
   (use-package typescript-mode
-    :ensure nil
+    :mode ("\\.tsx?\\'")
     :config
     (setq-default typescript-indent-level 2))
+
+#+end_src
+
+Finish up by providing the feature.
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-develop.el
+
+  (provide 'dw-develop)
+
+#+end_src
+
+*** Docker
+
+#+begin_src emacs-lisp
+
+  (use-package dockerfile-mode)
 
 #+end_src
 
@@ -1219,12 +1263,21 @@ When used as part of a desktop environment, here are some packages that will mak
       :config
       (xclip-mode 1)))
 
+  ;; Pull in $PATH from the shell environment
+  (use-package exec-path-from-shell
+    :init
+    (exec-path-from-shell-initialize))
+
   (use-package bluetooth)
   ;;  :commands (bluetooth-list-devices))
 
   ;; Control NetworkManager via nmcli
   (use-package nm
     :vc (:url "https://github.com/Kodkollektivet/emacs-nm"
+         :rev :newest))
+
+  (use-package inf-mongo
+    :vc (:url "https://github.com/endofunky/inf-mongo"
          :rev :newest))
 
   (provide 'dw-desktop)
@@ -1303,6 +1356,8 @@ The =emacs-guix= package is quite convenient for searching Guix packages from wi
     (async-shell-command "~/.dotfiles/.files/.bin/update-system" "*guix-system-update*"))
 
   (use-package guix
+    :ensure nil
+    :if dw/is-guix-system
     :bind (("C-c G p" . guix-packages-by-name)
            ("C-c G u c" . dw/guix-update-channels)
            ("C-c G u s" . dw/guix-update-system)))
@@ -1319,7 +1374,7 @@ This module uses =xterm-color= to improve ANSI escape handling in eshell and =M-
 
   ;; -*- lexical-binding: t; -*-
   (use-package xterm-color
-    :demand t
+    :ensure nil  ; Not available on ELPA repos
     :config
     ;; Enable ANSI escape handling in eshell
     (with-eval-after-load 'eshell
@@ -1379,5 +1434,36 @@ This section contains settings that are specific to various systems, particularl
 
   (setq dw/use-config-modules dw/common-config-modules)
   (setq xclip-method 'powershell)
+
+#+end_src
+
+** cereal
+
+#+begin_src emacs-lisp :tangle emacs/systems/cereal.el
+
+  (setq dw/use-config-modules
+   (append dw/common-config-modules
+           '(dw-desktop
+             dw-system
+             dw-develop)))
+
+  ;; Treat Command as Ctrl inside of Emacs (because I remap Ctrl to Command)
+  (setq ns-command-modifier 'meta)
+
+  ;; Use the traditional approach to setting alpha on macOS
+  (set-frame-parameter (selected-frame) 'alpha 93)
+  (add-to-list 'default-frame-alist '(alpha . 93))
+
+  ;; Use ls from coreutils in Dired
+  (setq insert-directory-program "gls"
+        dired-use-ls-dired t)
+
+  ;; Adjust font sizes
+  ;; TODO: Use defvars instead
+  (add-hook 'after-init-hook
+            (lambda ()
+              (set-face-attribute 'default nil :height 166)
+              (set-face-attribute 'fixed-pitch nil :height 166)
+              (set-face-attribute 'variable-pitch nil :height 146)))
 
 #+end_src

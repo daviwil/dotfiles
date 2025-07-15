@@ -18,10 +18,6 @@
      "rn"))
 
   :config
-
-  (require 'denote-rename-buffer)
-  (require 'denote-org-extras)
-
   ;; Rename buffers with the note name
   (denote-rename-buffer-mode 1)
 
@@ -29,6 +25,7 @@
   (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe))
 
 (use-package consult-notes
+  :ensure nil
   :commands (consult-notes)
   :config
   (consult-notes-denote-mode 1))
@@ -62,6 +59,7 @@
     (howm-mode-set-buffer-name)))
 
 (use-package howm
+  :ensure nil
   :bind* ("C-c ; ;" . howm-menu)
   :init
   (setq howm-prefix (kbd "C-c ;")

@@ -9,6 +9,8 @@
   (async-shell-command "~/.dotfiles/.files/.bin/update-system" "*guix-system-update*"))
 
 (use-package guix
+  :ensure nil
+  :if dw/is-guix-system
   :bind (("C-c G p" . guix-packages-by-name)
          ("C-c G u c" . dw/guix-update-channels)
          ("C-c G u s" . dw/guix-update-system)))
@@ -17,7 +19,7 @@
 
 ;; -*- lexical-binding: t; -*-
 (use-package xterm-color
-  :demand t
+  :ensure nil  ; Not available on ELPA repos
   :config
   ;; Enable ANSI escape handling in eshell
   (with-eval-after-load 'eshell
