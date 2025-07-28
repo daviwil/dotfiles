@@ -11,6 +11,7 @@
         pipewire
 
         ;; Guitar
+
         ;; guitarix
         ;; guitarix-lv2
 
@@ -23,7 +24,7 @@
         ;; Synths
         helm
         amsynth
-        geonkick
+        ;;geonkick  ;; redkick is not building right now
         fluidsynth
         ;; surge-synth  ;; Build fails
         zynaddsubfx
@@ -34,7 +35,7 @@
 
         ;; Possibly unused
         jack-keyboard
-        carla
+        ;carla
         patchage))
 
 (define-public home-audio-service-type
