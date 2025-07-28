@@ -531,6 +531,22 @@ Opening and closing delimiters will have matching colors."
 (setq xref-search-program 'ripgrep
       grep-command "rg -nS --noheading")
 
+(defvar focus-mode--saved-mode-line-format nil
+  "Stores the `mode-line-format' value before enabling focus mode.")
+
+(define-minor-mode focus-mode
+  "Hide unnecessary UI elements to increase focus."
+  :global t
+  :group 'editing
+  :lighter " Focus"
+  (if focus-mode
+      (progn
+        (setq-default focus-mode--saved-mode-line-format (default-value 'mode-line-format))
+        (setq-default mode-line-format nil)
+        (tab-bar-mode 0))
+    (setq-default mode-line-format focus-mode--saved-mode-line-format)
+    (tab-bar-mode 1)))
+
 ;;; ----- Finalization
 
 ;; Load requested configuration modules
