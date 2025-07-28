@@ -40,7 +40,6 @@
 (scroll-bar-mode 0)            ;; Hide the scroll bar
 (xterm-mouse-mode 1)           ;; Enable mouse events in terminal Emacs
 (display-time-mode 1)          ;; Display time in mode line / tab bar
-(fido-vertical-mode 1)         ;; Improved vertical minibuffer completions
 (column-number-mode 1)         ;; Show column number on mode line
 (tab-bar-history-mode 1)       ;; Remember previous tab window configurations
 (auto-save-visited-mode 1)     ;; Auto-save files at an interval
@@ -54,10 +53,6 @@
 ;; Display line numbers in programming modes
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
-;; Make icomplete slightly more convenient
-(keymap-set icomplete-fido-mode-map "M-h" 'icomplete-fido-backward-updir)
-(keymap-set icomplete-fido-mode-map "TAB" 'icomplete-force-complete)
-
 ;; Delete trailing whitespace before saving buffers
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -70,26 +65,42 @@
 (defun dw/override-fido-completion-styles ()
   (setq-local completion-styles '(basic substring partial-completion emacs22)))
 
-(add-hook 'icomplete-minibuffer-setup-hook 'dw/override-fido-completion-styles)
-
-(setopt completions-detailed t
-        completions-format 'vertical
-        completion-auto-select t)
-
 (setopt tab-always-indent 'complete
-        completion-styles '(basic partial-completion substring flex)
-        completion-ignore-case t
         read-buffer-completion-ignore-case t
         read-file-name-completion-ignore-case t
-        completion-flex-nospace t
-        completion-show-help nil
+
+        ;; This *may* need to be set to 'always just so that you don't
+        ;; miss other possible good completions that match the input
+        ;; string.
+        completion-auto-help t
+
+        ;; Include more information with completion listings
         completions-detailed t
-        completions-group t
-        completion-auto-help 'visible
+
+        ;; Move focus to the completions window after hitting tab
+        ;; twice.
         completion-auto-select 'second-tab
-        completions-header-format nil
-        completions-format 'vertical  ;'one-column
-        completions-max-height 10)
+
+        ;; If there are 3 or less completion candidates, don't pop up
+        ;; a window, just cycle through them.
+        completion-cycle-threshold 3
+
+        ;; Cycle through completion options vertically, not
+        ;; horizontally.
+        completions-format 'vertical
+
+        ;; Sort recently used completions first.
+        completions-sort 'historical
+
+        ;; Only show up to 10 lines in the completions window.
+        completions-max-height 10
+
+        ;; Don't show the unneeded help string at the top of the
+        ;; completions buffer.
+        completion-show-help nil
+
+        ;; Add more `completion-styles' to improve candidate selection.
+        completion-styles '(basic partial-completion substring initials))
 
 (keymap-set minibuffer-local-map "C-p" #'minibuffer-previous-completion)
 (keymap-set minibuffer-local-map "C-n" #'minibuffer-next-completion)
