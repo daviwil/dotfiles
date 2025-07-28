@@ -1109,6 +1109,18 @@ Eglot is the way.
 
 #+end_src
 
+*** Janet
+
+[[https://janet-lang.org][Janet]] is probably my second-favorite language for project hacking right now.
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-develop.el
+
+  (use-package janet-mode)
+
+#+end_src
+
+*** Provide =dw-develop=
+
 Finish up by providing the feature.
 
 #+begin_src emacs-lisp :tangle emacs/modules/dw-develop.el
