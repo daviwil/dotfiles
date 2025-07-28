@@ -7,6 +7,7 @@
   #:use-module (gnu packages mail)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages rust-apps)
+  #:use-module (gnu packages imagemagick)
   #:use-module (gnu home services)
   #:use-module (gnu services)
   #:use-module (gnu services configuration)
@@ -17,9 +18,6 @@
 
 (define (home-emacs-config-profile-service config)
   (list
-   emacs-doom-themes
-   emacs-ef-themes
-
    emacs-next-pgtk
    emacs-tmr
    emacs-buffer-env
@@ -33,33 +31,19 @@
 
    emacs-lua-mode
    emacs-fennel-mode
-
-   emacs-emojify
-
-   emacs-mood-line
-   emacs-minions
+   emacs-janet-mode
 
    emacs-alert
-
-   emacs-super-save
 
    emacs-pinentry
    pinentry-emacs
 
-   emacs-evil-nerd-commenter
-
-   emacs-ws-butler
-
-   emacs-hydra
+   imagemagick  ;; for image-dired
 
    emacs-vertico
-   emacs-corfu
-   emacs-kind-icon
    emacs-orderless
    emacs-consult
    emacs-wgrep
-   emacs-marginalia
-   emacs-embark
 
    emacs-avy
    emacs-ace-window
@@ -72,15 +56,14 @@
    emacs-xclip
 
    emacs-org
-   emacs-org-modern
    emacs-org-pomodoro
    emacs-org-make-toc
    emacs-org-roam
-   emacs-org-ql
    emacs-htmlize
    emacs-denote
+   emacs-consult-notes
    emacs-logos
-   dw-emacs-howm
+   emacs-howm
 
    emacs-magit
    emacs-magit-todos
@@ -94,17 +77,9 @@
 
    ripgrep ;; For consult-ripgrep
 
-   ;emacs-sly
-   ;emacs-sly-asdf
-
    emacs-js2-mode
    emacs-typescript-mode
    emacs-apheleia
-
-   ;emacs-go-mode
-
-   ;emacs-rust-mode
-   ;emacs-zig-mode
 
    emacs-helpful
 
@@ -125,11 +100,8 @@
 
    emacs-smartparens
 
-   emacs-rainbow-delimiters
-
    emacs-rainbow-mode
 
-   emacs-posframe
    emacs-keycast
 
    emacs-obs-websocket-el
@@ -156,8 +128,6 @@
    emacs-tracking
 
    emacs-telega
-
-   emacs-elfeed
 
    emacs-guix
 
