@@ -13,53 +13,50 @@
   #:use-module (daviwil home-services video)
   #:use-module (daviwil home-services streaming))
 
-(system-config
- #:home
- (home-environment
-  (services (cons* (service home-pipewire-service-type)
-                   (service home-streaming-service-type)
-                   (service home-video-service-type)
-                   common-home-services)))
+(operating-system
+ (inherit base-operating-system)
+ (host-name "phantom")
 
- #:system
- (operating-system
-   (host-name "phantom")
+ (firmware (list linux-firmware))
 
-   (firmware (list linux-firmware))
+ ;; (kernel-arguments
+ ;;  (append
+ ;;   '("modprobe.blacklist=nouveau"
+ ;;     "nvidia_drm.modeset=1")
+ ;;   %default-kernel-arguments))
 
-   ;; (kernel-arguments
-   ;;  (append
-   ;;   '("modprobe.blacklist=nouveau"
-   ;;     "nvidia_drm.modeset=1")
-   ;;   %default-kernel-arguments))
+ (mapped-devices
+  (list (mapped-device
+         (source (uuid "cee84d1e-3918-4148-9aac-ecd4dd1fd04f"))
+         (target "system-root")
+         (type luks-device-mapping))))
 
-   (bootloader (bootloader-configuration
-                (bootloader grub-efi-bootloader)
-                (targets '("/boot/efi"))
-                (keyboard-layout keyboard-layout)))
+ (file-systems (cons*
+                (file-system
+                 (device (file-system-label "system-root"))
+                 (mount-point "/")
+                 (type "ext4")
+                 (dependencies mapped-devices))
+                (file-system
+                 (device "/dev/nvme0n1p1")
+                 (mount-point "/boot/efi")
+                 (type "vfat"))
+                %base-file-systems))
 
-   (mapped-devices
-    (list (mapped-device
-           (source (uuid "cee84d1e-3918-4148-9aac-ecd4dd1fd04f"))
-           (target "system-root")
-           (type luks-device-mapping))))
+ ;; (packages
+ ;;  (cons* nvidia-exec
+ ;;         %base-packages))
 
-   (file-systems (cons*
-                  (file-system
-                    (device (file-system-label "system-root"))
-                    (mount-point "/")
-                    (type "ext4")
-                    (dependencies mapped-devices))
-                  (file-system
-                    (device "/dev/nvme0n1p1")
-                    (mount-point "/boot/efi")
-                    (type "vfat"))
-                  %base-file-systems))
+ (services
+  (append
+   (operating-system-user-services base-operating-system)
+   (list
+     (guix-home-config
+     (home-environment
+      (services (cons* (service home-pipewire-service-type)
+                       (service home-streaming-service-type)
+                       (service home-video-service-type)
+                       common-home-services))))))))
 
-   ;; (packages
-   ;;  (cons* nvidia-exec
-   ;;         %base-packages))
-
-   (services (list))))
-   ;; (services
-   ;;  (list (service nvidia-service-type)))))
+;; System-specific services
+;; (service nvidia-service-type)))))
