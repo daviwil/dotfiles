@@ -1,5 +1,7 @@
 (use-package project
   :ensure nil
+  :bind (:map project-prefix-map
+              ("t" . eat-project))
   :custom
   (project-switch-use-entire-map t))
 

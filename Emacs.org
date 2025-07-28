@@ -1056,36 +1056,38 @@ I'm leveraging the built-in =project.el= package to manage the tasks I perform a
 
 #+begin_src emacs-lisp :tangle emacs/modules/dw-develop.el
 
-    (use-package project
-      :ensure nil
-      :custom
-      (project-switch-use-entire-map t))
+  (use-package project
+    :ensure nil
+    :bind (:map project-prefix-map
+                ("t" . eat-project))
+    :custom
+    (project-switch-use-entire-map t))
 
-    (defun dw/project-compilation-buffer-name-function (name-of-mode)
-      (format "*compilation: %s*" (project-name (project-current))))
+  (defun dw/project-compilation-buffer-name-function (name-of-mode)
+    (format "*compilation: %s*" (project-name (project-current))))
 
-    (setq project-compilation-buffer-name-function 'dw/project-compilation-buffer-name-function)
+  (setq project-compilation-buffer-name-function 'dw/project-compilation-buffer-name-function)
 
 
-    (defun dw/ensure-project-in-tab (project-dir)
-      "Ensure we're in a tab named after the project."
-      (let* ((project-name (file-name-nondirectory (directory-file-name project-dir)))
-             (tab-names (mapcar (lambda (tab) (alist-get 'name tab)) (tab-bar-tabs)))
-             (existing-tab (seq-find (lambda (name) (equal name project-name)) tab-names)))
-        (unless existing-tab
-          (tab-new)
-          (tab-rename project-name))
-        (unless (equal (alist-get 'name (tab-bar--current-tab)) project-name)
-          (tab-bar-select-tab-by-name project-name))))
+  (defun dw/ensure-project-in-tab (project-dir)
+    "Ensure we're in a tab named after the project."
+    (let* ((project-name (file-name-nondirectory (directory-file-name project-dir)))
+           (tab-names (mapcar (lambda (tab) (alist-get 'name tab)) (tab-bar-tabs)))
+           (existing-tab (seq-find (lambda (name) (equal name project-name)) tab-names)))
+      (unless existing-tab
+        (tab-new)
+        (tab-rename project-name))
+      (unless (equal (alist-get 'name (tab-bar--current-tab)) project-name)
+        (tab-bar-select-tab-by-name project-name))))
 
-    (defun dw/project-prompter ()
-      "Prompt for project and ensure it opens in the correct tab."
-      (let ((project-dir (project-prompt-project-dir)))
-        (dw/ensure-project-in-tab project-dir)
-        project-dir))
+  (defun dw/project-prompter ()
+    "Prompt for project and ensure it opens in the correct tab."
+    (let ((project-dir (project-prompt-project-dir)))
+      (dw/ensure-project-in-tab project-dir)
+      project-dir))
 
-    ;; Use our custom prompter for all project commands
-    (setq project-prompter #'dw/project-prompter)
+  ;; Use our custom prompter for all project commands
+  (setq project-prompter #'dw/project-prompter)
 
 #+end_src
 
