@@ -3,7 +3,7 @@
         (url "https://gitlab.com/nonguix/nonguix")
         (branch "master")
         (commit
-          "b8c13cd2c8e3fec32facdf64c57e74e1461398a7")
+          "5ed7546593dd205f1dd4473b58afa855c07e033d")
         (introduction
           (make-channel-introduction
             "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
@@ -11,10 +11,10 @@
               "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
       (channel
         (name 'guix)
-        (url "https://codeberg.org/guix/guix-mirror.git")
+        (url "https://codeberg.org/guix/guix.git")
         (branch "master")
         (commit
-          "81f89a60e68a76616aadbc4354e71b52af57d619")
+          "fb8574b148ac0f94fb1a85f30d243d2d253f89e4")
         (introduction
           (make-channel-introduction
             "9edb3f66fd807b096b48283debdcddccfea34bad"
