@@ -25,7 +25,8 @@
  (home-environment
   (services (cons* (service home-pipewire-service-type)
                    (service home-video-service-type)
-                   (service home-audio-service-type)
+                   ;; Removed for new due to packages that don't build
+                   ;;(service home-audio-service-type)
                    (service home-finance-service-type)
                    (service home-streaming-service-type)
                    (service home-games-service-type)
@@ -62,4 +63,16 @@
                    (type "vfat"))
                   %base-file-systems))
 
-   (services (list))))
+   (services (list
+              (service oci-container-service-type
+                       (list
+                        (oci-container-configuration
+                         (image "jellyfin/jellyfin")
+                         (provision "jellyfin")
+                         (network "host")
+                         (ports
+                          '(("8096" . "8096")))
+                         (volumes
+                          '("jellyfin-config:/config"
+                            "jellyfin-cache:/cache"
+                            "/home/daviwil/Media:/media")))))))))
