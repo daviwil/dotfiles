@@ -23,4 +23,6 @@
   :config
   (setq-default typescript-indent-level 2))
 
+(use-package janet-mode)
+
 (provide 'dw-develop)
