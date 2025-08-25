@@ -544,6 +544,16 @@ Time is relative, OK?
 
 #+end_src
 
+** Emacs Daemon
+
+I find it easier to just run the main Emacs instance as a daemon using =server-start=.  This enables external programs to drive my Emacs session with =emacsclient=.
+
+#+begin_src emacs-lisp
+
+  (server-start)
+
+#+end_src
+
 ** Send Special Buffers to a Popup Window
 
 Here's another minimal implementation of a package I commonly use called [[https://github.com/karthink/popper][popper.el]].  The goal here is to automatically place a specific set of buffers into a popup window at the bottom of the frame and make that window togglable with a key binding.
@@ -1068,7 +1078,6 @@ I'm leveraging the built-in =project.el= package to manage the tasks I perform a
 
   (setq project-compilation-buffer-name-function 'dw/project-compilation-buffer-name-function)
 
-
   (defun dw/ensure-project-in-tab (project-dir)
     "Ensure we're in a tab named after the project."
     (let* ((project-name (file-name-nondirectory (directory-file-name project-dir)))
@@ -1470,11 +1479,41 @@ This module uses =xterm-color= to improve ANSI escape handling in eshell and =M-
 
 #+end_src
 
+** =dw-ai= - Artifical Intelligence Tools
+
+I've been using Claude Code lately to assist with writing tools to enhance my workflow in certain areas.  These packages make it easier to interact with Claude Code in Emacs.
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-ai.el
+
+  ;; Monet adds some nice integrations into Emacs, like in-editor diffs
+  ;; of proposed changes and editor context shared when sending prompts
+
+  (use-package monet
+    :vc (:url "https://github.com/stevemolitor/monet" :rev :newest))
+
+  ;; NOTE: This will take a while due to massive GIFs in the repo!
+  (use-package claude-code
+    :ensure t
+    :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
+    :bind-keymap ("C-c c" . claude-code-command-map)
+    :bind  (:repeat-map my-claude-code-map
+                        ("M" . claude-code-cycle-mode))
+    :config
+    (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
+    (monet-mode 1)
+    (claude-code-mode))
+
+  (provide 'dw-ai)
+
+#+end_src
+
 * Machine-Specific Settings
 
 This section contains settings that are specific to various systems, particularly to choose extension modules to be loaded on top of the base configuration.
 
 ** zerocool
+
+Guix 🐃
 
 #+begin_src emacs-lisp :tangle emacs/systems/zerocool.el
 
@@ -1482,12 +1521,16 @@ This section contains settings that are specific to various systems, particularl
    (append dw/common-config-modules
            '(dw-desktop
              dw-system
+             dw-develop
              dw-telegram
-             dw-mail)))
+             dw-mail
+             dw-ai)))
 
 #+end_src
 
 ** phantom
+
+Guix 🐃
 
 #+begin_src emacs-lisp :tangle emacs/systems/phantom.el
 
@@ -1500,6 +1543,8 @@ This section contains settings that are specific to various systems, particularl
 
 ** daviwil-x1e
 
+Windows 🤮
+
 #+begin_src emacs-lisp :tangle emacs/systems/daviwil-x1e.el
 
   (setq dw/use-config-modules dw/common-config-modules)
@@ -1509,13 +1554,16 @@ This section contains settings that are specific to various systems, particularl
 
 ** cereal
 
+macOS 🤮
+
 #+begin_src emacs-lisp :tangle emacs/systems/cereal.el
 
   (setq dw/use-config-modules
    (append dw/common-config-modules
            '(dw-desktop
              dw-system
-             dw-develop)))
+             dw-develop
+             dw-ai)))
 
   ;; Treat Command as Ctrl inside of Emacs (because I remap Ctrl to Command)
   (setq ns-command-modifier 'meta)

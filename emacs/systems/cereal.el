@@ -2,7 +2,8 @@
  (append dw/common-config-modules
          '(dw-desktop
            dw-system
-           dw-develop)))
+           dw-develop
+           dw-ai)))
 
 ;; Treat Command as Ctrl inside of Emacs (because I remap Ctrl to Command)
 (setq ns-command-modifier 'meta)
