@@ -27,6 +27,13 @@
                  sof-firmware
                  radeon-firmware))
 
+ (kernel-arguments
+  ;; This is a temporary fix for GPU hangs until Linux 6.16.0 is out with
+  ;; a fix for the underlying issue:
+  ;; https://github.com/torvalds/linux/commit/1b824eef269db44d068bbc0de74c94a8e8f9ce02
+  (cons* "amdgpu.dcdebugmask=0x10"
+         %default-kernel-arguments))
+
  (mapped-devices
   (list (mapped-device
          (source (uuid "cd03bf08-abcc-4037-8876-73ce1ae341cf"))
