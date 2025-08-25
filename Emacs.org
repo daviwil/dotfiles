@@ -1043,6 +1043,16 @@ I also use it as the core for my personal productivity system which revolves lar
           (find-file (car existing-notes))
         (denote note-title '("plw")))))
 
+  (defun dw/goto-daily-note ()
+    (interactive)
+    (let* ((default-directory denote-directory)
+           (existing-file (denote-directory-files (format-time-string "^%Y%m%d.*_pld") nil t)))
+      (if existing-file
+          (find-file (expand-file-name (car existing-file)))
+        (progn
+          (denote (format-time-string "%A, %B %e, %Y") '("pld"))
+          (insert-file-contents "~/Notes/templates/daily-plan.org")))))
+
   (with-eval-after-load 'denote
     ;; Quick access commands
     (keymap-set global-map "C-c n w" #'dw/goto-weekly-note)

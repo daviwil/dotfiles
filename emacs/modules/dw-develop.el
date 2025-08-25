@@ -10,7 +10,6 @@
 
 (setq project-compilation-buffer-name-function 'dw/project-compilation-buffer-name-function)
 
-
 (defun dw/ensure-project-in-tab (project-dir)
   "Ensure we're in a tab named after the project."
   (let* ((project-name (file-name-nondirectory (directory-file-name project-dir)))
