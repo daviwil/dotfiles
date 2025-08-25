@@ -10,6 +10,7 @@
   #:use-module (daviwil utils)
   #:use-module (daviwil systems base)
   #:use-module (daviwil systems common)
+  #:use-module (daviwil services vpn)
   #:use-module (daviwil home-services video)
   #:use-module (daviwil home-services streaming))
 
@@ -51,12 +52,15 @@
   (append
    (operating-system-user-services base-operating-system)
    (list
-     (guix-home-config
+    ;; WireGuard VPN to 0x11.run server
+    (wireguard-0x11-client-service "10.0.0.3/24")
+
+    (guix-home-config
      (home-environment
-      (services (cons* (service home-pipewire-service-type)
-                       (service home-streaming-service-type)
-                       (service home-video-service-type)
-                       common-home-services))))))))
+       (services (cons* (service home-pipewire-service-type)
+                        (service home-streaming-service-type)
+                        (service home-video-service-type)
+                        common-home-services))))))))
 
 ;; System-specific services
 ;; (service nvidia-service-type)))))
