@@ -134,7 +134,7 @@
   "A list of module symbols to load once init.el is finished.")
 
 (defvar dw/common-config-modules '(dw-auth
-                                   dw-irc
+                                   dw-chat
                                    dw-present
                                    dw-0x0
                                    dw-writing

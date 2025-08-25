@@ -256,7 +256,7 @@ For now, the idea is that I provide variables and functions that can be called i
     "A list of module symbols to load once init.el is finished.")
 
   (defvar dw/common-config-modules '(dw-auth
-                                     dw-irc
+                                     dw-chat
                                      dw-present
                                      dw-0x0
                                      dw-writing
@@ -1219,11 +1219,11 @@ I'm planning to develop a new presentation configuration using Prot's Logos pack
 
 #+end_src
 
-** =dw-irc= - IRC Configuration
+** =dw-chat= - IRC and XMPP Configuration
 
-I prefer =rcirc= as my default IRC client, it's simple and gets the job done.  Right now I'm using the hosted Soju bouncer on =chat.sr.ht= but hopefully I'll move to something self-hosted soon.
+I prefer =rcirc= as my default IRC client, it's simple and gets the job done.  I've mainly moved to using an XMPP server with biboumi as an IRC bridge, though.
 
-#+begin_src emacs-lisp :tangle emacs/modules/dw-irc.el
+#+begin_src emacs-lisp :tangle emacs/modules/dw-chat.el
 
   ;; -*- lexical-binding: t; -*-
 
@@ -1256,9 +1256,17 @@ I prefer =rcirc= as my default IRC client, it's simple and gets the job done.  R
          (format
           "channel update %s -detached true -reattach-on highlight" channel)))))
 
-  (provide 'dw-irc)
+  (use-package jabber
+    :custom
+    (jabber-chat-buffer-format "Jabber: %n")
+    :config
+    ;; Unset the global key binding
+    (global-set-key (kbd "C-x C-j") #'dired-jump))
+
+  (provide 'dw-chat)
 
 #+end_src
+
 
 ** =dw-0x0= - Share Text and Files with 0x0.st
 

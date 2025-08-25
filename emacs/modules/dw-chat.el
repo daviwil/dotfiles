@@ -29,4 +29,11 @@
        (format
         "channel update %s -detached true -reattach-on highlight" channel)))))
 
-(provide 'dw-irc)
+(use-package jabber
+  :custom
+  (jabber-chat-buffer-format "Jabber: %n")
+  :config
+  ;; Unset the global key binding
+  (global-set-key (kbd "C-x C-j") #'dired-jump))
+
+(provide 'dw-chat)
