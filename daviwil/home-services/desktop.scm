@@ -66,7 +66,7 @@
         ;; Audio devices and media playback
         mpv
         mpv-mpris
-        youtube-dl
+        yt-dlp
         playerctl
         gstreamer
         gst-plugins-base

@@ -128,6 +128,7 @@
    emacs-tracking
 
    emacs-telega
+   emacs-jabber
 
    emacs-guix
 
