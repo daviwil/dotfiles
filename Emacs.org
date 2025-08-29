@@ -1,11 +1,6 @@
 #+title: Emacs Configuration
 #+property: header-args :mkdirp yes
 
-19:12 <alternateved> couple of helpful settings:
-19:12 <alternateved> (completions-format 'one-column)
-19:13 <alternateved> (completions-max-height 20)
-19:13 <alternateved> (completion-auto-select 'second-tab)
-
 * Preface
 
 Welcome to the latest iteration of my Emacs configuration!  I'm not sure how many times I've rewritten my Emacs configuration over the years (it's probably less than you think), but I'm approaching this one with some specific goals and use cases in mind.
