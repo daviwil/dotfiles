@@ -67,7 +67,8 @@
                        ;; Removed for new due to packages that don't build
                        ;;(service home-audio-service-type)
                        (service home-finance-service-type)
-                       (service home-streaming-service-type)
+                       ;; Browser source is broken in recent OBS builds
+                       ;;(service home-streaming-service-type)
                        (service home-games-service-type)
                        common-home-services))))
 
