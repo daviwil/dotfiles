@@ -8,7 +8,7 @@
   #:use-module ((guix licenses) #:prefix license:))
 
 (define-public emacs-obs-websocket-el
-  (let ((commit "ce6be2a417705098e26c76122eff2a0261f57d42")
+  (let ((commit "2bdd39c45cd2d9ae08482f276752ebe45838189f")
         (revision "0"))
     (package
       (name "emacs-obs-websocket-el")
@@ -16,15 +16,15 @@
       (source
        (origin
          (uri (git-reference
-               (url "https://github.com/sachac/obs-websocket-el")
+               (url "https://github.com/obs-websocket-el/obs-websocket-el")
                (commit commit)))
          (method git-fetch)
          (sha256
-          (base32 "0fdjpxc75jk9cxgg66p24z1n5w9zzqbrci5mlqam31a2caip9bmx"))
+          (base32 "1y2iq3s21vgvvinf9f6ciqpgawlg7zfs5mavif4bmif3gddmjv6a"))
          (file-name (git-file-name name version))))
       (build-system emacs-build-system)
       (propagated-inputs `(("emacs-websocket" ,emacs-websocket)))
-      (home-page "https://github.com/sachac/obs-websocket-el")
+      (home-page "https://github.com/obs-websocket-el/obs-websocket-el")
       (synopsis "Emacs package for remote control of OBS")
       (description
        "obs-websocket-el is a client for the obs-websocket plugin for OBS.
