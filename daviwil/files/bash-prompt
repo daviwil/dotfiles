@@ -1,25 +1,20 @@
 # -*- mode: sh; -*-
-# Adapted from https://jdhao.github.io/2021/03/31/bash_prompt_config/
+# Minimal prompt with ayu dark colors
 
-function fromhex() {
-  hex=$1
-  if [[ $hex == "#"* ]]; then
-    hex=$(echo $1 | awk '{print substr($0,2)}')
-  fi
-  r=$(printf '0x%0.2s' "$hex")
-  g=$(printf '0x%0.2s' ${hex#??})
-  b=$(printf '0x%0.2s' ${hex#????})
-  echo -e `printf "%03d" "$(((r<75?0:(r-35)/40)*6*6+(g<75?0:(g-35)/40)*6+(b<75?0:(b-35)/40)+16))"`
-}
+# 256-color codes matching tmux ayu dark theme
+# Dim:       Grey35 (240)
+# Text:      #B3B1AD -> 145 (Grey69)
+# Green:     #A3BE8C -> 150 (DarkSeaGreen3)
+# Orange:    #F6C177 -> 215 (SandyBrown)
+# Purple:    #c792ea -> 176 (Plum3)
 
-GRAY="\e[1;30m"
-BOLD="\033[1m"
-LT_CYAN="\e[1;36m"
-LT_GREEN="\e[1;32m"
-LT_RED="\e[1;31m"
-GREEN="\e[0;32m"
-PURPLE="\e[1;35m"
-COLOR_NONE="\e[0m"
+DIM='\[\e[38;5;240m\]'
+TEXT='\[\e[38;5;145m\]'
+GREEN='\[\e[38;5;150m\]'
+ORANGE='\[\e[38;5;215m\]'
+PURPLE='\[\e[38;5;176m\]'
+RED='\[\e[1;31m\]'
+RESET='\[\e[0m\]'
 
 # Detect whether the current directory is a git repository.
 function is_git_repository() {
@@ -27,42 +22,52 @@ function is_git_repository() {
 }
 
 function set_git_branch () {
-    # Note that for new repo without commit, git rev-parse --abbrev-ref HEAD
-    # will error out.
     if git rev-parse --abbrev-ref HEAD > /dev/null 2>&1; then
-        BRANCH=" $(git rev-parse --abbrev-ref HEAD)"
+        BRANCH=$(git rev-parse --abbrev-ref HEAD)
     else
-        BRANCH="<bare repo>"
+        BRANCH="<bare>"
     fi
 }
 
 function set_bash_prompt () {
+    local exit_code=$?
+
     PS1="\n"
 
-    # Host and directory
-    PS1+="${LT_CYAN}\u@\h${COLOR_NONE} ${LT_RED}${BOLD}⛧${COLOR_NONE} "
-    PS1+="${GREEN}\w${COLOR_NONE} • "
+    # User (only if not daviwil) and hostname
+    if [ "$USER" != "daviwil" ]; then
+        PS1+="${TEXT}\u ${TEXT}∴ ${PURPLE}\h${RESET}"
+    else
+        PS1+="${TEXT}∴ ${PURPLE}\h${RESET}"
+    fi
 
-    # Add git branch
+    # Separator and directory
+    PS1+=" ${DIM}·${RESET} ${GREEN}\w${RESET}"
+
+    # Git branch with branch symbol
     if is_git_repository; then
         set_git_branch
-        PS1+="${PURPLE}${BRANCH}${COLOR_NONE} • "
+        PS1+=" ${ORANGE}⎇ ${BRANCH}${RESET}"
     fi
 
-    # Current time in 12 hour format
-    PS1+="${GREEN}$(date +'%r')${COLOR_NONE}\n"
+    # Dimmed time
+    PS1+=" ${DIM}· $(date +'%H:%M')${RESET}\n"
 
-    # Prompt character with color based on exit code
-    if [ "$?" == "0" ]; then
-        PS1+="${LT_GREEN}"
+    # Prompt character ($ for user, # for root)
+    local prompt_char='$'
+    if [ "$EUID" -eq 0 ]; then
+        prompt_char='#'
+    fi
+
+    if [ "$exit_code" -eq 0 ]; then
+        PS1+="${GREEN}${prompt_char}${RESET} "
     else
-        PS1+="${LT_RED}"
+        PS1+="${RED}${prompt_char}${RESET} "
     fi
-    PS1+="λ${COLOR_NONE}"
 
     # If inside vterm, add prompt metadata
     if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
-        PS1=$PS1' \[$(vterm_prompt_end)\]'
+        PS1+='$(vterm_prompt_end)'
     fi
 }
 
