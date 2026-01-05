@@ -818,7 +818,7 @@ I also use it as the core for my personal productivity system which revolves lar
            ("C-c n o" . denote-open-or-create)
            ("C-c n r" . denote-rename-file-using-front-matter))
     :custom
-    (denote-directory "~/Notes")
+    (denote-directory "~/Notes/Log")
     (denote-rename-buffer-format "Denote: %t (%k)")
     (denote-infer-keywords nil)
     (denote-known-keywords
@@ -1127,6 +1127,18 @@ Eglot is the way.
     :ensure nil
     :hook ((js-mode
             typescript-mode) . eglot-ensure))
+
+#+end_src
+
+*** Sigil
+
+#+begin_src emacs-lisp :tangle emacs/modules/dw-develop.el
+
+  (use-package sigil
+    :ensure nil
+    :load-path "/home/daviwil/Projects/Code/sigil-worktrees/sigil-emacs/editor/emacs"
+    :custom
+    (sigil-repl-program "/home/daviwil/Projects/Code/sigil-worktrees/sigil-emacs/build/bin/sigil"))
 
 #+end_src
 
@@ -1497,24 +1509,6 @@ This module uses =xterm-color= to improve ANSI escape handling in eshell and =M-
 I've been using Claude Code lately to assist with writing tools to enhance my workflow in certain areas.  These packages make it easier to interact with Claude Code in Emacs.
 
 #+begin_src emacs-lisp :tangle emacs/modules/dw-ai.el
-
-  ;; Monet adds some nice integrations into Emacs, like in-editor diffs
-  ;; of proposed changes and editor context shared when sending prompts
-
-  (use-package monet
-    :vc (:url "https://github.com/stevemolitor/monet" :rev :newest))
-
-  ;; NOTE: This will take a while due to massive GIFs in the repo!
-  (use-package claude-code
-    :ensure t
-    :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
-    :bind-keymap ("C-c c" . claude-code-command-map)
-    :bind  (:repeat-map my-claude-code-map
-                        ("M" . claude-code-cycle-mode))
-    :config
-    (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
-    (monet-mode 1)
-    (claude-code-mode))
 
   (provide 'dw-ai)
 
