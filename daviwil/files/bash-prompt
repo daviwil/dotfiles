@@ -1,5 +1,6 @@
 # -*- mode: sh; -*-
 # Minimal prompt with ayu dark colors
+# Compatible with bash and ksh
 
 # 256-color codes matching tmux ayu dark theme
 # Dim:       Grey35 (240)
@@ -8,74 +9,151 @@
 # Orange:    #F6C177 -> 215 (SandyBrown)
 # Purple:    #c792ea -> 176 (Plum3)
 
-DIM='\[\e[38;5;240m\]'
-TEXT='\[\e[38;5;145m\]'
-GREEN='\[\e[38;5;150m\]'
-ORANGE='\[\e[38;5;215m\]'
-PURPLE='\[\e[38;5;176m\]'
-RED='\[\e[1;31m\]'
-RESET='\[\e[0m\]'
-
 # Detect whether the current directory is a git repository.
-function is_git_repository() {
-  git branch > /dev/null 2>&1
+is_git_repository() {
+    git branch > /dev/null 2>&1
 }
 
-function set_git_branch () {
+get_git_branch() {
     if git rev-parse --abbrev-ref HEAD > /dev/null 2>&1; then
-        BRANCH=$(git rev-parse --abbrev-ref HEAD)
+        git rev-parse --abbrev-ref HEAD
     else
-        BRANCH="<bare>"
+        echo "<bare>"
     fi
 }
 
-function set_bash_prompt () {
-    local exit_code=$?
-
-    PS1="\n"
-
-    # User (only if not daviwil) and hostname
-    if [ "$USER" != "daviwil" ]; then
-        PS1+="${TEXT}\u ${TEXT}∴ ${PURPLE}\h${RESET}"
-    else
-        PS1+="${TEXT}∴ ${PURPLE}\h${RESET}"
-    fi
-
-    # Separator and directory
-    PS1+=" ${DIM}·${RESET} ${GREEN}\w${RESET}"
-
-    # Git branch with branch symbol
-    if is_git_repository; then
-        set_git_branch
-        PS1+=" ${ORANGE}⎇ ${BRANCH}${RESET}"
-    fi
-
-    # Dimmed time
-    PS1+=" ${DIM}· $(date +'%H:%M')${RESET}\n"
-
-    # Prompt character ($ for user, # for root)
-    local prompt_char='$'
-    if [ "$EUID" -eq 0 ]; then
-        prompt_char='#'
-    fi
-
-    if [ "$exit_code" -eq 0 ]; then
-        PS1+="${GREEN}${prompt_char}${RESET} "
-    else
-        PS1+="${RED}${prompt_char}${RESET} "
-    fi
-
-    # If inside vterm, add prompt metadata
-    if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
-        PS1+='$(vterm_prompt_end)'
-    fi
+# Check if there are uncommitted changes
+is_git_dirty() {
+    [ -n "$(git status --porcelain 2>/dev/null)" ]
 }
 
-# Include common vterm functions
-if [[ "$INSIDE_EMACS" = 'vterm' ]] \
-       && [[ -n ${EMACS_VTERM_PATH} ]] \
-       && [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh ]]; then
-    source ${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh
+# ============================================================
+# Bash-specific setup
+# ============================================================
+if [ -n "$BASH_VERSION" ]; then
+
+    DIM='\[\e[38;5;240m\]'
+    TEXT='\[\e[38;5;145m\]'
+    GREEN='\[\e[38;5;150m\]'
+    ORANGE='\[\e[38;5;215m\]'
+    PURPLE='\[\e[38;5;176m\]'
+    RED='\[\e[1;31m\]'
+    RESET='\[\e[0m\]'
+
+    set_bash_prompt() {
+        local exit_code=$?
+
+        PS1="\n"
+
+        # User (only if not daviwil) and hostname
+        if [ "$USER" != "daviwil" ]; then
+            PS1+="${TEXT}\u ${DIM}:: ${PURPLE}\h${RESET}"
+        else
+            PS1+="${DIM}:: ${PURPLE}\h${RESET}"
+        fi
+
+        # Separator and directory
+        PS1+=" ${DIM}·${RESET} ${GREEN}\w${RESET}"
+
+        # Git branch with status indicator (= clean, * dirty)
+        if is_git_repository; then
+            local git_indicator='='
+            if is_git_dirty; then
+                git_indicator='*'
+            fi
+            PS1+=" ${ORANGE}${git_indicator} $(get_git_branch)${RESET}"
+        fi
+
+        # Dimmed time
+        PS1+=" ${DIM}· $(date +'%H:%M')${RESET}\n"
+
+        # Prompt character ($ for user, # for root)
+        local prompt_char='$'
+        if [ "$EUID" -eq 0 ]; then
+            prompt_char='#'
+        fi
+
+        if [ "$exit_code" -eq 0 ]; then
+            PS1+="${GREEN}${prompt_char}${RESET} "
+        else
+            PS1+="${RED}${prompt_char}${RESET} "
+        fi
+
+        # If inside vterm, add prompt metadata
+        if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+            PS1+='$(vterm_prompt_end)'
+        fi
+    }
+
+    # Include common vterm functions
+    if [[ "$INSIDE_EMACS" = 'vterm' ]] \
+           && [[ -n ${EMACS_VTERM_PATH} ]] \
+           && [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh ]]; then
+        source ${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh
+    fi
+
+    PROMPT_COMMAND=set_bash_prompt
+
+# ============================================================
+# Ksh-specific setup (pdksh/oksh/ksh93)
+# ============================================================
+elif [ -n "$KSH_VERSION" ]; then
+
+    build_prompt() {
+        typeset exit_code=$1
+        typeset user=$(whoami)
+        typeset host=$(hostname -s)
+        typeset dir="$PWD"
+        case "$dir" in
+            "$HOME"*) dir="~${dir#$HOME}" ;;
+        esac
+
+        # Colors using printf escape interpretation
+        typeset dim=$(printf '\033[38;5;240m')
+        typeset text=$(printf '\033[38;5;145m')
+        typeset green=$(printf '\033[38;5;150m')
+        typeset orange=$(printf '\033[38;5;215m')
+        typeset purple=$(printf '\033[38;5;176m')
+        typeset red=$(printf '\033[1;31m')
+        typeset reset=$(printf '\033[0m')
+
+        printf "\n"
+
+        # User (only if not daviwil) and hostname
+        if [ "$user" != "daviwil" ]; then
+            printf "${text}${user} ${dim}:: ${purple}${host}${reset}"
+        else
+            printf "${dim}:: ${purple}${host}${reset}"
+        fi
+
+        # Separator and directory
+        printf " ${dim}·${reset} ${green}${dir}${reset}"
+
+        # Git branch with status indicator (= clean, * dirty)
+        if is_git_repository; then
+            typeset git_indicator='='
+            if is_git_dirty; then
+                git_indicator='*'
+            fi
+            printf " ${orange}${git_indicator} $(get_git_branch)${reset}"
+        fi
+
+        # Dimmed time
+        printf " ${dim}· $(date +'%H:%M')${reset}\n"
+
+        # Prompt character ($ for user, # for root)
+        typeset prompt_char='$'
+        if [ "$(id -u)" -eq 0 ]; then
+            prompt_char='#'
+        fi
+
+        if [ "$exit_code" -eq 0 ]; then
+            printf "${green}${prompt_char}${reset} "
+        else
+            printf "${red}${prompt_char}${reset} "
+        fi
+    }
+
+    PS1='$(build_prompt $?)'
+
 fi
-
-export PROMPT_COMMAND=set_bash_prompt
