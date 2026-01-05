@@ -38,7 +38,7 @@ font pango:JetBrains Mono 7
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-set $foot_cmd foot -f "JetBrains Mono:size=14"
+set $foot_cmd foot -f "JetBrains Mono:size=11"
 set $emacs_frame_cmd $foot_cmd emacsclient -a '' -t
 
 bindsym $mod+Shift+q kill
@@ -48,6 +48,8 @@ bindsym $mod+Shift+e exec $emacs_frame_cmd
 bindsym $mod+Shift+Return exec $foot_cmd
 
 bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # Move workspace to display
@@ -65,6 +67,7 @@ bindsym $mod+Shift+l move right 30 px
 bindsym $mod+f fullscreen toggle
 bindsym $mod+Shift+f floating toggle
 bindsym $mod+Shift+p sticky toggle
+bindsym $mod+t layout toggle tabbed split
 
 # change focus between tiling / floating windows
 bindsym $mod+Control+space focus mode_toggle
@@ -127,11 +130,15 @@ bindsym Print exec grimshot --notify save output
 bindsym Alt+Print exec grimshot --notify save area
 
 set $bgcolor #232635dd
-set $bordercolor #c792eacc
+set $focused_border #c792ea
+set $inactive_border #65737E
+set $unfocused_border #2B2E36
 
 # Style the UI
-client.focused $bordercolor $bgcolor #ffffffff #ffffffff #c792eacc
-client.unfocused $bordercolor #1c1f2bef #ffffffff #ffffffff #c792eacc
+#                   border            background  text       indicator  child_border
+client.focused          $focused_border   $bgcolor    #ffffff    $focused_border   $focused_border
+client.focused_inactive $inactive_border  $bgcolor    #ffffff    $inactive_border  $inactive_border
+client.unfocused        $unfocused_border $bgcolor    #888888    $unfocused_border $unfocused_border
 
 # Set up screen locking
 set $lock 'swaylock -f -i ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg -s fill --font "JetBrains Mono" --indicator-idle-visible'
@@ -169,7 +176,7 @@ exec mako --border-radius=2 --font="JetBrains Mono 8" --max-visible=5 --outer-ma
 exec nm-applet --indicator
 exec udiskie -t
 exec gammastep-indicator -l 37.983810:23.727539 -t 6500:3500 -b 1.0:0.7
-exec emacs
+# Machine-specific startup is in systems/$(hostname)
 
 # Set GNOME settings (requires "glib:bin" in Guix)
 exec gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"

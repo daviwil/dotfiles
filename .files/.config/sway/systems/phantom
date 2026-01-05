@@ -1,0 +1,4 @@
+# Phantom-specific configuration
+
+# Launch graphical Emacs on startup
+exec emacs
