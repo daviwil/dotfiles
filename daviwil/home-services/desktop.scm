@@ -7,9 +7,9 @@
   #:use-module (guix gexp)
   #:export (home-desktop-service-type))
 
-(use-package-modules compression curl fonts freedesktop gimp glib gnome gnome-xyz
-                     gstreamer kde-frameworks linux music package-management
-                     password-utils pdf pulseaudio shellutils ssh syncthing terminals
+(use-package-modules admin compression curl fonts freedesktop gimp glib gnome gnome-xyz
+                     gstreamer kde-frameworks linux lsof music package-management
+                     password-utils pdf pulseaudio shellutils ssh syncthing terminals tmux
                      video web-browsers wget wm xdisorg xorg)
 
 (define (home-desktop-profile-service config)
@@ -55,6 +55,10 @@
         font-liberation
         font-awesome
 
+        ;; Remote terminal access
+        tmux
+        mosh
+
         ;; Browsers
         (specification->package "qtwayland@5")
         ;qutebrowser
@@ -78,7 +82,7 @@
         pavucontrol
 
         ;; Graphics
-        gimp-next
+        gimp
 
         ;; PDF reader
         zathura
@@ -93,7 +97,13 @@
         openssh
         zip
         unzip
-        trash-cli))
+        trash-cli
+
+        ;; System monitoring and network tools
+        btop
+        lsof
+        netcat
+        (specification->package+output "bind" "utils")))
 
 (define (home-desktop-environment-variables config)
   '(("_JAVA_AWT_WM_NONREPARENTING" . "1")))
