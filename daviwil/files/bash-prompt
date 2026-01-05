@@ -1,6 +1,6 @@
 # -*- mode: sh; -*-
 # Minimal prompt with ayu dark colors
-# Compatible with bash and ksh
+# Compatible with bash, ksh, and zsh
 
 # 256-color codes matching tmux ayu dark theme
 # Dim:       Grey35 (240)
@@ -155,5 +155,69 @@ elif [ -n "$KSH_VERSION" ]; then
     }
 
     PS1='$(build_prompt $?)'
+
+# ============================================================
+# Zsh-specific setup
+# ============================================================
+elif [ -n "$ZSH_VERSION" ]; then
+
+    # Enable prompt substitution
+    setopt PROMPT_SUBST
+
+    build_zsh_prompt() {
+        local exit_code=$1
+        local user=$(whoami)
+        local host=$(hostname -s)
+        local dir="${PWD/#$HOME/~}"
+
+        # Colors using ANSI escapes (same as ksh)
+        local dim=$'\e[38;5;240m'
+        local text=$'\e[38;5;145m'
+        local green=$'\e[38;5;150m'
+        local orange=$'\e[38;5;215m'
+        local purple=$'\e[38;5;176m'
+        local red=$'\e[1;31m'
+        local reset=$'\e[0m'
+
+        printf "\n"
+
+        # User (only if not daviwil) and hostname
+        if [ "$user" != "daviwil" ]; then
+            printf "${text}${user} ${dim}:: ${purple}${host}${reset}"
+        else
+            printf "${dim}:: ${purple}${host}${reset}"
+        fi
+
+        # Separator and directory
+        printf " ${dim}·${reset} ${green}${dir}${reset}"
+
+        # Git branch with status indicator (= clean, * dirty)
+        if is_git_repository; then
+            local git_indicator='='
+            if is_git_dirty; then
+                git_indicator='*'
+            fi
+            printf " ${orange}${git_indicator} $(get_git_branch)${reset}"
+        fi
+
+        # Dimmed time
+        printf " ${dim}· $(date +'%H:%M')${reset}\n"
+
+        # Prompt character ($ for user, # for root)
+        local prompt_char='$'
+        if [ "$(id -u)" -eq 0 ]; then
+            prompt_char='#'
+        fi
+
+        if [ "$exit_code" -eq 0 ]; then
+            printf "${green}${prompt_char}${reset} "
+        else
+            printf "${red}${prompt_char}${reset} "
+        fi
+    }
+
+    precmd() {
+        PROMPT="$(build_zsh_prompt $?)"
+    }
 
 fi
