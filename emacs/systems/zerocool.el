@@ -4,5 +4,6 @@
            dw-system
            dw-develop
            dw-telegram
+           dw-chat
            dw-mail
            dw-ai)))

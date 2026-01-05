@@ -134,7 +134,6 @@
   "A list of module symbols to load once init.el is finished.")
 
 (defvar dw/common-config-modules '(dw-auth
-                                   dw-chat
                                    dw-present
                                    dw-0x0
                                    dw-writing
@@ -395,7 +394,7 @@ Opening and closing delimiters will have matching colors."
 ;; ----- Special Buffers as Popup Window -----
 
 (setq display-buffer-alist
-      '(("\\*\\(shell\\|.*term\\|.*eshell\\|help\\|compilation\\|Async Shell Command\\|Occur\\|xref\\).*\\*"
+      '(("\\*\\(.*shell\\|.*term\\|.*eshell\\|help\\|compilation\\|Async Shell Command\\|Occur\\|xref\\).*\\*"
         (display-buffer-reuse-window display-buffer-in-side-window)
         (side . bottom)                  ; Popups go at the bottom
         (slot . 0)                       ; Use the first slot at the bottom

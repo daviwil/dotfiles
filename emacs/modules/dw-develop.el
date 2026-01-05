@@ -44,6 +44,7 @@
 
 (use-package js-mode
   :ensure nil
+  :mode ("\\.jsx?\\'")
   :config
   (setq-default js-indent-level 2))
 
@@ -52,6 +53,7 @@
   :config
   (setq-default typescript-indent-level 2))
 
-(use-package janet-mode)
+(use-package janet-mode
+  :ensure nil)
 
 (provide 'dw-develop)

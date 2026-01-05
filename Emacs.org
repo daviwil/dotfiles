@@ -251,7 +251,6 @@ For now, the idea is that I provide variables and functions that can be called i
     "A list of module symbols to load once init.el is finished.")
 
   (defvar dw/common-config-modules '(dw-auth
-                                     dw-chat
                                      dw-present
                                      dw-0x0
                                      dw-writing
@@ -560,7 +559,7 @@ I don't currently support buffer cycling like =popper= does but I don't /think/ 
   ;; ----- Special Buffers as Popup Window -----
 
   (setq display-buffer-alist
-        '(("\\*\\(shell\\|.*term\\|.*eshell\\|help\\|compilation\\|Async Shell Command\\|Occur\\|xref\\).*\\*"
+        '(("\\*\\(.*shell\\|.*term\\|.*eshell\\|help\\|compilation\\|Async Shell Command\\|Occur\\|xref\\).*\\*"
           (display-buffer-reuse-window display-buffer-in-side-window)
           (side . bottom)                  ; Popups go at the bottom
           (slot . 0)                       ; Use the first slot at the bottom
@@ -1149,6 +1148,7 @@ Eglot is the way.
 
   (use-package js-mode
     :ensure nil
+    :mode ("\\.jsx?\\'")
     :config
     (setq-default js-indent-level 2))
 
@@ -1165,7 +1165,8 @@ Eglot is the way.
 
 #+begin_src emacs-lisp :tangle emacs/modules/dw-develop.el
 
-  (use-package janet-mode)
+  (use-package janet-mode
+    :ensure nil)
 
 #+end_src
 
@@ -1531,6 +1532,7 @@ Guix 🐃
              dw-system
              dw-develop
              dw-telegram
+             dw-chat
              dw-mail
              dw-ai)))
 
