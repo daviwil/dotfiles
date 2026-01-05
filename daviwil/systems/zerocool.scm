@@ -57,8 +57,8 @@
   (append
    (operating-system-user-services base-operating-system)
    (list
-    ;; WireGuard VPN to 0x11.run server with phone peer access
-    (wireguard-0x11-client-service "10.0.0.2/24" (list %phone-wg-peer))
+    ;; WireGuard VPN to 0x11.run server (hub and spoke)
+    (wireguard-0x11-client-service "10.0.0.2/24")
 
     (guix-home-config
      (home-environment

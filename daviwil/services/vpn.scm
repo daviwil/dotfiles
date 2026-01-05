@@ -22,7 +22,7 @@
 (define %phone-wg-peer
   (wireguard-peer
    (name "phone")
-   (public-key "1dIeJBqDq3Hyp5ggh0IqhJ2GvF/FDw4UlFBn7uS+AUA=")
+   (public-key "I09CA7jT6tF3qruPdJwUkDByQQZVw7ABptZOg16lQF8=")
    (allowed-ips '("10.0.0.4/32"))))
 
 (define* (wireguard-0x11-client-service client-ip #:optional (additional-peers '()))
