@@ -1,0 +1,83 @@
+[colours]
+# Ayu Dark theme to match tmux configuration
+# Using xterm 256-color names for richer colors
+#
+# Target colors from tmux:
+#   #171B27 (bg)     -> Grey11 (234)
+#   #2B2E36 (border) -> Grey19 (236)
+#   #65737E (muted)  -> SteelBlue (67)
+#   #B3B1AD (text)   -> Grey69 (145)
+#   #A3BE8C (green)  -> DarkSeaGreen3 (150)
+#   #F6C177 (orange) -> SandyBrown (215)
+
+# Main text areas
+bkgnd=default
+titlebar=Grey11
+statusbar=Grey11
+main.text=Grey69
+main.text.me=DarkSeaGreen3
+main.text.them=Grey69
+main.splash=DarkSeaGreen3
+input.text=Grey69
+
+# Title bar presence states
+titlebar.text=Grey69
+titlebar.brackets=SteelBlue
+titlebar.unencrypted=IndianRed
+titlebar.encrypted=DarkSeaGreen3
+titlebar.untrusted=SandyBrown
+titlebar.trusted=DarkSeaGreen3
+titlebar.online=DarkSeaGreen3
+titlebar.offline=SteelBlue
+titlebar.away=SandyBrown
+titlebar.chat=DarkSeaGreen3
+titlebar.dnd=IndianRed
+titlebar.xa=SandyBrown
+
+# Status bar
+statusbar.text=Grey69
+statusbar.brackets=SteelBlue
+statusbar.active=DarkSeaGreen3
+statusbar.current=DarkSeaGreen3
+statusbar.new=SandyBrown
+
+# Messages and highlights
+incoming=DarkSeaGreen3
+mention=SandyBrown
+trigger=SandyBrown
+error=IndianRed
+
+# Roster
+roster.header=DarkSeaGreen3
+roster.online=DarkSeaGreen3
+roster.offline=SteelBlue
+roster.chat=DarkSeaGreen3
+roster.away=SandyBrown
+roster.dnd=IndianRed
+roster.xa=SandyBrown
+roster.room=SteelBlue
+roster.roominfo=SteelBlue
+
+# Occupants
+occupants.header=DarkSeaGreen3
+occupants.current=DarkSeaGreen3
+
+# Room mentions
+roommention=SandyBrown
+roommention.term=SandyBrown
+
+# OTR/OMEMO encryption
+otr.started.trusted=DarkSeaGreen3
+otr.started.untrusted=SandyBrown
+otr.ended=IndianRed
+otr.untrusted=SandyBrown
+otr.trusted=DarkSeaGreen3
+
+# Receipts
+receipt.sent=DarkSeaGreen3
+
+# User colors (for MUC participants)
+me=DarkSeaGreen3
+
+[ui]
+titlebar.muc.title.name=true
