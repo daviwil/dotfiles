@@ -35,6 +35,13 @@
   :hook ((js-mode
           typescript-mode) . eglot-ensure))
 
+(use-package sigil
+  :ensure nil
+  :demand t
+  :load-path "/home/daviwil/Projects/Code/sigil-worktrees/sigil-emacs/editor/emacs"
+  :custom
+  (sigil-repl-program "/home/daviwil/Projects/Code/sigil-worktrees/sigil-emacs/build/bin/sigil"))
+
 (use-package js-mode
   :ensure nil
   :config

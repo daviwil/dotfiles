@@ -1136,6 +1136,7 @@ Eglot is the way.
 
   (use-package sigil
     :ensure nil
+    :demand t
     :load-path "/home/daviwil/Projects/Code/sigil-worktrees/sigil-emacs/editor/emacs"
     :custom
     (sigil-repl-program "/home/daviwil/Projects/Code/sigil-worktrees/sigil-emacs/build/bin/sigil"))
