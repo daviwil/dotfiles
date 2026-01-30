@@ -13,10 +13,12 @@ fi
 
 exec guix shell --container --emulate-fhs --network \
   $MANIFEST_ARGS \
-  -E TERM -E LANG \
+  -E TERM -E LANG -E SSH_AUTH_SOCK \
   -W \
   --share=$HOME \
+  --share=/run/user/$(id -u) \
   --expose=/etc/localtime \
   ncurses coreutils grep ripgrep findutils tzdata \
   git sed gawk diffutils less curl jq tar gzip bash file nss-certs \
+  openssh gnupg pinentry \
   -- $HOME/.local/bin/claude "$@"
