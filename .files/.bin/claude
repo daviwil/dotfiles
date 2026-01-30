@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Wrapper for Claude Code's native binary on Guix.  The binary at
+# ~/.local/bin/claude is dynamically linked and expects an FHS layout,
+# so we run it inside a guix shell --emulate-fhs container with the
+# necessary dependencies.  A manifest.scm in the current directory
+# will be picked up automatically for project-specific packages.
+
+MANIFEST_ARGS=""
+if [ -f manifest.scm ]; then
+  MANIFEST_ARGS="-m $PWD/manifest.scm"
+fi
+
+exec guix shell --container --emulate-fhs --network \
+  $MANIFEST_ARGS \
+  -E TERM -E LANG \
+  -W \
+  --share=$HOME \
+  --expose=/etc/localtime \
+  ncurses coreutils grep ripgrep findutils tzdata \
+  git sed gawk diffutils less curl jq tar gzip bash file nss-certs \
+  -- $HOME/.local/bin/claude "$@"

@@ -28,7 +28,7 @@
                      ("EDITOR" . "emacsclient")
 
                      ;; Add some things to $PATH (maybe integrate into other services?)
-                     ("PATH" . "$HOME/.bin:$HOME/.npm-global/bin:$PATH")
+                     ("PATH" . "$HOME/.bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH")
 
                      ;; Make sure Flatpak apps are visible
                      ("XDG_DATA_DIRS" . "$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share")
@@ -98,7 +98,10 @@
               (list
                #~(job
                   '(next-hour (range 0 24 4))
-                  "~/.dotfiles/.bin/sync-passwords")))))
+                  "~/.dotfiles/.bin/sync-passwords")
+               #~(job
+                  "0,30 8-17 * * 1-5"
+                  "~/Tracker/chief-ping")))))
 
    ;; File synchronization
    (service home-syncthing-service-type)
