@@ -1,0 +1,6 @@
+[list]
+all = yes
+
+[keys.viewer]
+Ctrl+n = next_file
+Ctrl+p = prev_file

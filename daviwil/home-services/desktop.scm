@@ -8,7 +8,7 @@
   #:export (home-desktop-service-type))
 
 (use-package-modules admin compression curl fonts freedesktop gimp glib gnome gnome-xyz
-                     gstreamer kde-frameworks linux lsof music package-management
+                     gstreamer image-viewers kde-frameworks linux lsof music package-management
                      password-utils pdf pulseaudio shellutils ssh syncthing terminals tmux
                      video web-browsers wget wm xdisorg xorg)
 
@@ -82,6 +82,7 @@
         pavucontrol
 
         ;; Graphics
+        swayimg
         gimp
 
         ;; PDF reader
