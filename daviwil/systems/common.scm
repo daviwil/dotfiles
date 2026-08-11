@@ -64,9 +64,24 @@
                               "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then\n"
                               "  . /run/current-system/profile/etc/profile.d/nix.sh\n"
                               "fi\n"))
+                ;; Auto-start Sway, but ONLY from a real virtual terminal.
+                ;;
+                ;; The guard keys on the CONTROLLING TERMINAL, not on XDG_VTNR,
+                ;; because XDG_VTNR is inherited by every child of the session
+                ;; -- it is set even in processes with no tty at all.  Any login
+                ;; shell spawned under a daemon that was itself started from the
+                ;; VT1 session therefore saw XDG_VTNR=1, and with WAYLAND_DISPLAY
+                ;; absent from that daemon's environment both conditions passed
+                ;; and the shell exec'd sway.  Caught 2026-08-11 opening a remote
+                ;; terminal from a phone through the Slate node: sway started,
+                ;; failed to take the seat ("Could not take control of session:
+                ;; Device or resource busy"), and the session died at once.
+                ;;
+                ;; A pseudo-terminal is /dev/pts/N and never /dev/tty1, so this
+                ;; form cannot be reached by an inherited variable.
                 ,(plain-file "bash-sway-login"
                              (string-append
-                              "if [ -z \"$WAYLAND_DISPLAY\" ] && [ \"${XDG_VTNR:-0}\" -eq 1 ]; then\n"
+                              "if [ -z \"$WAYLAND_DISPLAY\" ] && [ \"$(tty)\" = \"/dev/tty1\" ]; then\n"
                               "  exec sway\n"
                               "fi\n"))))
              (bashrc
