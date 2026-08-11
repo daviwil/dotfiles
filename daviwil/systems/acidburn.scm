@@ -60,7 +60,7 @@
                        common-home-services))))
 
     ;; System-specific services
-    (service oci-container-service-type
+    (service oci-service-type
              (list
               (oci-container-configuration
                (image "jellyfin/jellyfin")

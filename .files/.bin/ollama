@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Wrapper for Ollama's static binary on Guix.  The binary at
+# ~/.local/bin/ollama is dynamically linked and expects an FHS
+# interpreter path, so we use patchelf to fix it before running.
+
+OLLAMA=$HOME/.local/bin/ollama
+
+exec guix shell gcc-toolchain patchelf \
+  -- sh -c '
+    INTERP=$(patchelf --print-interpreter $(which bash))
+    CURRENT=$(patchelf --print-interpreter "'"$OLLAMA"'" 2>/dev/null || echo "")
+    if [ "$CURRENT" != "$INTERP" ]; then
+      echo "Patching ollama interpreter..."
+      patchelf --set-interpreter "$INTERP" "'"$OLLAMA"'"
+    fi
+
+    GCC_LIB=$(dirname $(realpath $(gcc -print-file-name=libstdc++.so)))
+    CURRENT_RPATH=$(patchelf --print-rpath "'"$OLLAMA"'" 2>/dev/null || echo "")
+    if [ "$CURRENT_RPATH" != "$GCC_LIB" ]; then
+      echo "Patching ollama rpath..."
+      patchelf --set-rpath "$GCC_LIB" "'"$OLLAMA"'"
+    fi
+
+    exec "'"$OLLAMA"'" "$@"
+  ' _ "$@"

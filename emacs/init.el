@@ -105,6 +105,12 @@
 (keymap-set minibuffer-local-map "C-p" #'minibuffer-previous-completion)
 (keymap-set minibuffer-local-map "C-n" #'minibuffer-next-completion)
 
+;; Don't let C-z (or C-x C-z) suspend the frame. The Termux on-screen
+;; keyboard's "undo" button sends C-z, which suspends the emacsclient
+;; running inside a tmux window and looks like the daemon died.
+(global-unset-key (kbd "C-z"))
+(global-unset-key (kbd "C-x C-z"))
+
 ;;; ----- System Identification -----
 
 (defvar dw/is-termux

@@ -1,0 +1,105 @@
+#!/bin/sh
+# Start a Zellij workspace session
+# Usage: ws <directory>      - Start a session in that directory
+#        ws <file.ws>        - Start a session using workspace config
+
+GREEN='\033[1;32m'
+BLUE='\033[1;34m'
+RED='\033[1;31m'
+NC='\033[0m'
+
+if [ -z "$1" ]; then
+    echo -e "${RED}Usage: ws <directory|workspace-file>${NC}"
+    exit 1
+fi
+
+TARGET="$1"
+
+# Expand ~ if present
+TARGET="${TARGET/#\~/$HOME}"
+
+if [ -d "$TARGET" ]; then
+    # Directory mode: simple workspace
+    WORKING_DIR="$(realpath "$TARGET")"
+    SESSION_NAME="$(basename "$WORKING_DIR")"
+    CLAUDE_CMD="claude"
+elif [ -f "$TARGET" ]; then
+    # File mode: parse workspace config
+    SESSION_NAME="$(basename "$TARGET" .ws)"
+
+    # Read paths from file (skip empty lines and comments)
+    PATHS=""
+    FIRST_PATH=""
+    while IFS= read -r line || [ -n "$line" ]; do
+        # Skip empty lines and comments
+        case "$line" in
+            ""|\#*) continue ;;
+        esac
+
+        # Expand ~ in path
+        expanded="${line/#\~/$HOME}"
+
+        if [ -z "$FIRST_PATH" ]; then
+            FIRST_PATH="$expanded"
+        else
+            PATHS="$PATHS --add-dir $expanded"
+        fi
+    done < "$TARGET"
+
+    if [ -z "$FIRST_PATH" ]; then
+        echo -e "${RED}Error: No paths found in workspace file${NC}"
+        exit 1
+    fi
+
+    WORKING_DIR="$(realpath "$FIRST_PATH")"
+    CLAUDE_CMD="claude$PATHS"
+else
+    echo -e "${RED}Error: '$TARGET' is not a valid directory or file${NC}"
+    exit 1
+fi
+
+# Verify working directory exists
+if [ ! -d "$WORKING_DIR" ]; then
+    echo -e "${RED}Error: Working directory '$WORKING_DIR' does not exist${NC}"
+    exit 1
+fi
+
+# Create temporary layout file
+LAYOUT_FILE=$(mktemp /tmp/zellij-layout-XXXXXX.kdl)
+trap "rm -f $LAYOUT_FILE" EXIT
+
+cat > "$LAYOUT_FILE" << EOF
+layout {
+    cwd "$WORKING_DIR"
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="compact-bar"
+        }
+    }
+    new_tab_template {
+        pane
+        pane size=1 borderless=true {
+            plugin location="compact-bar"
+        }
+    }
+    tab name="Claude" focus=true {
+        pane name="Claude" command="sh" {
+            args "-c" "$CLAUDE_CMD"
+        }
+    }
+    tab name="Emacs" {
+        pane name="Emacs" command="emacsclient" {
+            args "-nw" "-c" "-a" ""
+        }
+    }
+}
+
+session_name "$SESSION_NAME"
+attach_to_session true
+EOF
+
+echo -e "${GREEN}Starting workspace ${BLUE}$SESSION_NAME${GREEN} in ${BLUE}$WORKING_DIR${NC}"
+
+# Start or attach to Zellij session
+zellij --layout "$LAYOUT_FILE"

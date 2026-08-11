@@ -1,0 +1,55 @@
+#!/bin/sh
+# Create a git worktree as a sibling to the main repo
+# Usage: wt <repo-path> <worktree-name> [source-branch]
+#
+# Example: wt ~/Projects/Code/sigil-worktrees/sigil sigil-video
+#          wt ~/Projects/Code/sigil-worktrees/sigil sigil-video develop
+
+GREEN='\033[1;32m'
+BLUE='\033[1;34m'
+RED='\033[1;31m'
+NC='\033[0m'
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo -e "${RED}Usage: wt <repo-path> <worktree-name> [source-branch]${NC}"
+    echo "  repo-path     Path to the main git repository"
+    echo "  worktree-name Name for the new worktree and branch"
+    echo "  source-branch Branch to base the new branch on (default: master)"
+    exit 1
+fi
+
+REPO_PATH="$1"
+WORKTREE_NAME="$2"
+SOURCE_BRANCH="${3:-master}"
+
+# Expand ~ if present
+REPO_PATH="${REPO_PATH/#\~/$HOME}"
+REPO_PATH="$(realpath "$REPO_PATH")"
+
+# Verify repo exists and is a git repository
+if [ ! -d "$REPO_PATH/.git" ] && [ ! -f "$REPO_PATH/.git" ]; then
+    echo -e "${RED}Error: '$REPO_PATH' is not a git repository${NC}"
+    exit 1
+fi
+
+# Worktree goes next to the repo
+PARENT_DIR="$(dirname "$REPO_PATH")"
+WORKTREE_PATH="$PARENT_DIR/$WORKTREE_NAME"
+
+# Check if worktree path already exists
+if [ -e "$WORKTREE_PATH" ]; then
+    echo -e "${RED}Error: '$WORKTREE_PATH' already exists${NC}"
+    exit 1
+fi
+
+echo -e "${GREEN}Creating worktree ${BLUE}$WORKTREE_NAME${GREEN} from ${BLUE}$SOURCE_BRANCH${NC}"
+
+# Create the worktree with a new branch
+cd "$REPO_PATH" && git worktree add -b "$WORKTREE_NAME" "$WORKTREE_PATH" "$SOURCE_BRANCH"
+
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}Worktree created at ${BLUE}$WORKTREE_PATH${NC}"
+else
+    echo -e "${RED}Failed to create worktree${NC}"
+    exit 1
+fi

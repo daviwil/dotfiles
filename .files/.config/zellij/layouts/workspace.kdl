@@ -1,0 +1,10 @@
+layout {
+    tab name="Emacs" focus=true {
+        pane command="emacsclient" {
+            args "-nw" "-c" "-a" ""
+        }
+    }
+    tab name="Claude" {
+        pane
+    }
+}

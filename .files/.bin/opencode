@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Wrapper for OpenCode's native binary on Guix. The binary at
+# ~/.opencode/bin/opencode expects an FHS interpreter path, so patch it to
+# Guix's glibc interpreter before running.
+
+OPENCODE=$HOME/.opencode/bin/opencode
+
+exec guix shell \
+  patchelf glibc \
+  -- sh -c '
+    INTERP=$(patchelf --print-interpreter "$(which bash)")
+    CURRENT=$(patchelf --print-interpreter "'"$OPENCODE"'" 2>/dev/null || echo "")
+    if [ "$CURRENT" != "$INTERP" ]; then
+      echo "Patching opencode interpreter..."
+      patchelf --set-interpreter "$INTERP" "'"$OPENCODE"'"
+    fi
+    exec "'"$OPENCODE"'" "$@"
+  ' _ "$@"

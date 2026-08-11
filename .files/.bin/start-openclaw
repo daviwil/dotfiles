@@ -1,0 +1,10 @@
+#!/bin/sh
+
+docker run -d \
+  --name openclaw \
+  -p 18789:18789 \
+  -v ~/.openclaw/state:/home/node/.openclaw \
+  -v ~/.openclaw/workspace:/home/node/.openclaw/workspace \
+  ghcr.io/openclaw/openclaw:latest
+
+#  --restart unless-stopped \

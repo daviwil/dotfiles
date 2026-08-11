@@ -4,6 +4,7 @@
   #:use-module (daviwil systems common)
   #:use-module (daviwil services vpn)
   #:use-module (daviwil home-services audio)
+  #:use-module (daviwil home-services slate)
   #:use-module (daviwil home-services games)
   #:use-module (daviwil home-services video)
   #:use-module (daviwil home-services finance)
@@ -13,7 +14,7 @@
   #:use-module (gnu home services sound)
   #:use-module (gnu packages file-systems)
   #:use-module (gnu services)
-  #:use-module (gnu services docker)
+  #:use-module (gnu services containers)
   #:use-module (gnu system)
   #:use-module (gnu system uuid)
   #:use-module (gnu system file-systems)
@@ -56,9 +57,9 @@
  (services
   (append
    (operating-system-user-services base-operating-system)
-   (list
+    (list
     ;; WireGuard VPN to 0x11.run server (hub and spoke)
-    (wireguard-0x11-client-service "10.0.0.2/24")
+    (wireguard-0x11-client-service "10.11.0.2/24")
 
     (guix-home-config
      (home-environment
@@ -70,18 +71,28 @@
                        ;; Browser source is broken in recent OBS builds
                        ;;(service home-streaming-service-type)
                        (service home-games-service-type)
+                       ;; Hermes agent: removed 2026-08-11, unused in practice.
+                       ;; The service definition survives at
+                       ;; daviwil/home-services/hermes.scm if it is ever wanted
+                       ;; again; dropping it here also stops the hermes-install
+                       ;; one-shot doing a `uv tool install` on every activation.
+                       ;;(service home-hermes-service-type)
+                       ;; Persistent Slate node for remote workspace access.
+                       (service home-slate-service-type)
                        common-home-services))))
 
     ;; System-specific services
-    (service oci-container-service-type
-             (list
-              (oci-container-configuration
-               (image "jellyfin/jellyfin")
-               (provision "jellyfin")
-               (network "host")
-               (ports
-                '(("8096" . "8096")))
-               (volumes
-                '("jellyfin-config:/config"
-                  "jellyfin-cache:/cache"
-                  "/home/daviwil/Media:/media")))))))))
+    (service oci-service-type
+             (oci-configuration
+              (containers
+               (list
+                (oci-container-configuration
+                 (image "jellyfin/jellyfin")
+                 (provision "jellyfin")
+                 (network "host")
+                 (ports
+                  '(("8096" . "8096")))
+                 (volumes
+                  '("jellyfin-config:/config"
+                    "jellyfin-cache:/cache"
+                    "/home/daviwil/Media:/media")))))))))))

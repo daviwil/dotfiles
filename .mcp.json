@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "folio": {
+      "type": "stdio",
+      "command": "/home/daviwil/Projects/Code/sigil/folio/build/dev/bin/folio",
+      "args": ["serve"],
+      "env": {
+        "FOLIO_ROOT": "/home/daviwil/Ops/folio"
+      }
+    },
+    "courier": {
+      "type": "stdio",
+      "command": "/home/daviwil/Projects/Code/sigil/courier/build/dev/bin/courier",
+      "args": [
+        "--relay", "neovim-minimal-config",
+        "--log", "/home/daviwil/Ops/logs/courier-neovim-minimal-config.log",
+        "--log-level", "trace"
+      ],
+      "env": {
+        "COURIER_RELAY_DIR": "/home/daviwil/Ops/relays"
+      }
+    }
+  }
+}

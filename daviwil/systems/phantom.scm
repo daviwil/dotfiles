@@ -51,9 +51,9 @@
  (services
   (append
    (operating-system-user-services base-operating-system)
-   (list
+    (list
     ;; WireGuard VPN to 0x11.run server
-    (wireguard-0x11-client-service "10.0.0.3/24")
+    (wireguard-0x11-client-service "10.11.0.3/24")
 
     (guix-home-config
      (home-environment
