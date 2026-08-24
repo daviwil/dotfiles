@@ -68,24 +68,36 @@
     (start
      #~(make-forkexec-constructor
         (list (string-append (getenv "HOME") #$%slate-bin) "node" "run")
-        ;; Shepherd captures stdout/stderr here.  NOTE: slate-cli has no
-        ;; --log / --log-level of its own yet (courier and folio both do), so
-        ;; this file is incidental output rather than diagnostics -- no
-        ;; levels, no timestamps, no way to raise detail when something
-        ;; misbehaves.  Wiring (sigil log) through slate-cli is tracked
-        ;; separately and matters more than usual here, because this daemon is
-        ;; used from a phone where there is no terminal to watch.
+        ;; Shepherd captures stdout/stderr here.  This file IS diagnostics as
+        ;; of 2026-08-25: every node-side operation (open/write/stat, folder
+        ;; enumeration, terminal open and session lifecycle, and every RPC the
+        ;; dispatcher handles including ones it refuses) logs request, result
+        ;; and duration through (sigil log), with a correlation id tying each
+        ;; request's lines together.  Before that this file was 18 lines over
+        ;; 12 days and the operation paths carried zero log calls, which is
+        ;; why a node could sit dead for four hours reporting healthy.
         #:log-file (string-append (getenv "HOME")
                                   #$%slate-log-dir "/slate-node.log")
+        ;; SIGIL_LOG_LEVEL is the volume control, and it is an ENV VAR rather
+        ;; than a flag on purpose: when something misbehaves you want to raise
+        ;; detail without editing a service definition.  Operations log at
+        ;; debug and errors at warn, so `info` (the default when unset) gives
+        ;; you failures only -- set `debug` to see what the node is actually
+        ;; doing, `trace` to include terminal byte I/O.
+        ;;
+        ;; NOTE: per-module filtering does NOT work in the pinned sigil-log
+        ;; 0.16.0 (documented but a no-op, t-618434), so this global level is
+        ;; the only control there is.  `trace` is loud.
         #:environment-variables
-        (cons (string-append
-               "PATH="
-               (getenv "HOME") "/.guix-home/profile/bin:"
-               (getenv "HOME") "/.sigil/bin:"
-               (getenv "HOME") "/.local/bin:"
-               "/run/current-system/profile/bin:"
-               (or (getenv "PATH") ""))
-              (default-environment-variables))))
+        (cons* (string-append
+                "PATH="
+                (getenv "HOME") "/.guix-home/profile/bin:"
+                (getenv "HOME") "/.sigil/bin:"
+                (getenv "HOME") "/.local/bin:"
+                "/run/current-system/profile/bin:"
+                (or (getenv "PATH") ""))
+               "SIGIL_LOG_LEVEL=debug"
+               (default-environment-variables))))
     (stop #~(make-kill-destructor)))))
 
 (define home-slate-service-type
