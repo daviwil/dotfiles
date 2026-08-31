@@ -64,6 +64,10 @@
                 "/run/current-system/profile/bin:"
                 (or (getenv "PATH") ""))
                "SIGIL_LOG_LEVEL=debug"
+               ;; Explicit child contract consumed by GET /node/status.  The
+               ;; node must not guess its manager from PPID/process names.
+               "SLATE_SUPERVISION=shepherd"
+               "SLATE_AUTOSTART=configured"
                (default-environment-variables))))
     (stop #~(make-kill-destructor)))))
 
