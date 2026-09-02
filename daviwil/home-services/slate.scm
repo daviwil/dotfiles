@@ -8,8 +8,9 @@
 
 ;;; Runs the persistent Slate companion without leaving a terminal open.
 ;;; `slate node run` always brings up its loopback listener and optionally
-;;; dials OUT to Enclave using the existing enrollment.  Enclave availability
-;;; therefore does not gate local use, and nothing is exposed inbound.
+;;; dials OUT to Enclave using the existing enrollment.  A service value may
+;;; name an explicit private-network address for the direct node listener;
+;;; #f keeps the listener disabled.
 ;;;
 ;;; The executable is owned by `slate node install --persistent`, not a build
 ;;; checkout.  The stable launcher follows Slate's atomically updated `active`
@@ -34,7 +35,9 @@
     (documentation "Run the Slate local and Enclave node companion.")
     (start
      #~(make-forkexec-constructor
-        (list (string-append (getenv "HOME") #$%slate-bin) "node" "run")
+        (append
+         (list (string-append (getenv "HOME") #$%slate-bin) "node" "run")
+         #$(if config (list "--direct-host" config) '()))
         ;; Shepherd captures stdout/stderr here.  This file IS diagnostics as
         ;; of 2026-08-25: every node-side operation (open/write/stat, folder
         ;; enumeration, terminal open and session lifecycle, and every RPC the

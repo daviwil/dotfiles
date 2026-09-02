@@ -78,7 +78,7 @@
                        ;; one-shot doing a `uv tool install` on every activation.
                        ;;(service home-hermes-service-type)
                        ;; Persistent Slate node for remote workspace access.
-                       (service home-slate-service-type)
+                       (service home-slate-service-type "10.11.0.2")
                        common-home-services))))
 
     ;; System-specific services
