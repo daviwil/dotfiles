@@ -37,7 +37,7 @@
      #~(make-forkexec-constructor
         (append
          (list (string-append (getenv "HOME") #$%slate-bin) "node" "run")
-         #$(if config (list "--direct-host" config) '()))
+         (if #$config (list "--direct-host" #$config) '()))
         ;; Shepherd captures stdout/stderr here.  This file IS diagnostics as
         ;; of 2026-08-25: every node-side operation (open/write/stat, folder
         ;; enumeration, terminal open and session lifecycle, and every RPC the
