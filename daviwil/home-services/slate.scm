@@ -8,9 +8,8 @@
 
 ;;; Runs the persistent Slate companion without leaving a terminal open.
 ;;; `slate node run` always brings up its loopback listener and optionally
-;;; dials OUT to Enclave using the existing enrollment.  A service value may
-;;; name an explicit private-network address for the direct node listener;
-;;; #f keeps the listener disabled.
+;;; dials OUT to Enclave using the existing enrollment.  A service value is an
+;;; optional (DIRECT-HOST . APP-UPSTREAM) pair; either field may be #f.
 ;;;
 ;;; The executable is owned by `slate node install --persistent`, not a build
 ;;; checkout.  The stable launcher follows Slate's atomically updated `active`
@@ -27,17 +26,20 @@
       (mkdir-p (string-append (getenv "HOME") #$%slate-log-dir))))
 
 (define (home-slate-shepherd-service config)
-  (list
-   (shepherd-service
-    (provision '(slate-node))
-    (auto-start? #t)
-    (respawn? #t)
-    (documentation "Run the Slate local and Enclave node companion.")
-    (start
-     #~(make-forkexec-constructor
-        (append
-         (list (string-append (getenv "HOME") #$%slate-bin) "node" "run")
-         (if #$config (list "--direct-host" #$config) '()))
+  (let ((direct-host (and (pair? config) (car config)))
+        (app-upstream (and (pair? config) (cdr config))))
+    (list
+     (shepherd-service
+      (provision '(slate-node))
+      (auto-start? #t)
+      (respawn? #t)
+      (documentation "Run the Slate local and Enclave node companion.")
+      (start
+       #~(make-forkexec-constructor
+          (append
+           (list (string-append (getenv "HOME") #$%slate-bin) "node" "run")
+           (if #$direct-host (list "--direct-host" #$direct-host) '())
+           (if #$app-upstream (list "--app-upstream" #$app-upstream) '()))
         ;; Shepherd captures stdout/stderr here.  This file IS diagnostics as
         ;; of 2026-08-25: every node-side operation (open/write/stat, folder
         ;; enumeration, terminal open and session lifecycle, and every RPC the
@@ -71,8 +73,8 @@
                ;; node must not guess its manager from PPID/process names.
                "SLATE_SUPERVISION=shepherd"
                "SLATE_AUTOSTART=configured"
-               (default-environment-variables))))
-    (stop #~(make-kill-destructor)))))
+                 (default-environment-variables))))
+      (stop #~(make-kill-destructor))))))
 
 (define home-slate-service-type
   (service-type
