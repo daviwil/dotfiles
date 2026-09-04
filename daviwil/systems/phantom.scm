@@ -11,6 +11,7 @@
   #:use-module (daviwil systems base)
   #:use-module (daviwil systems common)
   #:use-module (daviwil services vpn)
+  #:use-module (daviwil home-services slate)
   #:use-module (daviwil home-services video)
   #:use-module (daviwil home-services streaming))
 
@@ -60,6 +61,9 @@
        (services (cons* (service home-pipewire-service-type)
                         (service home-streaming-service-type)
                         (service home-video-service-type)
+                        ;; Persistent Slate node for remote workspace access.
+                        (service home-slate-service-type
+                                 '("10.11.0.3" . "https://next.useslate.org"))
                         common-home-services))))))))
 
 ;; System-specific services
