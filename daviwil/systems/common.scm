@@ -115,8 +115,8 @@
              (ssh-support? #t)
              (default-cache-ttl 28800)
              (max-cache-ttl 28800)
-             (default-cache-ttl-ssh 28800)
-             (max-cache-ttl-ssh 28800)))
+             (default-cache-ttl-ssh 86400)   ; 24 h idle
+             (max-cache-ttl-ssh 604800)))    ; 7 days, runner and forge pushes kept locking at 8 h
 
    ;; Emacs configuration
    (service home-emacs-config-service-type)
