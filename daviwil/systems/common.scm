@@ -116,7 +116,10 @@
              (default-cache-ttl 28800)
              (max-cache-ttl 28800)
              (default-cache-ttl-ssh 86400)   ; 24 h idle
-             (max-cache-ttl-ssh 604800)))    ; 7 days, runner and forge pushes kept locking at 8 h
+             (max-cache-ttl-ssh 604800)      ; 7 days, runner and forge pushes kept locking at 8 h
+             ;; No smartcard here: scdaemon only spammed pcsc errors, and its
+             ;; stopping took the supervised agent down with exit 2.
+             (extra-content "disable-scdaemon\n")))
 
    ;; Emacs configuration
    (service home-emacs-config-service-type)
