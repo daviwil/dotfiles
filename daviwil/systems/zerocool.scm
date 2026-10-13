@@ -3,6 +3,7 @@
   #:use-module (daviwil systems base)
   #:use-module (daviwil systems common)
   #:use-module (daviwil services vpn)
+  #:use-module (daviwil services proton)
   #:use-module (daviwil home-services audio)
   #:use-module (daviwil home-services slate)
   #:use-module (daviwil home-services games)
@@ -60,6 +61,9 @@
     (list
     ;; WireGuard VPN to 0x11.run server (hub and spoke)
     (wireguard-0x11-client-service "10.11.0.2/24")
+
+    ;; Split-tunnel ProtonVPN for AWS us-west-2 only
+    (wireguard-proton-split-service)
 
     (guix-home-config
      (home-environment
