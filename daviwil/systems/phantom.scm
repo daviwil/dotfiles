@@ -3,6 +3,7 @@
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services sound)
+  #:use-module (gnu services ssh)
   #:use-module (gnu packages file-systems)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia)
@@ -51,7 +52,13 @@
 
  (services
   (append
-   (operating-system-user-services base-operating-system)
+   ;; sshd without PAM, so SSH logins don't create elogind sessions: here they
+   ;; leak as "closing" and eventually block every login (2026-10-15).
+   (modify-services (operating-system-user-services base-operating-system)
+     (openssh-service-type config =>
+                           (openssh-configuration
+                            (inherit config)
+                            (use-pam? #f))))
     (list
     ;; WireGuard VPN to 0x11.run server
     (wireguard-0x11-client-service "10.11.0.3/24")
