@@ -23,9 +23,16 @@
         (workspace "4" (list "DP-2" laptop))
         (workspace "5" (list laptop))))
 
+;; Sway's background: samuel-ferrara, and scott-rodgerson on acidburn and
+;; zerocool, as their Sway system files set it.
+(define background
+  (if (member (system-name) '("acidburn" "zerocool"))
+      "~/.dotfiles/backgrounds/scott-rodgerson-lRtzEExP0H8-unsplash.jpg"
+      "~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg"))
+
 ;; Sway's output lines, every output at scale 2.
 (define outputs
-  (list (output "*" scale: 2)
+  (list (output "*" scale: 2 background: background background-mode: 'fill)
         (output "DP-3" position: '(0 0))
         (output "DP-4" position: '(0 0))
         (output "DP-7" position: '(0 0))
