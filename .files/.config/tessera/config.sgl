@@ -3,8 +3,7 @@
 ;;; as ~/.config/tessera/config.sgl, or the file $TESSERA_CONFIG names;
 ;;; its last expression is the configuration.
 (import (tessera config)
-        (tessera layouts grid)
-        (sigil socket))
+        (tessera layouts grid))
 
 ;; Docks rename the external display, so "primary" is every connector it
 ;; has shown up as.
@@ -14,7 +13,7 @@
 ;; Workspace 1 starts as a 2x2 grid on zerocool, as its Sway setup builds
 ;; a 2x2 terminal grid there.
 (define workspace-1-layout
-  (and (equal? (gethostname) "zerocool") (grid-layout '(2 2))))
+  (and (equal? (system-name) "zerocool") (grid-layout '(2 2))))
 
 (define workspaces
   (list (workspace "0" (list laptop))
@@ -48,8 +47,16 @@
             ("Mod+Shift+Escape" move-to-workspace "0"))
           (list (cons "Mod+Shift+s" (cons 'output-toggle primary)))))
 
+;; Sway's input blocks: US and Greek layouts with Caps as Control, and
+;; the laptop touchpad's tap, disable-while-typing and middle-button
+;; emulation. Mod+Shift+space switches layout.
+(define keyboard-settings (keyboard layout: "us,gr" options: "ctrl:nocaps"))
+(define touchpad-settings (touchpad tap: #t dwt: #t middle-emulation: #t))
+
 (config-with default-config
   workspaces: workspaces
   outputs: outputs
   keymap: keymap
+  keyboard: keyboard-settings
+  touchpad: touchpad-settings
   start-workspace: "1")
