@@ -23,6 +23,8 @@
         gammastep
         grimshot ;; grimshot --notify copy area
         network-manager-applet
+        swaybg ;; Tessera runs it for the wallpaper (Sway brings its own copy)
+        wlopm  ;; output power on/off, for swayidle under Tessera
 
         ;; Compatibility for older Xorg applications
         xorg-server-xwayland
