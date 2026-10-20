@@ -1,0 +1,55 @@
+;;; Tessera configuration for David's machines, following the Sway config
+;;; next to it (~/.config/sway/config). Tessera loads this file at startup
+;;; as ~/.config/tessera/config.sgl, or the file $TESSERA_CONFIG names;
+;;; its last expression is the configuration.
+(import (tessera config)
+        (tessera layouts grid)
+        (sigil socket))
+
+;; Docks rename the external display, so "primary" is every connector it
+;; has shown up as.
+(define primary '("DP-11" "DP-2" "DP-3" "DP-4" "DP-7" "DP-8" "HDMI-A-1"))
+(define laptop "eDP-1")
+
+;; Workspace 1 starts as a 2x2 grid on zerocool, as its Sway setup builds
+;; a 2x2 terminal grid there.
+(define workspace-1-layout
+  (and (equal? (gethostname) "zerocool") (grid-layout '(2 2))))
+
+(define workspaces
+  (list (workspace "0" (list laptop))
+        (workspace "1" (list primary laptop) workspace-1-layout)
+        (workspace "2" (list primary laptop))
+        (workspace "3" (list "DP-2" primary laptop))
+        (workspace "4" (list "DP-2" laptop))
+        (workspace "5" (list laptop))))
+
+;; Sway's output lines, every output at scale 2.
+(define outputs
+  (list (output "*" scale: 2)
+        (output "DP-3" position: '(0 0))
+        (output "DP-4" position: '(0 0))
+        (output "DP-7" position: '(0 0))
+        (output "DP-8" position: '(0 0))
+        (output "DP-11" position: '(0 0))
+        (output "DP-2" position: '(1920 0))
+        (output "HDMI-A-1" position: '(1920 0))
+        (output laptop position: '(1920 1080))
+        (output "DP-9" position: '(1920 0) transform: 270)
+        (output "DP-10" position: '(1920 0) transform: 270)))
+
+;; Workspace 0 also sits on grave and Escape, and Mod+Shift+s turns the
+;; primary displays off and on, as toggle-display does under Sway.
+(define keymap
+  (append (config-keymap default-config)
+          '(("Mod+grave" workspace "0")
+            ("Mod+Escape" workspace "0")
+            ("Mod+Shift+grave" move-to-workspace "0")
+            ("Mod+Shift+Escape" move-to-workspace "0"))
+          (list (cons "Mod+Shift+s" (cons 'output-toggle primary)))))
+
+(config-with default-config
+  workspaces: workspaces
+  outputs: outputs
+  keymap: keymap
+  start-workspace: "1")
