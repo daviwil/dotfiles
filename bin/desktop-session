@@ -4,10 +4,10 @@
 # compositors at the next login with no guix home reconfigure.
 
 # sway or tessera
-SESSION=sway
+SESSION=tessera
 
 # Tessera runs from the tree holding its tested build (scripts/run-session
-# plus build/). The accepted 276864e bundle is staged in this worktree.
+# plus build/). The interim be7f8c7 bundle is installed in this worktree.
 TESSERA_DIR=$HOME/Projects/Code/sigil/task-sigil-wlroots-wm
 TESSERA_CONFIG=$HOME/.dotfiles/.files/.config/tessera/config.sgl
 
@@ -17,7 +17,8 @@ case "$SESSION" in
     mkdir -p "$log_dir"
     log=$log_dir/session-$(date +%Y%m%d-%H%M%S).log
     started=$(date +%s)
-    TESSERA_CONFIG=$TESSERA_CONFIG bash "$TESSERA_DIR/scripts/run-session" >"$log" 2>&1
+    TESSERA_CONFIG=$TESSERA_CONFIG TESSERA_REPL_PORT=7888 \
+      bash "$TESSERA_DIR/scripts/run-session" >"$log" 2>&1
     status=$?
     # A clean exit (Mod+Shift+x) ends the login. Only a failed start falls
     # back to Sway: a crash later in the session may have happened while
