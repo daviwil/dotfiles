@@ -1,0 +1,11 @@
+# Notification style, moved here from the flags Sway's config passed to mako
+# so that a D-Bus-activated mako (as under Tessera) gets it too.
+font=JetBrains Mono 8
+background-color=#1c1f26
+border-color=#89AAEB
+border-size=1
+border-radius=2
+max-visible=5
+outer-margin=5
+margin=3
+default-timeout=7000
