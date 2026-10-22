@@ -8,6 +8,10 @@
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages video)
   #:use-module (nongnu system linux-initrd)
+  #:use-module (guix gexp)
+  #:use-module (guix packages)
+  #:use-module (guix utils)
+  #:use-module ((gnu packages nss) #:select (nss-certs))
   #:export (base-operating-system
             guix-home-config))
 
@@ -17,6 +21,33 @@
 (use-package-modules audio video nfs certs shells ssh linux bash emacs gnome
                      networking wm fonts libusb cups freedesktop file-systems
                      version-control package-management vim)
+
+;; eMudhra's intermediate CA keys were compromised in October 2026, and
+;; Mozilla removed the roots that signed them.  Guix fixed nss-certs with a
+;; graft in 7608a9954a7, but our channel pin predates it, so drop the same
+;; two roots here.  Remove this once the Guix pin moves past that commit.
+(define nss-certs/fixed
+  (package
+    (inherit nss-certs)
+    (arguments
+     (substitute-keyword-arguments (package-arguments nss-certs)
+       ((#:phases phases)
+        #~(modify-phases #$phases
+            (add-after 'install 'remove-compromised-certs
+              (lambda _
+                (let ((certsdir (string-append #$output "/etc/ssl/certs")))
+                  (with-directory-excursion certsdir
+                    (for-each delete-file
+                              '("Comodo_AAA_Services_root.pem"
+                                "emSign_ECC_Root_CA_-_G3.pem")))
+                  (invoke "openssl" "rehash" certsdir))))))))))
+
+(define (with-fixed-nss-certs packages)
+  (map (lambda (p)
+         (if (and (package? p) (string=? (package-name p) "nss-certs"))
+             nss-certs/fixed
+             p))
+       packages))
 
 (define-public base-operating-system
   (operating-system
@@ -76,7 +107,8 @@
                  %base-groups))
 
    ;; Install bare-minimum system packages
-   (packages (cons* bluez
+   (packages (with-fixed-nss-certs
+              (cons* bluez
                     bluez-alsa
                     brightnessctl
                     exfat-utils
@@ -88,7 +120,7 @@
                     ntfs-3g
                     stow
                     vim
-                    %base-packages))
+                    %base-packages)))
 
    ;; Configure only the services necessary to run the system
    (services (append
