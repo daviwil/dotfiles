@@ -7,7 +7,8 @@
 SESSION=tessera
 
 # Tessera runs from the tree holding its tested build (scripts/run-session
-# plus build/). The interim be7f8c7 bundle is installed in this worktree.
+# plus build/). The interim f00a098 bundle (with the bar) is installed in
+# this worktree; be7f8c7 is kept under build/ as the rollback.
 TESSERA_DIR=$HOME/Projects/Code/sigil/task-sigil-wlroots-wm
 TESSERA_CONFIG=$HOME/.dotfiles/.files/.config/tessera/config.sgl
 

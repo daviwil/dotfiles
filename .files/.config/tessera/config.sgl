@@ -3,6 +3,7 @@
 ;;; as ~/.config/tessera/config.sgl, or the file $TESSERA_CONFIG names;
 ;;; its last expression is the configuration.
 (import (tessera config)
+        (tessera bar)
         (tessera layouts grid))
 
 ;; Docks rename the external display, so "primary" is every connector it
@@ -77,7 +78,29 @@
 (define keyboard-settings (keyboard layout: "us,gr" options: "ctrl:nocaps"))
 (define touchpad-settings (touchpad tap: #t dwt: #t middle-emulation: #t))
 
+;; Sway's bar: top, shown only while Mod is held (its "mode hide"), in
+;; JetBrains Mono 8 on Sway's $bgcolor, with Sway's date and time format
+;; on the right.
+(define status-bar
+  (bar position: 'top
+       outputs: '("*")
+       visibility: 'overlay
+       style: (bar-style font: "JetBrains Mono 8"
+                         background: #x232635dd
+                         foreground: #xffffffff
+                         padding: '(0 8 0 8))
+       ;; Sway's inactive_workspace colors for workspaces not on screen.
+       left: (list (workspaces-section
+                    style: (bar-style background: #x1c1f2bef
+                                      foreground: #x5c5c5cff))
+                   (layout-section))
+       right: (list (network-section)
+                    (drives-section)
+                    (clock-section format: "%Y-%m-%d %I:%M:%S %p W%U"
+                                   interval: 1))))
+
 (config-with default-config
+  bar: status-bar
   workspaces: workspaces
   outputs: outputs
   keymap: keymap
