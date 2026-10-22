@@ -44,15 +44,22 @@
         (output "DP-9" position: '(1920 0) transform: 270)
         (output "DP-10" position: '(1920 0) transform: 270)))
 
-;; Workspace 0 also sits on grave and Escape, and Mod+Shift+s turns the
-;; primary displays off and on, as toggle-display does under Sway.
-(define keymap
-  (append (config-keymap default-config)
-          '(("Mod+grave" workspace "0")
+;; Workspace 0 also sits on grave and Escape, Mod+Control+l locks, and
+;; Mod+Shift+s turns the primary displays off and on, as toggle-display
+;; does under Sway. These replace any default binding on the same chord,
+;; since a repeated chord makes Tessera reject the whole config.
+(define keymap-overrides
+  (append '(("Mod+grave" workspace "0")
             ("Mod+Escape" workspace "0")
             ("Mod+Shift+grave" move-to-workspace "0")
-            ("Mod+Shift+Escape" move-to-workspace "0"))
+            ("Mod+Shift+Escape" move-to-workspace "0")
+            ("Mod+Control+l" lock))
           (list (cons "Mod+Shift+s" (cons 'output-toggle primary)))))
+
+(define keymap
+  (append (filter (lambda (binding) (not (assoc (car binding) keymap-overrides)))
+                  (config-keymap default-config))
+          keymap-overrides))
 
 ;; Sway's input blocks: US and Greek layouts with Caps as Control, and
 ;; the laptop touchpad's tap, disable-while-typing and middle-button
