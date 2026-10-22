@@ -18,6 +18,9 @@ case "$SESSION" in
     mkdir -p "$log_dir"
     log=$log_dir/session-$(date +%Y%m%d-%H%M%S).log
     started=$(date +%s)
+    # The bar's drives section runs udiskie-info, which needs Gio's typelib,
+    # and nothing in the login environment sets GI_TYPELIB_PATH.
+    GI_TYPELIB_PATH=$HOME/.guix-home/profile/lib/girepository-1.0${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH} \
     TESSERA_CONFIG=$TESSERA_CONFIG TESSERA_REPL_PORT=7888 \
       bash "$TESSERA_DIR/scripts/run-session" >"$log" 2>&1
     status=$?
