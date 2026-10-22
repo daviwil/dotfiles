@@ -1282,6 +1282,8 @@ I'm planning to develop a new presentation configuration using Prot's Logos pack
 
 I prefer =rcirc= as my default IRC client, it's simple and gets the job done.  I've mainly moved to using an XMPP server with biboumi as an IRC bridge, though.
 
+I'm also trying out [[https://github.com/parenworks/clatter.el][clatter.el]], an IRCv3 client with soju bouncer support, connected to my own soju instance.
+
 #+begin_src emacs-lisp :tangle emacs/modules/dw-chat.el
 
   ;; -*- lexical-binding: t; -*-
@@ -1321,6 +1323,24 @@ I prefer =rcirc= as my default IRC client, it's simple and gets the job done.  I
     :config
     ;; Unset the global key binding
     (global-set-key (kbd "C-x C-j") #'dired-jump))
+
+  ;; IRCv3 client, connected to my soju bouncer on 0x11.run (wg0 only).
+  ;; The network is named after the pass entry IRC/soju-0x11.run so that
+  ;; auth-source-pass finds the bouncer password.
+  (use-package clatter
+    :vc (:url "https://github.com/parenworks/clatter.el"
+         :rev :newest)
+    :custom
+    (clatter-networks
+     '(("soju-0x11.run"
+        :server "10.11.0.1"
+        :port 6698
+        :tls nil
+        :nick "daviwil"
+        :username "daviwil"
+        :bouncer t)))
+    :config
+    (clatter-setup))
 
   (provide 'dw-chat)
 

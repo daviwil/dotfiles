@@ -47,6 +47,9 @@ bindsym $mod+Shift+r reload
 bindsym $mod+Shift+e exec $emacs_frame_cmd
 bindsym $mod+Shift+Return exec $foot_cmd
 
+# Lock on demand when stepping away ($lock is defined further down)
+bindsym $mod+Control+l exec $lock
+
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
@@ -143,8 +146,8 @@ client.unfocused        $unfocused_border $bgcolor    #888888    $unfocused_bord
 # Set up screen locking
 set $lock 'swaylock -f -i ~/.dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg -s fill --font "JetBrains Mono" --indicator-idle-visible'
 exec swayidle -w \
-  timeout 900 $lock \
-  timeout 960 'swaymsg "output * dpms off"' \
+  timeout 180 $lock \
+  timeout 240 'swaymsg "output * dpms off"' \
 	resume 'swaymsg "output * dpms on"' \
   before-sleep $lock
 
@@ -152,6 +155,7 @@ exec swayidle -w \
 for_window [title="Firefox — Sharing Indicator"] kill
 for_window [title=".* - mpv$"] floating enable, sticky enable
 for_window [app_id="org.mozilla.firefox"] inhibit_idle fullscreen
+for_window [app_id="^Harkfell$"] floating enable
 
 bar {
     position top

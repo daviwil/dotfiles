@@ -36,4 +36,22 @@
   ;; Unset the global key binding
   (global-set-key (kbd "C-x C-j") #'dired-jump))
 
+;; IRCv3 client, connected to my soju bouncer on 0x11.run (wg0 only).
+;; The network is named after the pass entry IRC/soju-0x11.run so that
+;; auth-source-pass finds the bouncer password.
+(use-package clatter
+  :vc (:url "https://github.com/parenworks/clatter.el"
+       :rev :newest)
+  :custom
+  (clatter-networks
+   '(("soju-0x11.run"
+      :server "10.11.0.1"
+      :port 6698
+      :tls nil
+      :nick "daviwil"
+      :username "daviwil"
+      :bouncer t)))
+  :config
+  (clatter-setup))
+
 (provide 'dw-chat)
