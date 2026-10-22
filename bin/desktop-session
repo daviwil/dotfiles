@@ -1,0 +1,35 @@
+#!/bin/sh
+# Starts the graphical session on tty1. The login shell runs this file from
+# the dotfiles checkout, not from the Guix store, so editing SESSION switches
+# compositors at the next login with no guix home reconfigure.
+
+# sway or tessera
+SESSION=sway
+
+# Tessera runs from the tree holding its tested build (scripts/run-session
+# plus build/). The accepted 276864e bundle is staged in this worktree.
+TESSERA_DIR=$HOME/Projects/Code/sigil/task-sigil-wlroots-wm
+TESSERA_CONFIG=$HOME/.dotfiles/.files/.config/tessera/config.sgl
+
+case "$SESSION" in
+  tessera)
+    log_dir=${XDG_STATE_HOME:-$HOME/.local/state}/tessera
+    mkdir -p "$log_dir"
+    log=$log_dir/session-$(date +%Y%m%d-%H%M%S).log
+    started=$(date +%s)
+    TESSERA_CONFIG=$TESSERA_CONFIG bash "$TESSERA_DIR/scripts/run-session" >"$log" 2>&1
+    status=$?
+    # A clean exit (Mod+Shift+x) ends the login. Only a failed start falls
+    # back to Sway: a crash later in the session may have happened while
+    # locked, and starting an unlocked Sway then would bypass the lock.
+    if [ "$status" -ne 0 ] && [ $(( $(date +%s) - started )) -lt 30 ]; then
+      printf 'Tessera failed to start (exit %s, log %s); starting Sway\n' "$status" "$log" >&2
+      sleep 3
+      exec sway
+    fi
+    exit "$status"
+    ;;
+  *)
+    exec sway
+    ;;
+esac

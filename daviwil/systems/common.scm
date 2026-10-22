@@ -5,6 +5,7 @@
   #:use-module (daviwil home-services udiskie)
   #:use-module (gnu services)
   #:use-module (gnu packages gnupg)
+  #:use-module (gnu packages bash)
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services pm)
@@ -79,9 +80,16 @@
                 ;;
                 ;; A pseudo-terminal is /dev/pts/N and never /dev/tty1, so this
                 ;; form cannot be reached by an inherited variable.
+                ;;
+                ;; The session itself is chosen by ~/.dotfiles/bin/desktop-session,
+                ;; read from the checkout at login, so switching between Sway and
+                ;; Tessera needs no reconfigure. Plain Sway if the script is missing.
                 ,(plain-file "bash-sway-login"
                              (string-append
                               "if [ -z \"$WAYLAND_DISPLAY\" ] && [ \"$(tty)\" = \"/dev/tty1\" ]; then\n"
+                              "  if [ -x \"$HOME/.dotfiles/bin/desktop-session\" ]; then\n"
+                              "    exec \"$HOME/.dotfiles/bin/desktop-session\"\n"
+                              "  fi\n"
                               "  exec sway\n"
                               "fi\n"))))
              (bashrc
@@ -102,16 +110,31 @@
                                              #$output)
                                   (chmod #$output #o755))))))
 
-   ;; GnuPG configuration — use pinentry-tmux for passphrase prompts
-   ;; in tmux sessions, with pinentry-curses as a fallback
+   ;; Route Slate-owned GPG/SSH requests to Slate; ordinary callers retain
+   ;; pinentry-tmux and its curses fallback. The installed bridge is optional.
    (service home-gpg-agent-service-type
             (home-gpg-agent-configuration
              (pinentry-program
-              (computed-file "pinentry-tmux"
-                #~(begin
-                    (copy-file #$(local-file "../files/pinentry-tmux")
-                               #$output)
-                    (chmod #$output #o755))))
+              (let ((fallback
+                     (computed-file "pinentry-tmux"
+                       #~(begin
+                           (copy-file #$(local-file "../files/pinentry-tmux")
+                                      #$output)
+                           (chmod #$output #o755)))))
+                (computed-file "pinentry-slate"
+                  #~(begin
+                      (call-with-output-file #$output
+                        (lambda (port)
+                          (display
+                           (string-append
+                            "#!" #$(file-append bash-minimal "/bin/sh") "\n"
+                            "if [ -x \"$HOME/.local/libexec/slate-pinentry\" ]; then\n"
+                            "  exec \"$HOME/.local/libexec/slate-pinentry\" pinentry --fallback "
+                            #$fallback " \"$@\"\n"
+                            "fi\n"
+                            "exec " #$fallback " \"$@\"\n")
+                           port)))
+                      (chmod #$output #o755)))))
              (ssh-support? #t)
              (default-cache-ttl 28800)
              (max-cache-ttl 28800)
