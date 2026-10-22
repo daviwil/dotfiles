@@ -55,6 +55,10 @@
              "-C" "c792eacc" "-m" "c792eacc"
              "-f" "JetBrains Mono:weight=light:size=10"
              "--icon-theme=Papirus-Dark" "--no-exit-on-keyboard-focus-loss")
+            ("Mod+Shift+e" exec "foot" "-f" "JetBrains Mono:size=11" "emacsclient" "-a" "" "-t")
+            ("XF86MonBrightnessDown" exec "brightnessctl" "set" "5%-")
+            ("XF86MonBrightnessUp" exec "brightnessctl" "set" "5%+")
+            ("Mod+p" exec "playerctl" "play-pause")
             ("Mod+grave" workspace "0")
             ("Mod+Escape" workspace "0")
             ("Mod+Shift+grave" move-to-workspace "0")
