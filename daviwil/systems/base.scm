@@ -180,12 +180,12 @@
                                            "localhost"
                                            (list "systemcrafters.local"
                                                  "ci.systemcrafters.local"))
-                                     ;; Route Enclave chat over the WireGuard
-                                     ;; tunnel to avoid the ISP CGNAT path.
-                                     ;; Never pin bare 0x11.run here: it's the
-                                     ;; WG endpoint hostname (services/vpn.scm)
-                                     ;; and pinning it would loop the tunnel.
-                                     (host "10.11.0.1" "chat.0x11.run")))
+                                     ;; Routing Enclave chat over the tunnel is off
+                                     ;; until the tunnel address serves chat's
+                                     ;; certificate. Never pin bare 0x11.run: it is
+                                     ;; the WireGuard endpoint and would loop it.
+                                     ;; (host "10.11.0.1" "chat.0x11.run")
+                                     ))
 
                ;; Basic desktop system services (copied from %desktop-services)
                (service avahi-service-type)

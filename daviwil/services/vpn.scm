@@ -16,7 +16,7 @@
 (define %phantom-wg-peer
   (wireguard-peer
    (name "phantom")
-   (public-key "5cRaB97LRNl/uhOI1KAcCvhr9kBa+1OpN1biaWuGV34=")
+   (public-key "ry6Vq8RX4yX98OhQ6hhVMgEvWEmDZk/9SBxv0uaIAxI=")
    (allowed-ips '("10.11.0.3/32"))))
 
 (define %phone-wg-peer
