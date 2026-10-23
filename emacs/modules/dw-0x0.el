@@ -6,20 +6,20 @@
 		       (buffer-substring-no-properties (region-beginning) (region-end))
 		     (buffer-string)))
 	 (temp-file (make-temp-file "0x0" nil ".txt" contents)))
-    (message "Sending %s to 0x0.st..." temp-file)
+    (message "Sending %s to crafterbin..." temp-file)
     (let ((url (string-trim-right
 		(shell-command-to-string
-		 (format "curl -s -F'file=@%s' https://0x0.st" temp-file)))))
+		 (format "curl -s -F'file=@%s' https://crafterbin.glennstack.dev/" temp-file)))))
       (message "The URL is %s" url)
       (kill-new url)
       (delete-file temp-file))))
 
 (defun dw/0x0-upload-file (file-path)
   (interactive "fSelect a file to upload: ")
-  (message "Sending %s to 0x0.st..." file-path)
+  (message "Sending %s to crafterbin..." file-path)
   (let ((url (string-trim-right
 	      (shell-command-to-string
-	       (format "curl -s -F'file=@%s' https://0x0.st" (expand-file-name file-path))))))
+	       (format "curl -s -F'file=@%s' https://crafterbin.glennstack.dev/" (expand-file-name file-path))))))
     (message "The URL is %s" url)
     (kill-new url)))
 
