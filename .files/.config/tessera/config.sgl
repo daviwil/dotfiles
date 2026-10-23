@@ -81,18 +81,29 @@
 ;; Sway's bar: top, shown only while Mod is held (its "mode hide"), in
 ;; JetBrains Mono 8 on Sway's $bgcolor, with Sway's date and time format
 ;; on the right.
+;; Orpiment: the bar. Opaque bg1, as the house style's overlay is opaque.
+;; Bar colours are straight RGBA.
+(define house-bar-style
+  (bar-style font: "JetBrains Mono 8"
+             background: #x141412ff   ; bg1
+             foreground: #xe6e2d5ff   ; fg0
+             padding: '(0 8 0 8)))
+;; The workspace names: focused on the focus colour, visible ones in the focus colour on bg3,
+;; urgent in the D27 red, the rest in fg2.
+(define house-workspaces
+  (workspaces-section
+    style: (bar-style background: #x141412ff foreground: #x989485ff)
+    focused-style: '((background . #xedbb45ff) (foreground . #x0e0e0cff))
+    visible-style: '((background . #x2a2922ff) (foreground . #xedbb45ff))
+    urgent-style: '((background . #xff5370ff) (foreground . #x0e0e0cff))))
+
 (define status-bar
   (bar position: 'top
        outputs: '("*")
        visibility: 'overlay
-       style: (bar-style font: "JetBrains Mono 8"
-                         background: #x232635dd
-                         foreground: #xffffffff
-                         padding: '(0 8 0 8))
+       style: house-bar-style
        ;; Sway's inactive_workspace colors for workspaces not on screen.
-       left: (list (workspaces-section
-                    style: (bar-style background: #x1c1f2bef
-                                      foreground: #x5c5c5cff))
+       left: (list house-workspaces
                    (layout-section))
        right: (list (network-section)
                     (drives-section)
@@ -106,4 +117,11 @@
   keymap: keymap
   keyboard: keyboard-settings
   touchpad: touchpad-settings
-  start-workspace: "1")
+  start-workspace: "1"
+  focused-border: #xedbb45ff
+  focused-inactive-border: #x4c493eff
+  unfocused-border: #x252420ff
+  title-focused: #xe6e2d5ff
+  title-focused-inactive: #xe6e2d5ff
+  title-unfocused: #xaba79aff
+  title-background: #x111110dd)
